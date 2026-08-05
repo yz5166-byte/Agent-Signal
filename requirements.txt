@@ -1,0 +1,18 @@
+# ---- LangGraph / LLM ----
+langgraph
+langchain-core
+langchain-openai        # AIHubMix 提供 OpenAI 兼容接口，用这个包即可
+
+# ---- 数据抓取 ----
+httpx                   # HTTP 请求（arXiv / GitHub API）
+feedparser              # RSS 解析（新闻 / 官方博客）
+
+# ---- 配置与数据模型 ----
+python-dotenv           # 读取 .env 里的密钥
+pyyaml                  # 读取 config.yaml
+pydantic                # 定义 Item 数据模型
+
+# ---- 网页 ----
+fastapi                 # 网页后端
+uvicorn[standard]       # 本地开发服务器
+jinja2                  # HTML 模板渲染
