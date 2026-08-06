@@ -19,7 +19,7 @@ from src.state import ReportState
 MAX_AGE_DAYS = {
     Section.PAPER: 3,
     Section.NEWS: 2,
-    Section.PRODUCT: 7,
+    Section.PRODUCT: 14,  # 官方博客发文稀疏，窗口要比新闻宽
     Section.REPO: None,
 }
 
