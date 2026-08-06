@@ -20,6 +20,8 @@ class ReportState(TypedDict, total=False):
     run_date: str
 
     # [fetch] 四个数据源【并行】抓取，结果靠 operator.add 累加进同一个列表
+    # list[Item]: 这个字段本身的数据类型
+    # operator.add: 给 LangGraph 的合并规则（reducer）
     raw_items: Annotated[list[Item], operator.add]
 
     # [curate] 去重打分后的精选结果。没有 reducer，所以是【整体替换】
