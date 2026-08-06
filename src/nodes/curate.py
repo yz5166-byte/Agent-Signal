@@ -24,12 +24,14 @@ MAX_AGE_DAYS = {
 }
 
 # 同一来源在一个板块里最多占几条，用来保证板块的来源多样性。
-# paper / repo 只有单一来源（arXiv / GitHub），设限会把板块清空，所以不设。
+# paper 只有单一来源 arXiv，设限会把板块清空，所以不设。
+# repo 的 source 是「GitHub 新星 / GitHub 经典」两条检索路径：
+# 老项目 star 有几年时间累积，不设限的话经典路会把新星路挤掉（实测 14:1）。
 MAX_PER_SOURCE = {
     Section.PAPER: None,
     Section.NEWS: 3,
     Section.PRODUCT: 3,
-    Section.REPO: None,
+    Section.REPO: 8,
 }
 
 # 每板块送进 LLM 的候选数量。最终条数由第 6 步的 LLM 打分决定。
