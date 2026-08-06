@@ -7,6 +7,7 @@
 """
 
 import re
+from collections import Counter
 from datetime import datetime, timedelta, timezone
 
 from src.models import Item, Section
@@ -19,6 +20,15 @@ MAX_AGE_DAYS = {
     Section.PAPER: 3,
     Section.NEWS: 2,
     Section.PRODUCT: 7,
+    Section.REPO: None,
+}
+
+# 同一来源在一个板块里最多占几条，用来保证板块的来源多样性。
+# paper / repo 只有单一来源（arXiv / GitHub），设限会把板块清空，所以不设。
+MAX_PER_SOURCE = {
+    Section.PAPER: None,
+    Section.NEWS: 3,
+    Section.PRODUCT: 3,
     Section.REPO: None,
 }
 
@@ -39,7 +49,7 @@ def curate(state: ReportState) -> dict:
             key=_rank_key,
             reverse=True,  # 两种 key 都是「越大越靠前」
         )
-        candidates += group[:CANDIDATES_PER_SECTION]
+        candidates += _cap_per_source(group, MAX_PER_SOURCE[section])[:CANDIDATES_PER_SECTION]
 
     return {"items": candidates}
 
@@ -58,6 +68,22 @@ def _dedupe(items: list[Item]) -> list[Item]:
             continue
         seen.update(keys)
         result.append(item)
+    return result
+
+
+def _cap_per_source(items: list[Item], limit: int | None) -> list[Item]:
+    """同一来源最多保留 limit 条，避免高产的来源（如 OpenAI 博客）霸占整个板块。
+
+    入参必须是已排好序的：这样每个来源留下的都是它自己最靠前的那几条。
+    """
+    if limit is None:
+        return items
+    used: Counter[str] = Counter()
+    result = []
+    for item in items:
+        if used[item.source] < limit:
+            used[item.source] += 1
+            result.append(item)
     return result
 
 
