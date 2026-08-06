@@ -7,6 +7,7 @@ from langgraph.graph import END, START, StateGraph
 
 from src.nodes.curate import curate
 from src.nodes.fetch import fetch_blogs, fetch_news, fetch_papers, fetch_repos
+from src.nodes.summarize import summarize
 from src.state import ReportState
 
 FETCH_NODES = {
@@ -21,7 +22,7 @@ def build_graph():
     """把节点连成图，并编译成可运行对象。
 
     当前形状：       ┌→ fetch_papers ─┐
-              START ─┼→ fetch_repos  ─┼→ curate → END
+              START ─┼→ fetch_repos  ─┼→ curate → summarize → END
                      ├→ fetch_news   ─┤
                      └→ fetch_blogs  ─┘
 
@@ -37,6 +38,8 @@ def build_graph():
         graph.add_edge(name, "curate")  # 汇入同一个节点
 
     graph.add_node("curate", curate)
-    graph.add_edge("curate", END)
+    graph.add_node("summarize", summarize)
+    graph.add_edge("curate", "summarize")
+    graph.add_edge("summarize", END)
 
     return graph.compile()  # 编译时检查图是否合法，产出可运行对象

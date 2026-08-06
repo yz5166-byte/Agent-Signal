@@ -18,6 +18,15 @@ class Section(str, Enum):
     PRODUCT = "product"  # 产品发布、模型更新
 
 
+# 板块的中文名。日报标题、prompt、网页都用它，只在这里定义一次。
+SECTION_NAMES = {
+    Section.PAPER: "前沿论文",
+    Section.REPO: "开源项目",
+    Section.NEWS: "行业新闻",
+    Section.PRODUCT: "产品发布",
+}
+
+
 class Item(BaseModel):
     """一条资讯。字段按「由哪个阶段填写」分成三组。"""
 
