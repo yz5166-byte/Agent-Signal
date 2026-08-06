@@ -5,24 +5,33 @@
 
 from langgraph.graph import END, START, StateGraph
 
-from src.nodes.fetch import fetch_papers
+from src.nodes.fetch import fetch_blogs, fetch_news, fetch_papers, fetch_repos
 from src.state import ReportState
+
+FETCH_NODES = {
+    "fetch_papers": fetch_papers,
+    "fetch_repos": fetch_repos,
+    "fetch_news": fetch_news,
+    "fetch_blogs": fetch_blogs,
+}
 
 
 def build_graph():
     """把节点连成图，并编译成可运行对象。
 
-    当前形状：START -> fetch_papers -> END
-    后续步骤会在这里继续加节点和边，其他文件不用动。
+    当前形状：       ┌→ fetch_papers ─┐
+              START ─┼→ fetch_repos  ─┼→ END
+                     ├→ fetch_news   ─┤
+                     └→ fetch_blogs  ─┘
+
+    四条边都从 START 出发 = 四个节点并行执行，
+    结果靠 raw_items 上的 operator.add 自动合并（不需要任何汇总代码）。
     """
     graph = StateGraph(ReportState)  # 告诉 LangGraph：这张图共享哪份 State
 
-    # 1) 注册节点："名字" -> 干活的函数
-    graph.add_node("fetch_papers", fetch_papers)
+    for name, node in FETCH_NODES.items():
+        graph.add_node(name, node)
+        graph.add_edge(START, name)  # 都从 START 出发 => 并行
+        graph.add_edge(name, END)
 
-    # 2) 连边：谁先谁后
-    graph.add_edge(START, "fetch_papers")
-    graph.add_edge("fetch_papers", END)
-
-    # 3) 编译：检查图是否合法（有无孤立节点、环等），产出可运行对象
-    return graph.compile()
+    return graph.compile()  # 编译时检查图是否合法，产出可运行对象

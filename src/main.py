@@ -6,6 +6,7 @@
 from datetime import date
 
 from src.graph import build_graph
+from src.models import Section
 from src.state import ReportState
 
 
@@ -22,12 +23,14 @@ def main() -> None:
 def _preview(state: ReportState) -> None:
     """临时的结果预览。第 8 步接上 deliver 节点后会删掉。"""
     items = state.get("raw_items", [])
-    print(f"运行日期: {state['run_date']}")
-    print(f"抓取条数: {len(items)}\n")
-    for i, item in enumerate(items[:5], 1):
-        print(f"[{i}] ({item.section.value}) {item.title[:70]}")
-    if len(items) > 5:
-        print(f"... 其余 {len(items) - 5} 条略")
+    print(f"运行日期 {state['run_date']}   抓取总数 {len(items)}")
+    for section in Section:
+        group = [i for i in items if i.section is section]
+        print(f"\n── {section.value}（{len(group)} 条）")
+        for it in group[:3]:
+            print(f"   [{it.source:16}] {it.title[:62]}")
+        if len(group) > 3:
+            print(f"   ... 其余 {len(group) - 3} 条")
 
 
 if __name__ == "__main__":

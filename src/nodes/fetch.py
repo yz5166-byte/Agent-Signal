@@ -1,18 +1,30 @@
-"""节点：抓取。各数据源并行执行，各自把结果写回 State。
+"""节点：抓取。四个数据源并行执行，各自把结果写回 State。
 
 只做「调用 sources 里的函数 + 塞进 State」，抓取细节不写在这里。
+
+四个函数几乎一样，但故意不合并成工厂函数：显式写出来，
+出错时 traceback 里直接看到是哪个节点炸的，也方便各自单独演化。
 """
 
-from src.sources import arxiv
+from src.sources import arxiv, github, news_rss, official_blogs
 from src.state import ReportState
 
 
 def fetch_papers(state: ReportState) -> dict:
-    """抓取 arXiv 论文，追加进 State 的 raw_items。
+    """arXiv 论文 -> raw_items"""
+    return {"raw_items": arxiv.fetch()}
 
-    节点函数的固定形状：接收整个 state，返回一个「只包含自己负责的字段」的 dict。
-    不用手动合并——LangGraph 会拿这个 dict 去更新 state，
-    raw_items 带了 operator.add，所以是追加而不是覆盖。
-    """
-    items = arxiv.fetch()
-    return {"raw_items": items}
+
+def fetch_repos(state: ReportState) -> dict:
+    """GitHub 项目 -> raw_items"""
+    return {"raw_items": github.fetch()}
+
+
+def fetch_news(state: ReportState) -> dict:
+    """行业新闻 -> raw_items"""
+    return {"raw_items": news_rss.fetch()}
+
+
+def fetch_blogs(state: ReportState) -> dict:
+    """官方博客 -> raw_items"""
+    return {"raw_items": official_blogs.fetch()}
