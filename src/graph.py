@@ -5,6 +5,7 @@
 
 from langgraph.graph import END, START, StateGraph
 
+from src.nodes.curate import curate
 from src.nodes.fetch import fetch_blogs, fetch_news, fetch_papers, fetch_repos
 from src.state import ReportState
 
@@ -20,18 +21,22 @@ def build_graph():
     """把节点连成图，并编译成可运行对象。
 
     当前形状：       ┌→ fetch_papers ─┐
-              START ─┼→ fetch_repos  ─┼→ END
+              START ─┼→ fetch_repos  ─┼→ curate → END
                      ├→ fetch_news   ─┤
                      └→ fetch_blogs  ─┘
 
-    四条边都从 START 出发 = 四个节点并行执行，
-    结果靠 raw_items 上的 operator.add 自动合并（不需要任何汇总代码）。
+    出：四条边都从 START 出发 = 四个节点并行执行。
+    合：四条边都汇入 curate = LangGraph 会等四路全部跑完才启动 curate，
+        结果靠 raw_items 上的 operator.add 自动合并（不需要任何汇总代码）。
     """
     graph = StateGraph(ReportState)  # 告诉 LangGraph：这张图共享哪份 State
 
     for name, node in FETCH_NODES.items():
         graph.add_node(name, node)
-        graph.add_edge(START, name)  # 都从 START 出发 => 并行
-        graph.add_edge(name, END)
+        graph.add_edge(START, name)  # 并行出发
+        graph.add_edge(name, "curate")  # 汇入同一个节点
+
+    graph.add_node("curate", curate)
+    graph.add_edge("curate", END)
 
     return graph.compile()  # 编译时检查图是否合法，产出可运行对象

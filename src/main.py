@@ -22,15 +22,14 @@ def main() -> None:
 
 def _preview(state: ReportState) -> None:
     """临时的结果预览。第 8 步接上 deliver 节点后会删掉。"""
-    items = state.get("raw_items", [])
-    print(f"运行日期 {state['run_date']}   抓取总数 {len(items)}")
+    raw, items = state.get("raw_items", []), state.get("items", [])
+    print(f"运行日期 {state['run_date']}   抓取 {len(raw)} 条 -> 候选 {len(items)} 条")
     for section in Section:
         group = [i for i in items if i.section is section]
-        print(f"\n── {section.value}（{len(group)} 条）")
-        for it in group[:3]:
+        raw_n = len([i for i in raw if i.section is section])
+        print(f"\n── {section.value}（{raw_n} -> {len(group)}）")
+        for it in group:
             print(f"   [{it.source:16}] {it.title[:62]}")
-        if len(group) > 3:
-            print(f"   ... 其余 {len(group) - 3} 条")
 
 
 if __name__ == "__main__":
