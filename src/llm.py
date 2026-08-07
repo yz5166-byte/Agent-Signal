@@ -17,4 +17,7 @@ def get_llm(temperature: float = 0.3) -> ChatOpenAI:
         base_url=os.environ["LLM_BASE_URL"],
         temperature=temperature,
         timeout=180,
+        # 默认只重试 2 次。实测本机代理在并发下会瞬断，
+        # 提到 5 次（SDK 内置指数退避，累计约 15 秒）足以扛过抖动。
+        max_retries=5,
     )
