@@ -22,7 +22,7 @@ def deliver(state: ReportState) -> dict:
 
     # 文件已经落盘了，发信失败不该让整次运行以非零码退出
     try:
-        email.send(f"AI Edge 日报 · {state['run_date']}", state["report_md"])
+        email.send(f"Agent Signal 日报 · {state['run_date']}", state["report_md"])
         print(f"[deliver] 已发送邮件至 {os.environ['MAIL_TO']}")
         return {}
     except Exception as e:

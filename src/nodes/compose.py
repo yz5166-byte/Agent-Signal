@@ -25,7 +25,7 @@ def compose(state: ReportState) -> dict:
 def _to_markdown(state: ReportState, groups: dict[Section, list[Item]]) -> str:
     """给邮件正文和 output/*.md 归档用。"""
     total = sum(len(g) for g in groups.values())
-    parts = [f"# AI Edge 日报 · {state['run_date']}", "", f"> 今日精选 {total} 条", ""]
+    parts = [f"# Agent Signal 日报 · {state['run_date']}", "", f"> 今日精选 {total} 条", ""]
 
     for section, group in groups.items():
         parts += [f"## {SECTION_NAMES[section]}", ""]

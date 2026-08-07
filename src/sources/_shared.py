@@ -9,7 +9,7 @@ from datetime import datetime, timezone
 
 import httpx
 
-USER_AGENT = "ai-edge-bot/0.1 (+https://github.com/yz5166-byte/ai-edge-bot)"
+USER_AGENT = "agent-signal/0.1 (+https://github.com/yz5166-byte/Agent-Signal)"
 
 
 def http_get(url: str, *, params: dict | None = None, headers: dict | None = None) -> httpx.Response:
