@@ -12,6 +12,9 @@ python-dotenv           # 读取 .env 里的密钥
 pyyaml                  # 读取 config.yaml
 pydantic                # 定义 Item 数据模型
 
+# ---- 投递 ----
+markdown                # 日报 Markdown -> HTML 邮件正文（SMTP 用标准库，无需依赖）
+
 # ---- 网页 ----
 fastapi                 # 网页后端
 uvicorn[standard]       # 本地开发服务器
