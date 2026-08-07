@@ -27,8 +27,10 @@ class ReportState(TypedDict, total=False):
     # [curate] 去重打分后的精选结果。没有 reducer，所以是【整体替换】
     items: list[Item]
 
-    # [tip] 当日 Agent 开发技巧，是一段生成的文字，不属于任何 Item
-    tip: str
+    # [tip] 当日 Agent 开发技巧，不属于任何 Item。
+    # 存结构化数据而非现成的 Markdown：Markdown 和网页要的形态不同，
+    # 排版一律交给 compose。形如 {title, body, ref_title, ref_url}
+    tip: dict
 
     # [compose] 两种成品格式
     report_md: str  # 给邮件正文和 output/*.md 归档

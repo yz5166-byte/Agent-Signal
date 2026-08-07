@@ -9,6 +9,7 @@ from src.nodes.compose import compose
 from src.nodes.curate import curate
 from src.nodes.fetch import fetch_blogs, fetch_news, fetch_papers, fetch_repos
 from src.nodes.summarize import summarize
+from src.nodes.tip import write_tip
 from src.state import ReportState
 
 FETCH_NODES = {
@@ -23,7 +24,7 @@ def build_graph():
     """把节点连成图，并编译成可运行对象。
 
     当前形状：       ┌→ fetch_papers ─┐
-              START ─┼→ fetch_repos  ─┼→ curate → summarize → compose → END
+              START ─┼→ fetch_repos  ─┼→ curate → summarize → tip → compose → END
                      ├→ fetch_news   ─┤
                      └→ fetch_blogs  ─┘
                                           （curate 之后全部串行）
@@ -41,9 +42,11 @@ def build_graph():
 
     graph.add_node("curate", curate)
     graph.add_node("summarize", summarize)
+    graph.add_node("tip", write_tip)
     graph.add_node("compose", compose)
     graph.add_edge("curate", "summarize")
-    graph.add_edge("summarize", "compose")
+    graph.add_edge("summarize", "tip")  # tip 要读 summarize 挑出的条目
+    graph.add_edge("tip", "compose")
     graph.add_edge("compose", END)
 
     return graph.compile()  # 编译时检查图是否合法，产出可运行对象

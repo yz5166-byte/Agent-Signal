@@ -40,8 +40,10 @@ def _to_markdown(state: ReportState, groups: dict[Section, list[Item]]) -> str:
             ]
 
     # 技巧是对当天内容的提炼，放在最后当作「今日一学」
-    if state.get("tip"):
-        parts += ["## 今日 Agent 开发技巧", "", state["tip"], ""]
+    if tip := state.get("tip"):
+        parts += ["## 今日 Agent 开发技巧", "", f"### {tip['title']}", "", tip["body"], ""]
+        if tip["ref_url"]:
+            parts += [f"*延伸阅读：[{tip['ref_title']}]({tip['ref_url']})*", ""]
 
     return "\n".join(parts)
 
@@ -50,7 +52,7 @@ def _to_json(state: ReportState, groups: dict[Section, list[Item]]) -> dict:
     """给网页读取用。Item 交给 Pydantic 序列化，datetime 会自动转成字符串。"""
     return {
         "date": state["run_date"],
-        "tip": state.get("tip", ""),
+        "tip": state.get("tip", {}),
         "sections": [
             {
                 "key": section.value,
