@@ -33,7 +33,8 @@ def _to_markdown(state: ReportState, groups: dict[Section, list[Item]]) -> str:
             parts += [
                 f"**[{item.title}]({item.url})**",
                 "",
-                item.summary,
+                # summarize 降级时没有摘要，退回原文开头，别留一片空白
+                item.summary or item.raw_text[:80] or "（无摘要）",
                 "",
                 f"*{_meta(item)}*",
                 "",
@@ -45,6 +46,12 @@ def _to_markdown(state: ReportState, groups: dict[Section, list[Item]]) -> str:
         if tip["ref_url"]:
             parts += [f"*延伸阅读：[{tip['ref_title']}]({tip['ref_url']})*", ""]
 
+    # 把失败摆到明面上：日报变薄时，读者能直接看到是哪里出了问题
+    if errors := state.get("errors"):
+        parts += ["---", "", f"*本次运行有 {len(errors)} 处异常：*", ""]
+        parts += [f"- *{e}*" for e in errors]
+        parts += [""]
+
     return "\n".join(parts)
 
 
@@ -53,6 +60,7 @@ def _to_json(state: ReportState, groups: dict[Section, list[Item]]) -> dict:
     return {
         "date": state["run_date"],
         "tip": state.get("tip", {}),
+        "errors": state.get("errors", []),
         "sections": [
             {
                 "key": section.value,

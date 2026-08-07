@@ -1,11 +1,12 @@
 {
   "date": "2026-08-08",
   "tip": {
-    "title": "用代码替代JSON调用工具",
-    "body": "当你的Agent需要调用外部工具时，别再用JSON定义参数——改用直接执行代码的方式。\n\n场景：LLM调用工具时，JSON结构容易出错且限制灵活性，尤其在动态参数或嵌套逻辑场景下。\n\n做法：让Agent生成并执行Python代码来调用工具，而非解析JSON。例如用`exec()`或`eval()`安全执行代码片段：\n```python\n# 传统JSON方式（易出错）\n# tool_call = {\"name\": \"search\", \"args\": {\"query\": \"AI\"}}\n\n# 代码方式（更灵活）\ncode = \"result = search('AI')\"\nexec(code, globals())\nprint(result)\n```\n注意限制执行环境权限，避免安全风险。",
+    "title": "用脚本替代JSON工具调用",
+    "body": "当Agent需要频繁调用多个工具（如搜索、计算）时，JSON序列化和HTTP请求会成为性能瓶颈。可以将工具实现为Python函数，用`ProcessPoolExecutor`并行执行，避免解析开销。注意：工具函数必须来自白名单，不执行用户提供的任意代码。\n\n```python\nfrom concurrent.futures import ProcessPoolExecutor\n\ndef safe_calc(expr):\n    # 仅允许安全运算（示例用eval，实际应替换为ast.literal_eval或受限计算）\n    return eval(expr, {\"__builtins__\": {}}, {\"x\": 1})\n\ntools = {\"search\": lambda q: f\"result_{q}\", \"calc\": safe_calc}\n\nwith ProcessPoolExecutor() as pool:\n    futures = {pool.submit(func, arg): name for name, func in tools.items()}\n```",
     "ref_title": "The Bitter Lesson of Tool Calling",
     "ref_url": "https://arxiv.org/abs/2608.06370v1"
   },
+  "errors": [],
   "sections": [
     {
       "key": "paper",
@@ -31,7 +32,7 @@
             "pdf_url": "https://arxiv.org/pdf/2608.06370v1"
           },
           "score": 9.0,
-          "summary": "用代码替代JSON调用工具，让LLM Agent更灵活高效，是工具调用范式的关键升级。"
+          "summary": "提出用程序化脚本替代JSON调用工具，显著提升Agent执行效率与并行能力。"
         },
         {
           "section": "paper",
@@ -62,54 +63,55 @@
             "pdf_url": "https://arxiv.org/pdf/2608.06346v1"
           },
           "score": 9.0,
-          "summary": "提出错误生命周期追踪方法，精准定位长程Agent轨迹中的首个关键错误，提升调试效率。"
+          "summary": "追踪轨迹错误生命周期，定位长程Agent任务的关键失败步骤，提升调试效率。"
         },
         {
           "section": "paper",
-          "title": "The Low Frequency Trap: Video Language Models Fail at Simple Event Bookkeeping",
-          "url": "https://arxiv.org/abs/2608.06361v1",
+          "title": "AV-AIVAT: 74x Cheaper Agent Evaluation with Certified Anytime-Valid Stopping in Imperfect-Information Games",
+          "url": "https://arxiv.org/abs/2608.06362v1",
           "source": "arXiv",
-          "published_at": "2026-08-06T17:57:06Z",
-          "raw_text": "Real-world video benchmarks provide broad coverage, but their fixed clips entangle event count, rate, duration, and visual complexity, making failure modes hard to isolate. While existing programmatic benchmarks offer better control, they score only the final answer rather than auditing reported events against executable ground truth. To bridge this gap, we introduce trace-grounded parametric profiling for event counting in three controlled video tasks: bouncing-ball wall contacts, visual blinks, and categorical state transitions. Across 2,190 videos, we vary event count N and frequency F while holding rendering fixed. Each video includes an executable event trace for capability-surface estimation and timestamp-level evaluation. Our results reveal a staged temporal failure. At an 80% reliability threshold, Gemini 3.6 Flash reliably counts persistent state transitions up to 12 events at 0.5 and 1.0 Hz, yet demonstrates no reliable positive-count region for transient blinking events. Thus, event representation dictates whether a model initially accesses evidence -- a limitation that compounds as count and frequency increase. In the high-count, high-frequency regime, only 0.2% of final counts are correct and the model recovers just 18.1% of true events. To test if visual access is the primary bottleneck, we increase sampling rate. Although this boosts Bounce Ball accuracy from 19.6% to 29.3%, the reported sequence agrees with ground truth only 3.7% of the time. Extra frames can therefore inflate final scores without producing faithful event recovery. Different prompting strategies yield similarly limited gains, and real-world video evaluations show the same concentration of success at low event counts. Ultimately, trace-grounded profiling shifts video evaluation from aggregate accuracy metrics to a detailed diagnostic of where temporal reasoning fails.",
+          "published_at": "2026-08-06T17:57:11Z",
+          "raw_text": "Deciding which of two agents is stronger means playing games until skill outweighs luck, and every game costs money, model inference, or expert time. Since the number of games needed is unknown, fixed-budget evaluations either keep paying after the result is settled or stop before the agents can be told apart, while naive optional stopping with an ordinary confidence interval invalidates the stated level. We make such an evaluation stop as soon as its evidence suffices, with the guarantee intact. The Action-Informed Value Assessment Tool (AIVAT) reduces variance in imperfect-information games through conditional mean-zero corrections, by a median $54\\times$ across 15 LLM agent configurations spanning 71,439 paired Heads-Up No-Limit Hold'em (HUNL) hands, but does not say when to stop. We combine AIVAT with continuously monitored Confidence Sequences (CSs) into anytime-valid AIVAT (AV-AIVAT), whose online value model learns only from past games so that no game scores its own correction. At the nominal 95\\% level and a target precision of $\\pm1$ Big Blind, raw outcomes need a median $74\\times$ as many hands as AIVAT-corrected outcomes to stop under the Asymptotic CS (AsympCS). Exact finite-sample certification uses the Empirical-Bernstein CS (EB-CS), which needs an independently justified bound on corrected payoffs. We establish such a bound structurally for Leduc hold'em and characterize a width floor set by the CS's bet cap and that bound, which governs how much of a variance gain becomes earlier stopping; the descriptive HUNL EB-CS runs show a median $1.37\\times$ stopping-time ratio. AV-AIVAT turns variance reduction into efficient, auditable early stopping while separating asymptotic screening from exact certification, so an evaluation can stop the moment its evidence suffices and hand a third party everything needed to recheck the verdict at that very stopping time.",
           "extra": {
             "authors": [
-              "Sarvesh Baskar",
-              "Zikui Cai",
-              "Shayan Shabihi",
-              "Anirudh Satheesh",
-              "Muhammad R. Islam",
-              "Udari Madhushani Sehwag",
-              "Tom Goldstein",
-              "Furong Huang"
+              "Boning Li",
+              "Yu Chen",
+              "Longbo Huang"
             ],
             "categories": [
-              "cs.AI"
+              "cs.GT",
+              "cs.AI",
+              "cs.CL",
+              "cs.LG",
+              "cs.MA"
             ],
-            "pdf_url": "https://arxiv.org/pdf/2608.06361v1"
+            "pdf_url": "https://arxiv.org/pdf/2608.06362v1"
           },
           "score": 8.0,
-          "summary": "揭示视频语言模型在事件计数等基础任务上的系统性失败，为多模态Agent能力评估敲响警钟。"
+          "summary": "提出可随时有效性停止的Agent评估方法，比传统方法便宜74倍，支持博弈场景。"
         },
         {
           "section": "paper",
-          "title": "RP-OPSD: Reasoning-Pivot-Guided On-Policy Self-Distillation for Multilingual Reasoning Transfer",
-          "url": "https://arxiv.org/abs/2608.06347v1",
+          "title": "Resourced Authority A Mechanism-Design Model for Participatory Governance of Deployed AI Agents",
+          "url": "https://arxiv.org/abs/2608.06353v1",
           "source": "arXiv",
-          "published_at": "2026-08-06T17:52:06Z",
-          "raw_text": "Multilingual reasoning transfer is crucial for extending reasoning capabilities of large language models (LLMs) beyond high-resource languages. On-policy self-distillation (OPSD) and its variants have emerged as a promising paradigm, providing dense token-level supervision on student-generated rollouts, yet their objectives do not explicitly prioritize reasoning signals most critical to cross-lingual transfer. We characterize that target-language reasoning comprises the generation of both surface text and reasoning pivots, which are decisions that advance or redirect the reasoning process and shape subsequent inference. This motivates concentrating privileged distillation around such pivots. We therefore propose RP-OPSD, Reasoning-Pivot-guided On-Policy Self-Distillation, using the distributional shift between matched teacher views with and without an English reference solution as an operational proxy to guide privileged distillation and reference anchoring. Experiments on mathematical reasoning benchmarks covering 17 languages and multiple difficulty levels show that our method outperforms strong multilingual reasoning baselines and OPSD variants. Further analysis reveals that RP-OPSD concentrates privileged distillation on reasoning-control and problem-condistioned state-update tokens, while downweighting it for tokens that mainly support surface realization. Our code is available at https://github.com/NJUNLP/RP-OPSD.",
+          "published_at": "2026-08-06T17:53:24Z",
+          "raw_text": "We give a formal mechanism design model for the continuous participatory governance of a deployed AI agent. The mechanism is built on the principle that governance should control an AI agent through resource allocation so as to make authorization self enforcing via compute budgets. The mechanism seeks to establish the Safe AI paradigm that compute is an effective governance lever. We situate our work as a compliance or commons overlay on a deployer. One governance period is an extensive form game in which verified human stakeholders arrive sequentially and contribute, on a provision or a rejection market, in a governance currency that is deliberately distinct from the agents compute. A funding aggregator turns raw contributions into breadth weighted effective supports - a two threshold gate with hysteresis converts net support into a binary authorization that, through a coupling map bounded by an exogenously certified safety ceiling, releases a metered compute budget - realized in hardware as a signed compute license so that the decision is self-enforcing. We characterize the class of agents the mechanism can govern and isolate manipulation of the governing electorate by the governed agent as the central open problem. We also introduce several challenges addressing manipulation of governing electorate by the governed agents.",
           "extra": {
             "authors": [
-              "Xinye Wang",
-              "Junxiao Liu",
-              "Shujian Huang"
+              "Praphul Chandra",
+              "Sujit Gujar",
+              "Ganesh Ghalme"
             ],
             "categories": [
-              "cs.CL"
+              "cs.GT",
+              "cs.AI",
+              "cs.MA"
             ],
-            "pdf_url": "https://arxiv.org/pdf/2608.06347v1"
+            "pdf_url": "https://arxiv.org/pdf/2608.06353v1"
           },
           "score": 8.0,
-          "summary": "通过推理引导的在线自蒸馏，有效提升LLM在多语言环境下的推理迁移能力。"
+          "summary": "设计基于资源分配的治理机制，实现已部署AI Agent的持续参与式治理。"
         },
         {
           "section": "paper",
@@ -131,7 +133,7 @@
             "pdf_url": "https://arxiv.org/pdf/2608.06329v1"
           },
           "score": 7.0,
-          "summary": "提出对话Agent基准测试的评估框架，帮助社区识别低质量基准，避免误导性结论。"
+          "summary": "引入评估基准本身质量的参考框架，为对话Agent提供更可靠的评测方法。"
         }
       ]
     },
@@ -168,42 +170,7 @@
             ]
           },
           "score": 9.0,
-          "summary": "一键本地运行最新主流大模型，降低AI应用开发门槛。"
-        },
-        {
-          "section": "repo",
-          "title": "firecrawl/firecrawl",
-          "url": "https://github.com/firecrawl/firecrawl",
-          "source": "GitHub 经典",
-          "published_at": "2024-04-15T21:02:29Z",
-          "raw_text": "The context API to search, scrape, and interact with the web at scale. 🔥",
-          "extra": {
-            "stars": 162792,
-            "language": "TypeScript",
-            "topics": [
-              "ai",
-              "ai-agents",
-              "ai-crawler",
-              "ai-scraping",
-              "ai-search",
-              "crawler",
-              "data-extraction",
-              "html-to-markdown",
-              "llm",
-              "markdown",
-              "scraper",
-              "scraping",
-              "web-crawler",
-              "web-data",
-              "web-data-extraction",
-              "web-scraper",
-              "web-scraping",
-              "web-search",
-              "webscraping"
-            ]
-          },
-          "score": 9.0,
-          "summary": "提供大规模网页搜索与抓取的API，是构建RAG和Agent的关键基础设施。"
+          "summary": "快速在本地运行最新大模型，支持Kimi、DeepSeek等，上手即用"
         },
         {
           "section": "repo",
@@ -213,7 +180,7 @@
           "published_at": "2023-04-12T07:40:24Z",
           "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
           "extra": {
-            "stars": 151711,
+            "stars": 151712,
             "language": "TypeScript",
             "topics": [
               "agent",
@@ -239,7 +206,42 @@
             ]
           },
           "score": 9.0,
-          "summary": "一站式构建Agent工作流与RAG管道，支持多种模型与部署方式。"
+          "summary": "一站式构建Agent工作流和RAG，支持多种模型和部署方式"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "The context API to search, scrape, and interact with the web at scale. 🔥",
+          "extra": {
+            "stars": 162801,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 8.0,
+          "summary": "大规模网页搜索、抓取与交互的API，数据获取利器"
         },
         {
           "section": "repo",
@@ -249,7 +251,7 @@
           "published_at": "2026-05-18T02:16:36Z",
           "raw_text": "Fast, efficient, battle-tested at Alibaba's scale. Hybrid architecture code review tool: deterministic pipelines + LLM Agent, precise line-level comments, built-in multi-language ruleset (NPE, thread-safety, XSS, SQL injection), OpenAI & Anthropic compatible.",
           "extra": {
-            "stars": 19542,
+            "stars": 19547,
             "language": "Go",
             "topics": [
               "agent",
@@ -261,7 +263,7 @@
             ]
           },
           "score": 8.0,
-          "summary": "阿里开源的混合架构代码审查工具，结合规则引擎与LLM，实战验证。"
+          "summary": "阿里开源的代码审查工具，混合架构，精准行级注释"
         },
         {
           "section": "repo",
@@ -271,12 +273,12 @@
           "published_at": "2026-06-22T23:48:26Z",
           "raw_text": "OpenWiki is a CLI that writes and maintains agent documentation for your codebase.",
           "extra": {
-            "stars": 14502,
+            "stars": 14504,
             "language": "TypeScript",
             "topics": []
           },
-          "score": 8.0,
-          "summary": "CLI工具自动为代码库生成并维护Agent文档，解决文档滞后痛点。"
+          "score": 7.0,
+          "summary": "CLI工具自动为代码库编写并维护Agent文档，提升效率"
         }
       ]
     },
@@ -293,7 +295,7 @@
           "raw_text": "For developers, the operating assumption has been one engineer, one agent — the model Claude Code and similar tools. At VB Transform 2026 , James Zou, associate professor of biomedical data science at Stanford University, argued that assumption is about to break: the next frontier isn't a single, more capable agent, it's tens of thousands of them collaborating. For developers and product builders, the most critical takeaway from Zou’s presentation is how these massive systems are orchestrated. His team's research offers a practical blueprint for connecting legacy databases to AI orchestration layers and designing environments that enable thousands of agents to collaborate. Emulating the organization — the virtual biotech Zou’s project began as a \"Virtual Lab\" consisting of five to eight ag",
           "extra": {},
           "score": 9.0,
-          "summary": "斯坦福用3.7万AI智能体模拟生物科技公司，药物设计获默克验证，证明多智能体协作可行。"
+          "summary": "Stanford用3.7万AI代理模拟生物科技，一项药物设计获Merck独立确认，验证了多代理科研可行性。"
         },
         {
           "section": "news",
@@ -303,19 +305,8 @@
           "published_at": "2026-08-07T13:29:22Z",
           "raw_text": "TikTok owner training a model with 10 trillion parameters.",
           "extra": {},
-          "score": 9.0,
-          "summary": "字节跳动训练万亿参数大模型，直接对标Anthropic，显示中国AI巨头加速追赶。"
-        },
-        {
-          "section": "news",
-          "title": "Cloudflare launches Kitesurf, a browser built for AI agents",
-          "url": "https://techcrunch.com/2026/08/07/cloudflare-launches-kitesurf-a-browser-built-for-ai-agents/",
-          "source": "TechCrunch",
-          "published_at": "2026-08-07T16:16:09Z",
-          "raw_text": "Cloudflare has introduced Kitesurf, a cloud-hosted browser designed for AI agents instead of people. The company says the browser uses less computing power than Chromium for common automation tasks, helping developers build browser-based AI agents more efficiently.",
-          "extra": {},
           "score": 8.0,
-          "summary": "Cloudflare推出专为AI智能体设计的云浏览器，降低自动化任务算力成本，开发者利好。"
+          "summary": "ByteDance训练万亿参数模型，直接挑战Anthropic，表明中国AI巨头加大前沿模型投入。"
         },
         {
           "section": "news",
@@ -326,29 +317,40 @@
           "raw_text": "Earlier this week, the AI startup Liquid, formed in 2023 by former MIT computer scientists, debuted LFM2.5-2.6B , a new open-weight language model designed specifically for agentic workloads. In release materials and a recent interview with VentureBeat, Liquid's researchers said LFM2.5-2.6B can run entirely on local hardware — from smartphones and laptops down to a Raspberry Pi — without relying on cloud inference or GPUs, unlocking edge AI applications and giving more options to enterprises working in regulated industries or with sensitive information they don't want to send up to the cloud. It's best suited for high-volume, well-defined agentic tasks that run locally — tool calling, document management, calendar and workflow automation, and always-on background routines — and for connect",
           "extra": {},
           "score": 8.0,
-          "summary": "Liquid AI发布可在树莓派运行的轻量级智能体模型，边缘AI部署门槛大幅降低。"
+          "summary": "Liquid AI发布LFM2.5-2.6B模型，可在树莓派上运行AI代理，推动边缘智能代理落地。"
         },
         {
           "section": "news",
-          "title": "What’s behind the Google AI shake-up",
-          "url": "https://www.theverge.com/podcast/976784/google-deepmind-ai-race-vergecast",
-          "source": "The Verge",
-          "published_at": "2026-08-07T16:45:14Z",
-          "raw_text": "Some of the biggest names on Google's AI team got new jobs this week. In some cases, including for legendary Googler Jeff Dean, those jobs are no longer at Google. Given that Google's models seem to be behind the best of what's coming out of anthropic and OpenAI, is this a sign of Google in […]",
+          "title": "Oracle bans AI-generated code from OpenJDK",
+          "url": "https://app.dealroom.co/news/feed/oracle-bans-ai-generated-code-from-openjdk-despite-ellison-s-claim-oracle-isn-t-writing-its-own-code",
+          "source": "Hacker News",
+          "published_at": "2026-08-07T17:36:30Z",
+          "raw_text": "Article URL: https://app.dealroom.co/news/feed/oracle-bans-ai-generated-code-from-openjdk-despite-ellison-s-claim-oracle-isn-t-writing-its-own-code Comments URL: https://news.ycombinator.com/item?id=49213754 Points: 132 # Comments: 80",
           "extra": {},
           "score": 7.0,
-          "summary": "谷歌AI团队核心成员离职或调岗，Jeff Dean等元老离开，或反映内部竞争压力。"
+          "summary": "Oracle禁止AI生成代码提交OpenJDK，引发开发社区对AI辅助编程的法律与质量讨论。"
         },
         {
           "section": "news",
-          "title": "Suno shares plans to combat spammy AI music",
-          "url": "https://www.theverge.com/ai-artificial-intelligence/976289/suno-ai-music-spam-watermark",
-          "source": "The Verge",
-          "published_at": "2026-08-06T17:39:43Z",
-          "raw_text": "Suno announced plans to implement a new watermarking technology and download policy to limit the spread of spammy AI tracks and increase transparency. In a lengthy blog post, CEO and co-founder Mikey Shulman laid out the company's principles and the next steps for the company as it seeks legitimacy. The company is rolling out new […]",
+          "title": "Cloudflare launches Kitesurf, a browser built for AI agents",
+          "url": "https://techcrunch.com/2026/08/07/cloudflare-launches-kitesurf-a-browser-built-for-ai-agents/",
+          "source": "TechCrunch",
+          "published_at": "2026-08-07T16:16:09Z",
+          "raw_text": "Cloudflare has introduced Kitesurf, a cloud-hosted browser designed for AI agents instead of people. The company says the browser uses less computing power than Chromium for common automation tasks, helping developers build browser-based AI agents more efficiently.",
           "extra": {},
           "score": 7.0,
-          "summary": "Suno推出AI音乐水印与下载限制，应对垃圾内容问题，行业合规化信号明确。"
+          "summary": "Cloudflare推出专为AI代理设计的浏览器Kitesurf，降低自动化任务计算成本。"
+        },
+        {
+          "section": "news",
+          "title": "OpenAI puts the brakes on a new model because it’s supposedly too powerful",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/976948/openai-astra-model-pause-critical-cyber-capabilities",
+          "source": "The Verge",
+          "published_at": "2026-08-07T18:40:34Z",
+          "raw_text": "OpenAI says it is pausing \"internal activities\" around an in-development AI model, Astra, because it doesn't yet meet new security standards the company is putting in place. The announcement follows its recent disclosure that OpenAI models accidentally hacked Hugging Face. Anthropic and Meta have also since admitted that they had AI models that went rogue […]",
+          "extra": {},
+          "score": 6.0,
+          "summary": "OpenAI暂停Astra模型开发，因不符合新安全标准，凸显安全审查对模型发布的影响。"
         }
       ]
     },
@@ -364,8 +366,8 @@
           "published_at": "2026-08-06T10:00:00Z",
           "raw_text": "ChatGPT introduces improved GPT-5.6 Sol with better accuracy and consistency, plus expanded access for free users and unlimited everyday chats with GPT-5.6 Luna.",
           "extra": {},
-          "score": 9.0,
-          "summary": "OpenAI 正式发布 GPT-5.6 Sol 与 Luna，免费用户可无限使用，显著提升准确性与一致性。"
+          "score": 10.0,
+          "summary": "OpenAI改进GPT-5.6 Sol并扩大免费用户使用GPT-5.6 Luna，显著提升准确性与访问量。"
         },
         {
           "section": "product",
@@ -375,8 +377,8 @@
           "published_at": "2026-07-30T15:00:59Z",
           "raw_text": "Gemini Robotics ER 2 helps robots reason, collaborate, and solve real-world tasks. It represents a step change in video understanding, tool orchestration, and multi-robot collaboration for robotic applications.",
           "extra": {},
-          "score": 8.0,
-          "summary": "Google 推出 Gemini Robotics ER 2，实现机器人视频理解、任务编排与多机协作的突破。"
+          "score": 9.0,
+          "summary": "Google发布Gemini Robotics ER 2，实现视频理解、任务编排与多机器人协作，推动机器人能力跃升。"
         },
         {
           "section": "product",
@@ -387,7 +389,7 @@
           "raw_text": "",
           "extra": {},
           "score": 8.0,
-          "summary": "Google 发布 WeatherNext 模型，在气旋预报精度上实现 AI 突破，具重大应用价值。"
+          "summary": "WeatherNext AI模型在气旋预报取得突破，显著提升预测准确性，具有重要应用前景。"
         }
       ]
     }

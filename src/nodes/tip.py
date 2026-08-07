@@ -21,6 +21,8 @@ PROMPT = """你在为一份面向 AI 从业者的中文日报撰写「今日 Age
 - 必须基于所选条目的具体内容，不要写通用建议
 - 正文用中文，150 字以内：先说清「什么场景下会遇到这个问题」，再给做法
 - 做法如果能用代码或命令表达，就写进去，用 Markdown 代码块
+- 代码必须是可以直接照抄的安全写法。若涉及执行模型生成的代码，
+  给出沙箱或白名单方案，不要示范裸的 exec/eval
 
 今天的条目：
 {items}"""
@@ -33,19 +35,29 @@ class Tip(BaseModel):
 
 
 def write_tip(state: ReportState) -> dict:
-    """只喂标题和摘要，不喂全文——够模型判断了，没必要多付钱。"""
+    """只喂标题和摘要，不喂全文——够模型判断了，没必要多付钱。
+
+    失败就不出这个板块。compose 里 tip 本来就是可选的，
+    少一个栏目远好过整份日报发不出去。
+    """
     items = state["items"]
-    result = (
-        get_llm()
-        .with_structured_output(Tip)
-        .invoke(
-            PROMPT.format(
-                items="\n".join(
-                    f"[{n}] {i.title}\n    {i.summary}" for n, i in enumerate(items)
+    if not items:
+        return {"errors": ["技巧生成跳过：当天没有任何条目"]}
+
+    try:
+        result = (
+            get_llm()
+            .with_structured_output(Tip)
+            .invoke(
+                PROMPT.format(
+                    items="\n".join(
+                        f"[{n}] {i.title}\n    {i.summary}" for n, i in enumerate(items)
+                    )
                 )
             )
         )
-    )
+    except Exception as e:
+        return {"errors": [f"技巧生成失败：{type(e).__name__}"]}
 
     # 编号可能是模型编的，越界就退化成「没有延伸阅读」，而不是让整个节点崩掉
     ref = items[result.index] if 0 <= result.index < len(items) else None

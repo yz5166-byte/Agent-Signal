@@ -49,14 +49,25 @@ class Selection(BaseModel):
 
 
 def summarize(state: ReportState) -> dict:
-    """逐板块挑选并写摘要，结果整体替换 state["items"]。"""
-    llm = get_llm().with_structured_output(Selection)
+    """逐板块挑选并写摘要，结果整体替换 state["items"]。
+
+    某个板块的 LLM 调用失败时降级为「候选池前 k 条、无摘要」，
+    而不是让整张图崩掉——宁可出一份不完整的日报，也好过当天没有日报。
+    """
     selected: list[Item] = []
+    errors: list[str] = []
     for section, k in FINAL_COUNT.items():
         group = [i for i in state["items"] if i.section is section]
-        if group:
+        if not group:
+            continue
+        try:
+            # 客户端在 try 内构造：.env 配置缺失时也走降级，而不是整个节点崩
+            llm = get_llm().with_structured_output(Selection)
             selected += _pick(llm, section, group, k)
-    return {"items": selected}
+        except Exception as e:
+            selected += group[:k]  # 候选池已按时间/star 排好序，直接取前 k 条
+            errors.append(f"{SECTION_NAMES[section]} 摘要失败：{type(e).__name__}")
+    return {"items": selected, "errors": errors}
 
 
 def _pick(llm, section: Section, group: list[Item], k: int) -> list[Item]:

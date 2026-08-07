@@ -18,11 +18,14 @@ DEFAULT_MAX_RESULTS = 50
 def fetch(
     categories: tuple[str, ...] = DEFAULT_CATEGORIES,
     max_results: int = DEFAULT_MAX_RESULTS,
-) -> list[Item]:
+) -> tuple[list[Item], list[str]]:
     """抓取最新提交的论文，按提交时间倒序。
 
     本函数只负责「取回来 + 转成 Item」，不做筛选——
     筛选和排序是 curate 节点的职责，分开才好定位问题。
+
+    返回 (条目, 失败信息)。arXiv 只有一个接口，要么全成要么抛异常，
+    所以失败信息恒为空——但保持和其他源一致的签名，节点侧才能一视同仁。
     """
     resp = http_get(
         API_URL,
@@ -35,7 +38,7 @@ def fetch(
         },
     )
     feed = feedparser.parse(resp.text)  # arXiv 返回 Atom XML
-    return [_to_item(entry) for entry in feed.entries]
+    return [_to_item(entry) for entry in feed.entries], []
 
 
 def _to_item(entry) -> Item:
@@ -68,7 +71,7 @@ def _pdf_url(entry) -> str:
 
 
 if __name__ == "__main__":
-    items = fetch(max_results=5)
+    items, _ = fetch(max_results=5)
     print(f"抓到 {len(items)} 篇\n")
     for i, it in enumerate(items, 1):
         print(f"[{i}] {it.title}")

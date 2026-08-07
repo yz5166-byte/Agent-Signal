@@ -17,12 +17,12 @@ FEEDS = {
 }
 
 
-def fetch() -> list[Item]:
+def fetch() -> tuple[list[Item], list[str]]:
     return fetch_feeds(FEEDS, Section.PRODUCT)
 
 
 if __name__ == "__main__":
-    items = fetch()
-    print(f"抓到 {len(items)} 条\n")
+    items, errors = fetch()
+    print(f"抓到 {len(items)} 条，失败 {len(errors)} 个源\n")
     for it in items:
         print(f"[{it.source:20}] {it.title[:70]}")

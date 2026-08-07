@@ -16,10 +16,15 @@ def deliver(state: ReportState) -> dict:
     print(f"[deliver] 已写入 {md.name} 和 {js.name}")
 
     # 没配 SMTP 也能正常跑完，只是不发信——本地调试时不必每次都发一封
-    if os.getenv("SMTP_HOST"):
+    if not os.getenv("SMTP_HOST"):
+        print("[deliver] 未配置 SMTP_HOST，跳过邮件")
+        return {}
+
+    # 文件已经落盘了，发信失败不该让整次运行以非零码退出
+    try:
         email.send(f"AI Edge 日报 · {state['run_date']}", state["report_md"])
         print(f"[deliver] 已发送邮件至 {os.environ['MAIL_TO']}")
-    else:
-        print("[deliver] 未配置 SMTP_HOST，跳过邮件")
-
-    return {}  # 不改 State
+        return {}
+    except Exception as e:
+        print(f"[deliver] 邮件发送失败：{type(e).__name__}")
+        return {"errors": [f"邮件发送失败：{type(e).__name__}"]}

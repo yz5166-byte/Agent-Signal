@@ -14,7 +14,7 @@ API_URL = "https://api.github.com/search/repositories"
 PER_QUERY = 15
 
 
-def fetch(per_query: int = PER_QUERY) -> list[Item]:
+def fetch(per_query: int = PER_QUERY) -> tuple[list[Item], list[str]]:
     """两路检索后合并：新星项目 + 经典项目。
 
     GitHub 没有「star 增速」接口，所以用「新建不久却已高星」来近似「涨得快」。
@@ -30,11 +30,13 @@ def fetch(per_query: int = PER_QUERY) -> list[Item]:
         # 经典：2000+ star 且近 7 天仍在推送，覆盖面更广的老牌项目
         "GitHub 经典": f"topic:llm stars:>2000 pushed:>{_days_ago(7)}",
     }
-    return [
-        _to_item(repo, track)
-        for track, query in tracks.items()
-        for repo in _search(query, per_query)
-    ]
+    items, errors = [], []
+    for track, query in tracks.items():
+        try:
+            items += [_to_item(repo, track) for repo in _search(query, per_query)]
+        except Exception as e:  # 一路挂了另一路照常，不至于整个板块空掉
+            errors.append(f"{track} 检索失败：{type(e).__name__}")
+    return items, errors
 
 
 def _days_ago(n: int) -> str:
@@ -74,7 +76,7 @@ def _to_item(repo: dict, source: str) -> Item:
 
 
 if __name__ == "__main__":
-    items = fetch()
+    items, _ = fetch()
     print(f"抓到 {len(items)} 个项目\n")
     for it in items:
         print(f"[{it.source}] ★{it.extra['stars']:>7}  {it.title[:36]:38} 建于 {it.published_at:%Y-%m-%d}")
