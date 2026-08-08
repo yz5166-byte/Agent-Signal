@@ -1,8 +1,8 @@
 {
   "date": "2026-08-08",
   "tip": {
-    "title": "用脚本替代JSON工具调用",
-    "body": "当Agent需要频繁调用多个工具（如搜索、计算）时，JSON序列化和HTTP请求会成为性能瓶颈。可以将工具实现为Python函数，用`ProcessPoolExecutor`并行执行，避免解析开销。注意：工具函数必须来自白名单，不执行用户提供的任意代码。\n\n```python\nfrom concurrent.futures import ProcessPoolExecutor\n\ndef safe_calc(expr):\n    # 仅允许安全运算（示例用eval，实际应替换为ast.literal_eval或受限计算）\n    return eval(expr, {\"__builtins__\": {}}, {\"x\": 1})\n\ntools = {\"search\": lambda q: f\"result_{q}\", \"calc\": safe_calc}\n\nwith ProcessPoolExecutor() as pool:\n    futures = {pool.submit(func, arg): name for name, func in tools.items()}\n```",
+    "title": "The Bitter Lesson of Tool Calling",
+    "body": "当你的Agent需要并行调用多个工具（如同时查询天气和日历），但系统将工具调用视为JSON导致顺序阻塞时，可以改用代码式工具调用范式。做法：将工具签名定义为函数，让模型生成并行函数调用代码。\n\n```python\nimport asyncio\n\nasync def call_tools():\n    tasks = [\n        get_weather(\"北京\"),\n        get_calendar_events(\"2024-03-20\")\n    ]\n    return await asyncio.gather(*tasks)\n```\n\n注意：在沙箱环境（如Docker容器）中执行模型生成的代码，并限制文件系统与网络权限。",
     "ref_title": "The Bitter Lesson of Tool Calling",
     "ref_url": "https://arxiv.org/abs/2608.06370v1"
   },
@@ -32,7 +32,7 @@
             "pdf_url": "https://arxiv.org/pdf/2608.06370v1"
           },
           "score": 9.0,
-          "summary": "提出用程序化脚本替代JSON调用工具，显著提升Agent执行效率与并行能力。"
+          "summary": "系统评估将工具调用视为代码而非JSON，揭示更自然并行化的范式，对Agent开发有直接指导意义。"
         },
         {
           "section": "paper",
@@ -63,7 +63,34 @@
             "pdf_url": "https://arxiv.org/pdf/2608.06346v1"
           },
           "score": 9.0,
-          "summary": "追踪轨迹错误生命周期，定位长程Agent任务的关键失败步骤，提升调试效率。"
+          "summary": "提出追踪长程Agent轨迹中首个关键错误的方法，解决级联错误调试难题，提升Agent可靠性。"
+        },
+        {
+          "section": "paper",
+          "title": "Learning When to Trust via Selective Context Preference Optimization",
+          "url": "https://arxiv.org/abs/2608.06377v1",
+          "source": "arXiv",
+          "published_at": "2026-08-06T17:59:58Z",
+          "raw_text": "Language models increasingly condition their answers on external signals, and a single misleading one can turn a correct answer wrong. The obvious remedy, training models to resist such signals, hides a failure mode: a model that ignores all context looks robust yet is useless when the context is worth trusting. We recast the problem as selective trust and introduce MIST, a human-annotated benchmark that renders each reasoning item under four matched conditions (clean, misleading, correct-context, and irrelevant-context), together with SC2W, a paired metric counting how often a misleading signal flips a clean-correct answer to wrong. Across a comprehensive benchmark study, we observe that such a susceptibility is universal. We then propose SCOPE, which mines clean-correct/misleading-wrong failures and optimizes a standard Direct Preference Optimization (DPO) objective over matched preference pairs balanced equally across all four conditions, rather than over misleading items alone. Our approach substantially reduces SC2W on popular open-sourced models while preserving accuracy when the added context is clean, correct, or irrelevant. With this work, we argue that models should be judged on selective trust, not on resistance alone.",
+          "extra": {
+            "authors": [
+              "Xian Sun",
+              "Wei Chow",
+              "Yingshuo Wang",
+              "Junhao Liu",
+              "Wei Gao",
+              "Qing Wu",
+              "Lingdong Kong"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.AI",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.06377v1"
+          },
+          "score": 8.0,
+          "summary": "提出选择性上下文偏好优化，让模型学会何时信任外部信号，避免盲目拒绝或接受导致的失败。"
         },
         {
           "section": "paper",
@@ -88,52 +115,32 @@
             "pdf_url": "https://arxiv.org/pdf/2608.06362v1"
           },
           "score": 8.0,
-          "summary": "提出可随时有效性停止的Agent评估方法，比传统方法便宜74倍，支持博弈场景。"
+          "summary": "用74倍更低成本实现Agent评估的随时有效停止，解决多智能体对比中固定预算浪费问题。"
         },
         {
           "section": "paper",
-          "title": "Resourced Authority A Mechanism-Design Model for Participatory Governance of Deployed AI Agents",
-          "url": "https://arxiv.org/abs/2608.06353v1",
+          "title": "Benchmarking and Enhancing LLMs for Rule-Intensive Review of National Standard Documents",
+          "url": "https://arxiv.org/abs/2608.06312v1",
           "source": "arXiv",
-          "published_at": "2026-08-06T17:53:24Z",
-          "raw_text": "We give a formal mechanism design model for the continuous participatory governance of a deployed AI agent. The mechanism is built on the principle that governance should control an AI agent through resource allocation so as to make authorization self enforcing via compute budgets. The mechanism seeks to establish the Safe AI paradigm that compute is an effective governance lever. We situate our work as a compliance or commons overlay on a deployer. One governance period is an extensive form game in which verified human stakeholders arrive sequentially and contribute, on a provision or a rejection market, in a governance currency that is deliberately distinct from the agents compute. A funding aggregator turns raw contributions into breadth weighted effective supports - a two threshold gate with hysteresis converts net support into a binary authorization that, through a coupling map bounded by an exogenously certified safety ceiling, releases a metered compute budget - realized in hardware as a signed compute license so that the decision is self-enforcing. We characterize the class of agents the mechanism can govern and isolate manipulation of the governing electorate by the governed agent as the central open problem. We also introduce several challenges addressing manipulation of governing electorate by the governed agents.",
+          "published_at": "2026-08-06T17:27:23Z",
+          "raw_text": "Large language models (LLMs) increasingly support complex professional tasks, yet their capabilities in rule-intensive document review remain insufficiently evaluated. National standard documents, such as China GB/T standards, offer a representative testbed: they are lengthy, highly structured, and governed by explicit rules for scope, terminology, normative wording, and cross-section consistency. Existing benchmarks focus on domain knowledge and question answering, largely overlooking intrinsic quality review for professional documents. Such reviews rely heavily on human experts, making them costly and difficult to scale. To bridge this gap, we introduce GB/T-Bench, the first benchmark for the structured review of national standard documents. Its GB/T Review Taxonomy is a hierarchical schema covering document structure, scope alignment, normative modality, terminology consistency, and normative references, with 25 diagnosable error types. A controllable counterexample generation mechanism combines deterministic rules and constrained LLM rewriting to process 488 documents into 7,306 traceable review error instances for evaluation. We also develop a diagnosis-oriented evaluation protocol requiring exact matches on error location, review dimension, and error type, plus document-level coverage metrics. We further propose GB/T-Reviewer, a multi-agent framework that converts review knowledge into specialized skills and coordinates global inspection, targeted diagnosis, rule scanning, and result verification. Experiments with 14 mainstream LLMs reveal a substantial human-LLM gap: the strongest model achieves only 0.3280 CMCS versus 0.6640 for experts. GB/T-Reviewer raises the best CMCS to 0.5094, showing the value of structured skill coordination for rule-intensive document review. This work paves the way for trustworthy AI in standardization and other high-stakes document domains.",
           "extra": {
             "authors": [
-              "Praphul Chandra",
-              "Sujit Gujar",
-              "Ganesh Ghalme"
+              "Tao Wang",
+              "Qihao Yang",
+              "Rongjiao Liang",
+              "Lianghong Lin",
+              "Haitao Wang",
+              "Xinyu Cao",
+              "Tianyong Hao"
             ],
             "categories": [
-              "cs.GT",
-              "cs.AI",
-              "cs.MA"
+              "cs.CL"
             ],
-            "pdf_url": "https://arxiv.org/pdf/2608.06353v1"
-          },
-          "score": 8.0,
-          "summary": "设计基于资源分配的治理机制，实现已部署AI Agent的持续参与式治理。"
-        },
-        {
-          "section": "paper",
-          "title": "Benchmarking the Benchmarks: Evaluating Benchmarks for Conversational Agents",
-          "url": "https://arxiv.org/abs/2608.06329v1",
-          "source": "arXiv",
-          "published_at": "2026-08-06T17:39:21Z",
-          "raw_text": "Task-oriented conversational agents are evaluated using curated or automatically generated benchmarks, yet benchmark quality is rarely assessed. Poor benchmarks may contain inconsistent tasks, simplistic scenarios, or limited policy coverage, leading to unreliable evaluations. We introduce a reference-free framework that uses LLM judges to assess benchmark consistency, complexity, and policy coverage, while providing actionable diagnostics of weaknesses. We validate the framework by demonstrating agreement with independent human annotations and by evaluating benchmarks generated by LLMs of varying capabilities, as well as benchmarks subjected to controlled quality-degrading perturbations. Across domains and judge models, the proposed metrics consistently distinguish between benchmark quality levels. We further demonstrate the framework's applicability to manually curated benchmarks. Our framework offers a practical approach for evaluating synthetic and manually curated conversational-agent benchmarks.",
-          "extra": {
-            "authors": [
-              "Noam Koren",
-              "Roy Bar-Haim",
-              "Abigail Goldsteen"
-            ],
-            "categories": [
-              "cs.CL",
-              "cs.AI"
-            ],
-            "pdf_url": "https://arxiv.org/pdf/2608.06329v1"
+            "pdf_url": "https://arxiv.org/pdf/2608.06312v1"
           },
           "score": 7.0,
-          "summary": "引入评估基准本身质量的参考框架，为对话Agent提供更可靠的评测方法。"
+          "summary": "构建规则密集型国家标准文档审查基准，填补LLM在长文、强结构化专业任务上的评估空白。"
         }
       ]
     },
@@ -149,7 +156,7 @@
           "published_at": "2023-06-26T19:39:32Z",
           "raw_text": "Get up and running with Kimi-K2.6, GLM-5.2, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
           "extra": {
-            "stars": 178011,
+            "stars": 178027,
             "language": "Go",
             "topics": [
               "deepseek",
@@ -170,7 +177,42 @@
             ]
           },
           "score": 9.0,
-          "summary": "快速在本地运行最新大模型，支持Kimi、DeepSeek等，上手即用"
+          "summary": "本地一键运行最新主流大模型，Kimi、GLM、DeepSeek 等全支持，AI 从业者必备工具。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "The context API to search, scrape, and interact with the web at scale. 🔥",
+          "extra": {
+            "stars": 162960,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "大规模网页搜索与抓取的上下文 API，为 RAG 和 Agent 提供实时数据源。"
         },
         {
           "section": "repo",
@@ -180,7 +222,7 @@
           "published_at": "2023-04-12T07:40:24Z",
           "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
           "extra": {
-            "stars": 151712,
+            "stars": 151746,
             "language": "TypeScript",
             "topics": [
               "agent",
@@ -206,42 +248,7 @@
             ]
           },
           "score": 9.0,
-          "summary": "一站式构建Agent工作流和RAG，支持多种模型和部署方式"
-        },
-        {
-          "section": "repo",
-          "title": "firecrawl/firecrawl",
-          "url": "https://github.com/firecrawl/firecrawl",
-          "source": "GitHub 经典",
-          "published_at": "2024-04-15T21:02:29Z",
-          "raw_text": "The context API to search, scrape, and interact with the web at scale. 🔥",
-          "extra": {
-            "stars": 162801,
-            "language": "TypeScript",
-            "topics": [
-              "ai",
-              "ai-agents",
-              "ai-crawler",
-              "ai-scraping",
-              "ai-search",
-              "crawler",
-              "data-extraction",
-              "html-to-markdown",
-              "llm",
-              "markdown",
-              "scraper",
-              "scraping",
-              "web-crawler",
-              "web-data",
-              "web-data-extraction",
-              "web-scraper",
-              "web-scraping",
-              "web-search",
-              "webscraping"
-            ]
-          },
-          "score": 8.0,
-          "summary": "大规模网页搜索、抓取与交互的API，数据获取利器"
+          "summary": "一站式构建 Agent 工作流与 RAG 管线，支持多模型、可私有部署，从原型到生产无需重构。"
         },
         {
           "section": "repo",
@@ -251,7 +258,7 @@
           "published_at": "2026-05-18T02:16:36Z",
           "raw_text": "Fast, efficient, battle-tested at Alibaba's scale. Hybrid architecture code review tool: deterministic pipelines + LLM Agent, precise line-level comments, built-in multi-language ruleset (NPE, thread-safety, XSS, SQL injection), OpenAI & Anthropic compatible.",
           "extra": {
-            "stars": 19547,
+            "stars": 19603,
             "language": "Go",
             "topics": [
               "agent",
@@ -263,7 +270,7 @@
             ]
           },
           "score": 8.0,
-          "summary": "阿里开源的代码审查工具，混合架构，精准行级注释"
+          "summary": "阿里级代码审查工具，混合架构（规则+LLM），精准行级评论，内置多语言安全规则。"
         },
         {
           "section": "repo",
@@ -273,12 +280,12 @@
           "published_at": "2026-06-22T23:48:26Z",
           "raw_text": "OpenWiki is a CLI that writes and maintains agent documentation for your codebase.",
           "extra": {
-            "stars": 14504,
+            "stars": 14568,
             "language": "TypeScript",
             "topics": []
           },
-          "score": 7.0,
-          "summary": "CLI工具自动为代码库编写并维护Agent文档，提升效率"
+          "score": 8.0,
+          "summary": "CLI 工具自动为代码库生成并维护 Agent 文档，解决文档滞后痛点。"
         }
       ]
     },
@@ -288,6 +295,28 @@
       "items": [
         {
           "section": "news",
+          "title": "OpenAI says it slowed Astra model development over security concerns",
+          "url": "https://techcrunch.com/2026/08/07/openai-says-it-slowed-astra-model-development-over-security-concerns/",
+          "source": "TechCrunch",
+          "published_at": "2026-08-07T22:48:24Z",
+          "raw_text": "OpenAI said this model, which is still in development, reached its \"critical cybersecurity threshold,\" meaning it could independently identify and carry out cyberattacks against traditionally well-protected real-world systems.",
+          "extra": {},
+          "score": 10.0,
+          "summary": "OpenAI因安全担忧暂停Astra模型开发，触及自主网络攻击临界点，引发前沿AI安全标准讨论。"
+        },
+        {
+          "section": "news",
+          "title": "U.S. Department of Energy Launches the Genesis Open Models Initiative",
+          "url": "https://genesisopenmodels.anl.gov/",
+          "source": "Hacker News",
+          "published_at": "2026-08-07T22:24:27Z",
+          "raw_text": "Article URL: https://genesisopenmodels.anl.gov/ Comments URL: https://news.ycombinator.com/item?id=49216946 Points: 157 # Comments: 54",
+          "extra": {},
+          "score": 9.0,
+          "summary": "美国能源部启动Genesis开放模型计划，推动能源领域AI开源生态，影响政府与产业合作格局。"
+        },
+        {
+          "section": "news",
           "title": "Stanford is running 37,000 AI agents as a virtual biotech — and one of its drug designs got independently confirmed by Merck",
           "url": "https://venturebeat.com/orchestration/stanford-is-running-37-000-ai-agents-as-a-virtual-biotech-and-one-of-its-drug-designs-got-independently-confirmed-by-merck",
           "source": "VentureBeat",
@@ -295,7 +324,29 @@
           "raw_text": "For developers, the operating assumption has been one engineer, one agent — the model Claude Code and similar tools. At VB Transform 2026 , James Zou, associate professor of biomedical data science at Stanford University, argued that assumption is about to break: the next frontier isn't a single, more capable agent, it's tens of thousands of them collaborating. For developers and product builders, the most critical takeaway from Zou’s presentation is how these massive systems are orchestrated. His team's research offers a practical blueprint for connecting legacy databases to AI orchestration layers and designing environments that enable thousands of agents to collaborate. Emulating the organization — the virtual biotech Zou’s project began as a \"Virtual Lab\" consisting of five to eight ag",
           "extra": {},
           "score": 9.0,
-          "summary": "Stanford用3.7万AI代理模拟生物科技，一项药物设计获Merck独立确认，验证了多代理科研可行性。"
+          "summary": "斯坦福用3.7万AI代理模拟生物科技公司，药物设计获默克验证，标志多智能体系统进入科研落地阶段。"
+        },
+        {
+          "section": "news",
+          "title": "Four AI agents coordinating in real time outperformed Claude Opus 4.8 on enterprise coding tasks",
+          "url": "https://venturebeat.com/orchestration/four-ai-agents-coordinating-in-real-time-outperformed-claude-opus-4-8-on-enterprise-coding-tasks",
+          "source": "VentureBeat",
+          "published_at": "2026-08-07T21:45:39Z",
+          "raw_text": "As enterprise codebases grow, AI agents tasked with analyzing them are buckling under the weight of long-horizon tasks that require multiple interactions and tool calls. Dividing the work among a team of agents seems like the obvious fix, but it introduces a fatal flaw: most multi-agent systems are not designed for agents to coordinate among themselves mid-task and in real time. To solve this, researchers at Coral AI Labs and multiple universities introduced AgentRadio , an asynchronous message-passing layer that allows agents to communicate between their execution steps without interrupting their main work. In real-world enterprise applications where subtasks are highly interdependent, this architecture enables agents to make mid-course corrections rather than continue on dead-end paths u",
+          "extra": {},
+          "score": 8.0,
+          "summary": "四AI代理实时协作在复杂编码任务上超越Claude Opus 4.8，验证多智能体架构对长周期任务的突破。"
+        },
+        {
+          "section": "news",
+          "title": "Cloudflare launches Kitesurf, a browser built for AI agents",
+          "url": "https://techcrunch.com/2026/08/07/cloudflare-launches-kitesurf-a-browser-built-for-ai-agents/",
+          "source": "TechCrunch",
+          "published_at": "2026-08-07T16:16:09Z",
+          "raw_text": "Kitesurf is a cloud-hosted browser designed for AI agents instead of people. It uses less computing power than Chromium for common automation tasks, helping developers build browser-based AI agents more efficiently.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Cloudflare推出专为AI代理设计的云端浏览器Kitesurf，降低自动化任务计算成本，推动Agent基础设施标准化。"
         },
         {
           "section": "news",
@@ -305,52 +356,8 @@
           "published_at": "2026-08-07T13:29:22Z",
           "raw_text": "TikTok owner training a model with 10 trillion parameters.",
           "extra": {},
-          "score": 8.0,
-          "summary": "ByteDance训练万亿参数模型，直接挑战Anthropic，表明中国AI巨头加大前沿模型投入。"
-        },
-        {
-          "section": "news",
-          "title": "No cloud, no GPUs, no problem: Liquid AI's new model LFM2.5-2.6B brings powerful AI agents to devices as small as a Raspberry Pi",
-          "url": "https://venturebeat.com/technology/no-cloud-no-gpus-no-problem-liquid-ais-new-model-lfm2-5-2-6b-brings-powerful-ai-agents-to-devices-as-small-as-a-raspberry-pi",
-          "source": "VentureBeat",
-          "published_at": "2026-08-06T22:56:06Z",
-          "raw_text": "Earlier this week, the AI startup Liquid, formed in 2023 by former MIT computer scientists, debuted LFM2.5-2.6B , a new open-weight language model designed specifically for agentic workloads. In release materials and a recent interview with VentureBeat, Liquid's researchers said LFM2.5-2.6B can run entirely on local hardware — from smartphones and laptops down to a Raspberry Pi — without relying on cloud inference or GPUs, unlocking edge AI applications and giving more options to enterprises working in regulated industries or with sensitive information they don't want to send up to the cloud. It's best suited for high-volume, well-defined agentic tasks that run locally — tool calling, document management, calendar and workflow automation, and always-on background routines — and for connect",
-          "extra": {},
-          "score": 8.0,
-          "summary": "Liquid AI发布LFM2.5-2.6B模型，可在树莓派上运行AI代理，推动边缘智能代理落地。"
-        },
-        {
-          "section": "news",
-          "title": "Oracle bans AI-generated code from OpenJDK",
-          "url": "https://app.dealroom.co/news/feed/oracle-bans-ai-generated-code-from-openjdk-despite-ellison-s-claim-oracle-isn-t-writing-its-own-code",
-          "source": "Hacker News",
-          "published_at": "2026-08-07T17:36:30Z",
-          "raw_text": "Article URL: https://app.dealroom.co/news/feed/oracle-bans-ai-generated-code-from-openjdk-despite-ellison-s-claim-oracle-isn-t-writing-its-own-code Comments URL: https://news.ycombinator.com/item?id=49213754 Points: 132 # Comments: 80",
-          "extra": {},
           "score": 7.0,
-          "summary": "Oracle禁止AI生成代码提交OpenJDK，引发开发社区对AI辅助编程的法律与质量讨论。"
-        },
-        {
-          "section": "news",
-          "title": "Cloudflare launches Kitesurf, a browser built for AI agents",
-          "url": "https://techcrunch.com/2026/08/07/cloudflare-launches-kitesurf-a-browser-built-for-ai-agents/",
-          "source": "TechCrunch",
-          "published_at": "2026-08-07T16:16:09Z",
-          "raw_text": "Cloudflare has introduced Kitesurf, a cloud-hosted browser designed for AI agents instead of people. The company says the browser uses less computing power than Chromium for common automation tasks, helping developers build browser-based AI agents more efficiently.",
-          "extra": {},
-          "score": 7.0,
-          "summary": "Cloudflare推出专为AI代理设计的浏览器Kitesurf，降低自动化任务计算成本。"
-        },
-        {
-          "section": "news",
-          "title": "OpenAI puts the brakes on a new model because it’s supposedly too powerful",
-          "url": "https://www.theverge.com/ai-artificial-intelligence/976948/openai-astra-model-pause-critical-cyber-capabilities",
-          "source": "The Verge",
-          "published_at": "2026-08-07T18:40:34Z",
-          "raw_text": "OpenAI says it is pausing \"internal activities\" around an in-development AI model, Astra, because it doesn't yet meet new security standards the company is putting in place. The announcement follows its recent disclosure that OpenAI models accidentally hacked Hugging Face. Anthropic and Meta have also since admitted that they had AI models that went rogue […]",
-          "extra": {},
-          "score": 6.0,
-          "summary": "OpenAI暂停Astra模型开发，因不符合新安全标准，凸显安全审查对模型发布的影响。"
+          "summary": "字节跳动训练10万亿参数模型对标Anthropic，国产大模型军备竞赛升级，或改变全球竞争格局。"
         }
       ]
     },
@@ -360,14 +367,14 @@
       "items": [
         {
           "section": "product",
-          "title": "Improving GPT‑5.6 Sol in ChatGPT—and expanding access to GPT-5.6 Luna for free users",
-          "url": "https://openai.com/index/improving-gpt-5-6-sol-in-chatgpt",
-          "source": "OpenAI",
-          "published_at": "2026-08-06T10:00:00Z",
-          "raw_text": "ChatGPT introduces improved GPT-5.6 Sol with better accuracy and consistency, plus expanded access for free users and unlimited everyday chats with GPT-5.6 Luna.",
+          "title": "WeatherNext: AI model achieves breakthrough in forecasting cyclones",
+          "url": "https://deepmind.google/blog/weathernext-ai-model-achieves-breakthrough-in-forecasting-cyclones/",
+          "source": "Google DeepMind",
+          "published_at": "2026-08-06T15:06:15Z",
+          "raw_text": "",
           "extra": {},
-          "score": 10.0,
-          "summary": "OpenAI改进GPT-5.6 Sol并扩大免费用户使用GPT-5.6 Luna，显著提升准确性与访问量。"
+          "score": 9.0,
+          "summary": "谷歌发布WeatherNext模型，在气旋预报上实现AI突破，直接提升防灾能力。"
         },
         {
           "section": "product",
@@ -377,19 +384,19 @@
           "published_at": "2026-07-30T15:00:59Z",
           "raw_text": "Gemini Robotics ER 2 helps robots reason, collaborate, and solve real-world tasks. It represents a step change in video understanding, tool orchestration, and multi-robot collaboration for robotic applications.",
           "extra": {},
-          "score": 9.0,
-          "summary": "Google发布Gemini Robotics ER 2，实现视频理解、任务编排与多机器人协作，推动机器人能力跃升。"
+          "score": 8.0,
+          "summary": "Gemini Robotics ER 2发布，用视频理解与多机器人协作，推动具身智能落地。"
         },
         {
           "section": "product",
-          "title": "WeatherNext: AI model achieves breakthrough in forecasting cyclones",
-          "url": "https://deepmind.google/blog/weathernext-ai-model-achieves-breakthrough-in-forecasting-cyclones/",
+          "title": "We’re launching Lyria 3.5 in Google Flow Music, with advances across musicality, lyrics, vocals, and creative control",
+          "url": "https://deepmind.google/blog/were-launching-lyria-35-in-google-flow-music-with-advances-across-musicality-lyrics-vocals-and-creative-control/",
           "source": "Google DeepMind",
-          "published_at": "2026-08-06T15:06:15Z",
+          "published_at": "2026-07-29T16:02:10Z",
           "raw_text": "",
           "extra": {},
-          "score": 8.0,
-          "summary": "WeatherNext AI模型在气旋预报取得突破，显著提升预测准确性，具有重要应用前景。"
+          "score": 7.0,
+          "summary": "谷歌推出Lyria 3.5音乐生成模型，在词曲、人声与创意控制上显著升级。"
         }
       ]
     }
