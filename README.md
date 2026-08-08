@@ -1,7 +1,5 @@
 # Agent Signal
 
-> 每天从 AI 信息洪流里，筛出真正值得看的 19 条。
-
 **简体中文** | [English](README.en.md)
 
 基于 [LangGraph](https://github.com/langchain-ai/langgraph) 构建的每日 AI 资讯 Agent：并行抓取四类信源，规则去重与时效过滤后交给 LLM 打分挑选，产出中文日报，投递到邮箱与本地归档。
