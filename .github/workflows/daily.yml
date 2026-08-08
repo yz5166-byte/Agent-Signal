@@ -1,0 +1,61 @@
+name: 每日日报
+
+on:
+  # cron 用的是 UTC。00:43 UTC = 北京时间 08:43。
+  # 比目标的 9 点提前约 15 分钟，是为了抵消两件事：
+  #   1) GitHub 的定时任务常延迟 5-15 分钟，整点尤其拥挤，所以取 43 分错峰
+  #   2) 流水线本身要跑约 70 秒
+  schedule:
+    - cron: "43 0 * * *"
+  # 手动触发。改完配置能立刻验证，不必等到第二天
+  workflow_dispatch:
+
+permissions:
+  contents: write # 把日报 commit 回仓库需要写权限
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15 # 卡住时及时掐断，别空耗额度
+
+    env:
+      # runner 默认是 UTC，而代码用 date.today() 命名文件。
+      # 不设这个，北京时间早上跑出来的日报会标成前一天的日期。
+      TZ: Asia/Shanghai
+
+      LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+      LLM_BASE_URL: ${{ secrets.LLM_BASE_URL }}
+      LLM_MODEL_ID: ${{ secrets.LLM_MODEL_ID }}
+
+      # Actions 内置的 token，不需要也不允许自己创建同名 secret。
+      # 对 Search API 有效，能把限额从 10 次/分钟提到 30 次/分钟。
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      SMTP_HOST: ${{ secrets.SMTP_HOST }}
+      SMTP_PORT: ${{ secrets.SMTP_PORT }}
+      SMTP_USER: ${{ secrets.SMTP_USER }}
+      SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+      MAIL_TO: ${{ secrets.MAIL_TO }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      # 仓库里没有 .env，代码会静默跳过它、直接读上面注入的环境变量
+      - name: 生成并投递日报
+        run: python -m src.main
+
+      - name: 把日报提交回仓库
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add output/
+          # 没有变化时 commit 会以非零码退出，用 --quiet 判断先跳过
+          git diff --staged --quiet || git commit -m "chore: $(date +%F) 日报"
+          git push

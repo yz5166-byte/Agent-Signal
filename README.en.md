@@ -170,8 +170,8 @@ Every failure is collected into `state["errors"]`, **printed in the digest foote
 - [x] Markdown and JSON output
 - [x] Local archive plus Gmail delivery
 - [x] End-to-end graceful degradation
+- [x] Scheduled daily runs via GitHub Actions (08:43 Asia/Shanghai, digest auto-committed back)
 - [ ] Interactive web viewer
-- [ ] Scheduled daily runs via GitHub Actions
 - [ ] Move tunables into `config.yaml` (currently module-level constants)
 
 ---

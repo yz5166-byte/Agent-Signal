@@ -167,8 +167,8 @@ Agent-Signal/
 - [x] Markdown / JSON 双格式产出
 - [x] 本地归档 + Gmail 邮件投递
 - [x] 全链路容错降级
+- [x] GitHub Actions 每日定时运行（北京时间 08:43，日报自动 commit 回仓库）
 - [ ] 可交互网页
-- [ ] GitHub Actions 每日定时运行
 - [ ] 参数收进 `config.yaml`（目前写在各模块顶部的常量里）
 
 ---
