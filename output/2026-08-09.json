@@ -1,0 +1,400 @@
+{
+  "date": "2026-08-09",
+  "tip": {
+    "title": "用代码替代 JSON 实现工具链式调用",
+    "body": "**场景：** 当你的 Agent 需要连续调用多个工具（如先搜索再总结），用 JSON 格式编排链式调用既繁琐又容易出错。\n\n**做法：** 让 LLM 直接输出 Python 代码来调用工具，利用代码天然的顺序执行和变量传递实现链式调用。在沙箱中运行生成的代码：\n\n```python\nimport subprocess\nimport ast\n\n# 将 LLM 输出的代码写入临时文件\ncode = llm_output  # 来自 LLM 的代码字符串\nwith open('/tmp/agent_code.py', 'w') as f:\n    f.write(code)\n\n# 在子进程中安全执行\nresult = subprocess.run(['python3', '-c', f'exec(open(\"/tmp/agent_code.py\").read())'], \n                       capture_output=True, text=True, timeout=30)\nprint(result.stdout)\n```\n\n使用 `subprocess` 而非 `exec` 可隔离进程、限制资源，避免直接执行未经验证的代码。\n\n（基于条目[0]）",
+    "ref_title": "The Bitter Lesson of Tool Calling",
+    "ref_url": "https://arxiv.org/abs/2608.06370v1"
+  },
+  "errors": [],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "The Bitter Lesson of Tool Calling",
+          "url": "https://arxiv.org/abs/2608.06370v1",
+          "source": "arXiv",
+          "published_at": "2026-08-06T17:58:32Z",
+          "raw_text": "Tool use transforms LLMs into agents that act beyond their training data, and for code-capable models, programmatic tool calling extends this further by replacing rigid JSON calls with scripts that chain and parallelize naturally. However, a systematic evaluation of tools as code on an established benchmark across current and prior model generations under real-world task conditions has not been conducted. In this work, we empirically compare programmatic tool calling (PTC) to native JSON tool calling across 14 language models on BFCL v4. In the programmatic tool calling paradigm, tools are exposed as typed Python stubs that the model invokes through code, with execution and results handled in a single agent turn. Programmatic tool calling matches or exceeds native JSON tool calling in 11 of 14 models on BFCL v4, with the GPT-5.6 family achieving a 10.6% improvement over the JSON tool calling baseline. Further, it matches or outperforms baseline in 13 of 14 models under parallel fan-out, and holds stable under context rot conditions where baseline degrades 2.3% on average. Our results demonstrate that programmatic tool calling is a viable and robust alternative to JSON tool calling, with performance tracking model capability across release generations.",
+          "extra": {
+            "authors": [
+              "Ishan Patel",
+              "Sahil Sen",
+              "Elias Lumer",
+              "Vamse Kumar Subbiah"
+            ],
+            "categories": [
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.06370v1"
+          },
+          "score": 9.0,
+          "summary": "用代码替代JSON调用工具，让LLM Agent自然实现链式与并行调用，显著提升工具调用效率。"
+        },
+        {
+          "section": "paper",
+          "title": "TRAJDEBUG: Tracing Error Lifecycle to Identify Critical Failures in Long-Horizon Agent Trajectories",
+          "url": "https://arxiv.org/abs/2608.06346v1",
+          "source": "arXiv",
+          "published_at": "2026-08-06T17:51:20Z",
+          "raw_text": "LLM-based agentic systems have shown remarkable capabilities in complex domains, while suffering from cascading errors and difficulty in debugging. Critical error detection aims to locate the earliest error step in a failed trajectory that is responsible for the final failure. However, progress faces two main challenges. First, long trajectories make it difficult to identify individual errors, since the evidence for judging a step may be scattered across distant instructions, observations, and prior context. Second, failed trajectories often contain multiple local errors with different downstream effects, only some of which remain responsible for the final failure. In this work, we propose TrajDebug, an error-lifecycle tracing framework that addresses long-trajectory error discovery with multi-granularity history compression and evidence-based error identification, and supports critical attribution by tracing each error's resolution status and terminal impact. We further construct TrajErrBench, a benchmark of 486 manually annotated failed trajectories from Tau2Bench and SWE-Bench Pro, covering realistic tool-use and coding scenarios. Experiments across diverse agent benchmarks show that TrajDebug achieves the best overall performance over existing baselines, and application studies further demonstrate that its diagnoses provide actionable feedback for improving downstream agent success. We will release the codes and data to facilitate further research.",
+          "extra": {
+            "authors": [
+              "Yunjia Qi",
+              "Zehua Yin",
+              "Xintong Shi",
+              "Hao Peng",
+              "Songyuanyi Lu",
+              "Yixian Liu",
+              "Richeng Xuan",
+              "Yuhong Liu",
+              "Zhichao Hu",
+              "Xiaozhi Wang",
+              "Lei Hou",
+              "Bin Xu",
+              "Juanzi Li"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.06346v1"
+          },
+          "score": 8.0,
+          "summary": "提出错误生命周期追踪方法，精准定位长程Agent轨迹中导致失败的早期关键错误，解决调试痛点。"
+        },
+        {
+          "section": "paper",
+          "title": "Learning When to Trust via Selective Context Preference Optimization",
+          "url": "https://arxiv.org/abs/2608.06377v1",
+          "source": "arXiv",
+          "published_at": "2026-08-06T17:59:58Z",
+          "raw_text": "Language models increasingly condition their answers on external signals, and a single misleading one can turn a correct answer wrong. The obvious remedy, training models to resist such signals, hides a failure mode: a model that ignores all context looks robust yet is useless when the context is worth trusting. We recast the problem as selective trust and introduce MIST, a human-annotated benchmark that renders each reasoning item under four matched conditions (clean, misleading, correct-context, and irrelevant-context), together with SC2W, a paired metric counting how often a misleading signal flips a clean-correct answer to wrong. Across a comprehensive benchmark study, we observe that such a susceptibility is universal. We then propose SCOPE, which mines clean-correct/misleading-wrong failures and optimizes a standard Direct Preference Optimization (DPO) objective over matched preference pairs balanced equally across all four conditions, rather than over misleading items alone. Our approach substantially reduces SC2W on popular open-sourced models while preserving accuracy when the added context is clean, correct, or irrelevant. With this work, we argue that models should be judged on selective trust, not on resistance alone.",
+          "extra": {
+            "authors": [
+              "Xian Sun",
+              "Wei Chow",
+              "Yingshuo Wang",
+              "Junhao Liu",
+              "Wei Gao",
+              "Qing Wu",
+              "Lingdong Kong"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.AI",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.06377v1"
+          },
+          "score": 8.0,
+          "summary": "通过选择性上下文偏好优化，让模型学会何时信任外部信号，避免盲目拒绝或全盘接受。"
+        },
+        {
+          "section": "paper",
+          "title": "RP-OPSD: Reasoning-Pivot-Guided On-Policy Self-Distillation for Multilingual Reasoning Transfer",
+          "url": "https://arxiv.org/abs/2608.06347v1",
+          "source": "arXiv",
+          "published_at": "2026-08-06T17:52:06Z",
+          "raw_text": "Multilingual reasoning transfer is crucial for extending reasoning capabilities of large language models (LLMs) beyond high-resource languages. On-policy self-distillation (OPSD) and its variants have emerged as a promising paradigm, providing dense token-level supervision on student-generated rollouts, yet their objectives do not explicitly prioritize reasoning signals most critical to cross-lingual transfer. We characterize that target-language reasoning comprises the generation of both surface text and reasoning pivots, which are decisions that advance or redirect the reasoning process and shape subsequent inference. This motivates concentrating privileged distillation around such pivots. We therefore propose RP-OPSD, Reasoning-Pivot-guided On-Policy Self-Distillation, using the distributional shift between matched teacher views with and without an English reference solution as an operational proxy to guide privileged distillation and reference anchoring. Experiments on mathematical reasoning benchmarks covering 17 languages and multiple difficulty levels show that our method outperforms strong multilingual reasoning baselines and OPSD variants. Further analysis reveals that RP-OPSD concentrates privileged distillation on reasoning-control and problem-condistioned state-update tokens, while downweighting it for tokens that mainly support surface realization. Our code is available at https://github.com/NJUNLP/RP-OPSD.",
+          "extra": {
+            "authors": [
+              "Xinye Wang",
+              "Junxiao Liu",
+              "Shujian Huang"
+            ],
+            "categories": [
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.06347v1"
+          },
+          "score": 7.0,
+          "summary": "用推理引导的在线自蒸馏方法，将LLM推理能力高效迁移至低资源语言，提升多语言推理效果。"
+        },
+        {
+          "section": "paper",
+          "title": "AV-AIVAT: 74x Cheaper Agent Evaluation with Certified Anytime-Valid Stopping in Imperfect-Information Games",
+          "url": "https://arxiv.org/abs/2608.06362v1",
+          "source": "arXiv",
+          "published_at": "2026-08-06T17:57:11Z",
+          "raw_text": "Deciding which of two agents is stronger means playing games until skill outweighs luck, and every game costs money, model inference, or expert time. Since the number of games needed is unknown, fixed-budget evaluations either keep paying after the result is settled or stop before the agents can be told apart, while naive optional stopping with an ordinary confidence interval invalidates the stated level. We make such an evaluation stop as soon as its evidence suffices, with the guarantee intact. The Action-Informed Value Assessment Tool (AIVAT) reduces variance in imperfect-information games through conditional mean-zero corrections, by a median $54\\times$ across 15 LLM agent configurations spanning 71,439 paired Heads-Up No-Limit Hold'em (HUNL) hands, but does not say when to stop. We combine AIVAT with continuously monitored Confidence Sequences (CSs) into anytime-valid AIVAT (AV-AIVAT), whose online value model learns only from past games so that no game scores its own correction. At the nominal 95\\% level and a target precision of $\\pm1$ Big Blind, raw outcomes need a median $74\\times$ as many hands as AIVAT-corrected outcomes to stop under the Asymptotic CS (AsympCS). Exact finite-sample certification uses the Empirical-Bernstein CS (EB-CS), which needs an independently justified bound on corrected payoffs. We establish such a bound structurally for Leduc hold'em and characterize a width floor set by the CS's bet cap and that bound, which governs how much of a variance gain becomes earlier stopping; the descriptive HUNL EB-CS runs show a median $1.37\\times$ stopping-time ratio. AV-AIVAT turns variance reduction into efficient, auditable early stopping while separating asymptotic screening from exact certification, so an evaluation can stop the moment its evidence suffices and hand a third party everything needed to recheck the verdict at that very stopping time.",
+          "extra": {
+            "authors": [
+              "Boning Li",
+              "Yu Chen",
+              "Longbo Huang"
+            ],
+            "categories": [
+              "cs.GT",
+              "cs.AI",
+              "cs.CL",
+              "cs.LG",
+              "cs.MA"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.06362v1"
+          },
+          "score": 7.0,
+          "summary": "提出74倍成本降低的Agent评估方法，支持随时停止并给出置信保证，适合昂贵场景的对比测试。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi-K2.6, GLM-5.2, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 178090,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "gemma3",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llama3",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 10.0,
+          "summary": "一键运行最新国产大模型，Kimi、GLM、MiniMax 等，本地部署零门槛。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "The context API to search, scrape, and interact with the web at scale. 🔥",
+          "extra": {
+            "stars": 163459,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "大规模网页搜索与抓取的 API，为 RAG 和 Agent 提供实时数据源。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 151806,
+            "language": "TypeScript",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "orchestration",
+              "python",
+              "rag",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 9.0,
+          "summary": "企业级 AI 应用开发平台，内置 Agent 工作流与 RAG 管线，支持私有部署。"
+        },
+        {
+          "section": "repo",
+          "title": "alibaba/open-code-review",
+          "url": "https://github.com/alibaba/open-code-review",
+          "source": "GitHub 新星",
+          "published_at": "2026-05-18T02:16:36Z",
+          "raw_text": "Fast, efficient, battle-tested at Alibaba's scale. Hybrid architecture code review tool: deterministic pipelines + LLM Agent, precise line-level comments, built-in multi-language ruleset (NPE, thread-safety, XSS, SQL injection), OpenAI & Anthropic compatible.",
+          "extra": {
+            "stars": 19738,
+            "language": "Go",
+            "topics": [
+              "agent",
+              "agent-skills",
+              "code-review",
+              "code-review-assistant",
+              "harness",
+              "repository-level-context"
+            ]
+          },
+          "score": 8.0,
+          "summary": "阿里开源的代码审查工具，结合规则引擎与 LLM，精准定位行级问题。"
+        },
+        {
+          "section": "repo",
+          "title": "langchain-ai/openwiki",
+          "url": "https://github.com/langchain-ai/openwiki",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-22T23:48:26Z",
+          "raw_text": "OpenWiki is a CLI that writes and maintains agent documentation for your codebase.",
+          "extra": {
+            "stars": 14730,
+            "language": "TypeScript",
+            "topics": []
+          },
+          "score": 8.0,
+          "summary": "自动为代码库生成并维护 Agent 文档，解决文档滞后痛点。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "OpenAI says it slowed Astra model development over security concerns",
+          "url": "https://techcrunch.com/2026/08/07/openai-says-it-slowed-astra-model-development-over-security-concerns/",
+          "source": "TechCrunch",
+          "published_at": "2026-08-07T22:48:24Z",
+          "raw_text": "OpenAI said this model, which is still in development, reached its \"critical cybersecurity threshold,\" meaning it could independently identify and carry out cyberattacks against traditionally well-protected real-world systems.",
+          "extra": {},
+          "score": 10.0,
+          "summary": "OpenAI因安全顾虑放缓Astra模型开发，模型已达关键网络安全阈值，可自主攻击真实系统。"
+        },
+        {
+          "section": "news",
+          "title": "DeepMind’s hurricane breakthrough has surprised weather scientists",
+          "url": "https://arstechnica.com/science/2026/08/deepminds-hurricane-model-bought-forecasters-an-extra-day/",
+          "source": "Ars Technica",
+          "published_at": "2026-08-08T11:05:50Z",
+          "raw_text": "Open source WeatherNext model can make accurate predictions with lower-resolution weather data.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "DeepMind开源WeatherNext模型，用低分辨率数据实现高精度飓风预测，突破气象学瓶颈。"
+        },
+        {
+          "section": "news",
+          "title": "Stanford is running 37,000 AI agents as a virtual biotech — and one of its drug designs got independently confirmed by Merck",
+          "url": "https://venturebeat.com/orchestration/stanford-is-running-37-000-ai-agents-as-a-virtual-biotech-and-one-of-its-drug-designs-got-independently-confirmed-by-merck",
+          "source": "VentureBeat",
+          "published_at": "2026-08-07T17:05:52Z",
+          "raw_text": "For developers, the operating assumption has been one engineer, one agent — the model Claude Code and similar tools. At VB Transform 2026 , James Zou, associate professor of biomedical data science at Stanford University, argued that assumption is about to break: the next frontier isn't a single, more capable agent, it's tens of thousands of them collaborating. For developers and product builders, the most critical takeaway from Zou’s presentation is how these massive systems are orchestrated. His team's research offers a practical blueprint for connecting legacy databases to AI orchestration layers and designing environments that enable thousands of agents to collaborate. Emulating the organization — the virtual biotech Zou’s project began as a \"Virtual Lab\" consisting of five to eight ag",
+          "extra": {},
+          "score": 9.0,
+          "summary": "斯坦福用3.7万AI智能体模拟生物科技公司，其药物设计获默克独立验证，验证多智能体科研可行性。"
+        },
+        {
+          "section": "news",
+          "title": "Planned Amazon data center could become the biggest climate polluter in the U.S.",
+          "url": "https://techcrunch.com/2026/08/08/planned-amazon-data-center-could-become-the-biggest-climate-polluter-in-the-u-s/",
+          "source": "TechCrunch",
+          "published_at": "2026-08-08T21:24:02Z",
+          "raw_text": "As part of a planned Texas data center, Amazon is investing in an on-site power plant that could reportedly become the largest source of climate pollution in the United States.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "亚马逊得州数据中心配套电厂或成美国最大气候污染源，凸显AI算力扩张的环境代价。"
+        },
+        {
+          "section": "news",
+          "title": "OpenAI acquires presentation startup NextSlide",
+          "url": "https://techcrunch.com/2026/08/08/openai-acquires-presentation-startup-nextslide/",
+          "source": "TechCrunch",
+          "published_at": "2026-08-08T19:41:13Z",
+          "raw_text": "NextSlide says its team members are now working on ChatGPT.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "OpenAI收购演示文稿初创公司NextSlide，团队并入ChatGPT，强化办公场景布局。"
+        },
+        {
+          "section": "news",
+          "title": "Tencent's Team Memory shares AI agent memory across a team — with no governance yet for when it's wrong",
+          "url": "https://venturebeat.com/data/tencents-team-memory-shares-ai-agent-memory-across-a-team-with-no-governance-yet-for-when-its-wrong",
+          "source": "VentureBeat",
+          "published_at": "2026-08-07T16:30:29Z",
+          "raw_text": "A VB Pulse survey this June found that 57% of enterprises had traced a confidently wrong agent answer back to missing or inconsistent context — the latest sign of how central context has become to whether AI agents can be trusted to act on their own. Most of the fixes so far have solved a narrower version of that problem: one agent remembering more, in one session. What's been missing is a way for a team of agents to draw on the same context at once, and that gap is where a newer problem is surfacing. Once an agent's context is shared across a whole team, a wrong fact doesn't cost one person a repeated explanation. It costs the whole team. Tencent's answer to that gap is Agent Memory , an open-source project the team said grew out of six months spent fixing a narrower problem: agents losin",
+          "extra": {},
+          "score": 7.0,
+          "summary": "腾讯发布Team Memory实现AI智能体团队记忆共享，但缺乏错误溯源治理机制。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Improving GPT‑5.6 Sol in ChatGPT—and expanding access to GPT-5.6 Luna for free users",
+          "url": "https://openai.com/index/improving-gpt-5-6-sol-in-chatgpt",
+          "source": "OpenAI",
+          "published_at": "2026-08-06T10:00:00Z",
+          "raw_text": "ChatGPT introduces improved GPT-5.6 Sol with better accuracy and consistency, plus expanded access for free users and unlimited everyday chats with GPT-5.6 Luna.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "OpenAI 发布 GPT-5.6 Sol 改进版，并向免费用户开放 Luna 无限聊天，显著降低使用门槛。"
+        },
+        {
+          "section": "product",
+          "title": "Gemini Robotics ER 2: powering robotics with video understanding, task orchestration, and multi-robot collaboration",
+          "url": "https://deepmind.google/blog/gemini-robotics-er-2-powering-robotics-with-video-understanding-task-orchestration-and-multi-robot-collaboration/",
+          "source": "Google DeepMind",
+          "published_at": "2026-07-30T15:00:59Z",
+          "raw_text": "Gemini Robotics ER 2 helps robots reason, collaborate, and solve real-world tasks. It represents a step change in video understanding, tool orchestration, and multi-robot collaboration for robotic applications.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Google 推出 Gemini Robotics ER 2，实现多机器人协作与视频理解，推动具身智能落地。"
+        },
+        {
+          "section": "product",
+          "title": "WeatherNext: AI model achieves breakthrough in forecasting cyclones",
+          "url": "https://deepmind.google/blog/weathernext-ai-model-achieves-breakthrough-in-forecasting-cyclones/",
+          "source": "Google DeepMind",
+          "published_at": "2026-08-06T15:06:15Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 8.0,
+          "summary": "WeatherNext 模型在气旋预报上取得突破，AI 在气象科学领域迈出关键一步。"
+        }
+      ]
+    }
+  ]
+}
