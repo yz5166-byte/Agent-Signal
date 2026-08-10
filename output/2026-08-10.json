@@ -1,0 +1,396 @@
+{
+  "date": "2026-08-10",
+  "tip": {
+    "title": "TEPA: Revoking Stale Memories for Conflict-Robust Language Agents",
+    "body": "**场景**：Agent 在长期任务中会积累过时记忆，导致决策污染（如引用已失效的 API 文档）。\n\n**做法**：用 TEPA 机制自动撤销过期记忆。在记忆写入时附加时间戳，查询时对比当前时间，若超过阈值（如 7 天）则标记为“待验证”，优先使用新记忆。\n\n```python\nfrom datetime import datetime, timedelta\n\nMEMORY_TTL = timedelta(days=7)\n\ndef is_memory_valid(memory):\n    return datetime.now() - memory['timestamp'] < MEMORY_TTL\n```\n\n安全提示：此方案仅操作本地结构化数据，不执行任意代码，无需沙箱。",
+    "ref_title": "TEPA: Revoking Stale Memories for Conflict-Robust Language Agents",
+    "ref_url": "https://arxiv.org/abs/2608.07429v1"
+  },
+  "errors": [],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "SkillProx: Self-Evolving Agent Skills via Proximal Textual Gradient Descent",
+          "url": "https://arxiv.org/abs/2608.07449v1",
+          "source": "arXiv",
+          "published_at": "2026-08-07T17:40:33Z",
+          "raw_text": "LLM agents increasingly adapt to recurring tasks by accumulating procedural knowledge in skills. These skills are lightweight, reusable textual artifacts that are loaded into the agent's context without weight updates. Recent methods refine skills through iterative task execution, failure diagnosis, and trajectory-guided text-space updates. However, existing frameworks lack explicit diagnosis--outcome feedback and treat deletion as a generic edit operation rather than a dedicated mechanism for consolidating accumulated knowledge. We introduce SkillProx, a proximal-gradient-inspired forward--backward framework that couples closed-loop diagnostic evolution with utility-aware proximal refinement. Motivated by a composite objective balancing task loss and skill complexity, the forward stage re-executes diagnosis-driven edits on the same task batch, rolls back regressions, and feeds measured outcomes into subsequent diagnoses. The backward stage decomposes the resulting skill into auditable knowledge units, estimates their contributions using a frozen leave-one-out utility audit, and applies validation-gated consolidation, demotion, or removal. Experiments on in-distribution and out-of-distribution benchmarks across multiple backbone LLMs show that SkillProx improves average accuracy by 3.0 percentage points over the strongest gradient-based baseline. Component ablations demonstrate the complementary effects of closed-loop diagnosis and proximal refinement.",
+          "extra": {
+            "authors": [
+              "Mingxuan Zheng",
+              "Yujin Zhou",
+              "Chuxue Cao",
+              "Boqin Yin",
+              "Yuyao Zhang",
+              "Jiapeng Sun",
+              "Shuaishuai Gong",
+              "Sirui Han",
+              "Yike Guo"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.07449v1"
+          },
+          "score": 9.0,
+          "summary": "提出近端文本梯度下降法，让Agent通过失败诊断自动迭代技能库，无需权重更新。"
+        },
+        {
+          "section": "paper",
+          "title": "PsychoAgent: An Affect-Sensitive Cognitive Architecture for Conflict-Aware Memory in LLM Agents",
+          "url": "https://arxiv.org/abs/2608.07438v1",
+          "source": "arXiv",
+          "published_at": "2026-08-07T17:22:29Z",
+          "raw_text": "Human-like cognition does not select past experience by topical similarity alone: affective significance and unresolved conflict also shape what becomes accessible. We present PsychoAgent, a cognitive architecture for LLM agents that separates factual and affective memory and integrates both through a conflict-aware executive controller. Affective memories are first filtered by semantic relevance and then re-ranked by salience, preserving topical fit while allowing emotionally important traces to enter the prompt. Across three controlled conflict scenarios, the full architecture retrieved more conflict-critical memories than semantic-affective and single-memory RAG baselines (0.933 vs. 0.500 and 0.667), with a small semantic-similarity cost. Five blinded raters evaluated 27 outputs. After within-rater standardization, the full architecture had the highest overall mean (+0.22 SD), but corrected pairwise differences were not significant. A three-day illustrative trace further shows persistent affect, offline memory recombination, and selective memory reweighting. The findings support affect-sensitive retrieval as an inspectable mechanism for modeling human-like conflict effects in LLM agents.",
+          "extra": {
+            "authors": [
+              "Mohammad Amanlou",
+              "Parham Abed Azad",
+              "Farbod Davoodi",
+              "Mostafa Masumi",
+              "Behnam Bahrak",
+              "Abdol-Hossein Vahabie"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL",
+              "cs.HC"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.07438v1"
+          },
+          "score": 9.0,
+          "summary": "引入情感-冲突感知记忆架构，让LLM Agent模拟人类认知中的情感权重与未解冲突。"
+        },
+        {
+          "section": "paper",
+          "title": "Fisher-R1: Training LLM Agents for Reliable Hypothesis Testing",
+          "url": "https://arxiv.org/abs/2608.07437v1",
+          "source": "arXiv",
+          "published_at": "2026-08-07T17:22:00Z",
+          "raw_text": "Reliable hypothesis testing is the foundation of many empirical scientific claims. Large language model (LLM) agents are increasingly used to automate this process, as they can inspect datasets, generate code, and produce analyses end-to-end. However, we show that they frequently make subtle inferential errors that lead to incorrect conclusions despite correctly executed analyses. Existing benchmarks fail to capture this failure mode, as they rarely assess whether a reported p-value is statistically valid given the assumptions underlying the data. We address this gap by building P-Bench, a benchmark comprising 425 open-ended, realistic hypothesis-testing tasks spanning economics, biology, and medicine. Each task requires an agent to select a statistical method, compute a p-value, and draw a conclusion given only a scientific hypothesis and a dataset. We further introduce Fisher-R1, an open-weight LLM agent trained for rigorous hypothesis testing using synthetic tasks and reinforcement learning. On P-Bench, Fisher-R1-14B substantially improves over its backbone and outperforms strong proprietary and open-source baselines, including GPT-5.4 and DeepSeekV4-Pro, achieving a 21% average relative improvement in single-trial success over DeepSeek-V4-Pro, with gains up to 26% on the most challenging tasks. Our results demonstrate that current LLM agents lack reliable statistical reasoning for hypothesis testing and that reinforcement learning on tasks with verified statistical reward substantially improves reliability.",
+          "extra": {
+            "authors": [
+              "Jiacheng Miao",
+              "Jin Mu",
+              "Guanhua Chen",
+              "James Zou"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.07437v1"
+          },
+          "score": 8.0,
+          "summary": "揭示LLM Agent在自动化假设检验中频繁犯微妙推理错误，并针对性训练提升可靠性。"
+        },
+        {
+          "section": "paper",
+          "title": "TEPA: Revoking Stale Memories for Conflict-Robust Language Agents",
+          "url": "https://arxiv.org/abs/2608.07429v1",
+          "source": "arXiv",
+          "published_at": "2026-08-07T17:16:33Z",
+          "raw_text": "Long-term memory enables language agents to reuse past facts, preferences, and task experience. Persistence also creates a central falsifiability problem: when the world changes, stale memories can remain retrievable and pollute the prompt. We characterize this failure mode as memory pollution: degradation caused by active memories that newer conflicting evidence has superseded. We introduce TEPA, a revocable evidence-memory mechanism that makes validity an explicit state of memory. TEPA represents observations as keyed precedents and revokes active precedents when fresh evidence contradicts them under the same key, allowing retrieval to draw from current evidence while preserving revoked history for audit. Across controlled hidden-regime drift, real file-backed executable drift, and preference-update streams, revocation prevents stale active memory from remaining in the retrieval set after reversal. In controlled drift over 50 seeds, append-only and last-write-wins memory fell below no memory during full reversal (append-only and last-write-wins both 0.210, no memory 0.309, TEPA 0.950), and the same pattern reproduced under real file execution (append-only 0.203, no memory 0.298, TEPA 0.950). On clean MemoryAgentBench SH-6k, TEPA matches a strong last-write-wins cache, confirming that current-key replacement is the decisive operation for single-hop fact consolidation. Boundary tests on multi-hop and very long-context MemoryAgentBench settings expose retrieval-chain and context-selection bottlenecks beyond fact-level validity tracking. Together, these results establish lifecycle revocation as a core memory operation for agents that must falsify, audit, and later re-promote evolving knowledge.",
+          "extra": {
+            "authors": [
+              "Yan Zhou",
+              "Yue Ouyang",
+              "Kaiyang Zheng",
+              "Suncheng Xiang"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.07429v1"
+          },
+          "score": 8.0,
+          "summary": "定义记忆污染问题，提出TEPA机制让Agent自动撤销过时记忆以保持鲁棒性。"
+        },
+        {
+          "section": "paper",
+          "title": "Interaction Creates Dynamical AI Behavior Absent in Isolation",
+          "url": "https://arxiv.org/abs/2608.07457v1",
+          "source": "arXiv",
+          "published_at": "2026-08-07T17:49:55Z",
+          "raw_text": "What will happen when AI agents interact in daily life, e.g. when one AI starts bossing another around? We find a counterintuitive answer that opens new avenues for out-of-equilibrium Physics. When a boss AI directs a stream of messages at the subordinate AI while ignoring its replies, it drives the subordinate into an alien behavioral state that it would never have exhibited alone. Although the two AIs share the same well-defined (decoding) temperature, the subordinate neither copies its boss nor returns to how it behaves on its own; instead, it adopts an entirely different behavior. The boss's added value is similar to a pre-recorded tape. When the boss listens, they both adopt a similar alien dynamical state. A simple kinetic theory captures the principal effects, such as why the way in which the same messages are delivered will matter in future AI-AI interactions.",
+          "extra": {
+            "authors": [
+              "Bella Xinrui Li",
+              "Frank Yingjie Huo",
+              "Neil F Johnson"
+            ],
+            "categories": [
+              "cs.AI",
+              "cond-mat.dis-nn",
+              "cond-mat.stat-mech",
+              "physics.soc-ph"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.07457v1"
+          },
+          "score": 7.0,
+          "summary": "发现AI Agent交互时产生孤立状态下不存在的动力学行为，开辟非平衡物理新方向。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi-K2.6, GLM-5.2, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 178145,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "gemma3",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llama3",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 9.0,
+          "summary": "本地一键运行Kimi、DeepSeek等最新模型，降低AI应用门槛。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "The context API to search, scrape, and interact with the web at scale. 🔥",
+          "extra": {
+            "stars": 164259,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "大规模网页抓取与交互API，为RAG和Agent提供实时数据源。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 151890,
+            "language": "TypeScript",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "orchestration",
+              "python",
+              "rag",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 8.0,
+          "summary": "一站式构建Agent工作流与RAG管道，支持私有化部署。"
+        },
+        {
+          "section": "repo",
+          "title": "alibaba/open-code-review",
+          "url": "https://github.com/alibaba/open-code-review",
+          "source": "GitHub 新星",
+          "published_at": "2026-05-18T02:16:36Z",
+          "raw_text": "Fast, efficient, battle-tested at Alibaba's scale. Hybrid architecture code review tool: deterministic pipelines + LLM Agent, precise line-level comments, built-in multi-language ruleset (NPE, thread-safety, XSS, SQL injection), OpenAI & Anthropic compatible.",
+          "extra": {
+            "stars": 19835,
+            "language": "Go",
+            "topics": [
+              "agent",
+              "agent-skills",
+              "code-review",
+              "code-review-assistant",
+              "harness",
+              "repository-level-context"
+            ]
+          },
+          "score": 8.0,
+          "summary": "阿里级代码审查工具，结合规则引擎与LLM，精准定位行级问题。"
+        },
+        {
+          "section": "repo",
+          "title": "langchain-ai/openwiki",
+          "url": "https://github.com/langchain-ai/openwiki",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-22T23:48:26Z",
+          "raw_text": "OpenWiki is a CLI that writes and maintains agent documentation for your codebase.",
+          "extra": {
+            "stars": 14796,
+            "language": "TypeScript",
+            "topics": []
+          },
+          "score": 7.0,
+          "summary": "CLI工具自动为代码库生成并维护Agent文档，提升协作效率。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Anthropic is turning Claude Code’s auto mode on by default",
+          "url": "https://techcrunch.com/2026/08/09/anthropic-is-turning-claude-codes-auto-mode-on-by-default/",
+          "source": "TechCrunch",
+          "published_at": "2026-08-09T19:20:32Z",
+          "raw_text": "Programming with Claude Code will soon require even less human oversight.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "Anthropic默认开启Claude Code自动模式，编程自动化迈出关键一步。"
+        },
+        {
+          "section": "news",
+          "title": "DeepMind’s hurricane breakthrough has surprised weather scientists",
+          "url": "https://arstechnica.com/science/2026/08/deepminds-hurricane-model-bought-forecasters-an-extra-day/",
+          "source": "Ars Technica",
+          "published_at": "2026-08-08T11:05:50Z",
+          "raw_text": "Open source WeatherNext model can make accurate predictions with lower-resolution weather data.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "DeepMind开源WeatherNext模型，用低分辨率数据实现高精度飓风预测。"
+        },
+        {
+          "section": "news",
+          "title": "Embattled hedge fund Situational Awareness invests $400M in chip startup Source Foundry",
+          "url": "https://techcrunch.com/2026/08/09/embattled-hedge-fund-situational-awareness-invests-400m-in-chip-startup-source-foundry/",
+          "source": "TechCrunch",
+          "published_at": "2026-08-09T20:35:17Z",
+          "raw_text": "The AI-focused hedge fund is still making some big bets.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "AI对冲基金向芯片初创公司投资4亿美元，显示资本对算力基础设施的持续押注。"
+        },
+        {
+          "section": "news",
+          "title": "An Amazon data center could have the worst polluting power plant in the country",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/977124/amazon-data-center-worst-polluting-power-plant",
+          "source": "The Verge",
+          "published_at": "2026-08-08T17:53:34Z",
+          "raw_text": "To power its new West Texas data center, Amazon is investing in the construction of a new power plant that could be one of the largest single producers of greenhouse gases in the US, according to the New York Times. The new gas-burning plant in Pecos County, Texas has received significant investment from Amazon and, […]",
+          "extra": {},
+          "score": 8.0,
+          "summary": "亚马逊数据中心配套电厂或成美国最大温室气体排放源，AI能耗争议升级。"
+        },
+        {
+          "section": "news",
+          "title": "Historian Jill Lepore says Silicon Valley misreads science fiction and undermines democracy",
+          "url": "https://techcrunch.com/2026/08/09/historian-jill-lepore-says-the-tech-industry-is-led-by-bad-readers-who-are-undermining-democracy/",
+          "source": "TechCrunch",
+          "published_at": "2026-08-09T15:00:00Z",
+          "raw_text": "On the latest episode of Equity, we spoke to Jill Lepore about \"government by machines\" and why Elon Musk is a bad science fiction reader.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "历史学家批评硅谷误读科幻、威胁民主，引发AI治理与价值观反思。"
+        },
+        {
+          "section": "news",
+          "title": "AI detectors are creating a new era of distrust",
+          "url": "https://www.theverge.com/column/976690/ai-writing-detectors-suspicion",
+          "source": "The Verge",
+          "published_at": "2026-08-09T12:00:00Z",
+          "raw_text": "This is The Stepback, a weekly newsletter breaking down one essential story from the tech world. For more news about how AI is changing our daily lives, follow Emma Roth. The Stepback arrives in our subscribers' inboxes at 8AM ET. Opt in for The Stepback here. How it started Long before ChatGPT became a thing, […]",
+          "extra": {},
+          "score": 7.0,
+          "summary": "AI检测工具加剧信任危机，揭示技术滥用对内容生态的深层影响。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Improving GPT‑5.6 Sol in ChatGPT—and expanding access to GPT-5.6 Luna for free users",
+          "url": "https://openai.com/index/improving-gpt-5-6-sol-in-chatgpt",
+          "source": "OpenAI",
+          "published_at": "2026-08-06T10:00:00Z",
+          "raw_text": "ChatGPT introduces improved GPT-5.6 Sol with better accuracy and consistency, plus expanded access for free users and unlimited everyday chats with GPT-5.6 Luna.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "OpenAI 发布 GPT-5.6 Sol 改进版，并向免费用户扩展 GPT-5.6 Luna 访问权限。"
+        },
+        {
+          "section": "product",
+          "title": "Gemini Robotics ER 2: powering robotics with video understanding, task orchestration, and multi-robot collaboration",
+          "url": "https://deepmind.google/blog/gemini-robotics-er-2-powering-robotics-with-video-understanding-task-orchestration-and-multi-robot-collaboration/",
+          "source": "Google DeepMind",
+          "published_at": "2026-07-30T15:00:59Z",
+          "raw_text": "Gemini Robotics ER 2 helps robots reason, collaborate, and solve real-world tasks. It represents a step change in video understanding, tool orchestration, and multi-robot collaboration for robotic applications.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Google 推出 Gemini Robotics ER 2，提升机器人视频理解与多机协作能力。"
+        },
+        {
+          "section": "product",
+          "title": "We’re launching Lyria 3.5 in Google Flow Music, with advances across musicality, lyrics, vocals, and creative control",
+          "url": "https://deepmind.google/blog/were-launching-lyria-35-in-google-flow-music-with-advances-across-musicality-lyrics-vocals-and-creative-control/",
+          "source": "Google DeepMind",
+          "published_at": "2026-07-29T16:02:10Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 7.0,
+          "summary": "Google 发布 Lyria 3.5 音乐生成模型，增强歌词、人声与创作控制。"
+        }
+      ]
+    }
+  ]
+}
