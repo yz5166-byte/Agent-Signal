@@ -1,0 +1,420 @@
+{
+  "date": "2026-08-11",
+  "tip": {
+    "title": "用Ollama本地跑LLM，做Agent推理引擎",
+    "body": "开发Agent时调用外部API有延迟与隐私风险。Ollama可一键本地运行模型，提供兼容OpenAI的API。做法：安装Ollama后运行 `ollama pull qwen2.5`，再启动服务 `ollama serve`。Agent中通过HTTP调用：\n```python\nimport requests\nresp = requests.post(\"http://localhost:11434/api/generate\", json={\"model\": \"qwen2.5\", \"prompt\": \"你是助手\", \"stream\": False})\nprint(resp.json()[\"response\"])\n```\n安全：仅调用本地服务，不执行用户代码。",
+    "ref_title": "ollama/ollama",
+    "ref_url": "https://github.com/ollama/ollama"
+  },
+  "errors": [],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "ColluSkill: Adversarial Cross-Skill Composition for Evading Agent Skill Scanners",
+          "url": "https://arxiv.org/abs/2608.09732v1",
+          "source": "arXiv",
+          "published_at": "2026-08-10T15:32:44Z",
+          "raw_text": "Agent skills are emerging as an important attack surface in LLM-based agent systems. Through an empirical study of existing skill scanners, we find that current defenses mainly inspect individual skills, leaving risks from cross-skill composition insufficiently examined. This creates a practical blind spot: multiple locally plausible skills may pass security checks while collectively forming a harmful workflow during agent execution. To investigate this threat, we propose ColluSkill, a collusive multi-skill-chain attack framework that decomposes a complete malicious intent into interdependent sub-payloads embedded in independently packaged skills. The attack does not rely on any single malicious skill, but emerges from the ordered composition of locally plausible behaviors through contextual dependencies, artifact passing, and execution handoffs. ColluSkill further employs LLM-based chain planning and scanner-feedback refinement to preserve chain-level attack semantics while reducing suspicious signals in individual sub-skills. To defend against such attacks, we propose ChainGuard, a context-aware skill-chain scanner that jointly analyzes a candidate skill and the skills already installed in the agent environment. ChainGuard reconstructs cross-skill dependencies, artifact flows, capability compositions, and downstream behaviors to identify risks that emerge only at the workflow level. Experiments on six representative skill scanners show that ColluSkill achieves an average attack success rate of 96.0% and consistently outperforms the evaluated single-skill and multi-skill attack baselines. Meanwhile, ChainGuard reduces the attack success rate to 22.5% while allowing 99.5% of benign workflows to pass, highlighting the importance of chain-level security analysis for agent skill ecosystems.",
+          "extra": {
+            "authors": [
+              "Puyu Zeng",
+              "Simeng Qin",
+              "Jingzhi Li",
+              "Ju Jia",
+              "Zheli Liu",
+              "Xiaojun Jia"
+            ],
+            "categories": [
+              "cs.CR",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.09732v1"
+          },
+          "score": 9.0,
+          "summary": "利用跨技能组合攻击Agent系统，暴露现有安全扫描盲区。"
+        },
+        {
+          "section": "paper",
+          "title": "Matryoshka Language Model Suites",
+          "url": "https://arxiv.org/abs/2608.09703v1",
+          "source": "arXiv",
+          "published_at": "2026-08-10T15:07:29Z",
+          "raw_text": "Training a language model suite classically requires training each model separately and serving them independently. We improve both training and inference efficiency by stacking sub-models of increasing size into a single nested architecture trained end-to-end. This Matryoshka training framework reduces the total parameter count of the suite, enables low-cost distillation from the largest to all smaller sub-models at every training step, and is well-suited for speculative decoding as the draft model is contained within the verifier. We validate our approach by training a Matryoshka suite comprising 500M, 1.5B, and 3B sub-models. Our suite is on par with independently trained baselines on benchmark performance and validation and out-of-domain perplexities, while using 36% less training compute and improving the throughput of speculative decoding by 14-26%. We also ablate key architectural choices, offering guidance for building strong Matryoshka LM suites.",
+          "extra": {
+            "authors": [
+              "Nathan Godey",
+              "Yoav Artzi"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.09703v1"
+          },
+          "score": 8.0,
+          "summary": "嵌套式多模型训练框架，大幅降低训练和推理成本。"
+        },
+        {
+          "section": "paper",
+          "title": "KGCaRe: Explainable Complex Conditional Question Answering using Automatic Knowledge Graph Construction and Context Retrieval with LLMs",
+          "url": "https://arxiv.org/abs/2608.09779v1",
+          "source": "arXiv",
+          "published_at": "2026-08-10T16:05:58Z",
+          "raw_text": "Answering complex conditional questions using Large Language Models (LLMs) and Retrieval-Augmented Generation (RAG) remains a challenge, particularly in domain-specific contexts where general-purpose LLMs and RAG tend to underperform. We hypothesize that augmenting RAG with unstructured and structured knowledge, extracted from both documents and knowledge graphs (KGs), can improve reasoning and answer accuracy for such tasks. To test this, we propose KGCaRe, a hybrid approach that combines neural retrieval with symbolic reasoning over LLM-generated KGs. KGCaRe constructs a KG from documents using a multi-prompt extraction strategy and stores it in a graph database. Simultaneously, the documents are embedded into a vector store to enable neural retrieval. KGCaRe performs innovative iterative graph traversal guided by the LLM to extract relevant triples, prune irrelevant information, and uses additional clue entities to traverse the graph again if the initial traversal does not provide satisfactory context to generate the answer. The relevant triples extracted from the KG in path form, along with semantically retrieved text passages, are then fed into custom KGCaRe prompts to generate answers to the complex conditional questions with explanations. We evaluate KGCaRe on two complex conditional QA datasets. Our results on these datasets show that KGCaRe consistently outperforms existing baselines, including Vanilla LLM, Code Prompt, Text Prompt, Think-on-Graph, Vanilla RAG, and HybridContextQA, across multiple LLMs such as Mistral, Mixtral, GPT-3.5, and GPT-4o. We publicly release the software pipeline that we developed to implement the proposed KGCaRe approach.",
+          "extra": {
+            "authors": [
+              "Ghanshyam Verma",
+              "Simanta Sarkar",
+              "Devishree Pillai",
+              "Hotaka Shiokawa",
+              "Yourong Xu",
+              "Fiona Veazey",
+              "Peter Hubbert",
+              "Hui Su",
+              "Paul Buitelaar"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.09779v1"
+          },
+          "score": 7.0,
+          "summary": "结合知识图谱构建与RAG，提升复杂条件问答的领域性能。"
+        },
+        {
+          "section": "paper",
+          "title": "SR-OPSD: Self-Referenced On-Policy Self-Distillation",
+          "url": "https://arxiv.org/abs/2608.09745v1",
+          "source": "arXiv",
+          "published_at": "2026-08-10T15:40:07Z",
+          "raw_text": "On-policy self-distillation (OPSD) converts feedback into dense token-level supervision on trajectories generated by the policy to be optimized, providing a useful complement to reinforcement learning with sparse outcome rewards. However, the self-teacher policy used in OPSD is typically a stop-gradient or exponential-moving-average copy of the policy conditioned on additional context information, and thus co-evolves with both the student policy and its on-policy context distribution. Directly matching such a moving target with a fixed projection objective can lead to unstable optimization or excessive distributional concentration. This nature of OPSD motivates the proposed \\emph{Self-Referenced On-Policy Self-Distillation (SR-OPSD)}. At fixed student-generated contexts, a token-level variational characterization identifies the effective distillation target as a geometric interpolation between the self-teacher policy and a reference policy. Meanwhile, we use the Rényi divergence family to generalize the projection geometry. This formulation separates \\emph{where} the adaptive target is placed from \\emph{how} the student is projected toward it: the interpolation coefficient controls underlying target, while the Rényi order controls the projection geometry and its sensitivity to token-level density ratios. Extensive experiments across scientific evaluation, mathematical reasoning, and coding generation tasks with multiple large language models show that SR-OPSD achieves the state-of-the-art or competitive performance across various settings.",
+          "extra": {
+            "authors": [
+              "Zhuo Sun",
+              "Entong Li",
+              "Yanlong Zhao",
+              "Xiaoyuan Cheng",
+              "Wenxuan Yuan",
+              "Kaiyu Li",
+              "Che Liu",
+              "Huihang Liu",
+              "Harrison Bo Hua Zhu",
+              "Li Zeng"
+            ],
+            "categories": [
+              "cs.LG",
+              "cs.AI",
+              "stat.ML"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.09745v1"
+          },
+          "score": 7.0,
+          "summary": "自参考在线自蒸馏，为策略优化提供更稳定的密集监督。"
+        },
+        {
+          "section": "paper",
+          "title": "Cultivar: A Contrastive and Locale-Oriented Translation Benchmark for Investigating Contamination and Localisation Robustness",
+          "url": "https://arxiv.org/abs/2608.09766v1",
+          "source": "arXiv",
+          "published_at": "2026-08-10T15:56:43Z",
+          "raw_text": "Multilingual translation benchmarks are typically sourced in English and translated into other languages, treating language pairs as the unit of evaluation---a design that is prone to contamination over time and overlooks locale and cultural considerations. We therefore advocate for source-contrastive evaluation and instantiate it with Cultivar, a localised subset of FLORES, which enables locale-specific translation evaluation. When paired with unlocalised counterparts, performance discrepancy allows the probing of data contamination and localisation robustness. We benchmark 32 open-weight models and find that MT-specialised models are less robust, a few models potentially overfit FLORES, and models tend to translate US content better than that of other locales, regardless of language.",
+          "extra": {
+            "authors": [
+              "Pinzhen Chen",
+              "Koel Dutta Chowdhury",
+              "Xiaoya Xu",
+              "David Tan",
+              "Doreen Osmelak",
+              "Ona de Gibert",
+              "Ariun-Erdene Tumurchuluun",
+              "Ashok Urlana",
+              "Fedor Sizov",
+              "Hale Sirin",
+              "Jesujoba Alabi",
+              "Karrar Talib Abed",
+              "Mateusz Klimaszewski",
+              "Nikolay Bogoychev",
+              "Niyati Bafna",
+              "Patricia Schmidtova",
+              "Preksha Manjunath Shanbhag",
+              "Sherrie Shen",
+              "Vilem Zouhar",
+              "Vivek Iyer",
+              "Yasser Hamidullah",
+              "Yusser Al Ghussin",
+              "Zheng Zhao"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.09766v1"
+          },
+          "score": 6.0,
+          "summary": "源对比翻译基准，检测数据污染并评估本地化鲁棒性。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi-K2.6, GLM-5.2, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 178240,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "gemma3",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llama3",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 10.0,
+          "summary": "一键本地运行Kimi、DeepSeek等主流模型，部署推理零门槛。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 152011,
+            "language": "TypeScript",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "orchestration",
+              "python",
+              "rag",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 10.0,
+          "summary": "构建Agent工作流与RAG管线的全栈平台，支持私有部署。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "The context API to search, scrape, and interact with the web at scale. 🔥",
+          "extra": {
+            "stars": 165165,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "可编程的网页搜索/抓取API，为Agent提供实时互联网上下文。"
+        },
+        {
+          "section": "repo",
+          "title": "alibaba/open-code-review",
+          "url": "https://github.com/alibaba/open-code-review",
+          "source": "GitHub 新星",
+          "published_at": "2026-05-18T02:16:36Z",
+          "raw_text": "Fast, efficient, battle-tested at Alibaba's scale. Hybrid architecture code review tool: deterministic pipelines + LLM Agent, precise line-level comments, built-in multi-language ruleset (NPE, thread-safety, XSS, SQL injection), OpenAI & Anthropic compatible.",
+          "extra": {
+            "stars": 19957,
+            "language": "Go",
+            "topics": [
+              "agent",
+              "agent-skills",
+              "code-review",
+              "code-review-assistant",
+              "harness",
+              "repository-level-context"
+            ]
+          },
+          "score": 9.0,
+          "summary": "阿里实战验证的混合架构代码审查工具，内置安全规则集。"
+        },
+        {
+          "section": "repo",
+          "title": "xai-org/grok-build",
+          "url": "https://github.com/xai-org/grok-build",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-14T20:04:23Z",
+          "raw_text": "SpaceXAI's coding agent harness and TUI. Fullscreen, mouse interactive, extensible.",
+          "extra": {
+            "stars": 24620,
+            "language": "Rust",
+            "topics": []
+          },
+          "score": 8.0,
+          "summary": "全屏交互的编码Agent终端工具，来自xAI，专注开发效率。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "OpenAI launches GPT-5.6-Cyber with reduced refusals, 95% completion on advanced cybersecurity tasks",
+          "url": "https://venturebeat.com/technology/openai-launches-gpt-5-6-cyber-with-reduced-refusals-95-completion-on-advanced-cybersecurity-tasks",
+          "source": "VentureBeat",
+          "published_at": "2026-08-10T23:53:23Z",
+          "raw_text": "Earlier today, OpenAI launched GPT-5.6-Cyber , a specialized model designed to perform advanced vulnerability research and exploit development for approved defenders — including categories of work that its general-purpose models will often refuse. GPT-5.6-Cyber is a fine-tuned version of OpenAI's most advanced general model, GPT-5.6 Sol, unveiled back in June , but trained specifically to improve performance on advanced cybersecurity tasks, including finding zero-day vulnerabilities and developing exploit chains. Crucially, OpenAI also trained it to reduce refusals on some higher-risk, \"dual-use\" cybersecurity requests — that is, requests that could be used for legitimate defensive or malicious offensive purposes. Indeed, on an internal OpenAI benchmark called Advanced Cybersecurity Comple",
+          "extra": {},
+          "score": 9.0,
+          "summary": "OpenAI发布GPT-5.6-Cyber专攻高级网络安全，减少拒绝率，显示模型能力新方向。"
+        },
+        {
+          "section": "news",
+          "title": "OpenAI reportedly completed a $7 billion employee tender offer",
+          "url": "https://techcrunch.com/2026/08/10/openai-reportedly-completed-a-7-billion-employee-tender-offer/",
+          "source": "TechCrunch",
+          "published_at": "2026-08-11T00:03:18Z",
+          "raw_text": "San Francisco's housing market is in trouble again.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "OpenAI完成70亿美元员工要约收购，管理层变现与人才激励信号值得关注。"
+        },
+        {
+          "section": "news",
+          "title": "With new open models, Meta pitches another reboot of its struggling AI strategy",
+          "url": "https://arstechnica.com/ai/2026/08/with-new-open-models-meta-pitches-another-reboot-of-its-struggling-ai-strategy/",
+          "source": "Ars Technica",
+          "published_at": "2026-08-10T22:13:03Z",
+          "raw_text": "Meta has been trailing competitors. Zuckerberg thinks he's found a way forward.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Meta推新开源模型意图逆转AI落后局面，开源生态影响重大。"
+        },
+        {
+          "section": "news",
+          "title": "AWS Continuum integrates with OpenAI Codex and Anthropic Claude Code in major AI security push",
+          "url": "https://venturebeat.com/security/aws-continuum-integrates-with-openai-codex-and-anthropic-claude-code-in-major-ai-security-push",
+          "source": "VentureBeat",
+          "published_at": "2026-08-10T20:00:00Z",
+          "raw_text": "Amazon Web Services is threading its AI-powered security infrastructure directly into the coding environments built by two of its fiercest rivals — and in doing so, it is making a bold bet that controlling the security layer matters more than controlling the model. AWS announced at Black Hat USA 2026 this month that its Continuum platform for code vulnerabilities will integrate directly into Anthropic's Claude Code and OpenAI's Codex , alongside AWS's own Kiro IDE . The move embeds AWS security tooling at the point where developers write code, regardless of which AI model they use to do it. Simultaneously, AWS expanded Security Hub Extended — its curated, single-bill security marketplace launched in February — with a 10th security category focused on supply chain protection, bringing in Ch",
+          "extra": {},
+          "score": 8.0,
+          "summary": "AWS集成OpenAI Codex和Claude Code做安全层，控制权争夺战升级。"
+        },
+        {
+          "section": "news",
+          "title": "Amazon backs power plant that may become top source of US climate pollution",
+          "url": "https://arstechnica.com/tech-policy/2026/08/amazon-funds-biggest-gas-power-plant-in-us-despite-climate-pledge/",
+          "source": "Ars Technica",
+          "published_at": "2026-08-10T20:45:52Z",
+          "raw_text": "Amazon announces first off-the-grid data center in race to reap AI profits.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "Amazon首建离网数据中心支持AI算力，环境争议引发监管关注。"
+        },
+        {
+          "section": "news",
+          "title": "Brex assumes its AI agents could do anything — so it watches the network, not the code",
+          "url": "https://venturebeat.com/orchestration/brex-assumes-its-ai-agents-could-do-anything-so-it-watches-the-network-not-the-code",
+          "source": "VentureBeat",
+          "published_at": "2026-08-10T18:31:04Z",
+          "raw_text": "Brex CEO Pedro Franceschi offered a blueprint for one of the pressing challenges facing the enterprise today at VB Transform 2026 : securely deploying AI agents, like the open-source OpenClaw, into production environments. Unlocking this enterprise value requires a mindset shift. The industry needs to move past vague terminology and focus on concrete enterprise roles. “People talk a lot about agents, but I think 'agents' is a terrible name. It's this Silicon Valley concept that doesn't really mean much,” Franceschi said. Instead, the goal should be creating entities that can genuinely collaborate with human workers. \"The concept we always had in mind was the idea of a virtual employee — someone on Slack, an entity, it has an email address, it can join meetings, you can email it, and that y",
+          "extra": {},
+          "score": 7.0,
+          "summary": "Brex用网络监控而非代码审计应对AI代理，安全范式值得业界借鉴。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Meta is back with Muse Glimmer: local, agentic, multimodal, and open source",
+          "url": "https://huggingface.co/blog/muse-glimmer",
+          "source": "Hugging Face",
+          "published_at": "2026-08-10T00:00:00Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "Meta发布Muse Glimmer开源多模态智能体模型，支持本地部署，推动边缘AI。"
+        },
+        {
+          "section": "product",
+          "title": "Gemini Robotics ER 2: powering robotics with video understanding, task orchestration, and multi-robot collaboration",
+          "url": "https://deepmind.google/blog/gemini-robotics-er-2-powering-robotics-with-video-understanding-task-orchestration-and-multi-robot-collaboration/",
+          "source": "Google DeepMind",
+          "published_at": "2026-07-30T15:00:59Z",
+          "raw_text": "Gemini Robotics ER 2 helps robots reason, collaborate, and solve real-world tasks. It represents a step change in video understanding, tool orchestration, and multi-robot collaboration for robotic applications.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "Google发布Gemini Robotics ER 2，实现视频理解与多机器人协作，是机器人AI新里程碑。"
+        },
+        {
+          "section": "product",
+          "title": "Build Low-Latency Multilingual Voice Agents: Open Weights & Full Deployment Control with NVIDIA Magpie TTS",
+          "url": "https://huggingface.co/blog/nvidia/magpie-tts-multilingual-voice-agents",
+          "source": "Hugging Face",
+          "published_at": "2026-08-10T16:25:36Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 8.0,
+          "summary": "NVIDIA发布Magpie TTS，开放权重低延迟多语言语音模型，适合实时应用。"
+        }
+      ]
+    }
+  ]
+}
