@@ -1,0 +1,399 @@
+{
+  "date": "2026-08-12",
+  "tip": {
+    "title": "Actions Speak Louder than Words: Measuring Cross-Lingual Policy Retention in Tool-Using Agents",
+    "body": "当你的Agent需要执行用户提供的代码（如数学公式、SQL查询）时，直接使用`exec`或`eval`会带来严重安全风险。\n\n**做法**：用`subprocess`在隔离的Docker容器中运行代码，并设置资源限制。\n\n```python\nimport subprocess\nimport docker\n\ndef safe_exec(code: str):\n    client = docker.from_env()\n    container = client.containers.run(\n        \"python:3.11-slim\",\n        command=[\"python\", \"-c\", code],\n        mem_limit=\"256m\",\n        cpu_period=100000, cpu_quota=50000,\n        remove=True,\n        stdout=True, stderr=True\n    )\n    return container.decode()\n```\n\n此方案基于条目[0]中跨语言工具调用安全性的警示，防止恶意代码通过Agent执行。",
+    "ref_title": "Actions Speak Louder than Words: Measuring Cross-Lingual Policy Retention in Tool-Using Agents",
+    "ref_url": "https://arxiv.org/abs/2608.11110v1"
+  },
+  "errors": [],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "Actions Speak Louder than Words: Measuring Cross-Lingual Policy Retention in Tool-Using Agents",
+          "url": "https://arxiv.org/abs/2608.11110v1",
+          "source": "arXiv",
+          "published_at": "2026-08-11T16:18:34Z",
+          "raw_text": "When a tool-using agent is given the same task in a different language, does it still take the same steps? Multilingual evaluation rarely asks: it compares final answers and discards the actions. Yet those actions are the product: they fix cost and latency, decide how the system fails, and are the only auditable part of its behaviour. We make the action policy the measured object across 8 models, 6 parallel benchmarks and 41 languages (2.38M rollouts). The naive measurement fails: five confounds sit between raw trace similarity and any defensible claim, each able to flip a conclusion. Short traces score higher, empty traces score perfectly, unrelated traces agree by chance over half the time, the gap is capped by each model's reproducibility, and a model asked the same question twice in one language answers differently, leaving no baseline. We remove all five, and every correction makes the effect larger. Divergence proves structural, not sampling noise: it survives greedy decoding in every cell and stays flat as temperature rises, even as models grow less self-consistent. Normalised by their own reproducibility, four very different frontier models converge under greedy decoding, each keeping 71-73% of its action policy across languages, with model identity explaining only 5.7% of the variance. Below roughly 10B parameters it breaks down, and the ordering among smaller models is largely an artifact of a chance floor we measure by permutation rather than assume. Agents route non-English tasks through English; this pivot is causally load-bearing, confirmed by a pre-registered prediction across four models, and models will not abandon it when told to. Finally, a single trace-extraction regex, not the model, manufactured a multilingual failure: two worked examples raise one model's measured accuracy twenty-sixfold while its accuracy on readable outputs barely moves.",
+          "extra": {
+            "authors": [
+              "Sourabrata Mukherjee",
+              "Kalika Bali",
+              "Sunayana Sitaram"
+            ],
+            "categories": [
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.11110v1"
+          },
+          "score": 9.0,
+          "summary": "发现多语言下工具调用智能体的行为不一致，揭示跨语言策略保留的盲区，对Agent安全部署至关重要。"
+        },
+        {
+          "section": "paper",
+          "title": "Why Does CLAUDE.md Keep Growing? Catastrophic Remembering in Agentic Coding",
+          "url": "https://arxiv.org/abs/2608.11095v1",
+          "source": "arXiv",
+          "published_at": "2026-08-11T16:00:55Z",
+          "raw_text": "Agentic coding READMEs like CLAUDE.md grow without bound in real repositories, stopping only when the repository retires or someone rewrites the file wholesale. We trace this to imperfect recall: appending an instruction is always cheap, but once an instruction's rationale is gone, deleting it without risking a correctness regression costs O(2^|D|) in a prompt of |D| instructions. We name the resulting divergence catastrophic remembering, the inverse of catastrophic forgetting around which continual learning is organized. First, we characterize this phenomenon across 247,694 instruction lifetimes in 1,867 repositories: agentic prompts grow without bound, more than tripling over their lifetime (+226%), gaining +4.9 net instructions every commit; further, the older an instruction gets, the less likely it is to be deleted (log-hazard -0.032/commit). Then, we show that prompt comments can halt the growth: inverting IFEval yields verifiable worlds whose optimal prompts are known, and there comments encoding latent reasoning remove 99.3% of excess instructions (+211.3% to +1.4%). Finally, applying the same inversion to WildIFEval, we show that prompt comments can improve real-world agentic instruction-following by up to 23.1%. If English is the new code, why don't we have comments yet?",
+          "extra": {
+            "authors": [
+              "Kushal Chakrabarti"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.LG",
+              "cs.SE"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.11095v1"
+          },
+          "score": 9.0,
+          "summary": "揭示AI编码智能体指令文件无限膨胀的‘灾难性记忆’问题，为Agent长期记忆管理提供关键洞察。"
+        },
+        {
+          "section": "paper",
+          "title": "Test-Time Self-Evolving GUI Visual Grounding via Reflection-Guided On-Policy Self-Distillation",
+          "url": "https://arxiv.org/abs/2608.11191v1",
+          "source": "arXiv",
+          "published_at": "2026-08-11T17:50:25Z",
+          "raw_text": "GUI Visual Grounding is a fundamental capability for GUI agents. Existing models typically freeze their parameters after deployment, limiting their ability to adapt to unseen interfaces. Although recent methods attempt to adapt models via test-time reinforcement learning, they cannot reflect upon failed exploration. To overcome this, we propose a Test-Time Self-Evolving framework that enables models to improve after deployment without human-annotated ground truth. It constructs a closed-loop of Exploration, Evaluation, Reflection, and Internalization. Specifically, the agent first explores unseen interfaces by predicting grounding coordinates for given instructions. To evaluate these explorations, we introduce an MLLM-based Reflector to assess the generated results and provide the corresponding reasoning reflections. To internalize reflection knowledge into the model weights, we propose Reflection-Guided On-Policy Self-Distillation, which translates high-level reasoning into dense token-level supervision via a conditioned self-teacher. Furthermore, we design a Contrastive Calibration method to prevent incorrect auto-regressive prefixes from corrupting the supervisory signals during failed explorations. Extensive experiments across six benchmarks demonstrate our framework's effectiveness, achieving an average accuracy improvement of 7.4% over the base model. To the best of our knowledge, this is the first work to successfully exploit on-policy self-distillation for test-time adaptation in GUI visual grounding. By filling the gap in post-deployment adaptation, our framework completes the self-evolving capability of GUI agents. The code will be released.",
+          "extra": {
+            "authors": [
+              "Shiyu Xuan",
+              "Zechao Li"
+            ],
+            "categories": [
+              "cs.CV",
+              "cs.AI",
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.11191v1"
+          },
+          "score": 8.0,
+          "summary": "提出测试时自进化GUI视觉定位方法，让智能体在部署后仍能适应新界面，提升Agent泛化能力。"
+        },
+        {
+          "section": "paper",
+          "title": "Long-Horizon AI Research for Grothendieck Constant: A Case Study in Human-AI Mathematical Collaboration",
+          "url": "https://arxiv.org/abs/2608.11195v1",
+          "source": "arXiv",
+          "published_at": "2026-08-11T17:53:48Z",
+          "raw_text": "AI agents are increasingly used in mathematics research, but it is often unclear how to use them effectively. Towards this, we present an extensive case study of how AI was used to improve bounds on the Grothendieck constant $K_G$, which captures the hardness between combinatorial problems and their continuous relaxations. Specifically, while the precise value of $K_G$ is not known, we recently tightened the best known bounds to \\[ \\frac{6π}{11} \\;\\le\\; K_G \\;\\le\\; \\fracπ{2\\log(1+\\sqrt2)} - 10^{-4}. \\] Crucially, these improvements were achieved using an AI research system that could arrive at insights deemed novel by domain experts. We give a detailed discussion of our experience using AI for mathematics research, particularly touching upon its strengths and weaknesses, as well as our experience with creating ideal conditions for AI to arrive at breakthrough insights.",
+          "extra": {
+            "authors": [
+              "Alan Li",
+              "Rahul Saha",
+              "Anton Xue",
+              "Swarat Chaudhuri",
+              "Adam Klivans",
+              "Pravesh K Kothari",
+              "Raghu Meka"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CC",
+              "cs.HC",
+              "math.FA"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.11195v1"
+          },
+          "score": 8.0,
+          "summary": "展示AI智能体在长周期数学研究中协作改进理论常数的案例，为Agent科研应用提供范式参考。"
+        },
+        {
+          "section": "paper",
+          "title": "The Illusion of Cross-Lingual Safety in Low-Resource Languages",
+          "url": "https://arxiv.org/abs/2608.11146v1",
+          "source": "arXiv",
+          "published_at": "2026-08-11T17:05:26Z",
+          "raw_text": "Safety alignment in large language models (LLMs) is largely developed in English, assuming these safeguards generalize across multilingual settings. However, this assumption remains underexplored and exposes a vulnerability in low-resource languages. We investigate cross-lingual safety transfer in four African languages, Twi, Hausa, Amharic, and Swahili, using LoDNA, a new safety dataset that pairs literal translations with culturally localized prompts. To move beyond generation-based evaluation, we propose a latent geometric framework that probes hidden-state refusal representations in LLMs. Our experimental results show that cross-lingual safety transfer is severely limited; harmful prompts retain less than 10% of the English refusal signal across most language-model pairs. Literal and localized prompts are semantically aligned (cosine 0.95-0.996) but drift across layers, suggesting models encode the concepts without routing them to safety mechanisms. These findings demonstrate that current multilingual safety alignment is superficial, providing strong evidence against the assumption of a universal, language-agnostic harm manifold within the specific low-resource languages studied. Warning: This paper contains example data that may be offensive or harmful.",
+          "extra": {
+            "authors": [
+              "Abigail Oppong",
+              "P Sam Sahil",
+              "Tadesse Destaw Belay",
+              "Maryam Ibrahim Mukhtar",
+              "Esmael Ahmed Abdu",
+              "Tassallah Abdullahi",
+              "Jessica Oparebea",
+              "Saminu Mohammad Aliyu",
+              "Idris Abdulmumin",
+              "Abubakar Juma Chilala",
+              "Nicholaus Dismas Ladislaus",
+              "Alfred Malengo Kondoro",
+              "Lemofouet Valdini Douglace",
+              "Shamsuddeen Hassan Muhammad",
+              "Seid Muhie Yimam"
+            ],
+            "categories": [
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.11146v1"
+          },
+          "score": 7.0,
+          "summary": "揭示低资源语言中LLM安全对齐的幻觉，证明跨语言安全迁移存在严重漏洞，对Agent安全部署有警示意义。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi-K2.6, GLM-5.2, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 178303,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "gemma3",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llama3",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 9.0,
+          "summary": "一键本地运行最新开源大模型，支持Kimi、DeepSeek等，降低部署门槛。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "The context API to search, scrape, and interact with the web at scale. 🔥",
+          "extra": {
+            "stars": 165940,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "规模化网页抓取与交互API，为RAG和Agent提供实时数据源。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 152139,
+            "language": "TypeScript",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "orchestration",
+              "python",
+              "rag",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 8.0,
+          "summary": "一站式构建Agent工作流与RAG管道，支持多模型与私有化部署。"
+        },
+        {
+          "section": "repo",
+          "title": "alibaba/open-code-review",
+          "url": "https://github.com/alibaba/open-code-review",
+          "source": "GitHub 新星",
+          "published_at": "2026-05-18T02:16:36Z",
+          "raw_text": "Fast, efficient, battle-tested at Alibaba's scale. Hybrid architecture code review tool: deterministic pipelines + LLM Agent, precise line-level comments, built-in multi-language ruleset (NPE, thread-safety, XSS, SQL injection), OpenAI & Anthropic compatible.",
+          "extra": {
+            "stars": 20154,
+            "language": "Go",
+            "topics": [
+              "agent",
+              "agent-skills",
+              "code-review",
+              "code-review-assistant",
+              "harness",
+              "repository-level-context"
+            ]
+          },
+          "score": 8.0,
+          "summary": "阿里级混合架构代码审查工具，结合规则引擎与LLM，精准定位行级问题。"
+        },
+        {
+          "section": "repo",
+          "title": "langchain-ai/openwiki",
+          "url": "https://github.com/langchain-ai/openwiki",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-22T23:48:26Z",
+          "raw_text": "OpenWiki is a CLI that writes and maintains agent documentation for your codebase.",
+          "extra": {
+            "stars": 14902,
+            "language": "TypeScript",
+            "topics": []
+          },
+          "score": 7.0,
+          "summary": "CLI工具自动为代码库生成并维护Agent文档，解决文档滞后痛点。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Gemini becomes Google's fastest-growing product ever as it hits 1B users",
+          "url": "https://arstechnica.com/ai/2026/08/google-says-gemini-has-reached-1b-users-faster-than-any-other-google-product/",
+          "source": "Ars Technica",
+          "published_at": "2026-08-11T19:48:12Z",
+          "raw_text": "But will Gemini's surge survive slowing model releases?",
+          "extra": {},
+          "score": 10.0,
+          "summary": "Gemini月活破10亿，成谷歌史上增长最快产品，标志AI应用进入大众化阶段。"
+        },
+        {
+          "section": "news",
+          "title": "Nvidia Nemotron 3.5 Lightning and NeMo Switchyard",
+          "url": "https://blogs.nvidia.com/blog/nemotron-lightning-switchyard-rtx-dgx/",
+          "source": "Hacker News",
+          "published_at": "2026-08-11T19:35:52Z",
+          "raw_text": "Article URL: https://blogs.nvidia.com/blog/nemotron-lightning-switchyard-rtx-dgx/ Comments URL: https://news.ycombinator.com/item?id=49263340 Points: 190 # Comments: 97",
+          "extra": {},
+          "score": 9.0,
+          "summary": "英伟达发布Nemotron 3.5 Lightning与NeMo Switchyard，强化模型训练与推理效率。"
+        },
+        {
+          "section": "news",
+          "title": "Mistral AI wants to build 1 gigawatt of European compute by 2030 — and lock in customers now.",
+          "url": "https://venturebeat.com/infrastructure/mistral-ai-wants-to-build-1-gigawatt-of-european-compute-by-2030-and-lock-in-customers-now",
+          "source": "VentureBeat",
+          "published_at": "2026-08-11T13:59:00Z",
+          "raw_text": "Mistral AI wants to turn European AI sovereignty from a talking point into a product — one with a service-level agreement attached. The French artificial intelligence company announced Tuesday a three-part expansion of its infrastructure business: regional inference endpoints that let customers choose whether their AI workloads run in Europe or the United States, a new \"Priority Tier\" backed by an uptime guarantee for mission-critical deployments, and a coalition of European enterprises making multi-year compute commitments that Mistral says will underwrite 200 megawatts of infrastructure across Europe by the end of 2027 — and a full gigawatt by the end of 2030. In a move that may raise eyebrows among sovereignty purists, the company also said it will begin hosting third-party open models ",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Mistral AI计划2030年前建设1GW欧洲算力，推动AI主权从口号落地为商业服务。"
+        },
+        {
+          "section": "news",
+          "title": "Accel closes oversubscribed $550M India fund within weeks, 19 months after its last",
+          "url": "https://techcrunch.com/2026/08/11/accel-closes-oversubscribed-550m-india-fund-within-weeks-19-months-after-its-last/",
+          "source": "TechCrunch",
+          "published_at": "2026-08-11T21:39:11Z",
+          "raw_text": "The U.S. VC firm still has more than 55% of its previous $650 million India fund available for deployment.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Accel数周内完成5.5亿美元印度基金超额认购，显示资本对AI/科技市场信心不减。"
+        },
+        {
+          "section": "news",
+          "title": "With new open models, Meta pitches another reboot of its struggling AI strategy",
+          "url": "https://arstechnica.com/ai/2026/08/with-new-open-models-meta-pitches-another-reboot-of-its-struggling-ai-strategy/",
+          "source": "Ars Technica",
+          "published_at": "2026-08-10T22:13:03Z",
+          "raw_text": "Meta has been trailing competitors. Zuckerberg thinks he's found a way forward.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "Meta发布新开源模型，试图扭转AI竞争劣势，开源路线再成焦点。"
+        },
+        {
+          "section": "news",
+          "title": "Amazon backs power plant that may become top source of US climate pollution",
+          "url": "https://arstechnica.com/tech-policy/2026/08/amazon-funds-biggest-gas-power-plant-in-us-despite-climate-pledge/",
+          "source": "Ars Technica",
+          "published_at": "2026-08-10T20:45:52Z",
+          "raw_text": "Amazon announces first off-the-grid data center in race to reap AI profits.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "亚马逊支持离网数据中心，AI算力需求正加速改变能源与基础设施格局。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Gemini Robotics ER 2: powering robotics with video understanding, task orchestration, and multi-robot collaboration",
+          "url": "https://deepmind.google/blog/gemini-robotics-er-2-powering-robotics-with-video-understanding-task-orchestration-and-multi-robot-collaboration/",
+          "source": "Google DeepMind",
+          "published_at": "2026-07-30T15:00:59Z",
+          "raw_text": "Gemini Robotics ER 2 helps robots reason, collaborate, and solve real-world tasks. It represents a step change in video understanding, tool orchestration, and multi-robot collaboration for robotic applications.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "谷歌发布Gemini Robotics ER 2，通过视频理解与多机器人协作，推动具身智能进入新阶段。"
+        },
+        {
+          "section": "product",
+          "title": "WeatherNext: AI model achieves breakthrough in forecasting cyclones",
+          "url": "https://deepmind.google/blog/weathernext-ai-model-achieves-breakthrough-in-forecasting-cyclones/",
+          "source": "Google DeepMind",
+          "published_at": "2026-08-06T15:06:15Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 8.0,
+          "summary": "WeatherNext AI模型在气旋预报上取得突破，展示AI在科学计算领域的实用价值。"
+        },
+        {
+          "section": "product",
+          "title": "Orchard: An open framework for scalable agentic AI",
+          "url": "https://www.microsoft.com/en-us/research/blog/orchard-an-open-framework-for-scalable-agentic-ai/",
+          "source": "Microsoft Research",
+          "published_at": "2026-08-03T16:00:00Z",
+          "raw_text": "Orchard is an open-source framework for the research community to train and evaluate AI agents across task types. It reduces complexity while supporting strong performance from smaller models by enabling researchers to reuse the same infrastructure. The post Orchard: An open framework for scalable agentic AI appeared first on Microsoft Research .",
+          "extra": {},
+          "score": 7.0,
+          "summary": "Orchard开源框架降低AI智能体训练门槛，支持小模型高效复用基础设施。"
+        }
+      ]
+    }
+  ]
+}
