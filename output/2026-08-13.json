@@ -1,0 +1,410 @@
+{
+  "date": "2026-08-13",
+  "tip": {
+    "title": "防御第三方技能劫持：输入输出校验白名单",
+    "body": "今天从条目[1]切入：当你的Agent依赖第三方技能（如插件、API）时，攻击者可能通过隐蔽劫持篡改行为，而开发者往往难以察觉。\n\n**做法**：对每个第三方技能调用添加**输入输出校验白名单**。例如，用Pydantic定义技能返回的JSON schema，拒绝不符合结构的响应：\n```python\nfrom pydantic import BaseModel, ValidationError\n\nclass SkillOutput(BaseModel):\n    result: str\n    confidence: float = 0.0\n\n# 在调用技能后校验\nraw = call_third_party_skill()\ntry:\n    validated = SkillOutput.model_validate(raw)\nexcept ValidationError:\n    raise SecurityError(\"技能输出异常，疑似劫持\")\n```\n这能拦截大部分非预期数据注入，且无需执行模型生成的代码。",
+    "ref_title": "Convergent Detour Hijacking: Task-Preserving Resource Amplification in Skill-Based LLM Agents",
+    "ref_url": "https://arxiv.org/abs/2608.12273v1"
+  },
+  "errors": [],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "VAKRA: Evaluating Multi-Hop Reasoning Across APIs and Retrieval Under Tool-Use Policies",
+          "url": "https://arxiv.org/abs/2608.12282v1",
+          "source": "arXiv",
+          "published_at": "2026-08-12T17:27:27Z",
+          "raw_text": "Agents deployed in enterprise settings must reason across structured APIs and document collections, yet existing benchmarks evaluate these capabilities in isolation. We introduce VAKRA (e\\textbf{V}aluating \\textbf{A}PI and \\textbf{K}nowledge \\textbf{R}etrieval \\textbf{A}gents), a benchmark of over $8{,}000$ executable APIs across $62$ domains with tasks spanning three settings of increasing difficulty: diverse API interaction styles, multi-hop reasoning over structured APIs, and multi-source reasoning with natural-language tool-use policy constraints. Correctness is verified by re-executing predicted tool calls against live APIs, accommodating multiple valid paths. Using a fixed ReAct harness to isolate model capabilities from agent architecture, we evaluate frontier and open-weight models and find that even the best model achieves only 70.4\\% on single-hop endpoint-style tasks and drops to 50--51\\% on compositional APIs; performance degrades by over 50\\% as reasoning depth increases, and policy-constrained questions expose severe failures (as low as 2.4\\% on unanswerable queries). Trace analysis shows failures concentrate at language-mediated reasoning - entity disambiguation, cross-source grounding, rather than tool invocation mechanics. Code is available https://github.com/IBM/VAKRA. Dataset is available https://huggingface.co/datasets/ibm-research/VAKRA",
+          "extra": {
+            "authors": [
+              "Ankita Rajaram Naik",
+              "Anupama Murthi",
+              "Benjamin Elder",
+              "Siyu Huo",
+              "Raavi Gupta",
+              "Abhinav Jain",
+              "Praveen Venkateswaran",
+              "Abdulhamid Adebayo",
+              "Danish Contractor"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.12282v1"
+          },
+          "score": 9.0,
+          "summary": "提出多跳推理基准VAKRA，评估Agent跨API与检索的协同能力，填补现有基准空白。"
+        },
+        {
+          "section": "paper",
+          "title": "Convergent Detour Hijacking: Task-Preserving Resource Amplification in Skill-Based LLM Agents",
+          "url": "https://arxiv.org/abs/2608.12273v1",
+          "source": "arXiv",
+          "published_at": "2026-08-12T17:12:49Z",
+          "raw_text": "LLM agents increasingly rely on third-party skills, using natural-language descriptions for selection and instruction bodies for planning. This progressive-disclosure design exposes two sequential control points to untrusted publishers: a static skill may steer an otherwise correct task onto an unnecessarily costly trajectory. Prior work studies selection manipulation, malicious skill instructions, and tool-chain resource amplification largely separately, leaving their end-to-end composition unclear. We introduce Convergent Detour Hijacking (CDH), a text-only, runtime-independent attack that couples these stages. Under shared semantic cover, a description establishes relevance during selection, while an aligned body reuses that rationale to fabricate plausible dependencies during planning. CDH attracts an attacker-controlled coordinator alongside legitimate skills, recruits unnecessary benign skills into a bounded detour, and then re-enters the original route to preserve task completion. We evaluate it across multiple LLM backends and 491 held-out tasks under single-task and multi-turn conditions. On DeepSeek-V4-Pro, the matched coordinator is selected in 80.02% of tasks; among coordinator-hit runs that complete tasks, token consumption and end-to-end execution time increase by 66.91% and 92.45%, respectively, while aggregate task completion remains comparable. Thus, correct outcomes do not guarantee trajectory integrity or cost safety.",
+          "extra": {
+            "authors": [
+              "Junliang Liu",
+              "Ruoyu Li",
+              "Wenxin Tang",
+              "Jingyu Xiao",
+              "Zhenyu Liu",
+              "Jingheng Xu",
+              "Laizhong Cui"
+            ],
+            "categories": [
+              "cs.CR",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.12273v1"
+          },
+          "score": 9.0,
+          "summary": "揭示LLM Agent第三方技能中的隐蔽劫持攻击，对Agent安全部署有重要警示。"
+        },
+        {
+          "section": "paper",
+          "title": "AI4AI at Test-Time: Strong-to-Weak Capability Transfer via Harnesses",
+          "url": "https://arxiv.org/abs/2608.12307v1",
+          "source": "arXiv",
+          "published_at": "2026-08-12T17:53:18Z",
+          "raw_text": "Recent work on distillation transfers the capabilities of large models to smaller ones often by updating the latter's parameters, through teacher forcing, on-policy distillation, and related training-time methods. In this paper, we ask whether such transfer can instead occur at test time. We study strong-to-weak scaffolding: whether a stronger builder model can construct inference-time harnesses that help a weaker target model solve tasks more reliably without any parameter updates. Using four representative Theory-of-Mind benchmarks, each builder model uses 5% of the data as a validation set to iteratively refine its harness over multiple rounds, after which the finalized harness is evaluated on the full test set. Empirically, this form of test-time capability transfer is highly effective, nearly doubling average target-model performance from 0.49 to 0.91. Our analysis shows that the gains come primarily from offloading unstable model reasoning into deterministic code, benchmark-specific routing, and strict answer-format enforcement, rather than from encouraging the target model to reason more extensively or sample more broadly. We further find that builder-model reasoning effort improves harness quality monotonically, platform effects are modest relative to the builder model's own capability, and weaker target models receive the largest gains. These results suggest that inference-time harness design is an important complement to conventional training-time distillation, enabling strong models to transfer cognitive structure to weaker models without retraining.",
+          "extra": {
+            "authors": [
+              "Cheng Qian",
+              "Wenting Zhao",
+              "Liangwei Yang",
+              "Heng Wang",
+              "Jielin Qiu",
+              "Heng Ji",
+              "Silvio Savarese",
+              "Huan Wang",
+              "Shelby Heinecke"
+            ],
+            "categories": [
+              "cs.LG",
+              "cs.AI",
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.12307v1"
+          },
+          "score": 8.0,
+          "summary": "探索测试时强到弱能力迁移，无需参数更新，为Agent轻量化部署提供新思路。"
+        },
+        {
+          "section": "paper",
+          "title": "Beyond Trial-and-Error: Agentic Optimization for Image-to-Video Adherence",
+          "url": "https://arxiv.org/abs/2608.12290v1",
+          "source": "arXiv",
+          "published_at": "2026-08-12T17:35:16Z",
+          "raw_text": "Modern black-box Image-to-Video (I2V) models offer powerful capabilities in automated content creation, yet their lack of fine-grained control and reliability presents significant challenges in professional workflows. Their inherent stochasticity causes minor variations in textual prompts or hyperparameters to yield drastically different outputs often necessitating inefficient, brute-force trial-and-error processes. To address these limitations, we introduce the ``Agentic Self-Improvement\" framework, which reframes video synthesis into a closed-loop, goal-directed optimization. Our framework systematically navigates the generation parameter space using a novel two-stage approach. In the first stage, an iterative prompt optimization loop uses a multimodal Large Language Model (mLLM) to refine the input prompt. This refinement implements two automated evaluations: Davidsonian Scene Graph (DSG) queries ensure semantic adherence, and Common Mistake Questions (CMQ) for artifact detection. At the second stage, we use Bayesian optimization to efficiently co-optimize stochastic seeds and CFG scales. This search is guided by a suite of quality metrics, including the novel Video-Text Adherence (VTA) score derived from the DSG and CMQ evaluations. Our framework significantly outperforms unguided search methods: in human preference studies, videos generated via our agentic approach were strongly preferred over baseline outputs, achieving win rates up to 69\\%. This work provides a practical and extensible methodology for enhancing the predictability and control of state-of-the-art video generation models, moving the field beyond speculative curiosities toward reliable, production-ready tools.",
+          "extra": {
+            "authors": [
+              "Aman Tyagi",
+              "Hemanth Boinpally",
+              "Jonathan Chen",
+              "Douglas Gebert",
+              "Steven Hickson"
+            ],
+            "categories": [
+              "cs.CV",
+              "cs.AI",
+              "cs.MM"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.12290v1"
+          },
+          "score": 8.0,
+          "summary": "提出Agentic优化框架，自动调优图像到视频生成，解决黑盒模型控制难题。"
+        },
+        {
+          "section": "paper",
+          "title": "AVA-Encoder: Towards Agent-Native Video Representation Learning",
+          "url": "https://arxiv.org/abs/2608.12313v1",
+          "source": "arXiv",
+          "published_at": "2026-08-12T17:58:02Z",
+          "raw_text": "Creative agents still lack an effective way to learn from high-quality human films, limiting their ability to produce cinematic-grade videos. A key challenge is the absence of a structured video representation that is both faithful to film content and directly usable for agentic reasoning and manipulation. To address the challenge, we propose the Agentic Video Auto-Encoder (AVA-Encoder), a framework for learning agent-native video representations via agentic auto-encoding. AVA-Encoder transforms a video into a knowledge graph (KG) representation and then reconstructs it back into video. Its hierarchy and state nodes store structured text, while a linked asset layer holds generated images, audio, and video. Typed edges preserve the relations between these text descriptions and assets in a form that agents can easily understand, query, and edit. The video reconstruction differences drive a textual-gradient optimization framework, which expresses evaluation feedback as natural-language update directions for Data-Independent Encoding Policy Pseudo-Training in the outer loop and optional Data-Dependent KG Representation Refinement in the test-time inner loop. Extensive experiments show that AVA-Encoder improves by 20.7 percentage points over the strongest external baseline. In the controlled policy-only setting, its pseudo-trained shot-level Agentic Video Encoder policy also outperforms a carefully human-tuned policy while using 74.3% fewer system-prompt tokens. We release the complete AVA-Encoder framework, a reliable agentic video reconstruction benchmark, and the first dataset of high-quality film KG representations.",
+          "extra": {
+            "authors": [
+              "Chuyue Li",
+              "Jinpeng Yu",
+              "Haozhe Wang",
+              "Tian Xueyun",
+              "Zhijing Zhang",
+              "Bingnan Li",
+              "Shuqi Gu",
+              "Kan Ren",
+              "Jiaming Liu",
+              "Ruihua Hua"
+            ],
+            "categories": [
+              "cs.CV",
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.12313v1"
+          },
+          "score": 7.0,
+          "summary": "提出面向Agent的原生视频表征学习，让Agent能像人类一样从电影中学习创作。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi-K2.6, GLM-5.2, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 178384,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "gemma3",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llama3",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 9.0,
+          "summary": "一键本地运行最新开源大模型，支持Kimi、DeepSeek等，部署门槛极低。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "The context API to search, scrape, and interact with the web at scale. 🔥",
+          "extra": {
+            "stars": 166509,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "大规模网页抓取与搜索API，为RAG和Agent提供实时数据源。"
+        },
+        {
+          "section": "repo",
+          "title": "alibaba/open-code-review",
+          "url": "https://github.com/alibaba/open-code-review",
+          "source": "GitHub 新星",
+          "published_at": "2026-05-18T02:16:36Z",
+          "raw_text": "Fast, efficient, battle-tested at Alibaba's scale. Hybrid architecture code review tool: deterministic pipelines + LLM Agent, precise line-level comments, built-in multi-language ruleset (NPE, thread-safety, XSS, SQL injection), OpenAI & Anthropic compatible.",
+          "extra": {
+            "stars": 20313,
+            "language": "Go",
+            "topics": [
+              "agent",
+              "agent-skills",
+              "code-review",
+              "code-review-assistant",
+              "harness",
+              "repository-level-context"
+            ]
+          },
+          "score": 8.0,
+          "summary": "阿里级代码审查工具，结合规则引擎与LLM，精准定位安全漏洞。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 152272,
+            "language": "TypeScript",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "orchestration",
+              "python",
+              "rag",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 8.0,
+          "summary": "一站式构建Agent工作流与RAG管道，支持多模型与私有化部署。"
+        },
+        {
+          "section": "repo",
+          "title": "langchain-ai/openwiki",
+          "url": "https://github.com/langchain-ai/openwiki",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-22T23:48:26Z",
+          "raw_text": "OpenWiki is a CLI that writes and maintains agent documentation for your codebase.",
+          "extra": {
+            "stars": 14959,
+            "language": "TypeScript",
+            "topics": []
+          },
+          "score": 7.0,
+          "summary": "CLI工具自动生成并维护代码库文档，解决Agent项目文档痛点。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Terabytes of credentials leaked in massive supply-chain attack",
+          "url": "https://arstechnica.com/security/2026/08/terabytes-of-credentials-leaked-in-massive-supply-chain-attack/",
+          "source": "Ars Technica",
+          "published_at": "2026-08-12T21:43:21Z",
+          "raw_text": "The data was scraped and exfiltrated from 2,500 users of a compromised AI package.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "AI包供应链遭攻击，泄露TB级凭证，影响2500名用户，安全事件直接威胁行业基础设施。"
+        },
+        {
+          "section": "news",
+          "title": "AI coding startup Cognition reportedly already in talks to raise at $40B valuation",
+          "url": "https://techcrunch.com/2026/08/12/ai-coding-startup-cognition-reportedly-already-in-talks-to-raise-at-40b-valuation/",
+          "source": "TechCrunch",
+          "published_at": "2026-08-12T18:19:12Z",
+          "raw_text": "Cognition may be looking to raise another mega round just a few months after raising $1 billion at a $26 billion valuation.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "AI编程创企Cognition数月内估值从260亿升至400亿美元，反映资本对AI编码赛道极度追捧。"
+        },
+        {
+          "section": "news",
+          "title": "SpaceXAI debuts Grok 4.6, overtaking Kimi K3's performance and matching GPT-5.6 Sol for world's third best on Artificial Analysis",
+          "url": "https://venturebeat.com/technology/spacexai-debuts-grok-4-6-overtaking-kimi-k3s-performance-and-matching-gpt-5-6-sol-for-worlds-third-best-on-artificial-analysis",
+          "source": "VentureBeat",
+          "published_at": "2026-08-12T17:26:58Z",
+          "raw_text": "Elon Musk's company SpaceXAI, formerly known as xAI, has released Grok 4.6 , its latest frontier AI model, with a focus on long-running agents, coding and knowledge work — and a pricing strategy designed to make those workloads cheaper to run. The model scores 61 on the third-party Artificial Analysis Intelligence Index , surpassing the popular open weights Chinese model from Moonshot, Kimi K3, and tying rival OpenAI's GPT-5.6 Sol Max and improving five points over Grok 4.5 High. Anthropic's Claude Opus 5 and Fable 5 occupy the number one and two spots, respectively. More consequential for enterprises evaluating AI agents, Grok 4.6 posts sizable gains over its predecessor across coding, terminal, knowledge-work and agent benchmarks while retaining an application programming interface (API)",
+          "extra": {},
+          "score": 8.0,
+          "summary": "SpaceXAI发布Grok 4.6，性能追平GPT-5.6，定价策略瞄准长时运行代理场景，竞争格局生变。"
+        },
+        {
+          "section": "news",
+          "title": "Lovable raises $400M Series C",
+          "url": "https://lovable.dev/blog/series-c",
+          "source": "Hacker News",
+          "published_at": "2026-08-12T16:20:34Z",
+          "raw_text": "Article URL: https://lovable.dev/blog/series-c Comments URL: https://news.ycombinator.com/item?id=49274858 Points: 101 # Comments: 96",
+          "extra": {},
+          "score": 8.0,
+          "summary": "AI应用构建平台Lovable获4亿美元C轮融资，表明低代码AI开发工具获资本重注。"
+        },
+        {
+          "section": "news",
+          "title": "Four of five enterprises that secured AI agent identities still can't contain one that goes rogue",
+          "url": "https://venturebeat.com/security/four-of-five-enterprises-that-secured-ai-agent-identities-still-cant-contain-one-that-goes-rogue",
+          "source": "VentureBeat",
+          "published_at": "2026-08-12T18:44:50Z",
+          "raw_text": "Visa's president of technology, Rajat Taneja, walked the VB Transform 2026 audience through aiming Anthropic's Mythos at Visa's own payment network . The model stitched minor weaknesses into working exploit chains, and Visa open-sourced the harness that governed the hunt. That's what it looks like when an enterprise has the engineering depth to act on what it finds. Most don't get there. Just over half, or 53%, of enterprises have already had an agentic security incident or near-miss . Sixty-five percent enforce agent permissions at runtime, yet only 18% isolate their highest-risk agents, and just 8% pair enforcement with isolation. Leaning on provider-native controls to do the heavy lifting of agentic security just exacerbates that gap. The July wave of VentureBeat Pulse Research found th",
+          "extra": {},
+          "score": 7.0,
+          "summary": "Visa用Anthropic模型自攻支付网络，开源攻击链工具，揭示AI安全攻防实战新范式。"
+        },
+        {
+          "section": "news",
+          "title": "Twitch content has trained Amazon AI for years, but users can opt out now",
+          "url": "https://arstechnica.com/ai/2026/08/twitch-content-has-trained-amazon-ai-for-years-but-users-can-opt-out-now/",
+          "source": "Ars Technica",
+          "published_at": "2026-08-12T21:00:30Z",
+          "raw_text": "Streaming platform says user-generated content \"may be used for future Gen AI model improvements.\"",
+          "extra": {},
+          "score": 7.0,
+          "summary": "Twitch默认用用户内容训练Amazon AI，仅提供退出选项，引发数据使用与知情同意争议。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Putting sign language AI into users’ hands",
+          "url": "https://deepmind.google/blog/putting-sign-language-ai-into-users-hands/",
+          "source": "Google DeepMind",
+          "published_at": "2026-08-12T14:01:59Z",
+          "raw_text": "Introducing sign-language-to-text (SL2T), our breakthrough model powering new sign language features for Deaf and hard of hearing users.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "微软发布手语转文本模型SL2T，为听障用户提供突破性AI无障碍能力。"
+        },
+        {
+          "section": "product",
+          "title": "Gemini Robotics ER 2: powering robotics with video understanding, task orchestration, and multi-robot collaboration",
+          "url": "https://deepmind.google/blog/gemini-robotics-er-2-powering-robotics-with-video-understanding-task-orchestration-and-multi-robot-collaboration/",
+          "source": "Google DeepMind",
+          "published_at": "2026-07-30T15:00:59Z",
+          "raw_text": "Gemini Robotics ER 2 helps robots reason, collaborate, and solve real-world tasks. It represents a step change in video understanding, tool orchestration, and multi-robot collaboration for robotic applications.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "谷歌推出Gemini Robotics ER 2，用视频理解与多机器人协作推动具身智能新阶段。"
+        },
+        {
+          "section": "product",
+          "title": "WeatherNext: AI model achieves breakthrough in forecasting cyclones",
+          "url": "https://deepmind.google/blog/weathernext-ai-model-achieves-breakthrough-in-forecasting-cyclones/",
+          "source": "Google DeepMind",
+          "published_at": "2026-08-06T15:06:15Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 8.0,
+          "summary": "WeatherNext模型在气旋预报上实现突破，AI在气候科学领域再下一城。"
+        }
+      ]
+    }
+  ]
+}
