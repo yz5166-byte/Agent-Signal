@@ -1,0 +1,402 @@
+{
+  "date": "2026-08-17",
+  "tip": {
+    "title": "跨会话上下文状态持久化",
+    "body": "当Agent需要跨会话处理长任务（如多轮数据采集）时，上下文学习状态会丢失。做法：用外部存储序列化当前会话的上下文示例（in-context examples）和中间推理链，在下一会话开始时注入。\n\n```python\nimport json\n# 保存状态\nstate = {\"examples\": [...], \"chain\": [...]}\nwith open(\"agent_state.json\", \"w\") as f:\n    json.dump(state, f)\n# 恢复状态\nwith open(\"agent_state.json\") as f:\n    state = json.load(f)\n```\n\n注意：仅存储纯文本/JSON，不执行任何代码，安全无风险。",
+    "ref_title": "Handover of In-Context Learning State Across Session Boundaries",
+    "ref_url": "https://arxiv.org/abs/2608.14528v1"
+  },
+  "errors": [],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "Handover of In-Context Learning State Across Session Boundaries",
+          "url": "https://arxiv.org/abs/2608.14528v1",
+          "source": "arXiv",
+          "published_at": "2026-08-14T17:47:13Z",
+          "raw_text": "This study investigates the methodological and theoretical properties of session handover in applications that use large language models. A task may continue in a new session when the context reaches the model's input limit, when the application restarts, or when another agent is asked to finish the task. The application must then decide which information from the earlier session to pass on. We formulate handover as the transfer of a task-relative in-context learning (ICL) state and distinguish exact recovery of earlier material from preservation of the target distribution. Under an exogeneity condition, predictive equivalence characterizes the coarsest deterministic sufficient handover and gives a fixed-length bit requirement. The analysis isolates the effects of the memory constraint, the writer, and the continuation procedure, and quantifies the cost of writing before the realized downstream query is known. We propose a three-part record that stores decisions and constraints exactly, uses task-justified statistics for repeated evidence, and retains original observations whose effect is not preserved by those statistics. Gaussian linear regression gives an exact finite-dimensional handover and finite-bit perturbation bounds, while nonparametric regression gives upper and lower bounds that relate memory to squared prediction error. These results provide a theory and method for deciding what a handover must retain and how its memory requirement depends on the continuation task.",
+          "extra": {
+            "authors": [
+              "Masahiro Kato",
+              "Taka Kato"
+            ],
+            "categories": [
+              "cs.AI",
+              "econ.EM",
+              "math.ST",
+              "stat.ME",
+              "stat.ML"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.14528v1"
+          },
+          "score": 9.0,
+          "summary": "研究LLM跨会话/跨Agent交接上下文学习状态的方法与理论，解决长任务中断与多Agent协作的核心痛点。"
+        },
+        {
+          "section": "paper",
+          "title": "Split the Labor: Separating Evidence Interpretation from Decision Aggregation",
+          "url": "https://arxiv.org/abs/2608.14509v1",
+          "source": "arXiv",
+          "published_at": "2026-08-14T17:24:55Z",
+          "raw_text": "Systems that ask a language model to reach a conclusion from many sources usually concatenate them into one prompt. This conflates two operations with different requirements. Interpreting a source rewards capacity and context. Combining interpretations rewards fixed arithmetic, comparability across instances, and the option to return nothing. Once separated, the design problem becomes the interface between them. We propose a four-field evidence tuple (hypothesis, reliability bucket, rationale, provenance) and show that fixing it determines both halves. The separation also reveals a failure mode in how such systems combine, which we call count-scale drift. Thresholding a sum of unnormalized weights is exactly posterior thresholding, but at an operating point that slides with the number of sources consulted. The slide grows with reader reliability. When source reliabilities differ, the vote rule and the posterior order instances differently, and no threshold reconciles them. Pooling calibrated log-likelihood ratios addresses both problems. The fix is arithmetic rather than architectural, and applies to a class of rules beyond language models: score-summing triage engines, diagnostic panels scored by counting positives, and additive multi-signal detectors. We then instantiate the principle twice on one longitudinal corpus, once after outcomes resolve and once before. The same partition helps in both, at different granularities: over reading in the first, over learning capacity in the second. There, a small sequence encoder on an easy auxiliary objective plus a tree ensemble carrying the censored survival loss reaches 0.921 AUPRC against 0.805 for a hand-crafted baseline. We separate what transfers from what must be re-estimated per domain, and state five predictions that would falsify the framework, three negative results, and which comparisons remain confounded.",
+          "extra": {
+            "authors": [
+              "Zhelun Wu"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.14509v1"
+          },
+          "score": 8.0,
+          "summary": "提出将证据解读与决策聚合分离的框架，避免长上下文混淆，提升多源推理的准确性与可解释性。"
+        },
+        {
+          "section": "paper",
+          "title": "Twin: Playing an Unknown Game with a Test-Time Digital Twin",
+          "url": "https://arxiv.org/abs/2608.14490v1",
+          "source": "arXiv",
+          "published_at": "2026-08-14T17:06:00Z",
+          "raw_text": "We present a Test-time World-model Inference (Twin) system, in which a frontier coding agent writes an executable world model for completing continual learning tasks, such as ARC-AGI-3 games. Traditional approaches hand-engineer such models, one custom design per task. Each game hides its rules and goal, and our system constructs them from simulation and interaction alone. Its inductive prior over grid games is strong enough to recover the true transitions of the game and the goal on nearly all levels. Replay validation happens in a twin world model. The harness enforces that an action is not made until the program reproduces every previous observed game transition. Each mismatch between a world model prediction and the actual action result becomes a counterexample that is used to repair the world model. Twin clears 179 out of 183 levels (97.8%), and does so more efficiently than humans in 158 out of 179 levels (88.3%). The system infers the goal before any reward on 156 of the levels it clears (87.2%), and in the remaining levels automatically discovers the goal by search. The benchmark scores completion and action efficiency, between 0 and 100, against humans playing each game for the first time. Played directly, the base model scores only 7.8%; an off-the-shelf harness increases it to 61.1%, whereas our twin world model increases the same base model to 93.3%, clearing 23 out of 25 games. Building a usable world model is simpler than anticipated, whereas the harder problem is inferring the right goal.",
+          "extra": {
+            "authors": [
+              "Alexy Skoutnev",
+              "Kirill Acharya",
+              "Gaston Longhitano",
+              "Madeleine Udell",
+              "Kevin Ellis",
+              "Iddo Drori"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.14490v1"
+          },
+          "score": 8.0,
+          "summary": "让编码Agent在测试时自动生成可执行世界模型，用于未知游戏/任务，突破传统手工定制局限。"
+        },
+        {
+          "section": "paper",
+          "title": "You Only Pass Once: Answering and Abstaining Together in a Single Forward Pass of a Frozen Language Model",
+          "url": "https://arxiv.org/abs/2608.14465v1",
+          "source": "arXiv",
+          "published_at": "2026-08-14T16:44:35Z",
+          "raw_text": "A frozen language model on reasoning tasks has two coupled weaknesses: it under-uses evidence its own residual stream already encodes, and it fails to detect when the input is insufficient to answer, so it confabulates. This paper consolidates two research lines that address these on the same residual stream: a conditional steering probe writes the stream at mid-stack layers and recovers reasoning accuracy from a frozen backbone, and a zero-shot sufficiency direction reads the stream and abstains when information is insufficient. Deployed in one forward pass they interfere: the steering write shifts the state the direction reads, costing up to 8 AUROC points of cross-domain transfer on small models; a separate clean pass doubles inference cost. We keep the direction fixed and train a small network to reconstruct the pre-steering residual from the steered one -- mean-squared error on (steered, clean) pairs, no sufficiency labels -- and read the direction on the reconstruction. The resulting system, YOPO (You Only Pass Once), answers, steers, and abstains in one forward pass of a frozen Qwen2.5 backbone (1.5B/3B/7B). End to end, three-way accuracy more than doubles the frozen baseline (0.375->0.798 on 1.5B alphaNLI) and one pass beats the two-pass reference at every scale (0.798/0.830/0.893 vs 0.753/0.790/0.863) and on ten backbones across six model families. We chart the capacity-transfer frontier quantifying the principle that abstention should not be trained in; a source-side audit catches our own alphaNLI construction leaking a surface artifact, so architectural claims are anchored on native-label replications (SQuAD2, RepLiQA, MuSiQue); and on the standard four-domain suite we contribute, to our knowledge, the first answer-or-abstain benchmark, where our gate tops every in-domain dataset and the label-free direction is the only gate family to survive domain transfer.",
+          "extra": {
+            "authors": [
+              "Ziyang Luo",
+              "Zhongyao Chu",
+              "Xinjie He",
+              "Youting Wang",
+              "Xukui Qin",
+              "Runxiong Wu",
+              "Yan-Syuan Chen"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.14465v1"
+          },
+          "score": 7.0,
+          "summary": "在冻结LLM单次前向传播中同时完成推理与自知无法回答时主动拒答，减少幻觉并提升可靠性。"
+        },
+        {
+          "section": "paper",
+          "title": "Information Satisfaction: A Reader-Centered Axis for Summarization Evaluation",
+          "url": "https://arxiv.org/abs/2608.14457v1",
+          "source": "arXiv",
+          "published_at": "2026-08-14T16:41:23Z",
+          "raw_text": "The majority of work on summarization evaluation focuses on general summary quality (e.g., ROUGE, BERTScore) or specific desired properties (e.g., readability, factuality). However, these metrics fail to measure the utility of a summary to an individual user. For example, a biomedical researcher learning about the latest vaccine research will have different informational needs from a family doctor. Query-focused summarization captures part of this need, but in practice, users rarely state everything relevant in a query: a single short query is likely inadequate to distinguish the needs of a researcher from those of a physician. By contrast, a reader's background or persona (their role and expertise) is comparatively stable across queries and recovers much of this missing context, which makes it a practical signal for assessing whether a summary satisfies that reader's needs. In this work, we assess how sensitive popular summarization metrics are to both informational and persona differences, and find that many popular metrics, including strong LLM-as-judge metrics, fail basic perturbation tests of informational content. We additionally conduct an expert human evaluation, measuring summary preferences based on information satisfaction given a specific person's background and use case. We find that both traditional and LLM-based metrics are insufficient measures of information satisfaction and agree poorly with human judgment.",
+          "extra": {
+            "authors": [
+              "Isabel Cachola",
+              "William Walden",
+              "Reno Kriz",
+              "Mark Dredze"
+            ],
+            "categories": [
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.14457v1"
+          },
+          "score": 7.0,
+          "summary": "提出以读者信息需求满足度为核心的摘要评估新维度，弥补现有指标忽略用户实际效用的缺陷。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi-K2.6, GLM-5.2, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 178723,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "gemma3",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llama3",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 9.0,
+          "summary": "本地运行最新开源大模型（Kimi、GLM、DeepSeek等），一键部署，隐私可控。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 152648,
+            "language": "TypeScript",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "orchestration",
+              "python",
+              "rag",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 9.0,
+          "summary": "一站式构建Agent工作流与RAG管道，支持多模型、可私有化部署。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "The context API to search, scrape, and interact with the web at scale. 🔥",
+          "extra": {
+            "stars": 168224,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 8.0,
+          "summary": "大规模网页搜索与抓取的上下文API，适合构建RAG和AI数据管道。"
+        },
+        {
+          "section": "repo",
+          "title": "cobusgreyling/loop-engineering",
+          "url": "https://github.com/cobusgreyling/loop-engineering",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-09T06:28:20Z",
+          "raw_text": "Practical patterns, starters & CLI tools for loop engineering with AI coding agents. Design systems that prompt and orchestrate agents (inspired by Addy Osmani and Boris Cherny). Includes loop-audit, loop-init, loop-cost.",
+          "extra": {
+            "stars": 10423,
+            "language": "JavaScript",
+            "topics": [
+              "agentic-ai",
+              "ai-agents",
+              "ai-coding",
+              "anthropic",
+              "automation",
+              "claude",
+              "claude-code",
+              "codex",
+              "coding-agents",
+              "devops-automation",
+              "devtools",
+              "github-actions",
+              "grok",
+              "llm",
+              "loop-engineering",
+              "mcp",
+              "prompt-engineering"
+            ]
+          },
+          "score": 8.0,
+          "summary": "提供循环工程模式与CLI工具，用于编排AI编码Agent的生产级系统。"
+        },
+        {
+          "section": "repo",
+          "title": "langchain-ai/openwiki",
+          "url": "https://github.com/langchain-ai/openwiki",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-22T23:48:26Z",
+          "raw_text": "OpenWiki is a CLI that writes and maintains agent documentation for your codebase.",
+          "extra": {
+            "stars": 15189,
+            "language": "TypeScript",
+            "topics": []
+          },
+          "score": 7.0,
+          "summary": "CLI工具自动为代码库生成并维护Agent文档，减少手动编写负担。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Nvidia dramatically reduces amount of OpenAI infra financing it may guarantee",
+          "url": "https://www.reuters.com/business/nvidia-scales-back-250-billion-openai-data-center-guarantee-wsj-reports-2026-08-14/",
+          "source": "Hacker News",
+          "published_at": "2026-08-16T21:07:10Z",
+          "raw_text": "Article URL: https://www.reuters.com/business/nvidia-scales-back-250-billion-openai-data-center-guarantee-wsj-reports-2026-08-14/ Comments URL: https://news.ycombinator.com/item?id=49323686 Points: 103 # Comments: 35",
+          "extra": {},
+          "score": 9.0,
+          "summary": "英伟达大幅缩减对OpenAI数据中心融资担保，反映合作信心动摇。"
+        },
+        {
+          "section": "news",
+          "title": "Stripe Clinches over $7B Deal to Buy AI Firm OpenRouter",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-16/stripe-nears-deal-to-buy-ai-firm-openrouter-for-over-7-billion",
+          "source": "Hacker News",
+          "published_at": "2026-08-16T20:31:16Z",
+          "raw_text": "Article URL: https://www.bloomberg.com/news/articles/2026-08-16/stripe-nears-deal-to-buy-ai-firm-openrouter-for-over-7-billion Comments URL: https://news.ycombinator.com/item?id=49323381 Points: 204 # Comments: 145",
+          "extra": {},
+          "score": 9.0,
+          "summary": "Stripe以超70亿美元收购AI网关OpenRouter，支付巨头重注AI基础设施。"
+        },
+        {
+          "section": "news",
+          "title": "OpenAI reportedly disbanded its preparedness team",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/980817/openai-disbands-preparedness-team",
+          "source": "The Verge",
+          "published_at": "2026-08-16T21:32:56Z",
+          "raw_text": "According to the Financial Times, OpenAI disbanded its preparedness team at the end of last month. The job of the preparedness team was to assess if models posed serious risks and develop ways to mitigate those risks. (You know, like the possibility that it could go rogue and hack another company.) According to FT, responsibility […]",
+          "extra": {},
+          "score": 8.0,
+          "summary": "OpenAI解散负责模型风险评估的团队，安全治理出现重大缺口。"
+        },
+        {
+          "section": "news",
+          "title": "DeepSeek's top-ranked V4 Flash stumbles on real agent tasks as its prices surge",
+          "url": "https://venturebeat.com/orchestration/deepseeks-top-ranked-v4-flash-stumbles-on-real-agent-tasks-as-its-prices-surge",
+          "source": "VentureBeat",
+          "published_at": "2026-08-16T13:00:00Z",
+          "raw_text": "DeepSeek's V4 Flash has topped model leaderboards and been hailed by developers as a \"total monster\" since its rollout. But in real-world testing, it completed just 53.8% of a batch of complex agent tasks. Composio ran the model through eight different agent harnesses , including Claude Code, Codex, and OpenCode, on 30 deliberately difficult, multi-step tasks spanning live tools like Gmail, GitHub, Slack, and Google Sheets. Of 240 total runs, 129 passed — and only six of the 30 workflows were completed successfully by every harness tested. The gap illustrates why orchestration, not raw model capability, may decide whether the model succeeds in enterprise settings: the same model produced substantially different results depending on the harness, tool configuration, caching behavior, retries",
+          "extra": {},
+          "score": 8.0,
+          "summary": "DeepSeek V4 Flash在真实代理任务中仅完成53.8%，暴露榜单与实用差距。"
+        },
+        {
+          "section": "news",
+          "title": "Models Are Getting Dumber on Purpose",
+          "url": "https://w4g1.dev/blog/models-are-getting-dumber-on-purpose",
+          "source": "Hacker News",
+          "published_at": "2026-08-16T19:04:26Z",
+          "raw_text": "Article URL: https://w4g1.dev/blog/models-are-getting-dumber-on-purpose Comments URL: https://news.ycombinator.com/item?id=49322695 Points: 274 # Comments: 154",
+          "extra": {},
+          "score": 7.0,
+          "summary": "研究发现模型正被刻意降低能力以规避风险，引发对AI对齐策略的讨论。"
+        },
+        {
+          "section": "news",
+          "title": "Anthropic CEO says AI backlash is ‘fundamentally a crisis of trust’",
+          "url": "https://techcrunch.com/2026/08/16/anthropic-ceo-says-ai-backlash-is-fundamentally-a-crisis-of-trust/",
+          "source": "TechCrunch",
+          "published_at": "2026-08-16T16:53:51Z",
+          "raw_text": "Dario Amodei is pushing back against the idea that he's been painting an overly pessimistic picture of AI.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "Anthropic CEO将AI反弹归因于信任危机，行业共识出现裂痕。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Introducing Gemini 3.7 Flash",
+          "url": "https://deepmind.google/blog/introducing-gemini-3-7-flash/",
+          "source": "Google DeepMind",
+          "published_at": "2026-08-13T17:04:18Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "谷歌发布 Gemini 3.7 Flash，推理与多模态能力升级，值得开发者关注。"
+        },
+        {
+          "section": "product",
+          "title": "Previewing Ultrafast mode: GPT-5.6 Sol at up to 14X the speed",
+          "url": "https://openai.com/index/previewing-ultrafast",
+          "source": "OpenAI",
+          "published_at": "2026-08-13T10:00:00Z",
+          "raw_text": "Preview Ultrafast, a new OpenAI API service tier that runs GPT-5.6 Sol up to 14× faster. Powered by Cerebras, it delivers up to 750 output tokens per second.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "OpenAI 推出 GPT-5.6 Sol 极速模式，推理速度提升 14 倍，适合高吞吐场景。"
+        },
+        {
+          "section": "product",
+          "title": "Orchard: An open framework for scalable agentic AI",
+          "url": "https://www.microsoft.com/en-us/research/blog/orchard-an-open-framework-for-scalable-agentic-ai/",
+          "source": "Microsoft Research",
+          "published_at": "2026-08-03T16:00:00Z",
+          "raw_text": "Orchard is an open-source framework for the research community to train and evaluate AI agents across task types. It reduces complexity while supporting strong performance from smaller models by enabling researchers to reuse the same infrastructure. The post Orchard: An open framework for scalable agentic AI appeared first on Microsoft Research .",
+          "extra": {},
+          "score": 7.0,
+          "summary": "开源框架 Orchard 发布，简化多智能体训练与评估，降低研究门槛。"
+        }
+      ]
+    }
+  ]
+}
