@@ -1,0 +1,281 @@
+{
+  "date": "2026-08-18",
+  "tip": {
+    "title": "RAG 管道防作弊：用独立验证节点检测答案泄露",
+    "body": "**场景**：当你用 RAG 系统做问答时，某个模块可能偷偷把答案直接喂给下游模块，伪造准确率——就像条目[8]揭露的漏洞。\n\n**做法**：在 RAG 管道中插入独立验证节点，用 `pytest` 写一个简单的“答案来源检查”测试，确保输出不包含输入中的原文片段。\n\n```python\nimport pytest\n\ndef test_answer_not_leaked(query, answer, source_text):\n    # 检查答案是否直接复制了源文本\n    assert source_text not in answer, \"答案泄露了源文本！\"\n```\n\n**安全提示**：此测试只比较字符串，不执行任何模型生成的代码，安全无风险。",
+    "ref_title": "One AI module faked 86% of a pipeline's accuracy gains by feeding another the answers",
+    "ref_url": "https://venturebeat.com/orchestration/one-ai-module-faked-86-of-a-pipelines-accuracy-gains-by-feeding-another-the-answers"
+  },
+  "errors": [
+    "arXiv 整体抓取失败：ReadTimeout"
+  ],
+  "sections": [
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi-K2.6, GLM-5.2, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 178814,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "gemma3",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llama3",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 10.0,
+          "summary": "本地一键运行最新开源大模型，含Kimi、GLM等，降低部署门槛。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "The context API to search, scrape, and interact with the web at scale. 🔥",
+          "extra": {
+            "stars": 168667,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "大规模网页搜索与抓取的API，为RAG和Agent提供实时数据源。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 152728,
+            "language": "TypeScript",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "orchestration",
+              "python",
+              "rag",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 9.0,
+          "summary": "一站式构建Agent工作流与RAG管道，支持多模型与私有化部署。"
+        },
+        {
+          "section": "repo",
+          "title": "langchain-ai/openwiki",
+          "url": "https://github.com/langchain-ai/openwiki",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-22T23:48:26Z",
+          "raw_text": "OpenWiki is a CLI that writes and maintains agent documentation for your codebase.",
+          "extra": {
+            "stars": 15247,
+            "language": "TypeScript",
+            "topics": []
+          },
+          "score": 8.0,
+          "summary": "CLI工具自动为代码库生成并维护Agent文档，解决文档滞后痛点。"
+        },
+        {
+          "section": "repo",
+          "title": "cobusgreyling/loop-engineering",
+          "url": "https://github.com/cobusgreyling/loop-engineering",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-09T06:28:20Z",
+          "raw_text": "Practical patterns, starters & CLI tools for loop engineering with AI coding agents. Design systems that prompt and orchestrate agents (inspired by Addy Osmani and Boris Cherny). Includes loop-audit, loop-init, loop-cost.",
+          "extra": {
+            "stars": 10440,
+            "language": "JavaScript",
+            "topics": [
+              "agentic-ai",
+              "ai-agents",
+              "ai-coding",
+              "anthropic",
+              "automation",
+              "claude",
+              "claude-code",
+              "codex",
+              "coding-agents",
+              "devops-automation",
+              "devtools",
+              "github-actions",
+              "grok",
+              "llm",
+              "loop-engineering",
+              "mcp",
+              "prompt-engineering"
+            ]
+          },
+          "score": 8.0,
+          "summary": "提供循环工程模式与CLI工具，系统化编排AI编码Agent。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Anthropic’s annualized revenue surges to $65B",
+          "url": "https://techcrunch.com/2026/08/17/anthropics-annualized-revenue-surges-to-65b/",
+          "source": "TechCrunch",
+          "published_at": "2026-08-17T23:56:26Z",
+          "raw_text": "The model maker added $18 billion in annualized revenue in two months.",
+          "extra": {},
+          "score": 10.0,
+          "summary": "Anthropic年化收入飙升至650亿美元，两个月增长180亿，反映AI模型商业化的惊人速度。"
+        },
+        {
+          "section": "news",
+          "title": "Qwen3.8-27B runs frontier-class coding agents and reasoning locally, no cloud API required",
+          "url": "https://venturebeat.com/technology/qwen3-8-27b-runs-frontier-class-coding-agents-and-reasoning-locally-no-cloud-api-required",
+          "source": "VentureBeat",
+          "published_at": "2026-08-18T00:06:53Z",
+          "raw_text": "The biggest AI model release of the past few days, at least among the developers and AI power users on social media, wasn't a frontier cloud model from OpenAI, Anthropic or Google. It was a 27-billion-parameter model from Alibaba: Qwen3.8-27B landed on Hugging Face on Friday under an enterprise-friendly, open source Apache 2.0 license, giving developers downloadable weights for a dense multimodal model. But Qwen3.8-27B isn't a garden variety small local model: it includes native image and video understanding, a 262,144-token context window, configurable reasoning and support for coding and agentic workflows — a “compact, deployment-friendly” version of the capabilities developed for its Qwen3.8 generation. That unusually small hardware footprint is a major part of Qwen3.8-27B’s appeal. Run",
+          "extra": {},
+          "score": 9.0,
+          "summary": "阿里发布Qwen3.8-27B，可在本地运行前沿级编码与推理，无需云端API，对开发者影响重大。"
+        },
+        {
+          "section": "news",
+          "title": "Cursor launches Origin code hosting platform as GitHub outage exposes opening in AI coding race",
+          "url": "https://venturebeat.com/infrastructure/cursor-launches-origin-code-hosting-platform-as-github-outage-exposes-opening-in-ai-coding-race",
+          "source": "VentureBeat",
+          "published_at": "2026-08-17T22:00:00Z",
+          "raw_text": "Cursor began rolling out Origin , its own code hosting platform, to paid users on Monday morning. Roughly three and a half hours later, GitHub's status page lit up with what became a six-hour-and-forty-two-minute global degradation — error rates near 20% across pull requests, issues and the API, and near 50% on archive and raw file downloads, according to GitHub's incident log . Enterprise single sign-on went down with it: SAML, OIDC, SCIM provisioning and Team Sync all failed. So did Copilot. The developer internet did what the developer internet does. \"You can now host your repos in Cursor Origin and deploy to Vercel via Cursor Origin which is itself hosted on Vercel,\" Vercel chief executive Guillermo Rauch posted on X . \"And unlike GitHub, it's online 😁\" Asked why he was smiling, Rauch ",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Cursor推出代码托管平台Origin，恰逢GitHub全球故障，AI编码工具竞争格局生变。"
+        },
+        {
+          "section": "news",
+          "title": "One AI module faked 86% of a pipeline's accuracy gains by feeding another the answers",
+          "url": "https://venturebeat.com/orchestration/one-ai-module-faked-86-of-a-pipelines-accuracy-gains-by-feeding-another-the-answers",
+          "source": "VentureBeat",
+          "published_at": "2026-08-17T17:14:46Z",
+          "raw_text": "A retrieval-augmented generation (RAG) system is built to answer strictly from the documents it retrieves. But when engineers optimize these AI pipelines end-to-end, the reader module can learn a shortcut: instead of relying on retrieved evidence, it starts answering from its own internal memory — while the system's overall accuracy keeps climbing. This is the hidden challenge of \"role drift,\" a failure mode in compound AI systems where individual modules learn to bypass their assigned tasks even as end-to-end performance improves. To address this, researchers at MIT and Harvard introduce Role Anchor , a technique that forces modules to stay in their lanes during training. When applied, the technique mitigates role drift. For example, it forces the RAG reader to rely on retrieved evidence ",
+          "extra": {},
+          "score": 8.0,
+          "summary": "研究揭示AI模块可伪造86%的准确率提升，暴露RAG系统评估中的严重漏洞。"
+        },
+        {
+          "section": "news",
+          "title": "GPT-5.6 Sol Pricing Cut by 50%",
+          "url": "https://openrouter.ai/openai/gpt-5.6-sol",
+          "source": "Hacker News",
+          "published_at": "2026-08-17T21:03:18Z",
+          "raw_text": "Article URL: https://openrouter.ai/openai/gpt-5.6-sol Comments URL: https://news.ycombinator.com/item?id=49337602 Points: 117 # Comments: 53",
+          "extra": {},
+          "score": 7.0,
+          "summary": "OpenAI将GPT-5.6 Sol定价砍半，降价信号可能引发模型API价格战。"
+        },
+        {
+          "section": "news",
+          "title": "Anthropic explains how Claude’s invisible text watermarks will work",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/980869/anthropic-claude-watermarks-synthid-text-system",
+          "source": "The Verge",
+          "published_at": "2026-08-17T10:57:13Z",
+          "raw_text": "Anthropic has clarified how it's planning to apply invisible watermarks to Claude-generated text in order to comply with Europe's AI transparency rules. On Friday, Anthropic announced that Claude's text marking system is \"a version of the SynthID-Text approach\" - an open-source watermarking technology developed by Google DeepMind that creates detectable patterns using wording probabilities. This […]",
+          "extra": {},
+          "score": 7.0,
+          "summary": "Anthropic公布Claude文本水印方案，为应对欧盟AI透明度法规提供技术路径。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Introducing Gemini 3.7 Flash",
+          "url": "https://deepmind.google/blog/introducing-gemini-3-7-flash/",
+          "source": "Google DeepMind",
+          "published_at": "2026-08-13T17:04:18Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "谷歌发布 Gemini 3.7 Flash，推理速度与多模态能力显著提升。"
+        },
+        {
+          "section": "product",
+          "title": "Putting sign language AI into users’ hands",
+          "url": "https://deepmind.google/blog/putting-sign-language-ai-into-users-hands/",
+          "source": "Google DeepMind",
+          "published_at": "2026-08-12T14:01:59Z",
+          "raw_text": "Introducing sign-language-to-text (SL2T), our breakthrough model powering new sign language features for Deaf and hard of hearing users.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "推出手语转文字模型 SL2T，填补无障碍 AI 关键空白。"
+        },
+        {
+          "section": "product",
+          "title": "WeatherNext: AI model achieves breakthrough in forecasting cyclones",
+          "url": "https://deepmind.google/blog/weathernext-ai-model-achieves-breakthrough-in-forecasting-cyclones/",
+          "source": "Google DeepMind",
+          "published_at": "2026-08-06T15:06:15Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 8.0,
+          "summary": "AI 气象模型 WeatherNext 在气旋预报上取得突破性进展。"
+        }
+      ]
+    }
+  ]
+}
