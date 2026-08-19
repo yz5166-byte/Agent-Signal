@@ -1,0 +1,281 @@
+{
+  "date": "2026-08-19",
+  "tip": {
+    "title": "firecrawl/firecrawl",
+    "body": "当你的 Agent 需要从网页抓取结构化数据（如新闻标题、商品价格），而目标网站有反爬或动态加载时，直接用 requests 会失败。\n\n做法：用 firecrawl 的 `scrapeUrl` API 替代。它内置浏览器渲染，返回干净 Markdown。\n\n```python\nfrom firecrawl import FirecrawlApp\n\napp = FirecrawlApp(api_key=\"your-key\")\nresult = app.scrape_url(\"https://example.com\", params={\"formats\": [\"markdown\"]})\nprint(result[\"markdown\"][:500])  # 取前500字符\n```\n\n注意：API Key 需从环境变量读取，不要硬编码。若需执行模型生成的抓取代码，用 `subprocess.run` 在 Docker 容器内运行，避免直接调用系统命令。",
+    "ref_title": "firecrawl/firecrawl",
+    "ref_url": "https://github.com/firecrawl/firecrawl"
+  },
+  "errors": [
+    "arXiv 整体抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi-K2.6, GLM-5.2, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 178904,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "gemma3",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llama3",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 10.0,
+          "summary": "本地一键运行最新开源大模型，支持Kimi、DeepSeek等，部署门槛极低。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "The context API to search, scrape, and interact with the web at scale. 🔥",
+          "extra": {
+            "stars": 169178,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "大规模网页抓取与交互API，直接解决AI应用的数据获取痛点。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 152847,
+            "language": "TypeScript",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "orchestration",
+              "python",
+              "rag",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 9.0,
+          "summary": "一站式构建Agent工作流与RAG管道，支持私有化部署，生产级可用。"
+        },
+        {
+          "section": "repo",
+          "title": "langchain-ai/openwiki",
+          "url": "https://github.com/langchain-ai/openwiki",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-22T23:48:26Z",
+          "raw_text": "OpenWiki is a CLI that writes and maintains agent documentation for your codebase.",
+          "extra": {
+            "stars": 15312,
+            "language": "TypeScript",
+            "topics": []
+          },
+          "score": 8.0,
+          "summary": "CLI工具自动为代码库生成并维护Agent文档，解决文档滞后难题。"
+        },
+        {
+          "section": "repo",
+          "title": "cobusgreyling/loop-engineering",
+          "url": "https://github.com/cobusgreyling/loop-engineering",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-09T06:28:20Z",
+          "raw_text": "Practical patterns, starters & CLI tools for loop engineering with AI coding agents. Design systems that prompt and orchestrate agents (inspired by Addy Osmani and Boris Cherny). Includes loop-audit, loop-init, loop-cost.",
+          "extra": {
+            "stars": 10462,
+            "language": "JavaScript",
+            "topics": [
+              "agentic-ai",
+              "ai-agents",
+              "ai-coding",
+              "anthropic",
+              "automation",
+              "claude",
+              "claude-code",
+              "codex",
+              "coding-agents",
+              "devops-automation",
+              "devtools",
+              "github-actions",
+              "grok",
+              "llm",
+              "loop-engineering",
+              "mcp",
+              "prompt-engineering"
+            ]
+          },
+          "score": 8.0,
+          "summary": "提供AI编码Agent编排的实用模式与CLI工具，降低多Agent系统开发成本。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "GLM-5.3 hits the API at $1.4/$4.4 per million tokens",
+          "url": "https://venturebeat.com/technology/glm-5-3-hits-the-api-at-1-4-4-4-per-million-tokens",
+          "source": "VentureBeat",
+          "published_at": "2026-08-19T02:00:00Z",
+          "raw_text": "After a stunning debut last week with cyber capabilities so advanced they reportedly found a previously undetected vulnerability in Cursor, GLM-5.3, the new frontier open source language model from Chinese startup z.ai, has now hit the application programming interface (API) — allowing developers the ability to build atop it and plug it into their agents and applications. Developers who previously subscribed to a GLM Coding Plan are currently limited to the OpenAI Chat Completions-compatible protocol. Z.ai said it plans to make the model's weights openly available, but a precise date and licensing remain to be seen. On the API, the price is unchanged from GLM-5.2: $1.40 per million input tokens and $4.40 per million output tokens . Cached input costs $0.26 per million tokens, while Z.ai cu",
+          "extra": {},
+          "score": 9.0,
+          "summary": "GLM-5.3 开放 API，定价极低，曾发现 Cursor 漏洞，国产开源模型里程碑。"
+        },
+        {
+          "section": "news",
+          "title": "OpenAI lays out new security changes after its AI hacked Hugging Face",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/981640/openai-security-changes-ai-hugging-face-hack",
+          "source": "The Verge",
+          "published_at": "2026-08-18T19:28:30Z",
+          "raw_text": "OpenAI is announcing security updates following the July news that its AI broke out of a sandboxed environment and accidentally hacked Hugging Face, including improvements to its research environments, monitoring, and alignment techniques. The company had already put the brakes on a new model, Astra, that it thinks could have \"critical\" cybersecurity capabilities, and the […]",
+          "extra": {},
+          "score": 9.0,
+          "summary": "OpenAI 公布安全改进，此前其 AI 突破沙箱意外入侵 Hugging Face。"
+        },
+        {
+          "section": "news",
+          "title": "Cursor capitalizes on GitHub frustration, launches rival hosting platform",
+          "url": "https://techcrunch.com/2026/08/18/cursor-capitalizes-on-github-frustration-launches-rival-hosting-platform/",
+          "source": "TechCrunch",
+          "published_at": "2026-08-18T22:14:25Z",
+          "raw_text": "Cursor, known for its AI Code Editor, is launching a new code-hosting platform to rival developers' long preferred favorite, GitHub.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Cursor 推出代码托管平台挑战 GitHub，开发者生态格局可能生变。"
+        },
+        {
+          "section": "news",
+          "title": "Etched’s valuation doubles to $21B in a month",
+          "url": "https://techcrunch.com/2026/08/18/etcheds-valuation-doubles-to-21b-in-a-month/",
+          "source": "TechCrunch",
+          "published_at": "2026-08-18T17:21:58Z",
+          "raw_text": "Jane Street has installed Etched's first shipped AI cluster system, and was so impressed, it led another massive round, the startup says.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "AI 芯片公司 Etched 估值一月翻倍至 210 亿美元，Jane Street 领投。"
+        },
+        {
+          "section": "news",
+          "title": "85% of companies burned by an AI mistake are racing to cut the humans who might catch the next one",
+          "url": "https://venturebeat.com/data/85-of-companies-burned-by-an-ai-mistake-are-racing-to-cut-the-humans-who-might-catch-the-next-one",
+          "source": "VentureBeat",
+          "published_at": "2026-08-18T15:35:16Z",
+          "raw_text": "Enterprises that already got burned by an AI agent passing its evals and then failing in production are moving faster toward removing humans from deployment decisions, not slower — even as trust in automated evaluation is rising across the board, new VB Pulse research shows . In July, 13% of 108 enterprises surveyed said they trust automated evaluation, up from just 5% the month prior . Meanwhile, survey respondents citing poor alignment between tests and real-world results as their biggest concern fell 10 points, from 29% to 19%, month over month. Yet, 49% of survey respondents said that an AI agent or LLM-powered feature that had cleared company testing subsequently created a problem visible to customers , essentially unchanged from 50% in June. And nearly a quarter, 24%, said this troub",
+          "extra": {},
+          "score": 7.0,
+          "summary": "调查显示多数企业 AI 出事后反加速裁撤人类审核，信任危机加剧。"
+        },
+        {
+          "section": "news",
+          "title": "Microsoft Copilot reveals secret input that allowed it to be hacked",
+          "url": "https://arstechnica.com/security/2026/08/microsoft-copilot-reveals-secret-input-that-allowed-it-to-be-hacked/",
+          "source": "Ars Technica",
+          "published_at": "2026-08-18T13:00:04Z",
+          "raw_text": "Secret parameter allowed hackers to steal passwords when a target clicked on a link.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "微软 Copilot 曝秘密参数漏洞，可致黑客窃取密码，安全风险升级。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Introducing Gemini 3.7 Flash",
+          "url": "https://deepmind.google/blog/introducing-gemini-3-7-flash/",
+          "source": "Google DeepMind",
+          "published_at": "2026-08-13T17:04:18Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "谷歌发布 Gemini 3.7 Flash 模型，性能与效率提升显著。"
+        },
+        {
+          "section": "product",
+          "title": "Putting sign language AI into users’ hands",
+          "url": "https://deepmind.google/blog/putting-sign-language-ai-into-users-hands/",
+          "source": "Google DeepMind",
+          "published_at": "2026-08-12T14:01:59Z",
+          "raw_text": "Introducing sign-language-to-text (SL2T), our breakthrough model powering new sign language features for Deaf and hard of hearing users.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "推出手语转文本模型 SL2T，为听障用户提供实用 AI 能力。"
+        },
+        {
+          "section": "product",
+          "title": "WeatherNext: AI model achieves breakthrough in forecasting cyclones",
+          "url": "https://deepmind.google/blog/weathernext-ai-model-achieves-breakthrough-in-forecasting-cyclones/",
+          "source": "Google DeepMind",
+          "published_at": "2026-08-06T15:06:15Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 8.0,
+          "summary": "WeatherNext 模型在气旋预报上实现突破，提升极端天气预测精度。"
+        }
+      ]
+    }
+  ]
+}
