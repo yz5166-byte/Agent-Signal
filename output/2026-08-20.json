@@ -1,0 +1,280 @@
+{
+  "date": "2026-08-20",
+  "tip": {
+    "title": "ollama/ollama",
+    "body": "**场景**：用 `ollama` 本地跑模型时，想快速验证不同模型对同一 Prompt 的输出差异，但每次手动改模型名很麻烦。\n\n**做法**：用 `ollama run` 配合 Shell 变量循环，批量对比多个模型。\n\n```bash\n# 定义模型列表和测试 Prompt\nmodels=(",
+    "ref_title": "ollama/ollama",
+    "ref_url": "https://github.com/ollama/ollama"
+  },
+  "errors": [
+    "arXiv 整体抓取失败：ReadTimeout"
+  ],
+  "sections": [
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi-K2.6, GLM-5.2, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 178989,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "gemma3",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llama3",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 9.0,
+          "summary": "本地一键运行最新开源大模型，Kimi、GLM、DeepSeek 等全支持，AI 从业者必备工具。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "The context API to search, scrape, and interact with the web at scale. 🔥",
+          "extra": {
+            "stars": 169667,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "大规模网页搜索与抓取的上下文 API，为 RAG 和 Agent 提供实时数据源。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 152933,
+            "language": "TypeScript",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "orchestration",
+              "python",
+              "rag",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 8.0,
+          "summary": "可视化构建 Agent 工作流与 RAG 管线，支持多模型与私有部署，从原型到生产无需重构。"
+        },
+        {
+          "section": "repo",
+          "title": "langchain-ai/openwiki",
+          "url": "https://github.com/langchain-ai/openwiki",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-22T23:48:26Z",
+          "raw_text": "OpenWiki is a CLI that writes and maintains agent documentation for your codebase.",
+          "extra": {
+            "stars": 15368,
+            "language": "TypeScript",
+            "topics": []
+          },
+          "score": 8.0,
+          "summary": "CLI 工具自动为代码库生成并维护 Agent 文档，解决文档滞后痛点。"
+        },
+        {
+          "section": "repo",
+          "title": "omnigent-ai/omnigent",
+          "url": "https://github.com/omnigent-ai/omnigent",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-11T12:18:13Z",
+          "raw_text": "Omnigent is an open-source AI agent framework and meta-harness: orchestrate Claude Code, Codex, Cursor, Pi, and custom agents — swap harnesses without rewriting, enforce policies and sandboxing, and collaborate in real time from any device.",
+          "extra": {
+            "stars": 9067,
+            "language": "Python",
+            "topics": [
+              "agent-framework",
+              "agent-governance",
+              "agent-orchestration",
+              "agents",
+              "ai",
+              "ai-agent",
+              "ai-agents",
+              "claude-code",
+              "codex",
+              "coding-agents",
+              "developer-tools",
+              "llm",
+              "ml",
+              "multi-agent",
+              "python",
+              "sandbox"
+            ]
+          },
+          "score": 8.0,
+          "summary": "统一编排 Claude Code、Codex 等多 Agent 框架，支持策略管控与实时协作。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "OpenAI seeks to one-up Anthropic with new customer privacy protections",
+          "url": "https://techcrunch.com/2026/08/19/openai-seeks-to-one-up-anthropic-with-new-customer-privacy-protections/",
+          "source": "TechCrunch",
+          "published_at": "2026-08-19T22:10:46Z",
+          "raw_text": "A competition is developing between OpenAI and Anthropic over who can provide the best privacy protections for enterprise customer data.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "OpenAI 与 Anthropic 在企服隐私保护上正面竞争，直接影响企业客户选型。"
+        },
+        {
+          "section": "news",
+          "title": "OpenAI hit the brakes. Now what?",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/982323/openai-hit-brakes-voluntary-pacing-ai",
+          "source": "The Verge",
+          "published_at": "2026-08-19T17:10:09Z",
+          "raw_text": "With a looming IPO, intense competition from Anthropic, and Chinese and open-weight rivals nipping at its heels, OpenAI has plenty of reasons to move fast. Instead, it hit the brakes. On Tuesday, the company said it had slowed the pace of some AI development while it tightened security and safeguards. That included a two-week pause […]",
+          "extra": {},
+          "score": 9.0,
+          "summary": "OpenAI 为安全放缓开发节奏，IPO 前重大战略转向，影响行业节奏。"
+        },
+        {
+          "section": "news",
+          "title": "Stripe didn’t really buy OpenRouter because of the ‘singularity’",
+          "url": "https://techcrunch.com/2026/08/19/stripe-didnt-really-buy-openrouter-because-of-the-singularity/",
+          "source": "TechCrunch",
+          "published_at": "2026-08-19T23:32:00Z",
+          "raw_text": "What does a payments giant want with a startup that routes prompts between different AI models? Stripe says it's because of \"the singularity\" but it's really for a far more real and powerful reason.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Stripe 收购 OpenRouter 的真实动机是支付基础设施整合，非炒作概念。"
+        },
+        {
+          "section": "news",
+          "title": "GLM-5.3 hits the API at $1.4/$4.4 per million tokens",
+          "url": "https://venturebeat.com/technology/glm-5-3-hits-the-api-at-1-4-4-4-per-million-tokens",
+          "source": "VentureBeat",
+          "published_at": "2026-08-19T02:00:00Z",
+          "raw_text": "After a stunning debut last week with cyber capabilities so advanced they reportedly found a previously undetected vulnerability in Cursor, GLM-5.3, the new frontier open source language model from Chinese startup z.ai, has now hit the application programming interface (API) — allowing developers the ability to build atop it and plug it into their agents and applications. Developers who previously subscribed to a GLM Coding Plan are currently limited to the OpenAI Chat Completions-compatible protocol. Z.ai said it plans to make the model's weights openly available, but a precise date and licensing remain to be seen. On the API, the price is unchanged from GLM-5.2: $1.40 per million input tokens and $4.40 per million output tokens . Cached input costs $0.26 per million tokens, while Z.ai cu",
+          "extra": {},
+          "score": 8.0,
+          "summary": "GLM-5.3 开放 API，定价极低且此前展示过漏洞发现能力，威胁闭源模型。"
+        },
+        {
+          "section": "news",
+          "title": "Microsoft Copilot reveals secret input that allowed it to be hacked",
+          "url": "https://arstechnica.com/security/2026/08/microsoft-copilot-reveals-secret-input-that-allowed-it-to-be-hacked/",
+          "source": "Ars Technica",
+          "published_at": "2026-08-18T13:00:04Z",
+          "raw_text": "Secret parameter allowed hackers to steal passwords when a target clicked on a link.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "微软 Copilot 存在可窃取密码的隐藏参数漏洞，暴露 AI 产品安全风险。"
+        },
+        {
+          "section": "news",
+          "title": "TrueFoundry's open source AI agent harness TrueForge boasts 30%-75% cheaper task completion than Claude Managed Agents",
+          "url": "https://venturebeat.com/orchestration/truefoundrys-open-source-ai-agent-harness-trueforge-boasts-30-75-cheaper-task-completion-than-claude-managed-agents",
+          "source": "VentureBeat",
+          "published_at": "2026-08-19T23:50:00Z",
+          "raw_text": "Another day, another new AI agent harness is released. Only this time, it's one that aims to solve a growing enterprise problem as AI agents proliferate: enabling greater developer control of agents and tools, while reducing cost. TrueFoundry , a San Francisco B2B machine learning startup co-founded in 2021 by former Meta engineers, has released its own custom TrueForge harness under the permissive MIT License on Github . Thus, it can be used with any of a developer (or their parent enterprise's) preferred AI models, forked, modified, self-hosted and incorporated into commercial products. The company states in a blog post that when it used TrueForge paired with the open source GLM-5.2 LLM to successfully complete 11 of 14 tasks on DevRev’s Enterprise-Bench — testing multi-step tool use acr",
+          "extra": {},
+          "score": 7.0,
+          "summary": "开源 AI Agent 框架 TrueForge 宣称成本比 Claude 低 30%-75%，企业关注。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Introducing Gemini 3.7 Flash",
+          "url": "https://deepmind.google/blog/introducing-gemini-3-7-flash/",
+          "source": "Google DeepMind",
+          "published_at": "2026-08-13T17:04:18Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "Google 发布 Gemini 3.7 Flash 模型，推理速度与能力显著提升，值得关注。"
+        },
+        {
+          "section": "product",
+          "title": "Replit expands access to software creation with GPT-5.6 Luna",
+          "url": "https://openai.com/index/replit",
+          "source": "OpenAI",
+          "published_at": "2026-08-19T07:00:00Z",
+          "raw_text": "Replit introduces Free Mode, powered by GPT-5.6 Luna, so anyone can turn ideas into working software without worrying about token costs.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Replit 推出免费模式，基于 GPT-5.6 Luna 让用户零成本创建软件，降低开发门槛。"
+        },
+        {
+          "section": "product",
+          "title": "Putting sign language AI into users’ hands",
+          "url": "https://deepmind.google/blog/putting-sign-language-ai-into-users-hands/",
+          "source": "Google DeepMind",
+          "published_at": "2026-08-12T14:01:59Z",
+          "raw_text": "Introducing sign-language-to-text (SL2T), our breakthrough model powering new sign language features for Deaf and hard of hearing users.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "微软发布手语转文本模型 SL2T，为听障用户提供实时翻译新能力。"
+        }
+      ]
+    }
+  ]
+}
