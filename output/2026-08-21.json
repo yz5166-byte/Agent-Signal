@@ -1,0 +1,280 @@
+{
+  "date": "2026-08-21",
+  "tip": {
+    "title": "用 firecrawl 替代 requests 抓取网页",
+    "body": "当Agent需要从网页抓取实时数据（如新闻、价格）时，直接用`requests`可能被反爬或解析失败。\n\n用`firecrawl`的API一键抓取并结构化：\n```python\nfrom firecrawl import FirecrawlApp\n\napp = FirecrawlApp(api_key=\"你的API密钥\")\n# 抓取并返回Markdown格式\nresult = app.scrape_url(\"https://example.com\", params={\"formats\": [\"markdown\"]})\nprint(result[\"markdown\"])\n```\n注意：API密钥存环境变量，勿硬编码。若需执行抓取结果中的代码，用`subprocess.run`配合白名单路径。\n\n（基于条目[1] firecrawl/firecrawl）",
+    "ref_title": "firecrawl/firecrawl",
+    "ref_url": "https://github.com/firecrawl/firecrawl"
+  },
+  "errors": [
+    "arXiv 整体抓取失败：ReadTimeout"
+  ],
+  "sections": [
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi-K2.6, GLM-5.2, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 179068,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "gemma3",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llama3",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 9.0,
+          "summary": "本地一键运行最新开源大模型，支持Kimi、GLM、DeepSeek等，上手即用。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "The context API to search, scrape, and interact with the web at scale. 🔥",
+          "extra": {
+            "stars": 170127,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "大规模网页搜索与抓取的API，为RAG和Agent提供实时数据源。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 153065,
+            "language": "TypeScript",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "orchestration",
+              "python",
+              "rag",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 8.0,
+          "summary": "一站式构建Agent工作流与RAG管道，支持多模型与私有化部署。"
+        },
+        {
+          "section": "repo",
+          "title": "langchain-ai/openwiki",
+          "url": "https://github.com/langchain-ai/openwiki",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-22T23:48:26Z",
+          "raw_text": "OpenWiki is a CLI that writes and maintains agent documentation for your codebase.",
+          "extra": {
+            "stars": 15426,
+            "language": "TypeScript",
+            "topics": []
+          },
+          "score": 8.0,
+          "summary": "CLI工具自动为代码库生成并维护Agent文档，解决文档滞后痛点。"
+        },
+        {
+          "section": "repo",
+          "title": "omnigent-ai/omnigent",
+          "url": "https://github.com/omnigent-ai/omnigent",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-11T12:18:13Z",
+          "raw_text": "Omnigent is an open-source AI agent framework and meta-harness: orchestrate Claude Code, Codex, Cursor, Pi, and custom agents — swap harnesses without rewriting, enforce policies and sandboxing, and collaborate in real time from any device.",
+          "extra": {
+            "stars": 9109,
+            "language": "Python",
+            "topics": [
+              "agent-framework",
+              "agent-governance",
+              "agent-orchestration",
+              "agents",
+              "ai",
+              "ai-agent",
+              "ai-agents",
+              "claude-code",
+              "codex",
+              "coding-agents",
+              "developer-tools",
+              "llm",
+              "ml",
+              "multi-agent",
+              "python",
+              "sandbox"
+            ]
+          },
+          "score": 8.0,
+          "summary": "统一编排Claude Code、Codex等Agent，无需重写即可切换后端。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "OpenAI is gaining on Anthropic with business users, new data indicates",
+          "url": "https://techcrunch.com/2026/08/20/openai-is-gaining-on-anthropic-with-business-users-new-data-indicates/",
+          "source": "TechCrunch",
+          "published_at": "2026-08-20T22:36:37Z",
+          "raw_text": "Businesses are willing to flop back and forth as each lab releases new models, volatility that should give both companies' investors pause about how \"sticky\" enterprise AI spending really is.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "数据显示企业客户在OpenAI与Anthropic间摇摆，暴露AI企业服务粘性不足的关键问题。"
+        },
+        {
+          "section": "news",
+          "title": "One in five enterprises can't stop a runaway AI agent's spending in real time",
+          "url": "https://venturebeat.com/orchestration/one-in-five-enterprises-cant-stop-a-runaway-ai-agents-spending-in-real-time",
+          "source": "VentureBeat",
+          "published_at": "2026-08-20T19:57:01Z",
+          "raw_text": "Enterprise AI teams have stopped betting on a single orchestration platform. The median enterprise now runs three at once — not by accident, but because none of them fully trusts a single vendor to run the show, according to VB Pulse data . This is not just to avoid vendor lock-in and retain flexibility (although that’s a big part of it). There’s still a lot of uncertainty, even distrust, in vendors’ security and permissioning capabilities. Enterprises want the ability to impose their own. Microsoft leads on primary usage today, while Anthropic leads by a wide margin in what enterprises are considering next. But enterprises still struggle with many challenges, notably around token usage and visibility into agent spending. These findings are from an ongoing analysis of how enterprises are a",
+          "extra": {},
+          "score": 9.0,
+          "summary": "调查称20%企业无法实时阻止AI代理失控消费，凸显AI治理与成本管控的紧迫性。"
+        },
+        {
+          "section": "news",
+          "title": "AI data startup Micro1 reaches $500M gross run rate amid AI training boom",
+          "url": "https://techcrunch.com/2026/08/20/ai-data-startup-micro1-reaches-500m-gross-run-rate-amid-ai-training-boom/",
+          "source": "TechCrunch",
+          "published_at": "2026-08-21T00:13:44Z",
+          "raw_text": "Surging demand for AI training data is driving rapid growth for the startup and its rivals.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "AI训练数据需求爆发，Micro1年化收入达5亿美元，反映行业基础设施层高速增长。"
+        },
+        {
+          "section": "news",
+          "title": "It’s Greg Brockman’s OpenAI now",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/982774/greg-brockman-openai-role-expansion",
+          "source": "The Verge",
+          "published_at": "2026-08-20T15:45:55Z",
+          "raw_text": "OpenAI has had a hell of a year. The company spent months battling former cofounder Elon Musk in a sensational jury trial, was hit with a high-profile trade secrets lawsuit from Apple, and faced widespread scrutiny after an unreleased model hacked another AI company. As it prepares for an IPO, a steady string of executives […]",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Greg Brockman主导OpenAI IPO筹备，标志公司权力结构重大调整，影响行业格局。"
+        },
+        {
+          "section": "news",
+          "title": "Grok exfiltrates user data when malicious instructions are encrypted",
+          "url": "https://arstechnica.com/security/2026/08/grok-exfiltrates-user-data-when-malicious-instructions-are-encrypted/",
+          "source": "Ars Technica",
+          "published_at": "2026-08-20T13:00:35Z",
+          "raw_text": "Cryptographic Context Injection is only the latest way to break an LLM safety guardrail.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "研究发现加密指令可绕过Grok安全护栏，揭示LLM安全防护的新漏洞维度。"
+        },
+        {
+          "section": "news",
+          "title": "The August 17 outage, and the work ahead",
+          "url": "https://github.blog/news-insights/company-news/the-august-17-outage-and-the-work-ahead/",
+          "source": "Hacker News",
+          "published_at": "2026-08-20T19:22:24Z",
+          "raw_text": "Article URL: https://github.blog/news-insights/company-news/the-august-17-outage-and-the-work-ahead/ Comments URL: https://news.ycombinator.com/item?id=49378957 Points: 321 # Comments: 369",
+          "extra": {},
+          "score": 7.0,
+          "summary": "GitHub公布8月17日宕机事件复盘，对依赖AI开发工具的企业有直接运维参考价值。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Introducing Gemini 3.7 Flash",
+          "url": "https://deepmind.google/blog/introducing-gemini-3-7-flash/",
+          "source": "Google DeepMind",
+          "published_at": "2026-08-13T17:04:18Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "谷歌发布 Gemini 2.0 Flash 升级版，推理速度与多模态能力显著提升。"
+        },
+        {
+          "section": "product",
+          "title": "Putting sign language AI into users’ hands",
+          "url": "https://deepmind.google/blog/putting-sign-language-ai-into-users-hands/",
+          "source": "Google DeepMind",
+          "published_at": "2026-08-12T14:01:59Z",
+          "raw_text": "Introducing sign-language-to-text (SL2T), our breakthrough model powering new sign language features for Deaf and hard of hearing users.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "微软推出手语转文本模型 SL2T，填补无障碍 AI 关键空白。"
+        },
+        {
+          "section": "product",
+          "title": "Broadening access to Skala creates a faster path to predictive DFT",
+          "url": "https://www.microsoft.com/en-us/research/blog/broadening-access-to-skala-creates-a-faster-path-to-predictive-dft/",
+          "source": "Microsoft Research",
+          "published_at": "2026-08-20T16:00:00Z",
+          "raw_text": "Skala 1.1, the updated deep-learning exchange-correlation functional from Microsoft Research, provides greater accuracy, expanded accessibility across the computational chemistry ecosystem, and a living benchmark to track computational performance. The post Broadening access to Skala creates a faster path to predictive DFT appeared first on Microsoft Research .",
+          "extra": {},
+          "score": 7.0,
+          "summary": "微软发布 Skala 1.1，用深度学习加速计算化学 DFT 预测。"
+        }
+      ]
+    }
+  ]
+}
