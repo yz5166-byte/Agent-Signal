@@ -1,0 +1,408 @@
+{
+  "date": "2026-08-23",
+  "tip": {
+    "title": "Learning When to Think: Adaptive Reasoning for Test-Time Compute Allocation",
+    "body": "当你的Agent需要根据任务复杂度动态调整计算资源时，可以用「自适应推理」技巧。做法：在推理前先让模型对问题做快速难度评分（1-5分），然后根据分数决定是否启用深度推理链。代码示例：\n```python\ndef adaptive_reasoning(query):\n    difficulty = fast_scorer(query)  # 轻量模型评分\n    if difficulty < 3:\n        return direct_answer(query)  # 简单问题直接回答\n    else:\n        return deep_reasoning(query)  # 复杂问题启动链式推理\n```\n注意：fast_scorer需用独立沙箱运行，避免污染主模型状态。",
+    "ref_title": "Learning When to Think: Adaptive Reasoning for Test-Time Compute Allocation",
+    "ref_url": "https://arxiv.org/abs/2608.20256v1"
+  },
+  "errors": [],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "An Agentic Approach for Active Data Collection, Travel Behavior Modeling, and Weather-Sensitive Demand Prediction",
+          "url": "https://arxiv.org/abs/2608.20320v1",
+          "source": "arXiv",
+          "published_at": "2026-08-20T17:57:42Z",
+          "raw_text": "Travel behavior research increasingly combines digital data collection with predictive modeling, yet these stages are often developed and evaluated separately. This study proposes a three-agent workflow integrating conversational data collection, structured data processing, and behavioral prediction. A chatbot-administered, image-augmented stated-preference survey collected mode choices from student commuters across five predefined weather scenarios, yielding 454 respondent-scenario observations. Weather-related associations were analyzed using a multinomial logit model, while logistic regression and random forest provided machine-learning benchmarks. Nine locally deployed large language models (LLMs), ranging from 2 to 35 billion parameters, were evaluated across four zero-shot prompt-and-context conditions and extended through persona, few-shot, and vision-based configurations. Random forest achieved 69.6% five-class accuracy, while the best text-only zero-shot LLM reached 69.9% without task-specific fitting. Habitual travel information produced the most consistent gains, Expert framing generally outperformed Role-Play, and persona information was most useful when habitual travel information was unavailable. Few-shot prompting improved prediction for several models, with gains stabilizing after a small number of examples. Using the same weather images shown to respondents, the best vision-based configuration reached 71.5% five-class accuracy, indicating that visual context may provide additional predictive information for selected models. Overall, the study shows how conversational surveys, structured data processing, conventional behavioral modeling, machine learning, and multimodal LLM prediction can be coordinated within an auditable multi-agent workflow.",
+          "extra": {
+            "authors": [
+              "Narges Ahmadi",
+              "Yubo Jiao",
+              "Jônatas Augusto Manzolli",
+              "Jiangbo Yu",
+              "Luis Miranda-Moreno"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.20320v1"
+          },
+          "score": 9.0,
+          "summary": "提出三智能体协作框架，整合数据采集与预测建模，提升交通行为研究效率。"
+        },
+        {
+          "section": "paper",
+          "title": "MidTool: Mid-training Data Synthesis for Agentic Tool Use",
+          "url": "https://arxiv.org/abs/2608.20314v1",
+          "source": "arXiv",
+          "published_at": "2026-08-20T17:53:59Z",
+          "raw_text": "Mid-training is increasingly recognized as a critical stage for shaping the capabilities of large language models. Recent work has shown that targeted mid-training can strengthen reasoning-intensive abilities such as math and science, and can also improve agentic capabilities in software-engineering settings. In this work, we study the parallel but less explored agentic capability: general tool use. We present MidTool, an open corpus construction pipeline for agentic tool-use mid-training that combines large-scale web, PDF, and code data with synthesized supervision from real-world tool APIs, MCP skills, and document-grounded workflows. MidTool is designed to teach models how to recognize tool affordances, ground arguments from context, compose tool call workflow, and recover from incomplete information. We mid-train Qwen3-4B-Base and Qwen3-8B-Base on MidTool-Mix, and then apply follow-up post-training with both supervised fine-tuning and reinforcement learning. Compared with baselines, MidTool-Mix consistently improves downstream performance under both SFT and RL on BFCL, tau2-Bench, and MCP Universe. These results suggest that general tool use, like other important LLM capabilities, benefits from dedicated mid-training rather than being left entirely to post-training.",
+          "extra": {
+            "authors": [
+              "Fengqing Jiang",
+              "Yite Wang",
+              "Boyi Liu",
+              "Zhaoyang Wang",
+              "Canwen Xu",
+              "Zhewei Yao",
+              "Radha Poovendran",
+              "Yuxiong He"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.20314v1"
+          },
+          "score": 9.0,
+          "summary": "提出中间训练数据合成方法，针对性增强LLM工具调用与智能体能力。"
+        },
+        {
+          "section": "paper",
+          "title": "Break It Down, Pass It On: Cross-Task Skill Transfer in LLM Agents",
+          "url": "https://arxiv.org/abs/2608.20274v1",
+          "source": "arXiv",
+          "published_at": "2026-08-20T17:12:08Z",
+          "raw_text": "Large language model (LLM) agents can induce skills from completed tasks and reuse them later to grow more capable with experience. In practice, induced skills may transfer unreliably and can even harm the agent that retrieves them. When agent-induced skills transfer reliably across tasks remains an open question. We conduct a comprehensive and controlled study of how the way skills are induced shapes their transfer across tasks. Specifically, we compare task-level with subtask-level skill induction and text with code skill formats, the two axes along which existing methods differ. Task-level skills mostly reduce the agent's performance below its no-memory baseline while subtask-level skills raise it above on average, and text skills transfer better than code skills. To further understand our findings, we examine two complementary properties of the induced skills: specificity, which measures how closely a skill matches real tasks, and abstractness, which measures how evenly its relevance spreads across tasks. Neither property alone predicts task success, but their combined effect does, which we propose as a skill utility score. The score correlates consistently with task success when skills are transferred, and subtask-level and text skills score higher. Computing skill utility only needs the skills and task descriptions but not any task execution, so our score serves as a practical diagnostic of a skill memory before any new task runs.",
+          "extra": {
+            "authors": [
+              "Yiyang Feng",
+              "Biddut Sarker Bijoy",
+              "Niranjan Balasubramanian",
+              "Jiawei Zhou"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.20274v1"
+          },
+          "score": 8.0,
+          "summary": "研究LLM智能体跨任务技能迁移的可靠性与边界，提升多任务泛化能力。"
+        },
+        {
+          "section": "paper",
+          "title": "Learning When to Think: Adaptive Reasoning for Test-Time Compute Allocation",
+          "url": "https://arxiv.org/abs/2608.20256v1",
+          "source": "arXiv",
+          "published_at": "2026-08-20T16:54:08Z",
+          "raw_text": "Reasoning language models trained with reinforcement learning typically operate under a fixed token budget rather than an explicitly adaptive one, which can lead to over-computation on easy problems and insufficient computation on difficult ones. We study whether a model can learn to allocate its own reasoning effort by choosing, as the first token of its response, one of three modes: \\textsc{NoThink} (answer as quickly as possible), \\textsc{Short} (brief reasoning), or \\textsc{Long} (extended reasoning). The choice is learned inside Group Relative Policy Optimization (GRPO) with no separate router, through a shaped reward that makes each mode worthwhile at a different response length, together with hard per-mode token caps that keep the modes distinct. On a 1.5B distilled model trained on MATH, the three modes emerge without collapsing to a single choice, and the brief modes end up more accurate than \\textsc{Long}, which shows that the router sorts problems by difficulty rather than at random. Averaged over three seeds, the resulting policy stays close to the base model's accuracy on the held-out MATH500 ($0.782$ vs.\\ $0.796$) while cutting the mean response length from $4{,}796$ to $2{,}811$ tokens (a $41\\%$ reduction). Interestingly, it also transfers to other benchmarks without retraining, with the largest savings where problems are easier, with for instance 76\\% token reduction on GSM8K and at higher accuracy than the baselines at similar response length. In short, we build a reasoning model that adaptively chooses how much to reason for each problem.",
+          "extra": {
+            "authors": [
+              "Gijs Kassenaar",
+              "Zhao Yang",
+              "Vincent François-Lavet"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.20256v1"
+          },
+          "score": 8.0,
+          "summary": "让推理模型自适应分配测试时计算资源，避免简单问题过度计算。"
+        },
+        {
+          "section": "paper",
+          "title": "AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement",
+          "url": "https://arxiv.org/abs/2608.20318v1",
+          "source": "arXiv",
+          "published_at": "2026-08-20T17:56:59Z",
+          "raw_text": "Recursive self-improvement (RSI) asks whether an AI system can improve the process that produces AI systems, so that the next system inherits the improvement. That process is the training algorithm: a better objective or update rule improves the compute\\mbox{-}capability exchange rate for every subsequent run, including the one that produces the next agent. Whether RSI is feasible therefore turns on whether an agent can design training algorithms. No benchmark isolates that ability: existing suites are won by collecting data or by tuning hyperparameters, and none tells a change to how a run is executed apart from a change to how the model learns. We present AI4AI\\mbox{-}Bench, 10 frozen research repositories spanning 10 training algorithm families. In each task, an agent has 4 hours on one B300 to rewrite the training algorithm; its code is then rerun from scratch for up to 12 hours and scored by a fixed evaluator hidden from the agent, against the repository's original algorithm under the same procedure. Because the 10 metrics are incommensurable, every task is mapped onto one scale on which $0$ is an uninformative model, $0.1$ is the algorithm the repository ships, and $1.0$ is the task optimum. Across 29 configurations of 6 systems on all 10 tasks the mean score is $0.166$, and the best system reaches $0.250$: even the strongest closes under a fifth of the distance between the algorithm that was already there and the optimum. The submissions show where that distance went: most never change how the model learns at all, and the minority that do average $0.226$ against $0.126$ for the rest. More reasoning effort mostly buys the willingness to go there, taking that minority from $8\\%$ of submissions to $64\\%$ and the mean score from $0.094$ to $0.196$. We release the task suite, the evaluators and every scored submission, so that the measurement can be repeated as these systems change.",
+          "extra": {
+            "authors": [
+              "Yizhe Chi",
+              "Wenyi Li",
+              "Deyao Hong",
+              "Xiaoqiu Wang",
+              "Mingju Gao",
+              "Kaisen Yang",
+              "Bingxiang He",
+              "Youjie Zheng",
+              "Calvin Xiao",
+              "Qinhuai Na"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.20318v1"
+          },
+          "score": 7.0,
+          "summary": "提出递归自我改进基准，评估LLM智能体在算法设计中的自主优化能力。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi-K2.6, GLM-5.2, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 179213,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "gemma3",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llama3",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 9.0,
+          "summary": "一键本地运行最新开源大模型，含Kimi、DeepSeek等，上手即用。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "The context API to search, scrape, and interact with the web at scale. 🔥",
+          "extra": {
+            "stars": 170993,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "大规模网页搜索与抓取的上下文API，替代传统爬虫的AI原生方案。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 153226,
+            "language": "TypeScript",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "orchestration",
+              "python",
+              "rag",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 8.0,
+          "summary": "可视化搭建Agent工作流与RAG管道，支持多模型，从原型到生产无需重构。"
+        },
+        {
+          "section": "repo",
+          "title": "langchain-ai/openwiki",
+          "url": "https://github.com/langchain-ai/openwiki",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-22T23:48:26Z",
+          "raw_text": "OpenWiki is a CLI that writes and maintains agent documentation for your codebase.",
+          "extra": {
+            "stars": 15488,
+            "language": "TypeScript",
+            "topics": []
+          },
+          "score": 8.0,
+          "summary": "CLI工具自动为代码库生成并维护Agent文档，解决文档滞后痛点。"
+        },
+        {
+          "section": "repo",
+          "title": "omnigent-ai/omnigent",
+          "url": "https://github.com/omnigent-ai/omnigent",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-11T12:18:13Z",
+          "raw_text": "Omnigent is an open-source AI agent framework and meta-harness: orchestrate Claude Code, Codex, Cursor, Pi, and custom agents — swap harnesses without rewriting, enforce policies and sandboxing, and collaborate in real time from any device.",
+          "extra": {
+            "stars": 9176,
+            "language": "Python",
+            "topics": [
+              "agent-framework",
+              "agent-governance",
+              "agent-orchestration",
+              "agents",
+              "ai",
+              "ai-agent",
+              "ai-agents",
+              "claude-code",
+              "codex",
+              "coding-agents",
+              "developer-tools",
+              "llm",
+              "ml",
+              "multi-agent",
+              "python",
+              "sandbox"
+            ]
+          },
+          "score": 8.0,
+          "summary": "统一编排Claude Code、Cursor等多Agent框架，支持策略管控与实时协作。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Inherent, founded by DeepMind alumni, says its AI ‘teammate’ just outperformed Anthropic and OpenAI at replicating research",
+          "url": "https://techcrunch.com/2026/08/22/inherent-founded-by-deepmind-alumni-says-its-ai-teammate-just-outperformed-anthropic-and-openai-at-replicating-research/",
+          "source": "TechCrunch",
+          "published_at": "2026-08-22T19:00:00Z",
+          "raw_text": "Built by DeepMind alumni, British AI lab Inherent released Faraday, an AI agent whose ability to replicate scientific papers could be a stepping stone for innovation.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "DeepMind校友创企发布AI智能体，复现科研论文能力超越Anthropic和OpenAI，或加速科学发现。"
+        },
+        {
+          "section": "news",
+          "title": "OpenAI says California should strengthen its AI safety bill",
+          "url": "https://techcrunch.com/2026/08/22/openai-says-california-should-strengthen-its-ai-safety-bill/",
+          "source": "TechCrunch",
+          "published_at": "2026-08-22T16:30:34Z",
+          "raw_text": "OpenAI is calling for California to strengthen SB 53, an AI safety bill that the company previously opposed.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "OpenAI一反常态呼吁加州加强AI安全法案，反映行业监管博弈出现关键转折。"
+        },
+        {
+          "section": "news",
+          "title": "Enterprises winning with AI agents are limiting how much the agents can do alone",
+          "url": "https://venturebeat.com/orchestration/enterprises-winning-with-ai-agents-are-limiting-how-much-the-agents-can-do-alone",
+          "source": "VentureBeat",
+          "published_at": "2026-08-22T21:30:00Z",
+          "raw_text": "For much of the past two years, the general belief in enterprise AI has been that more autonomy equals better performance. Build agents that can plan, decide, and act across multi-step workflows, and give them as much room to run as possible. That assumption is now being tested at scale, in real production environments — and in a lot of deployments it's failing. The companies that end up benefiting from agentic AI won't necessarily be the ones that have given their agents the most flexibility. They're the ones who create AI agents with specific responsibilities and make sure they operate within clear rules. Two numbers tell you almost everything about where agentic AI stands in mid-2026. By Gartner's own forecast, more than 40% of the agentic AI projects running today won't survive to see ",
+          "extra": {},
+          "score": 8.0,
+          "summary": "企业实践表明，限制AI智能体自主性反而提升效果，挑战业界'越自主越好'的主流认知。"
+        },
+        {
+          "section": "news",
+          "title": "Nvidia finds that simple linear math can replace costly AI model handoffs",
+          "url": "https://venturebeat.com/technology/nvidia-finds-that-simple-linear-math-can-replace-costly-ai-model-handoffs",
+          "source": "VentureBeat",
+          "published_at": "2026-08-21T16:33:56Z",
+          "raw_text": "When an agentic AI system hands a task from a small model to a larger one — or back down again — it pays a steep tax: the receiving model has to recompute the entire conversation from scratch, driving up compute costs and latency. This is a major bottleneck for enterprises building long-horizon, multi-LLM workflows. To solve this challenge, researchers at Nvidia have introduced a cross-model KV cache transfer technique that directly maps the prefilled KV cache from a source model into the target model. This technique aligns with real-world agentic applications where large contexts accumulate across many turns. For real-world AI applications, cross-model KV cache transfer can reduce compute costs and latency on long-running, multi-LLM workflows — and it does so with simple linear math, not ",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Nvidia发现线性数学可替代昂贵模型间任务交接，有望大幅降低多智能体系统计算成本。"
+        },
+        {
+          "section": "news",
+          "title": "Over 1 million people have clicked LinkedIn’s AI slop button",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/983502/linkedin-ai-slop-button-one-million-people-message",
+          "source": "The Verge",
+          "published_at": "2026-08-21T21:25:50Z",
+          "raw_text": "LinkedIn actually announced a \"Seems like AI slop\" button on July 30th, and the company says that a lot of people have already used it. According to a Thursday post from chief product officer Hari Srinivasan, \"over a million people\" have clicked on the button, which is accessible from the three dots menu on a […]",
+          "extra": {},
+          "score": 7.0,
+          "summary": "LinkedIn'AI垃圾内容'举报按钮被点击超百万次，揭示平台内容质量危机已到临界点。"
+        },
+        {
+          "section": "news",
+          "title": "As demand for Meta AI glasses explodes, it’s harder to avoid creepy recordings",
+          "url": "https://arstechnica.com/tech-policy/2026/08/meta-ai-glasses-may-get-creepier-and-apps-that-detect-them-arent-perfect/",
+          "source": "Ars Technica",
+          "published_at": "2026-08-21T11:00:53Z",
+          "raw_text": "Ars looks at Zuckoff, the latest free app detecting Meta AI glasses amid privacy backlash.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "Meta AI眼镜需求激增引发隐私担忧，检测应用Zuckoff走红凸显监管滞后。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Introducing Gemini 3.7 Flash",
+          "url": "https://deepmind.google/blog/introducing-gemini-3-7-flash/",
+          "source": "Google DeepMind",
+          "published_at": "2026-08-13T17:04:18Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "谷歌发布 Gemini 3.7 Flash，推理速度与多模态能力显著提升。"
+        },
+        {
+          "section": "product",
+          "title": "Broadening access to Skala creates a faster path to predictive DFT",
+          "url": "https://www.microsoft.com/en-us/research/blog/broadening-access-to-skala-creates-a-faster-path-to-predictive-dft/",
+          "source": "Microsoft Research",
+          "published_at": "2026-08-20T16:00:00Z",
+          "raw_text": "Skala 1.1, the updated deep-learning exchange-correlation functional from Microsoft Research, provides greater accuracy, expanded accessibility across the computational chemistry ecosystem, and a living benchmark to track computational performance. The post Broadening access to Skala creates a faster path to predictive DFT appeared first on Microsoft Research .",
+          "extra": {},
+          "score": 8.0,
+          "summary": "微软 Skala 1.1 更新，以深度学习加速 DFT 计算，精度与可及性双升。"
+        },
+        {
+          "section": "product",
+          "title": "Putting sign language AI into users’ hands",
+          "url": "https://deepmind.google/blog/putting-sign-language-ai-into-users-hands/",
+          "source": "Google DeepMind",
+          "published_at": "2026-08-12T14:01:59Z",
+          "raw_text": "Introducing sign-language-to-text (SL2T), our breakthrough model powering new sign language features for Deaf and hard of hearing users.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "微软推出手语转文本模型 SL2T，直接赋能听障用户交互。"
+        }
+      ]
+    }
+  ]
+}
