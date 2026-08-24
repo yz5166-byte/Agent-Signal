@@ -1,0 +1,396 @@
+{
+  "date": "2026-08-24",
+  "tip": {
+    "title": "EnSI-RAG: Entity-Structure-Indexed Retrieval-Augmented Generation for Long-Document Question Answering",
+    "body": "**场景**：构建RAG Agent时，长文档中多实体关系问答常因跨片段证据检索不全而失败。\n\n**做法**：采用实体-结构索引（EnSI-RAG），先对文档构建实体关系图，再按结构路径检索。用 `networkx` 建图并存储为JSON，查询时提取实体，沿关系边收集上下文片段。\n\n```python\nimport networkx as nx\nG = nx.Graph()\n# 添加实体节点与关系边\nG.add_edge('实体A', '实体B', relation='关联')\n# 查询时获取邻居节点\nneighbors = list(G.neighbors('实体A'))\n```\n\n**注意**：实体抽取可用本地模型（如GLM）或API，避免直接执行模型生成的代码。",
+    "ref_title": "EnSI-RAG: Entity-Structure-Indexed Retrieval-Augmented Generation for Long-Document Question Answering",
+    "ref_url": "https://arxiv.org/abs/2608.21252v1"
+  },
+  "errors": [],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "AUSO: Action-Level Unified Skill Optimization from Internalization to Utilization",
+          "url": "https://arxiv.org/abs/2608.21292v1",
+          "source": "arXiv",
+          "published_at": "2026-08-21T16:53:27Z",
+          "raw_text": "Skills play different roles as an agent's policy evolves: they should first provide learnable knowledge, then support capability formation, and finally be invoked only when they improve individual decisions. Existing methods rarely model this lifecycle. They either keep skills outside the model, fully internalize them, or select among internalization and utilization objectives through noisy task-level success rates. Such designs fragment training and assign uniform importance to actions within the same trajectory, even though skill guidance may help some decisions while distracting others. To solve these problems, we introduce AUSO (Action-level Unified Skill Optimization), which unifies skill learning and skill use through a progressive, action-aware optimization process. At the beginning of training, AUSO jointly learns from teacher guidance and environmental outcomes, enabling the policy to acquire foundational skills without losing task-oriented feedback. It subsequently emphasizes outcome-based policy optimization to consolidate autonomous problem-solving ability. As the policy matures, AUSO evaluates each sampled action under both skill-conditioned and skill-free contexts. The resulting action-level information signal is coupled with the trajectory outcome advantage, allowing beneficial skill-sensitive actions to receive stronger updates and harmful ones to be suppressed. Therefore, skills gradually transition from an external source of supervision into decision knowledge whose utilization is adapted to its action-level benefit, while reinforcement learning remains the shared backbone across all stages. Experiments on ALFWorld, WebShop, and SearchQA show that AUSO consistently improves agent performance and out-of-distribution generalization over competitive baselines.",
+          "extra": {
+            "authors": [
+              "Huizu Lin",
+              "Chengkai Huang",
+              "Tianqi Gao",
+              "Tao Huang",
+              "Daijiao Liu",
+              "Tongxin Li",
+              "Xiaoyan Sun",
+              "Lina Yao"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.21292v1"
+          },
+          "score": 9.0,
+          "summary": "提出技能全生命周期框架，让智能体从学习、形成能力到按需调用技能，填补多智能体技能管理空白。"
+        },
+        {
+          "section": "paper",
+          "title": "Memory Augmentation Unlocks Efficient Chain-of-Thought Reasoning",
+          "url": "https://arxiv.org/abs/2608.21265v1",
+          "source": "arXiv",
+          "published_at": "2026-08-21T16:22:36Z",
+          "raw_text": "Large language models often rely on Chain-of-Thought (CoT) reasoning to solve complex tasks, but verbose reasoning traces introduce substantial inference overhead. CoT compression shortens generation, yet aggressive compression may disrupt logical coherence and degrade performance. We formalize this trade-off as the \\textit{Context-Generation Substitution Law}, where explicit reasoning context substitutes for part of decode-time generation. Based on this principle, we propose \\textit{Memory-Augmented Compression}, a training-free framework that constructs reusable reasoning memories from historical traces and retrieves them as prefill-side scaffolds. Rather than using raw demonstrations, these memories summarize reusable reasoning patterns, key constraints, and critical operations to compensate for information lost during compression. Experiments show that Memory consistently improves prompt-based Chain-of-Draft (CoD) compression across mathematical reasoning, complex reasoning, and science question answering tasks, yielding accuracy gains of 21.4, 28.0, 29.5, and 6.61 points over CoD on GSM8K, MATH, BBH, and MMLU-Sci, while achieving a 1.14--1.49$\\times$ latency speedup over standard CoT. Memory is also compatible with token-level, reasoning-trace-level, and inference-state compression mechanisms. Further analyzes show that the gains come from relevant reasoning memories rather than simply increasing context length.",
+          "extra": {
+            "authors": [
+              "Simeng Zhang",
+              "Yilong Chen",
+              "Wenyuan Zhang",
+              "Zhenyu Zhang",
+              "Yao Chen",
+              "Junyuan Shang",
+              "Tingwen Liu"
+            ],
+            "categories": [
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.21265v1"
+          },
+          "score": 8.0,
+          "summary": "用记忆增强压缩思维链推理，在保持逻辑连贯的同时大幅降低推理开销，直击LLM部署效率痛点。"
+        },
+        {
+          "section": "paper",
+          "title": "Level-k Distinguishable Mechanisms for Evaluating Bounded Rationality in LLMs",
+          "url": "https://arxiv.org/abs/2608.21296v1",
+          "source": "arXiv",
+          "published_at": "2026-08-21T16:58:10Z",
+          "raw_text": "Strategic depth of reasoning is essential for human interaction of Large Language Models (LLMs) operating in boundedly rational environments. However, existing evaluations are primarily based on canonical games prevalent in pretraining corpora, making it difficult to disentangle true strategic reasoning from memorisation. To address this, we formalise a necessary level-K distinguishability condition for strategic depth inference and construct a suite of novel game structures that meet this standard. Using these games, we evaluate strategic depth in LLMs from both the Chain-of-Thought tokens and actual actions under recursive reasoning and an inductive trace of opponent game-play data. Across experimental trials spanning four LLMs, four game structures, and ten levels of iterated reasoning, we find that model models maintain accurate strategic depth under recursive reasoning, with strong internal consistency between stated reasoning and actions at every level. Errors arise from using the wrong number of iterated depth of reasoning steps, not from computing best responses incorrectly. However, inductive inference from opponent play degrades accuracy sharply and unevenly across games, and explicit strategic mentalizing in the chain of thought substantially improves overall performance.",
+          "extra": {
+            "authors": [
+              "Binchi Zhang",
+              "Atrisha Sarkar"
+            ],
+            "categories": [
+              "cs.MA"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.21296v1"
+          },
+          "score": 8.0,
+          "summary": "设计可区分层次推理深度的评估机制，排除预训练数据污染，精准衡量LLM在博弈中的真实策略能力。"
+        },
+        {
+          "section": "paper",
+          "title": "Move by Move: Measuring and Steering How LLMs Conduct Psychotherapy",
+          "url": "https://arxiv.org/abs/2608.21325v1",
+          "source": "arXiv",
+          "published_at": "2026-08-21T17:32:38Z",
+          "raw_text": "Users increasingly turn to large language models for emotional support, yet little is known about how these models actually conduct a psychotherapy interaction. We introduce an ontology of ten therapeutic moves: compact, function-based categories grounded in the MULTI-60 inventory, validated through an annotation campaign with five licensed psychologists, and scaled with a judge-based approach that matches expert agreement. Applying it to real counseling transcripts and model-led sessions, we compare the move distributions between human clinicians and a panel of frontier models. Models over-use inquiry at up to three times the human rate, neglect psychoeducation, and are strongly context-anchored: they carry forward strategies initiated by a human clinician but rarely initiate them themselves. Exposing the ontology as a set of tools roughly halves the mean deviation from the human move distribution and improves turn-level alignment with human therapist by 7-9 percentage points, without any fine-tuning.",
+          "extra": {
+            "authors": [
+              "Afonso Baldo",
+              "Hugo Pitorro",
+              "Areti Vassilopoulos",
+              "Anabela C. Areias",
+              "Maya D'Eon",
+              "Fabíola Costa",
+              "Ricardo Rei",
+              "Nuno M. Guerreiro"
+            ],
+            "categories": [
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.21325v1"
+          },
+          "score": 7.0,
+          "summary": "首次系统刻画LLM在心理治疗中的具体对话动作，为AI情感支持的安全性与可控性提供可操作框架。"
+        },
+        {
+          "section": "paper",
+          "title": "EnSI-RAG: Entity-Structure-Indexed Retrieval-Augmented Generation for Long-Document Question Answering",
+          "url": "https://arxiv.org/abs/2608.21252v1",
+          "source": "arXiv",
+          "published_at": "2026-08-21T16:05:00Z",
+          "raw_text": "Question answering (QA) over long, connected documents remains challenging because relevant evidence may span multiple entities and their relationships. Existing retrieval-augmented generation (RAG) methods typically index documents as raw chunks and retrieve them through embedding similarity. Their performance degrades when chunk boundaries separate entities from supporting evidence or when a question requires multi-hop reasoning across the corpus. We propose EnSI-RAG (Entity-Structure-Indexed Retrieval-Augmented Generation), a framework that constructs a query-independent, entity-centered index. Each record (e, t, k, v) represents an entity e, its type t, a semantic category k in {property, relation, aspect}, and a value v, while retaining links to the original source passages. At query time, these records serve as retrieval handles, and an LLM synthesizes the retrieved passages into the final answer. This design separates evidence localization from answer synthesis while preserving traceable source evidence. Across Loong and Oolong, EnSI-RAG achieves an average accuracy of 78.24. Relative to the published baseline scores used as references, this is 6.62 points higher, suggesting its effectiveness across these settings. The code is available at https://github.com/RamonMeng/EnSI-RAG.",
+          "extra": {
+            "authors": [
+              "Xuanyu Meng",
+              "Jiashuo Sun",
+              "Jash Rajesh Parekh",
+              "Jiawei Han"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.AI",
+              "cs.DB",
+              "cs.IR"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.21252v1"
+          },
+          "score": 7.0,
+          "summary": "提出实体-结构索引的RAG方法，解决长文档多实体关系问答中跨片段证据检索难题，提升复杂QA准确性。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi-K2.6, GLM-5.2, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 179285,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "gemma3",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llama3",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 9.0,
+          "summary": "本地一键运行最新开源大模型，支持Kimi、GLM、DeepSeek等，实测可用。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 153296,
+            "language": "TypeScript",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "orchestration",
+              "python",
+              "rag",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 9.0,
+          "summary": "一站式构建Agent工作流与RAG管道，支持多模型、可私有部署，生产级方案。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "The context API to search, scrape, and interact with the web at scale. 🔥",
+          "extra": {
+            "stars": 171426,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 8.0,
+          "summary": "大规模网页搜索与抓取的API，可直接集成到RAG或Agent流程中。"
+        },
+        {
+          "section": "repo",
+          "title": "cobusgreyling/loop-engineering",
+          "url": "https://github.com/cobusgreyling/loop-engineering",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-09T06:28:20Z",
+          "raw_text": "Practical patterns, starters & CLI tools for loop engineering with AI coding agents. Design systems that prompt and orchestrate agents (inspired by Addy Osmani and Boris Cherny). Includes loop-audit, loop-init, loop-cost.",
+          "extra": {
+            "stars": 10607,
+            "language": "JavaScript",
+            "topics": [
+              "agentic-ai",
+              "ai-agents",
+              "ai-coding",
+              "anthropic",
+              "automation",
+              "claude",
+              "claude-code",
+              "codex",
+              "coding-agents",
+              "devops-automation",
+              "devtools",
+              "github-actions",
+              "grok",
+              "llm",
+              "loop-engineering",
+              "mcp",
+              "prompt-engineering"
+            ]
+          },
+          "score": 8.0,
+          "summary": "提供AI编码Agent的编排模式与CLI工具，含审计、初始化、成本追踪。"
+        },
+        {
+          "section": "repo",
+          "title": "langchain-ai/openwiki",
+          "url": "https://github.com/langchain-ai/openwiki",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-22T23:48:26Z",
+          "raw_text": "OpenWiki is a CLI that writes and maintains agent documentation for your codebase.",
+          "extra": {
+            "stars": 15524,
+            "language": "TypeScript",
+            "topics": []
+          },
+          "score": 7.0,
+          "summary": "CLI工具自动为代码库生成并维护Agent文档，解决文档滞后痛点。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Enterprises winning with AI agents are limiting how much the agents can do alone",
+          "url": "https://venturebeat.com/orchestration/enterprises-winning-with-ai-agents-are-limiting-how-much-the-agents-can-do-alone",
+          "source": "VentureBeat",
+          "published_at": "2026-08-22T21:30:00Z",
+          "raw_text": "For much of the past two years, the general belief in enterprise AI has been that more autonomy equals better performance. Build agents that can plan, decide, and act across multi-step workflows, and give them as much room to run as possible. That assumption is now being tested at scale, in real production environments — and in a lot of deployments it's failing. The companies that end up benefiting from agentic AI won't necessarily be the ones that have given their agents the most flexibility. They're the ones who create AI agents with specific responsibilities and make sure they operate within clear rules. Two numbers tell you almost everything about where agentic AI stands in mid-2026. By Gartner's own forecast, more than 40% of the agentic AI projects running today won't survive to see ",
+          "extra": {},
+          "score": 9.0,
+          "summary": "企业实践表明限制AI代理自主性反而提升效果，颠覆主流认知"
+        },
+        {
+          "section": "news",
+          "title": "Enterprise AI agents are only as reliable as the messiest documents behind them",
+          "url": "https://venturebeat.com/orchestration/enterprise-ai-agents-are-only-as-reliable-as-the-messiest-documents-behind-them",
+          "source": "VentureBeat",
+          "published_at": "2026-08-23T23:00:00Z",
+          "raw_text": "Enterprise AI has largely been built around context engineering. Teams connect enterprise systems, generate chunks and embeddings, build retrieval pipelines, and assemble the context needed by individual AI applications. While this approach works well for isolated assistants and copilots, it treats enterprise knowledge as application-specific context rather than a shared enterprise asset. As organizations deploy more AI applications and agents , this model begins to break down. Different teams process the same documents, maintain separate embeddings and indexes, and create inconsistent representations of the same business knowledge. The challenge is no longer simply providing context to AI systems — it is managing enterprise knowledge itself. Why building context is not enough for enterpri",
+          "extra": {},
+          "score": 8.0,
+          "summary": "企业AI代理可靠性受底层文档质量制约，揭示工程化落地关键瓶颈"
+        },
+        {
+          "section": "news",
+          "title": "I gave Qwen 3.8 27B a reverse-engineering job and it finished in 30 minutes",
+          "url": "https://www.xda-developers.com/qwen-3-8-27b-reverse-engineering-job-frontier-model/",
+          "source": "Hacker News",
+          "published_at": "2026-08-23T10:02:51Z",
+          "raw_text": "Article URL: https://www.xda-developers.com/qwen-3-8-27b-reverse-engineering-job-frontier-model/ Comments URL: https://news.ycombinator.com/item?id=49407507 Points: 159 # Comments: 80",
+          "extra": {},
+          "score": 7.0,
+          "summary": "Qwen 3.8 27B模型30分钟完成逆向工程任务，展示开源模型实用能力"
+        },
+        {
+          "section": "news",
+          "title": "Who’s behind the new ‘stealth model’ Ox Alpha?",
+          "url": "https://techcrunch.com/2026/08/23/whos-behind-the-new-stealth-model-ox-alpha/",
+          "source": "TechCrunch",
+          "published_at": "2026-08-23T20:01:36Z",
+          "raw_text": "A mysterious new AI model called Ox Alpha has driven certain corners of the internet into a frenzy of speculation.",
+          "extra": {},
+          "score": 6.0,
+          "summary": "神秘新模型Ox Alpha引发社区猜测，但缺乏可验证信息"
+        },
+        {
+          "section": "news",
+          "title": "JIT Compiling Code in 5μs",
+          "url": "https://malisper.me/jit-compiling-code-in-5-us/",
+          "source": "Hacker News",
+          "published_at": "2026-08-23T06:04:51Z",
+          "raw_text": "Article URL: https://malisper.me/jit-compiling-code-in-5-us/ Comments URL: https://news.ycombinator.com/item?id=49406387 Points: 123 # Comments: 78",
+          "extra": {},
+          "score": 6.0,
+          "summary": "5微秒级JIT编译技术突破，对AI推理性能优化有参考价值"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Introducing Gemini 3.7 Flash",
+          "url": "https://deepmind.google/blog/introducing-gemini-3-7-flash/",
+          "source": "Google DeepMind",
+          "published_at": "2026-08-13T17:04:18Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "谷歌发布 Gemini 3.7 Flash 模型，推理速度与多模态能力显著提升。"
+        },
+        {
+          "section": "product",
+          "title": "Broadening access to Skala creates a faster path to predictive DFT",
+          "url": "https://www.microsoft.com/en-us/research/blog/broadening-access-to-skala-creates-a-faster-path-to-predictive-dft/",
+          "source": "Microsoft Research",
+          "published_at": "2026-08-20T16:00:00Z",
+          "raw_text": "Skala 1.1, the updated deep-learning exchange-correlation functional from Microsoft Research, provides greater accuracy, expanded accessibility across the computational chemistry ecosystem, and a living benchmark to track computational performance. The post Broadening access to Skala creates a faster path to predictive DFT appeared first on Microsoft Research .",
+          "extra": {},
+          "score": 8.0,
+          "summary": "微软发布 Skala 1.1，用深度学习加速 DFT 计算，精度更高且更易用。"
+        },
+        {
+          "section": "product",
+          "title": "Putting sign language AI into users’ hands",
+          "url": "https://deepmind.google/blog/putting-sign-language-ai-into-users-hands/",
+          "source": "Google DeepMind",
+          "published_at": "2026-08-12T14:01:59Z",
+          "raw_text": "Introducing sign-language-to-text (SL2T), our breakthrough model powering new sign language features for Deaf and hard of hearing users.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "微软推出手语转文本模型 SL2T，为听障用户提供实时 AI 翻译能力。"
+        }
+      ]
+    }
+  ]
+}
