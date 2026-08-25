@@ -1,0 +1,422 @@
+{
+  "date": "2026-08-25",
+  "tip": {
+    "title": "The Interaction Tax: When Communication Erases Diversity in Multi-Agent Teams",
+    "body": "**场景：** 多智能体协作时，频繁通信反而让所有Agent趋同，失去多样性，导致团队表现下降（条目[0]）。\n\n**做法：** 在通信前加入**多样性检查**——计算各Agent当前输出的语义相似度，若超过阈值则强制引入随机扰动或切换策略。\n\n```python\nfrom sentence_transformers import SentenceTransformer, util\nmodel = SentenceTransformer('all-MiniLM-L6-v2')\n\ndef check_diversity(agents_outputs, threshold=0.85):\n    embeds = model.encode(agents_outputs)\n    sim = util.cos_sim(embeds, embeds)\n    return sim.mean().item() < threshold  # 低于阈值才允许通信\n```\n\n**安全提示：** 纯数值计算，无代码执行风险。",
+    "ref_title": "The Interaction Tax: When Communication Erases Diversity in Multi-Agent Teams",
+    "ref_url": "https://arxiv.org/abs/2608.23541v1"
+  },
+  "errors": [],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "The Interaction Tax: When Communication Erases Diversity in Multi-Agent Teams",
+          "url": "https://arxiv.org/abs/2608.23541v1",
+          "source": "arXiv",
+          "published_at": "2026-08-24T17:45:15Z",
+          "raw_text": "Does multi-agent LLM interaction help or hurt? Some work reports gains from debate (Du et al., 2024), critique loops (Chen et al., 2025), and mixture-of-agents synthesis (Wang et al., 2025), while other work finds that interaction adds cost without improving quality under equal budgets (Tran & Kiela, 2026; Xu et al., 2026; Jarrett et al., 2025), or that independent sampling already captures multi-agent gains (Li et al., 2024). We argue this contradiction partly reflects a missing distinction, because not all multi-agent communication is equal. Different model families find structurally different solutions, but when agents read each other's complete outputs, their proposals converge within one round, erasing the diversity that motivates using multiple models. We call this the interaction tax. We test 11 verifier-scored optimization tasks under matched budgets and find that full-solution interaction is a weak default. Independent proposal generation avoids this collapse. Full-solution interaction mainly makes agents stay close to the first solution they see instead of trying different approaches, and critique helps only if the violated rule is easy for the LLM to find and fix. These results suggest that multi-agent performance depends less on the number of agents than on the information they exchange, and interaction helps only when agents share the right information at the right time.",
+          "extra": {
+            "authors": [
+              "Summer Eunhyung Ann",
+              "Haokun Liu",
+              "Chenhao Tan"
+            ],
+            "categories": [
+              "cs.MA",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.23541v1"
+          },
+          "score": 9.0,
+          "summary": "发现多智能体通信可能消除多样性、损害团队表现，挑战了“讨论必有增益”的直觉。"
+        },
+        {
+          "section": "paper",
+          "title": "Prime Agent: A Self-Improving RLM Harness",
+          "url": "https://arxiv.org/abs/2608.23552v1",
+          "source": "arXiv",
+          "published_at": "2026-08-24T17:54:19Z",
+          "raw_text": "Language models are sequential processors, but long-horizon agency requires external information and computation beyond model weights and active context. Prime Agent is an open-source harness for long-horizon evaluation and coding-agent workflows. A persistent IPython REPL follows the Recursive Language Model abstraction for programmatic context processing and test-time compute, while Continual Harness preserves histories, memories, skills, prompts, and subagent specifications across trajectories. Recursive subagents coordinate through direct agent-to-agent communication, and the Agents View lets humans inspect and manage daemon-backed sessions. Prime Agent standardizes execution, recovery, verification, and resource accounting while leaving strategy construction to the model. This low-friction, expressive membrane prevents harness failures from becoming model failures and pushes measurement toward the model's true maximal underlying capability. Prime Agent raises ARC-AGI-3 RHAE Best@1 from 30% to 95.5% and matches or exceeds native and popular harnesses across long-context coding, GPU-kernel generation, emulator construction, and autonomous nanoGPT speedruns. On Factorio, we find refinement allows for continuous technology progression and dedicated subagents enable parallelized work. Code is available at https://github.com/PrimeIntellect-ai/prime-agent.",
+          "extra": {
+            "authors": [
+              "Seth Karten",
+              "Alex L. Zhang",
+              "Kevin Thomas",
+              "Sebastian Müller",
+              "Elie Bakouch",
+              "Daniel Auras",
+              "Mika Senghaas",
+              "Fares Obeid",
+              "Konstantin Dunas",
+              "Johannes Hagemann",
+              "Sami Jaghouar"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL",
+              "cs.SE"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.23552v1"
+          },
+          "score": 9.0,
+          "summary": "开源长程智能体评估框架，支持自改进循环，直击Agent落地的核心工程痛点。"
+        },
+        {
+          "section": "paper",
+          "title": "SWE Refactor Bench: Can Coding Agents Complete a Long-Horizon, Whole-Repository Stack Migration?",
+          "url": "https://arxiv.org/abs/2608.23564v1",
+          "source": "arXiv",
+          "published_at": "2026-08-24T17:59:04Z",
+          "raw_text": "Modern software systems accumulate technical debt over decades of development, which makes migration expensive and largely manual. As coding agents become increasingly capable at bug fixing, can they autonomously perform such migrations? Existing benchmarks cannot answer this question because they evaluate only behavioural correctness, not whether the migration actually occurred. This leads an easy hack: agents copy the original implementation to make tests pass. We call this Blindness. To address this problem, we introduce SWE Refactor Bench, a benchmark comprising 20 whole-repository migrations, covering 4 kinds of technical debt. A three-stage evaluation protocol measures both migration completeness and behavioural correctness. (1) Migration Audit verifies that the migration occurred. (2) Behavioural Tests measure correctness with a fixed test suite. (3) Agentic Verification uses 6 independent coding agents to generate targeted tests for hidden behavioural differences. Across 520 runs from 8 frontier models and 26 model-effort configurations, only 28 of 520 runs ($5.4\\%$) pass all three stages, 13 of the 20 tasks receive no accepted solution, and the best model (claude-opus-5) scores $47.0/100$. Migration completeness and behavioural correctness are distinct abilities: a few runs preserve behaviour by skipping the migration and are stopped at Migration Audit; most attempt it and break behaviour, and are stopped at Behavioural Tests. Agents cannot deliver a perfect migration: among the 340 runs that pass Migration Audit, $58\\%$ reach $99\\%$ of the fixed checks, yet only $26\\%$ reach $100\\%$. Agent capability differs across migration categories: agents score $31.4$ on build toolchain rewrites but only $5.6$ on language rewrites. Together, these findings position SWE Refactor Bench as a rigorous testbed for developing coding agents for reliable whole-repository migrations.",
+          "extra": {
+            "authors": [
+              "Deyao Hong",
+              "Yizhe Chi",
+              "Wenyi Li",
+              "Xiaoqiu Wang",
+              "Mingju Gao",
+              "Kaisen Yang",
+              "Bingxiang He",
+              "Youjie Zheng",
+              "Calvin Xiao",
+              "Qinhuai Na"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.AI",
+              "cs.SE"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.23564v1"
+          },
+          "score": 8.0,
+          "summary": "首个评估编码Agent完成全仓库代码迁移的基准，填补了长周期重构任务评测空白。"
+        },
+        {
+          "section": "paper",
+          "title": "EarthVerse: Benchmarking Scientific Agents Across Dynamic Earth Systems and Natural Hazards",
+          "url": "https://arxiv.org/abs/2608.23525v1",
+          "source": "arXiv",
+          "published_at": "2026-08-24T17:29:16Z",
+          "raw_text": "Earth-system analysis reconstructs changing physical processes from observations that differ in source, scale, timing, and modality. Natural hazards make this work consequential because incomplete evidence can change estimates of severity, exposure, and mechanism. We introduce EarthVerse, a benchmark that evaluates scientific agents through package-scoped investigations. Its 405 reproducible tasks are grounded in 199 documented events and 19 hazard families. Agents inspect heterogeneous event packages, choose compatible evidence, execute transparent calculations, reconcile source differences, and preserve provenance in the final answer. We provide executable ground truth that decomposes each task into fine-grained answer units, together with task-specific rubrics that assess the supporting research process while allowing multiple valid paths. We evaluate 25 model and agent systems under a controlled tool-using protocol, then use controlled studies to locate failures in evidence access, tool selection, memory, reasoning, interaction, and scientific execution. Across systems, the best mean answer-unit accuracy is 84.65%, while the highest Strict@95 is only 34.81%. The gap shows that current agents often complete individual steps without maintaining a consistent chain across evidence, scales, units, calculations, and physical interpretation. EarthVerse provides a reproducible basis for measuring end-to-end scientific reliability in dynamic Earth systems.",
+          "extra": {
+            "authors": [
+              "Zhiqing Cui",
+              "Xinxiang Yin",
+              "Yihong Tang",
+              "Xinglang Zhang",
+              "Yuanzhe Hu",
+              "Siru Zhong",
+              "Weidong Tang",
+              "Yuxuan Liang",
+              "Weijia Li",
+              "Ming Jin",
+              "Shirui Pan",
+              "Yuhao Kang",
+              "Dingyi Zhuang",
+              "Jinhua Zhao"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.23525v1"
+          },
+          "score": 8.0,
+          "summary": "为科学Agent推出地球系统动态基准，测试多模态推理与灾害响应能力。"
+        },
+        {
+          "section": "paper",
+          "title": "Mitigating Reasoning-Induced Misalignment via Safety-Direction Penalty",
+          "url": "https://arxiv.org/abs/2608.23497v1",
+          "source": "arXiv",
+          "published_at": "2026-08-24T16:57:28Z",
+          "raw_text": "Reasoning-Induced Misalignment, where fine-tuning on reasoning data containing no harmful content, including mathematics, code, and problem-solving with chain-of-thought traces can induce harmful behaviors of LLM, posing a serious challenge to the safety of LLM reasoning. Cross-architecture, cross-scale, and cross-dataset checks show that RIM does not always emerge. Previous work attributed RIM to neuron-level entanglement, but did not identify the geometry of the representation space underlying this entanglement or propose a training-time fix. We provide both: a representation-space analysis of RIM and the Safety-Direction Penalty (SDP), which penalizes movement along a learned safety direction during reasoning fine-tuning. The analysis extracts two activation-space directions, one encoding reasoning ability and the other safety behavior. These directions are coupled: fine-tuning that improves reasoning shifts safety representations, and prompts with larger shifts show larger safety degradation. CKA distance ratios and probes locate the safety-decision layers where this shift is most relevant. These findings guide the design of SDP: the coupling motivates penalizing displacement along the safety direction, and the layer localization sets the initial scope. When the initial scope leaves compensatory shifts beyond the penalized layers, the same diagnostics guide iterative expansion. On Qwen2.5-3B and 7B, SDP restores safety while preserving benchmark reasoning performance.",
+          "extra": {
+            "authors": [
+              "Yipeng Zhao",
+              "Qishun Yang",
+              "Shenzhe Zhu",
+              "Shu Yang",
+              "Di Wang"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.23497v1"
+          },
+          "score": 8.0,
+          "summary": "揭示推理数据微调会意外引发有害行为，并提出安全方向惩罚来缓解。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi-K2.6, GLM-5.2, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 179354,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "gemma3",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llama3",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 9.0,
+          "summary": "本地一键运行最新开源模型（如Kimi、GLM、DeepSeek），无需配置环境。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 153396,
+            "language": "TypeScript",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "deepseek",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "python",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 9.0,
+          "summary": "一站式构建Agent工作流与RAG管道，支持多种模型和私有化部署。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "The context API to search, scrape, and interact with the web at scale. 🔥",
+          "extra": {
+            "stars": 171885,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 8.0,
+          "summary": "大规模网页搜索与抓取的API，可直接集成到AI工作流中获取实时数据。"
+        },
+        {
+          "section": "repo",
+          "title": "omnigent-ai/omnigent",
+          "url": "https://github.com/omnigent-ai/omnigent",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-11T12:18:13Z",
+          "raw_text": "Omnigent is an open-source AI agent framework and meta-harness: orchestrate Claude Code, Codex, Cursor, Pi, and custom agents — swap harnesses without rewriting, enforce policies and sandboxing, and collaborate in real time from any device.",
+          "extra": {
+            "stars": 9241,
+            "language": "Python",
+            "topics": [
+              "agent-framework",
+              "agent-governance",
+              "agent-orchestration",
+              "agents",
+              "ai",
+              "ai-agent",
+              "ai-agents",
+              "claude-code",
+              "codex",
+              "coding-agents",
+              "developer-tools",
+              "llm",
+              "ml",
+              "multi-agent",
+              "python",
+              "sandbox"
+            ]
+          },
+          "score": 8.0,
+          "summary": "统一编排多Agent框架（Claude Code、Codex等），支持策略管控与实时协作。"
+        },
+        {
+          "section": "repo",
+          "title": "langchain-ai/openwiki",
+          "url": "https://github.com/langchain-ai/openwiki",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-22T23:48:26Z",
+          "raw_text": "OpenWiki is a CLI that writes and maintains agent documentation for your codebase.",
+          "extra": {
+            "stars": 15567,
+            "language": "TypeScript",
+            "topics": []
+          },
+          "score": 7.0,
+          "summary": "CLI工具自动为代码库生成并维护Agent文档，减少手动编写负担。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Situational Awareness, star AI hedge fund that nearly imploded, now being probed by the SEC",
+          "url": "https://techcrunch.com/2026/08/24/situational-awareness-star-ai-hedge-fund-that-nearly-imploded-now-being-probed-by-the-sec/",
+          "source": "TechCrunch",
+          "published_at": "2026-08-25T00:23:12Z",
+          "raw_text": "The AI hedge fund went from \"the talk of Wall Street\" to \"subject of federal subpoenas\" faster than you can say \"diversify your portfolio.\"",
+          "extra": {},
+          "score": 9.0,
+          "summary": "明星AI对冲基金遭SEC调查，从华尔街宠儿沦为监管目标，警示AI金融应用风险。"
+        },
+        {
+          "section": "news",
+          "title": "Nvidia senior manager linked to Supermicro scheme smuggling AI servers to China",
+          "url": "https://arstechnica.com/tech-policy/2026/08/nvidia-senior-manager-linked-to-supermicro-scheme-smuggling-ai-servers-to-china/",
+          "source": "Ars Technica",
+          "published_at": "2026-08-24T16:41:45Z",
+          "raw_text": "Nvidia worker indicted after Jensen Huang scolded Supermicro for AI server smuggling.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "英伟达高管涉向中国走私AI服务器被起诉，凸显芯片出口管制执法升级。"
+        },
+        {
+          "section": "news",
+          "title": "AI is hitting entry-level jobs hardest, Stanford study finds",
+          "url": "https://arstechnica.com/ai/2026/08/ai-is-hitting-entry-level-jobs-hardest-stanford-study-finds/",
+          "source": "Ars Technica",
+          "published_at": "2026-08-24T21:45:53Z",
+          "raw_text": "Young employment in AI-impacted fields down 19% compared to more AI-resistant occupations.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "斯坦福研究显示AI对入门级岗位冲击最大，年轻就业率下降19%，影响劳动力市场格局。"
+        },
+        {
+          "section": "news",
+          "title": "Anthropic’s new Claude Tag update lets its Slack agent read the full conversation — and jump in unprompted",
+          "url": "https://venturebeat.com/orchestration/anthropics-new-claude-tag-update-lets-its-slack-agent-read-the-full-conversation-and-jump-in-unprompted",
+          "source": "VentureBeat",
+          "published_at": "2026-08-24T13:00:00Z",
+          "raw_text": "Anthropic is making a calculated bet that the biggest bottleneck in enterprise AI isn't model intelligence — it's the fact that most people still use AI alone. In an exclusive interview with VentureBeat, Scott White, Anthropic's head of product for enterprise, laid out the company's thesis for what it calls \" multiplayer AI \": a shift away from the single-user chatbot paradigm toward AI agents that operate across teams, read organizational context, and proactively insert themselves into work — sometimes without being asked. The strategy crystallized earlier this month when Anthropic updated Claude Tag , its agent that lives inside Slack channels, to read context across entire conversations rather than evaluating messages one at a time. According to the company, the change makes Claude roug",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Anthropic推出Claude Tag更新，让Slack智能体主动介入对话，押注企业AI协作新范式。"
+        },
+        {
+          "section": "news",
+          "title": "IBM’s next-gen mainframe chip is the first to run Arm and Z workloads on the same cores",
+          "url": "https://venturebeat.com/infrastructure/ibms-next-gen-mainframe-chip-is-the-first-to-run-arm-and-z-workloads-on-the-same-cores",
+          "source": "VentureBeat",
+          "published_at": "2026-08-24T11:00:00Z",
+          "raw_text": "IBM is announcing today at the annual Hot Chips conference what may be the most consequential change to mainframe architecture in decades: a processor whose cores can natively execute both IBM's own instruction set and Arm's — switching between the two in nanoseconds. The chip, which will power the next generation of IBM Z and LinuxONE systems, is the first dual-architecture mainframe processor ever built. It is designed to let enterprises run the vast and fast-growing ecosystem of Arm-native Linux software — including the AI frameworks that increasingly define modern infrastructure — directly alongside the z/OS transaction-processing workloads that anchor the world's banks, insurers, and governments. \"As technology enthusiasts on both sides, we're really excited about being what I would c",
+          "extra": {},
+          "score": 8.0,
+          "summary": "IBM发布新一代大型机芯片，首次在同一核心上原生运行Arm和Z架构，架构变革意义重大。"
+        },
+        {
+          "section": "news",
+          "title": "Enterprise AI agents are only as reliable as the messiest documents behind them",
+          "url": "https://venturebeat.com/orchestration/enterprise-ai-agents-are-only-as-reliable-as-the-messiest-documents-behind-them",
+          "source": "VentureBeat",
+          "published_at": "2026-08-23T23:00:00Z",
+          "raw_text": "Enterprise AI has largely been built around context engineering. Teams connect enterprise systems, generate chunks and embeddings, build retrieval pipelines, and assemble the context needed by individual AI applications. While this approach works well for isolated assistants and copilots, it treats enterprise knowledge as application-specific context rather than a shared enterprise asset. As organizations deploy more AI applications and agents , this model begins to break down. Different teams process the same documents, maintain separate embeddings and indexes, and create inconsistent representations of the same business knowledge. The challenge is no longer simply providing context to AI systems — it is managing enterprise knowledge itself. Why building context is not enough for enterpri",
+          "extra": {},
+          "score": 7.0,
+          "summary": "企业AI智能体可靠性受限于底层文档质量，揭示当前上下文工程方法的根本瓶颈。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Introducing Gemini 3.7 Flash",
+          "url": "https://deepmind.google/blog/introducing-gemini-3-7-flash/",
+          "source": "Google DeepMind",
+          "published_at": "2026-08-13T17:04:18Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "谷歌发布 Gemini 3.7 Flash，新一代轻量级多模态模型，推理速度与成本优势显著。"
+        },
+        {
+          "section": "product",
+          "title": "Broadening access to Skala creates a faster path to predictive DFT",
+          "url": "https://www.microsoft.com/en-us/research/blog/broadening-access-to-skala-creates-a-faster-path-to-predictive-dft/",
+          "source": "Microsoft Research",
+          "published_at": "2026-08-20T16:00:00Z",
+          "raw_text": "Skala 1.1, the updated deep-learning exchange-correlation functional from Microsoft Research, provides greater accuracy, expanded accessibility across the computational chemistry ecosystem, and a living benchmark to track computational performance. The post Broadening access to Skala creates a faster path to predictive DFT appeared first on Microsoft Research .",
+          "extra": {},
+          "score": 8.0,
+          "summary": "微软开源 Skala 1.1，用深度学习加速量子化学计算，精度与生态兼容性提升。"
+        },
+        {
+          "section": "product",
+          "title": "Putting sign language AI into users’ hands",
+          "url": "https://deepmind.google/blog/putting-sign-language-ai-into-users-hands/",
+          "source": "Google DeepMind",
+          "published_at": "2026-08-12T14:01:59Z",
+          "raw_text": "Introducing sign-language-to-text (SL2T), our breakthrough model powering new sign language features for Deaf and hard of hearing users.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "手语转文本模型 SL2T 发布，为听障用户提供实时 AI 翻译能力。"
+        }
+      ]
+    }
+  ]
+}
