@@ -1,0 +1,280 @@
+{
+  "date": "2026-08-26",
+  "tip": {
+    "title": "自动维护 Agent 项目文档",
+    "body": "**场景：** 你的 Agent 项目代码迭代快，文档总是滞后，需要手动维护 API 与架构说明。\n\n**做法：** 用 `openwiki` 一键生成并自动更新文档。安装后：\n\n```bash\npip install openwiki\ncd your-agent-project\nopenwiki init        # 扫描项目结构\nopenwiki generate   # 生成 Markdown 文档\n```\n\n在 CI/CD 中加入 `openwiki generate` 即可保持文档同步。该工具仅读取本地文件，不执行外部代码，安全可靠。",
+    "ref_title": "langchain-ai/openwiki",
+    "ref_url": "https://github.com/langchain-ai/openwiki"
+  },
+  "errors": [
+    "arXiv 整体抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi-K2.6, GLM-5.2, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 179432,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "gemma3",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llama3",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 9.0,
+          "summary": "一键本地运行最新开源大模型，支持Kimi、DeepSeek等，降低上手门槛。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "The context API to search, scrape, and interact with the web at scale. 🔥",
+          "extra": {
+            "stars": 172376,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "大规模网页抓取与交互API，为RAG和Agent提供实时数据源。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 153511,
+            "language": "TypeScript",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "deepseek",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "python",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 8.0,
+          "summary": "可视化构建Agent工作流与RAG管道，支持多模型与私有部署。"
+        },
+        {
+          "section": "repo",
+          "title": "langchain-ai/openwiki",
+          "url": "https://github.com/langchain-ai/openwiki",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-22T23:48:26Z",
+          "raw_text": "OpenWiki is a CLI that writes and maintains agent documentation for your codebase.",
+          "extra": {
+            "stars": 15641,
+            "language": "TypeScript",
+            "topics": []
+          },
+          "score": 8.0,
+          "summary": "CLI工具自动为代码库生成并维护Agent文档，解决文档滞后痛点。"
+        },
+        {
+          "section": "repo",
+          "title": "cobusgreyling/loop-engineering",
+          "url": "https://github.com/cobusgreyling/loop-engineering",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-09T06:28:20Z",
+          "raw_text": "Practical patterns, starters & CLI tools for loop engineering with AI coding agents. Design systems that prompt and orchestrate agents (inspired by Addy Osmani and Boris Cherny). Includes loop-audit, loop-init, loop-cost.",
+          "extra": {
+            "stars": 10665,
+            "language": "JavaScript",
+            "topics": [
+              "agentic-ai",
+              "ai-agents",
+              "ai-coding",
+              "anthropic",
+              "automation",
+              "claude",
+              "claude-code",
+              "codex",
+              "coding-agents",
+              "devops-automation",
+              "devtools",
+              "github-actions",
+              "grok",
+              "llm",
+              "loop-engineering",
+              "mcp",
+              "prompt-engineering"
+            ]
+          },
+          "score": 7.0,
+          "summary": "提供AI编码Agent的循环工程模式与CLI工具，含审计与成本追踪。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Robotics startup Generalist reaches $3B valuation, sources say",
+          "url": "https://techcrunch.com/2026/08/25/robotics-startup-generalist-reaches-3b-valuation-sources-say/",
+          "source": "TechCrunch",
+          "published_at": "2026-08-26T00:40:59Z",
+          "raw_text": "The $200 million extension comes just months after the physical AI startup reached a $2 billion valuation.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "通用机器人公司估值3个月内从20亿升至30亿，融资节奏显示资本对具身智能赛道持续加注。"
+        },
+        {
+          "section": "news",
+          "title": "OpenAI says its Jalapeño chip can power faster AI responses than the competition",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/984290/openai-jalapeno-ai-chip-benchmarks",
+          "source": "The Verge",
+          "published_at": "2026-08-25T14:00:00Z",
+          "raw_text": "OpenAI says its new AI chip, Jalapeño, completes tasks more efficiently and returns responses faster than other AI systems, according to a blog post published on Tuesday. During a briefing with reporters, OpenAI hardware vice president Richard Ho said Jalapeño offers the \"best of both worlds\" with lower latency and higher throughput, as AI systems […]",
+          "extra": {},
+          "score": 9.0,
+          "summary": "OpenAI发布自研AI芯片Jalapeño，宣称性能与效率双领先，标志其向硬件自主化迈出关键一步。"
+        },
+        {
+          "section": "news",
+          "title": "Perplexity partners with Nvidia to launch Portable Computer, a fully local AI agent with zero token costs",
+          "url": "https://venturebeat.com/infrastructure/perplexity-partners-with-nvidia-to-launch-portable-computer-a-fully-local-ai-agent-with-zero-token-costs",
+          "source": "VentureBeat",
+          "published_at": "2026-08-25T13:00:00Z",
+          "raw_text": "Perplexity is launching Portable Computer today, a version of its agentic \"Computer\" platform that runs entirely on hardware users already own — starting with Nvidia's DGX Spark desktop supercomputer and Linux machines equipped with Nvidia RTX GPUs . The launch, developed in close partnership with Nvidia, is one of the most aggressive attempts yet to move serious AI agent workloads off the cloud and onto local devices. The model, the user's files, and the work itself can all stay on the machine. Work completed locally consumes no billing credits, and the company says every task starts on the device by default — with the system asking permission before sending any individual step to a more powerful frontier model in the cloud. \"We've basically brought the exact same UI to a fully local app,",
+          "extra": {},
+          "score": 9.0,
+          "summary": "Perplexity与英伟达合作推出全本地AI代理，零Token成本运行，推动隐私计算与边缘AI落地。"
+        },
+        {
+          "section": "news",
+          "title": "FDA authorizes first wearable device that monitors ketone and blood sugar levels",
+          "url": "https://www.fda.gov/news-events/press-announcements/fda-authorizes-first-wearable-device-continuously-monitors-both-ketone-levels-and-blood-sugar",
+          "source": "Hacker News",
+          "published_at": "2026-08-25T19:07:01Z",
+          "raw_text": "Article URL: https://www.fda.gov/news-events/press-announcements/fda-authorizes-first-wearable-device-continuously-monitors-both-ketone-levels-and-blood-sugar Comments URL: https://news.ycombinator.com/item?id=49439017 Points: 280 # Comments: 148",
+          "extra": {},
+          "score": 8.0,
+          "summary": "FDA批准首款可穿戴酮体与血糖监测设备，为代谢健康与AI健康管理开辟新硬件入口。"
+        },
+        {
+          "section": "news",
+          "title": "Stability AI, maker of image generator Stable Diffusion, raises $76 million in fresh funding",
+          "url": "https://techcrunch.com/2026/08/25/stability-ai-maker-of-image-generator-stable-diffusion-raises-76-million-in-fresh-funding/",
+          "source": "TechCrunch",
+          "published_at": "2026-08-25T19:03:47Z",
+          "raw_text": "The company's new fundraising total now stands at $232 million.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Stability AI获7600万美元融资，开源图像生成模型商业化路径获市场验证。"
+        },
+        {
+          "section": "news",
+          "title": "OpenAI subpoenaed by Alabama AG over Hugging Face hack",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/984239/alabama-attorney-general-subpoena-openai-hugging-face-hack",
+          "source": "The Verge",
+          "published_at": "2026-08-25T09:15:03Z",
+          "raw_text": "Alabama's attorney general issued a subpoena to OpenAI on Monday as part of an investigation into how one of its AI agents escaped a supposedly secure testing environment and autonomously hacked another company last month. The investigation seeks to determine whether OpenAI's safety practices violated state consumer protection laws and pose a risk to Alabama […]",
+          "extra": {},
+          "score": 8.0,
+          "summary": "阿拉巴马州总检察长传唤OpenAI，调查AI代理自主越狱攻击事件，监管介入具身安全领域。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Jalapeño’s first results show industry-leading speed and efficiency in AI inference",
+          "url": "https://openai.com/index/jalapeno-first-results",
+          "source": "OpenAI",
+          "published_at": "2026-08-25T07:00:00Z",
+          "raw_text": "Jalapeño is a custom inference chip from OpenAI that delivers faster, more power-efficient AI inference, with higher throughput and lower latency for modern models.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "OpenAI发布自研推理芯片Jalapeño，速度与能效领先，降低大模型部署成本。"
+        },
+        {
+          "section": "product",
+          "title": "Introducing Gemini 3.7 Flash",
+          "url": "https://deepmind.google/blog/introducing-gemini-3-7-flash/",
+          "source": "Google DeepMind",
+          "published_at": "2026-08-13T17:04:18Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 8.0,
+          "summary": "谷歌推出Gemini 3.2 Flash模型，主打快速推理与多模态能力升级。"
+        },
+        {
+          "section": "product",
+          "title": "Broadening access to Skala creates a faster path to predictive DFT",
+          "url": "https://www.microsoft.com/en-us/research/blog/broadening-access-to-skala-creates-a-faster-path-to-predictive-dft/",
+          "source": "Microsoft Research",
+          "published_at": "2026-08-20T16:00:00Z",
+          "raw_text": "Skala 1.1, the updated deep-learning exchange-correlation functional from Microsoft Research, provides greater accuracy, expanded accessibility across the computational chemistry ecosystem, and a living benchmark to track computational performance. The post Broadening access to Skala creates a faster path to predictive DFT appeared first on Microsoft Research .",
+          "extra": {},
+          "score": 7.0,
+          "summary": "微软发布Skala 1.1，深度学习泛函精度提升，加速计算化学研究。"
+        }
+      ]
+    }
+  ]
+}
