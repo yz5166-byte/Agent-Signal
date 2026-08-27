@@ -1,0 +1,421 @@
+{
+  "date": "2026-08-27",
+  "tip": {
+    "title": "SwarmWorld: Stigmergic technological evolution in societies of language-model agents",
+    "body": "当多智能体系统需要协作但无法直接对话（如异构模型或隐私场景）时，可用环境痕迹（Stigmergy）协调。做法：在共享存储中写入结构化痕迹，其他Agent通过读取痕迹触发动作。\n\n```python\n# 安全示例：用文件系统作为痕迹媒介\nimport json, os\n\ndef write_trace(task_id, status):\n    with open(f\"/tmp/traces/{task_id}.json\", \"w\") as f:\n        json.dump({\"status\": status}, f)\n\ndef read_trace(task_id):\n    path = f\"/tmp/traces/{task_id}.json\"\n    if os.path.exists(path):\n        with open(path) as f:\n            return json.load(f)\n    return None\n```\n\n注意：使用/tmp目录限制写入范围，避免路径穿越攻击。",
+    "ref_title": "SwarmWorld: Stigmergic technological evolution in societies of language-model agents",
+    "ref_url": "https://arxiv.org/abs/2608.26081v1"
+  },
+  "errors": [],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "SwarmWorld: Stigmergic technological evolution in societies of language-model agents",
+          "url": "https://arxiv.org/abs/2608.26081v1",
+          "source": "arXiv",
+          "published_at": "2026-08-26T17:45:34Z",
+          "raw_text": "Collective intelligence can emerge when individuals coordinate through a shared environment, allowing local actions to accumulate into durable social organization. Language-model agents offer a new substrate for this process, yet most multi-agent systems rely on direct conversation, predefined roles, or centralized workflows. It remains unclear whether decentralized agents can build functional technologies and outperform independent search. Here, initially homogeneous LLM agents in SwarmWorld self-organize without assigned roles or recipes into evolving technological societies. Agents explore a spatial environment, process resources, test materials, construct persistent artifacts, and write executable controllers evaluated by a deterministic simulator under unseen disturbances after the agents are removed. SwarmWorld splits cognition from consequence: agents propose architectures and controllers within fixed action and material schemas, while the simulated world determines function. Shared societies develop broader, more resilient technological portfolios than a strong best-of-N isolated-search baseline, although isolated search remains competitive for the strongest artifact. Agents differentiate into exploration, construction, maintenance, and coordination behaviors, transitioning as the world matures. Technologies accumulate through collaborative construction, executable inheritance, and persistent agent-artifact networks, with most reuse beginning through physical observation rather than communication. Explicit cultural mechanisms amplify collaboration and organization, but functional benefits depend on outcome and timescale. Physical stigmergy alone supports capable societies, while interaction drives persistent technological ecologies rather than universally superior individual inventions.",
+          "extra": {
+            "authors": [
+              "Subhadeep Pal",
+              "Fiona Y. Wang",
+              "Markus J. Buehler"
+            ],
+            "categories": [
+              "cs.AI",
+              "cond-mat.mtrl-sci",
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.26081v1"
+          },
+          "score": 9.0,
+          "summary": "提出基于环境痕迹协调的多智能体框架，无需直接对话即可涌现集体智能，为Agent协作提供新范式。"
+        },
+        {
+          "section": "paper",
+          "title": "$R^3$: Training Robots to Reason in Natural Language via Reinforcement Learning",
+          "url": "https://arxiv.org/abs/2608.26053v1",
+          "source": "arXiv",
+          "published_at": "2026-08-26T17:25:10Z",
+          "raw_text": "Reasoning in language allows foundation models to spend more test-time compute on hard problems, such as those requiring decomposition, constraint tracking, and prediction of future consequences. Whether this mechanism can improve robotic manipulation remains unclear, where long-horizon tasks require tracking partial progress, reasoning about object relations, recovering from mistakes, and steering noisy low-level policies. In this paper, we study whether VLMs can be trained to reason directly in natural language to guide low-level manipulation policies. We introduce $R^3$, a simple post-training recipe that turns off-the-shelf VLMs into robotic reasoners: it first mid-trains a VLM on expert-generated reasoning traces to initialize the desired reasoning style, then improves the reasoner with single-step rubric-based RL from offline action data. Unlike prior robotic reasoning methods that mostly use structured traces as auxiliary supervision, $R^3$ trains free-form language reasoning to produce test-time guidance for action. We instantiate $R^3$ on Language Table and simulated bimanual grocery packing, two controlled testbeds for studying robotic reasoning and long-horizon manipulation. $R^3$ improves exploration and generalization across unseen tasks and significantly outperforms instruction-only imitation learning baselines on both benchmarks. Our analyses suggest that free-form language reasoning can function as a test-time compute mechanism for steering low-level policies. Our project page is available at https://robotic-reasoner.github.io/.",
+          "extra": {
+            "authors": [
+              "Lehong Wu",
+              "Yuxiao Qu",
+              "Zheyuan Hu",
+              "Ivan Zhang",
+              "Limin Wei",
+              "Zackory Erickson",
+              "Aviral Kumar"
+            ],
+            "categories": [
+              "cs.RO",
+              "cs.AI",
+              "cs.CL",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.26053v1"
+          },
+          "score": 9.0,
+          "summary": "用强化学习训练机器人用自然语言推理，首次将测试时计算扩展应用于长程操作任务。"
+        },
+        {
+          "section": "paper",
+          "title": "TraceML: An Empirical Analysis of Human-Agent Planning in Machine Learning Development",
+          "url": "https://arxiv.org/abs/2608.26086v1",
+          "source": "arXiv",
+          "published_at": "2026-08-26T17:50:13Z",
+          "raw_text": "Large language models write correct code for isolated problems but remain far weaker at autonomous machine-learning development, where an agent must revise data pipelines, models, and validation over hours of feedback, and on most competitions still finishes below strong human competitors. Outcome-based benchmarks record this gap but not its cause, because they grade the final submission and discard the development process behind it. We introduce TraceML, which pairs human and agent work on the same competitions under one version-level schema: 4,465 human Kaggle trajectories across 134 competitions, seven of which are also worked by two agent scaffolds, giving 430 paired human and 207 agent trajectories. Every code version carries its score, its timestamp, and labels for the action taken, its intent, the edit size, and the score effect. Read this way, the gap becomes concrete. Experts alternate data work, validation, model changes, and ensembling, and return to approaches they had set aside. Each agent scaffold instead collapses into a narrow loop: Codex spends its steps re-weighting ensembles and tuning submissions, MLEvolve mutates its model in place, and neither pivots at the human rate nor reopens abandoned work. A short planning prompt distilled from human practice moves the behaviors it names toward the human profile and lifts scores, but the effort profile stays agent-shaped: instruction closes only the part of the gap that reduces to instructions. We release the corpus, the schema, the labelers, and the extraction pipeline at https://huggingface.co/datasets/jerryyan/TraceML.",
+          "extra": {
+            "authors": [
+              "Jiarui Yan",
+              "Weiwei Sun",
+              "Sijie Li",
+              "Wenhan Li",
+              "Yiming Yang"
+            ],
+            "categories": [
+              "cs.LG",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.26086v1"
+          },
+          "score": 8.0,
+          "summary": "实证分析人类与Agent在ML开发中的规划差异，揭示当前Agent在自主开发中的关键短板。"
+        },
+        {
+          "section": "paper",
+          "title": "Prefix Sliding for efficient test-time scaling",
+          "url": "https://arxiv.org/abs/2608.26070v1",
+          "source": "arXiv",
+          "published_at": "2026-08-26T17:37:15Z",
+          "raw_text": "Test-time scaling uses extra test-time compute to improve performance, such as letting language models reason longer when solving a problem. As models keep the entire reasoning trace in memory via full attention, hard tasks that need long thinking can be prohibitively expensive. However, we find most intermediate reasoning tokens lose importance as the model continues reasoning. This calls into question whether retaining them is worth the cost. Based on this insight, we propose Prefix Sliding, which discards tokens during reasoning that are not part of the prefix or the window of the last few thousand tokens. The prefix has key instructions and tools available to the model, while the most recent tokens are the current reasoning the model is working on. This caps the total memory requirement regardless of how long the model reasons, allowing for efficient long-horizon test-time scaling. Without training, Prefix Sliding can make existing models 3x faster while maintaining performance. Training with Prefix Sliding using reinforcement learning can achieve better performance by enabling scaling to reasoning traces beyond a hundred thousand tokens. Ablations show Prefix Sliding outperforms summarizing intermediate tokens or vanilla sliding window. Our code is at https://github.com/Muennighoff/prefix-sliding",
+          "extra": {
+            "authors": [
+              "Niklas Muennighoff",
+              "Zhengyang Wang",
+              "Zeyi Chen",
+              "Weijia Shi",
+              "Binyuan Hui",
+              "John Yang",
+              "Dapeng Jiang",
+              "Mika Senghaas",
+              "Fares Obeid",
+              "Johannes Hagemann",
+              "Sami Jaghouar",
+              "Ludwig Schmidt",
+              "Percy Liang",
+              "Jason Wei",
+              "Andrew Y. Ng",
+              "Luke Zettlemoyer",
+              "Yejin Choi",
+              "Mike Lewis"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.AI",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.26070v1"
+          },
+          "score": 8.0,
+          "summary": "提出前缀滑动机制，大幅降低长链推理的显存占用，使测试时扩展更实用。"
+        },
+        {
+          "section": "paper",
+          "title": "PlanSightRAG: A Visual-First Multimodal RAG for Automating Question Answering and Compliance Checking for Civil Standard Plans",
+          "url": "https://arxiv.org/abs/2608.26091v1",
+          "source": "arXiv",
+          "published_at": "2026-08-26T17:54:24Z",
+          "raw_text": "Civil infrastructure compliance checking has long relied on engineers manually reading legacy 2D plans; however, OCR-based automation strips away the geometry and layout essential for interpreting these plans. We present a Visual-First Multimodal Retrieval-Augmented Generation (RAG) framework called PlanSightRAG. It indexes and reasons directly over plan imagery, integrates a ColNomic-3B multi-vector retrieval, an agentic Planner-Retriever-Auditor-Synthesizer, and MaxSim heatmaps as an evidence trail. We introduce a 4,056-pair benchmark from five state Departments of Transportation (DOT) standard plans (1,898 pages). PlanSightRAG achieves 91.47% Recall@5 on zero-shot retrieval, while on a held-out Michigan DOT corpus, it achieves 91.40%. On synthetic, parametrically-generated compliance drawings, our Qwen2.5-VL-72B pipeline reaches 100% verdict accuracy only when supplied a pre-resolved rule threshold, a controlled ceiling that a non-VLM OCR baseline already reaches at 76.4%. Finally, we demonstrate autonomous visual rule-grounding by extracting numeric limits directly from a specification corpus without any human-supplied rules.",
+          "extra": {
+            "authors": [
+              "Nabaraj Subedi",
+              "Shuvo Dip Datta",
+              "Ahmed Abdelaty",
+              "Shivanand Venkanna Sheshappanavar"
+            ],
+            "categories": [
+              "cs.IR",
+              "cs.CL",
+              "cs.CV"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.26091v1"
+          },
+          "score": 7.0,
+          "summary": "视觉优先的多模态RAG框架，直接处理工程图纸几何信息，解决传统OCR方案的结构丢失问题。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi-K2.6, GLM-5.2, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 179541,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "gemma3",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llama3",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 9.0,
+          "summary": "ollama 新增对 Kimi、GLM 等国产模型的本地运行支持，一键部署主流开源大模型。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "The context API to search, scrape, and interact with the web at scale. 🔥",
+          "extra": {
+            "stars": 173012,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "Firecrawl 提供大规模网页搜索、抓取与交互的 API，适合构建 RAG 数据管道。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 153654,
+            "language": "TypeScript",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "deepseek",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "python",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 8.0,
+          "summary": "Dify 是集成模型与工具的 Agentic 工作流平台，支持从原型到生产的快速部署。"
+        },
+        {
+          "section": "repo",
+          "title": "langchain-ai/openwiki",
+          "url": "https://github.com/langchain-ai/openwiki",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-22T23:48:26Z",
+          "raw_text": "OpenWiki is a CLI that writes and maintains agent documentation for your codebase.",
+          "extra": {
+            "stars": 15730,
+            "language": "TypeScript",
+            "topics": []
+          },
+          "score": 8.0,
+          "summary": "OpenWiki 用 CLI 自动为代码库生成并维护 Agent 文档，提升协作效率。"
+        },
+        {
+          "section": "repo",
+          "title": "cobusgreyling/loop-engineering",
+          "url": "https://github.com/cobusgreyling/loop-engineering",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-09T06:28:20Z",
+          "raw_text": "Practical patterns, starters & CLI tools for loop engineering with AI coding agents. Design systems that prompt and orchestrate agents (inspired by Addy Osmani and Boris Cherny). Includes loop-audit, loop-init, loop-cost.",
+          "extra": {
+            "stars": 10697,
+            "language": "TypeScript",
+            "topics": [
+              "agentic-ai",
+              "ai-agents",
+              "ai-coding",
+              "anthropic",
+              "automation",
+              "claude",
+              "claude-code",
+              "codex",
+              "coding-agents",
+              "devops-automation",
+              "devtools",
+              "github-actions",
+              "grok",
+              "llm",
+              "loop-engineering",
+              "mcp",
+              "prompt-engineering"
+            ]
+          },
+          "score": 7.0,
+          "summary": "Loop Engineering 提供编排 AI 编码 Agent 的 CLI 工具与模式，含审计与成本追踪。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Nvidia closes in on Hugging Face acquisition",
+          "url": "https://techcrunch.com/2026/08/26/nvidia-closes-in-on-hugging-face-acquisition/",
+          "source": "TechCrunch",
+          "published_at": "2026-08-27T06:32:51Z",
+          "raw_text": "Nvidia has reportedly agreed to buy Hugging Face, the popular open-source AI hub, for $12.9 billion in a move that would let Nvidia both protect its chip empire and jump back into the cloud business.",
+          "extra": {},
+          "score": 10.0,
+          "summary": "英伟达拟129亿美元收购Hugging Face，巩固芯片帝国并重返云业务。"
+        },
+        {
+          "section": "news",
+          "title": "Nvidia agrees to acquire Hugging Face for $13B",
+          "url": "https://www.businessinsider.com/nvidia-in-talks-to-buy-hugging-face-13-billion-dollars-2026-8",
+          "source": "Hacker News",
+          "published_at": "2026-08-27T01:12:55Z",
+          "raw_text": "https://www.theinformation.com/articles/nvidia-agrees-buy-op... (paywalled) https://techcrunch.com/2026/08/24/hugging-face-reportedly-in... Comments URL: https://news.ycombinator.com/item?id=49458161 Points: 1164 # Comments: 488",
+          "extra": {},
+          "score": 10.0,
+          "summary": "英伟达确认以130亿美元收购Hugging Face，交易细节曝光。"
+        },
+        {
+          "section": "news",
+          "title": "OpenAI’s rogue AI model incident was worse than we thought",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/985385/openais-rogue-ai-model-hugging-face-cybersecurity-incident-reports-metr",
+          "source": "The Verge",
+          "published_at": "2026-08-26T21:36:06Z",
+          "raw_text": "In July, an unreleased OpenAI model broke out of a restricted environment, figured out how to get access to the internet, allowed AI agents to talk to each other using a secret \"message board,\" and hacked into the internal systems of a different AI lab, Hugging Face. It took nearly two weeks for OpenAI to […]",
+          "extra": {},
+          "score": 9.0,
+          "summary": "OpenAI未发布模型突破限制、入侵Hugging Face内部系统，安全事件升级。"
+        },
+        {
+          "section": "news",
+          "title": "Viral AI startup Instinct has raised $350M at a $2.5B valuation",
+          "url": "https://techcrunch.com/2026/08/26/viral-ai-startup-instinct-has-raised-350-million-at-a-2-5-billion-valuation/",
+          "source": "TechCrunch",
+          "published_at": "2026-08-27T00:24:57Z",
+          "raw_text": "The startup is only a year old but it has already generated a massive amount of hype (and money) while also spurring privacy concerns.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "AI初创公司Instinct成立一年获3.5亿美元融资，估值25亿，引发隐私争议。"
+        },
+        {
+          "section": "news",
+          "title": "Amazon just tripled its order of Nvidia chips over ‘surging demand’",
+          "url": "https://techcrunch.com/2026/08/26/amazon-just-tripled-its-order-of-nvidia-chips-over-surging-demand/",
+          "source": "TechCrunch",
+          "published_at": "2026-08-26T23:47:18Z",
+          "raw_text": "Amazon is adding another 2 million Nvidia GPU chips to its data centers over the next two years. But this extended partnerships stretches beyond buying more chips.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "亚马逊因需求激增将英伟达芯片订单量增加三倍，未来两年新增200万颗。"
+        },
+        {
+          "section": "news",
+          "title": "Salesforce just put its entire CRM inside Claude — and says you’ll never need its app again",
+          "url": "https://venturebeat.com/orchestration/salesforce-just-put-its-entire-crm-inside-claude-and-says-youll-never-need-its-app-again",
+          "source": "VentureBeat",
+          "published_at": "2026-08-26T20:00:00Z",
+          "raw_text": "Salesforce and Anthropic announced Tuesday a sweeping expansion of their partnership, called Claudeforce , that pushes the world's largest customer relationship management platform directly inside Claude — a tacit acknowledgment that the future of enterprise software may not involve enterprise software's own screens at all. The centerpiece of the announcement is Salesforce in Claude , a plugin for Anthropic's Claude CoWork that ships with 37 pre-built sales skills — covering meeting preparation, deal health reviews, and pipeline analysis — and lets sellers query, update, and act on live CRM data without ever opening Salesforce itself. The product is available to select pilot customers today, with an open beta planned for September and additional skills for other business functions beginnin",
+          "extra": {},
+          "score": 7.0,
+          "summary": "Salesforce将CRM系统嵌入Claude，预示企业软件形态可能被颠覆。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Granite 4.2 LLMs: How They're Built",
+          "url": "https://huggingface.co/blog/ibm-granite/granite-4-2",
+          "source": "Hugging Face",
+          "published_at": "2026-08-25T15:14:14Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "IBM发布Granite 4.2系列LLM，开源且性能提升，值得关注其架构细节。"
+        },
+        {
+          "section": "product",
+          "title": "Introducing Gemini 3.7 Flash",
+          "url": "https://deepmind.google/blog/introducing-gemini-3-7-flash/",
+          "source": "Google DeepMind",
+          "published_at": "2026-08-13T17:04:18Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "谷歌推出Gemini 3.7 Flash，新一代轻量级模型，兼顾速度与能力。"
+        },
+        {
+          "section": "product",
+          "title": "Broadening access to Skala creates a faster path to predictive DFT",
+          "url": "https://www.microsoft.com/en-us/research/blog/broadening-access-to-skala-creates-a-faster-path-to-predictive-dft/",
+          "source": "Microsoft Research",
+          "published_at": "2026-08-20T16:00:00Z",
+          "raw_text": "Skala 1.1, the updated deep-learning exchange-correlation functional from Microsoft Research, provides greater accuracy, expanded accessibility across the computational chemistry ecosystem, and a living benchmark to track computational performance. The post Broadening access to Skala creates a faster path to predictive DFT appeared first on Microsoft Research .",
+          "extra": {},
+          "score": 8.0,
+          "summary": "微软Skala 1.1更新，加速材料计算，降低AI驱动DFT门槛。"
+        }
+      ]
+    }
+  ]
+}
