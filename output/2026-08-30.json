@@ -1,0 +1,407 @@
+{
+  "date": "2026-08-30",
+  "tip": {
+    "title": "WikiSkill: Compiling Agent Experience into Persistent Knowledge for Skill Evolution",
+    "body": "**场景：** 当你需要让 Agent 在多次运行后记住并复用成功策略，而不是每次从零摸索时（如自动化测试、网页操作）。\n\n**做法：** 参考 WikiSkill 思路，将 Agent 的成功经验编译为持久知识文件。例如，用 JSON 存储关键步骤和条件：\n```json\n{\n  \"skill\": \"login\",\n  \"trigger\": \"page_has_login_button\",\n  \"steps\": [\"click('#login')\", \"fill('#user', 'test')\"]\n}\n```\nAgent 启动时加载该文件，遇到匹配条件直接调用技能，避免重复试错。安全提示：仅读取本地白名单路径下的知识文件，不执行外部传入的代码。",
+    "ref_title": "WikiSkill: Compiling Agent Experience into Persistent Knowledge for Skill Evolution",
+    "ref_url": "https://arxiv.org/abs/2608.27454v1"
+  },
+  "errors": [],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "RedEvoAgent: Automatic Red-Teaming Agent with Experience-Driven Skill Evolution",
+          "url": "https://arxiv.org/abs/2608.27439v1",
+          "source": "arXiv",
+          "published_at": "2026-08-27T17:55:33Z",
+          "raw_text": "LLM-based agents are increasingly deployed in product-level execution harnesses, where jailbreaks can trigger harmful tool use and persistent state changes, creating greater risks than unsafe text generation alone. Existing automatic red-teaming methods often rely on fixed attacks, while recent agentic attackers coordinate multiple jailbreak tools and show stronger potential through trajectory-based retrieval. However, such retrieval can reuse misleading experiences due to retrieval bias and unclear tool credit, and full trajectories add context overhead while reducing interpretability. We propose RedEvoAgent, a black-box red-teaming agent that distills cross-case attack trajectories into a concise, human-readable attack skill. The attack skill adaptively evolves through tool-effectiveness profiling and Deciding-Tool Attribution for skill updates, and a validation ratchet that retains only updates improving validation performance. Experiments on multiple benchmarks, target models, and target execution harnesses show that RedEvoAgent outperforms fixed and agentic baselines, improves tool efficiency, and transfers across attacker models and target execution harnesses.",
+          "extra": {
+            "authors": [
+              "Junjie Zhang",
+              "Hui Liu",
+              "Kecheng Chen",
+              "Xianbo Mo",
+              "Changsheng Chen",
+              "Haoliang Li"
+            ],
+            "categories": [
+              "cs.CR",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.27439v1"
+          },
+          "score": 9.0,
+          "summary": "提出经验驱动技能进化的自动红队Agent，动态生成越狱攻击，比固定攻击更危险也更实用。"
+        },
+        {
+          "section": "paper",
+          "title": "SWE-Prime: Fewer Trajectories, Better Performance",
+          "url": "https://arxiv.org/abs/2608.27449v1",
+          "source": "arXiv",
+          "published_at": "2026-08-27T17:58:10Z",
+          "raw_text": "To improve large language models' ability to resolve real-world software issues, prior work has focused on constructing large-scale agent trajectory datasets and performing supervised fine-tuning (SFT) on successful trajectories. However, task success does not guarantee high-quality supervision: successful trajectories may still contain ineffective, redundant, or risky steps. Directly using such trajectories for SFT can introduce noisy supervision and encourage models to imitate undesirable problem-solving behaviors. Therefore, we propose SWE-Prime, a multi-granularity, two-stage SFT data selection method that progressively filters training data at the trajectory and segment levels. Specifically, the first stage performs trajectory-level screening based on process quality, result quality, and data representativeness, selecting a high-quality and representative subset of successful trajectories. The second stage performs segment-level selection by grouping consecutive steps into semantic segments and assessing each segment based on its contribution to the final solution, learnability, and potential risks. During SFT, all segments remain in the sequence to preserve context, while only selected segments contribute to the loss computation. Experiments on SWE-Bench Pro and SWE-Bench Verified show that training on the 10% trajectory subset selected by SWE-Prime outperforms training on the full resolved dataset, yielding relative performance gains of up to 12.2% and 24.2%, respectively.",
+          "extra": {
+            "authors": [
+              "Dewu Zheng",
+              "Ruizhe Ye",
+              "Yanlin Wang",
+              "Yang Ye",
+              "Hongyu Zhang",
+              "Ensheng Shi",
+              "Xilin Liu",
+              "Yuchi Ma",
+              "Jianxing Yu",
+              "Zibin Zheng"
+            ],
+            "categories": [
+              "cs.SE",
+              "cs.AI",
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.27449v1"
+          },
+          "score": 9.0,
+          "summary": "用更少轨迹+高质量监督微调提升LLM解决真实软件问题的能力，挑战“成功即优质”的假设。"
+        },
+        {
+          "section": "paper",
+          "title": "Persona-Execution Separation: An Architecture Pattern for Evolving LLM Agents under Execution Audit",
+          "url": "https://arxiv.org/abs/2608.27427v1",
+          "source": "arXiv",
+          "published_at": "2026-08-27T17:50:07Z",
+          "raw_text": "Large language model (LLM) agents in governed organizations must let the persona (instructions, tone, self-presentation) evolve freely, while keeping execution (stateful, audited work) traceable. A single trust domain does not satisfy both cheaply. We present Persona-Execution Separation (PES): persona and execution reside in different trust domains, connected by a governed contract bridge. The persona is singly-homed and may drift; execution is faceless and audited. Status summaries may return; data bodies remain in the restrictive domain except a graded data-loss-prevention (DLP) exception; identity stays continuous. An approval matrix, DLP, and audit enforce the crossing. PES follows from three goals---free drift, execution traceability, and decoupling. Under LLM representational indistinguishability, any single-domain mechanism that meets all three must re-introduce typed change objects, an external gate, and a stable audit anchor: PES rebuilt at higher coupling cost. A development/pilot case in a regulated digital-employee platform records five decisions over one month, each with a rejected alternative. A mechanism check on the shipped implementation found no execution-side re-validation under persona perturbation (five model configurations) and no persona fingerprint on hard-asserted fields. A probe of a recovered pre-separation build found the governed execution path decoupled from the persona by omission, not by construction; a later wiring change could reverse that isolation, which PES makes an audited architectural rule. The pattern applies when multi-user deployment, execution audit, and expected persona churn hold jointly.",
+          "extra": {
+            "authors": [
+              "Yisen Xi"
+            ],
+            "categories": [
+              "cs.SE",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.27427v1"
+          },
+          "score": 8.0,
+          "summary": "提出人格-执行分离架构，让LLM Agent在受审计环境中既能自由进化又能保持可追溯。"
+        },
+        {
+          "section": "paper",
+          "title": "Boosting LLM Exploration via Weak-Model Guidance in RLVR",
+          "url": "https://arxiv.org/abs/2608.27420v1",
+          "source": "arXiv",
+          "published_at": "2026-08-27T17:45:50Z",
+          "raw_text": "Reinforcement Learning with Verifiable Rewards (RLVR) significantly improves LLM reasoning but often causes a drop in policy entropy, leading to narrowed reasoning coverage and degraded pass@$k$ for large $k$. While existing methods mitigate this entropy collapse through algorithmic regularizations, cross-model non-parametric perturbation is also neglected. In this work, we propose a simple yet effective approach to preserve the generative diversity of LLMs during RLVR. Instead of relying solely on internal exploration, we force the target model to generate answers based on partial reasoning trajectories generated by a smaller, weaker language models. These unfamiliar prefixes effectively disrupt over-confidence and encourage the exploration of distinct reasoning paths. We empirically study the potential of outer prefixes, revealing the mechanism of the impact of distributional discrepancy to the exploration dynamics in RLVR training. Experiments across multiple mathematical benchmarks show that our method consistently outperforms vanilla RLVR. Notably, the performance gain becomes increasingly pronounced as $k$ scales up, demonstrating a substantial expansion of reasoning coverage. Furthermore, our approach efficiently mitigates entropy collapse without requiring additional SFT, intricate reward designs, or complex prompting.",
+          "extra": {
+            "authors": [
+              "Xingyu Shen",
+              "Huishuai Zhang",
+              "Peng Li",
+              "Yinchun Wang",
+              "Dongyan Zhao"
+            ],
+            "categories": [
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.27420v1"
+          },
+          "score": 8.0,
+          "summary": "用弱模型引导探索缓解RLVR策略熵坍缩，提升大k下的pass@k，思路简洁有效。"
+        },
+        {
+          "section": "paper",
+          "title": "WikiSkill: Compiling Agent Experience into Persistent Knowledge for Skill Evolution",
+          "url": "https://arxiv.org/abs/2608.27454v1",
+          "source": "arXiv",
+          "published_at": "2026-08-27T17:59:11Z",
+          "raw_text": "Agent skills package specialized knowledge and workflows into reusable resources that extend AI agent capabilities. Recent work automatically discovers such skills from agent experience, which enables agents to progressively adapt through interaction. However, the insights that guide skill development typically remain scattered across optimization histories, limiting their systematic reuse across iterations. We introduce WikiSkill, a framework that co-evolves agent skills with a persistent knowledge base (wiki). At a high level, WikiSkill separates raw execution experience, accumulated knowledge, and executable skills, while continuously consolidating experience into the wiki, which subsequent skill updates can build on. Across diverse benchmarks and models, WikiSkill consistently outperforms state-of-the-art skill-evolution methods and improves over no-skill baselines in most model-benchmark settings. We find that skill evolution complements model scaling: larger models generally benefit more from evolved skills, while smaller models with skills can outperform substantially larger models without them. We also find that evolved skills transfer effectively across models and model families, and skills evolved by other models can outperform self-evolved skills. Finally, our ablation studies confirm that persistent knowledge accumulation in the wiki is critical for effective skill evolution. These results demonstrate the benefits of systematically accumulating and refining agent experience for developing reusable and transferable skills.",
+          "extra": {
+            "authors": [
+              "Liyan Tang",
+              "Cyrus Rashtchian",
+              "Chun-Sung Ferng",
+              "Andrew Tomkins",
+              "Da-Cheng Juan",
+              "Tu Vu"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.27454v1"
+          },
+          "score": 7.0,
+          "summary": "将Agent经验编译为持久知识，实现技能进化，推动Agent从记忆走向持续学习。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi-K2.6, GLM-5.2, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 179759,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "gemma3",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llama3",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 10.0,
+          "summary": "本地一键运行最新开源大模型，支持Kimi、DeepSeek等，上手即用。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "The context API to search, scrape, and interact with the web at scale. 🔥",
+          "extra": {
+            "stars": 174153,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "大规模网页搜索与抓取的上下文API，构建RAG和Agent的必备工具。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 153860,
+            "language": "TypeScript",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "deepseek",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "python",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 9.0,
+          "summary": "可视化构建Agent工作流与RAG管道，支持多模型，从原型到生产无需重构。"
+        },
+        {
+          "section": "repo",
+          "title": "langchain-ai/openwiki",
+          "url": "https://github.com/langchain-ai/openwiki",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-22T23:48:26Z",
+          "raw_text": "OpenWiki is a CLI that writes and maintains agent documentation for your codebase.",
+          "extra": {
+            "stars": 15832,
+            "language": "TypeScript",
+            "topics": []
+          },
+          "score": 8.0,
+          "summary": "CLI工具自动为代码库生成并维护Agent文档，解决文档滞后痛点。"
+        },
+        {
+          "section": "repo",
+          "title": "cobusgreyling/loop-engineering",
+          "url": "https://github.com/cobusgreyling/loop-engineering",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-09T06:28:20Z",
+          "raw_text": "Practical patterns, starters & CLI tools for loop engineering with AI coding agents. Design systems that prompt and orchestrate agents (inspired by Addy Osmani and Boris Cherny). Includes loop-audit, loop-init, loop-cost.",
+          "extra": {
+            "stars": 10733,
+            "language": "TypeScript",
+            "topics": [
+              "agentic-ai",
+              "ai-agents",
+              "ai-coding",
+              "anthropic",
+              "automation",
+              "claude",
+              "claude-code",
+              "codex",
+              "coding-agents",
+              "devops-automation",
+              "devtools",
+              "github-actions",
+              "grok",
+              "llm",
+              "loop-engineering",
+              "mcp",
+              "prompt-engineering"
+            ]
+          },
+          "score": 8.0,
+          "summary": "AI编码Agent的工程化模式与CLI工具集，含审计、初始化、成本追踪。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Hy4 preview",
+          "url": "https://www.tencent.com/tencent-releases-and-open-sources-tencent-hy4-preview/",
+          "source": "Hacker News",
+          "published_at": "2026-08-29T19:33:23Z",
+          "raw_text": "Article URL: https://www.tencent.com/tencent-releases-and-open-sources-tencent-hy4-preview/ Comments URL: https://news.ycombinator.com/item?id=49492632 Points: 246 # Comments: 145",
+          "extra": {},
+          "score": 9.0,
+          "summary": "腾讯开源Hy4预览版，降低大模型部署门槛，影响国内AI生态。"
+        },
+        {
+          "section": "news",
+          "title": "Sony Music, Warner sue Anthropic, alleging a “brazen campaign” of intellectual property theft",
+          "url": "https://techcrunch.com/2026/08/29/sony-music-warner-sue-anthropic-alleging-a-brazen-campaign-of-intellectual-property-theft/",
+          "source": "TechCrunch",
+          "published_at": "2026-08-29T18:41:59Z",
+          "raw_text": "This latest lawsuit is particularly broad and homes in on accusations of illegal piracy.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "索尼音乐与华纳起诉Anthropic，指控大规模版权侵权，或重塑AI训练数据规则。"
+        },
+        {
+          "section": "news",
+          "title": "Trump blacklisting of \"woke\" Anthropic deemed illegal by federal judge",
+          "url": "https://arstechnica.com/tech-policy/2026/08/trump-blacklisting-of-woke-anthropic-deemed-illegal-by-federal-judge/",
+          "source": "Ars Technica",
+          "published_at": "2026-08-28T18:07:55Z",
+          "raw_text": "Anthropic refused to support lethal autonomous warfare and mass surveillance.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "联邦法官裁定特朗普政府将Anthropic列入黑名单违法，涉及AI伦理与监管边界。"
+        },
+        {
+          "section": "news",
+          "title": "Nvidia’s AI advantage is moving beyond the GPU",
+          "url": "https://techcrunch.com/2026/08/29/nvidias-ai-advantage-is-moving-beyond-the-gpu/",
+          "source": "TechCrunch",
+          "published_at": "2026-08-29T13:00:00Z",
+          "raw_text": "The new generation of data center systems is increasing efficiency with smarter traffic control instead of just more processor cycles.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "英伟达AI优势从GPU转向数据中心智能流量控制，标志硬件竞争新方向。"
+        },
+        {
+          "section": "news",
+          "title": "Trump’s EPA wants to let data centers hide their air pollution",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/986176/data-center-pollution-epa-rule-change-air-permit",
+          "source": "The Verge",
+          "published_at": "2026-08-28T16:28:40Z",
+          "raw_text": "Just as new data centers face growing backlash from neighboring communities, the US Environmental Protection Agency (EPA) is about to make it harder for people to weigh in on any pollution those centers create. The EPA plans to toss out a federal rule requiring public notice and an opportunity to comment when certain industrial sites […]",
+          "extra": {},
+          "score": 7.0,
+          "summary": "美国EPA拟取消数据中心污染公开通知规则，影响AI基础设施扩张监管。"
+        },
+        {
+          "section": "news",
+          "title": "Cohere Parse 5 loses the benchmark on points. It wins on cost per page.",
+          "url": "https://venturebeat.com/data/cohere-parse-5-loses-the-benchmark-on-points-it-wins-on-cost-per-page",
+          "source": "VentureBeat",
+          "published_at": "2026-08-28T15:30:05Z",
+          "raw_text": "Enterprises trying to feed PDFs, slides and scanned documents into AI pipelines keep running into the same wall: the tools either miss the structure — tables, charts, layout — or cost too much to run at scale. Cohere released Parse 5 on Thursday , positioning it on price-to-performance, not raw accuracy — the right cost-capability mix for enterprise scale. Parse 5 is a 2.3-billion-parameter vision language model built to convert PDFs, slides and images into structured Markdown at enterprise scale. Cohere's own published benchmark comparison puts Parse 5 behind three larger, general-purpose frontier models on accuracy. GPT-5.5, Opus 4.8 and Gemini 3.5 Flash all score higher than Parse on the three ParseBench dimensions Cohere reports. Cohere is not claiming the top score. It is claiming the",
+          "extra": {},
+          "score": 7.0,
+          "summary": "Cohere发布Parse 5，以成本优势切入企业文档解析市场，挑战传统精度优先策略。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Gemini Omni 1.1 Flash lets you build with more control",
+          "url": "https://deepmind.google/blog/gemini-omni-1-1-flash-lets-you-build-with-more-control/",
+          "source": "Google DeepMind",
+          "published_at": "2026-08-27T16:11:32Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "谷歌发布Gemini Omni 1.1 Flash，增强开发者对模型输出的控制能力。"
+        },
+        {
+          "section": "product",
+          "title": "Intelligent transcription with Gemini 3.5 Transcribe",
+          "url": "https://deepmind.google/blog/intelligent-transcription-with-gemini-3-5-transcribe/",
+          "source": "Google DeepMind",
+          "published_at": "2026-08-26T17:01:00Z",
+          "raw_text": "Now you can get more intelligent speech-to-text transcription with Gemini 3.5 Transcribe.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "推出Gemini 3.5 Transcribe，提供更智能的语音转文字服务。"
+        },
+        {
+          "section": "product",
+          "title": "Broadening access to Skala creates a faster path to predictive DFT",
+          "url": "https://www.microsoft.com/en-us/research/blog/broadening-access-to-skala-creates-a-faster-path-to-predictive-dft/",
+          "source": "Microsoft Research",
+          "published_at": "2026-08-20T16:00:00Z",
+          "raw_text": "Skala 1.1, the updated deep-learning exchange-correlation functional from Microsoft Research, provides greater accuracy, expanded accessibility across the computational chemistry ecosystem, and a living benchmark to track computational performance. The post Broadening access to Skala creates a faster path to predictive DFT appeared first on Microsoft Research .",
+          "extra": {},
+          "score": 7.0,
+          "summary": "微软更新Skala 1.1，提升计算化学中预测DFT的精度与可及性。"
+        }
+      ]
+    }
+  ]
+}
