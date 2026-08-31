@@ -1,0 +1,395 @@
+{
+  "date": "2026-08-31",
+  "tip": {
+    "title": "When Robots Mishear Us: Mapping the Safety Risks of Voice-Controlled Embodied AI",
+    "body": "当你的 Agent 需要调用外部 API 或执行用户指令时，直接 `exec()` 或 `eval()` 模型生成的代码会带来严重安全风险。\n\n**做法：** 使用 `subprocess.run()` 配合白名单命令列表，或利用 `restrictedpython` 库创建沙箱环境。\n\n```python\nimport subprocess\n\nALLOWED_COMMANDS = {\"ls\", \"cat\", \"echo\"}\n\ndef safe_execute(cmd: str):\n    parts = cmd.split()\n    if parts[0] not in ALLOWED_COMMANDS:\n        raise ValueError(f\"Command {parts[0]} not allowed\")\n    subprocess.run(parts, check=True, capture_output=True)\n```\n\n此方案通过白名单限制可执行命令，避免裸 `exec` 风险。",
+    "ref_title": "When Robots Mishear Us: Mapping the Safety Risks of Voice-Controlled Embodied AI",
+    "ref_url": "https://arxiv.org/abs/2608.28518v1"
+  },
+  "errors": [],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "Logos: An Agent Harness on a Cross-Process Bus",
+          "url": "https://arxiv.org/abs/2608.28553v1",
+          "source": "arXiv",
+          "published_at": "2026-08-28T17:30:10Z",
+          "raw_text": "Modern agent systems assemble capabilities at runtime, and this dynamic composition has recently received a complete formal treat ment in the spatiotemporal-composability calculus, in which a capability is a component carrying a tracked inverse, and agents are assembled as plugins. This plugin form is carried by a single process sharing one context, a carrier that places all components in one physical failure domain, a fault suspends every component at once, and process death interrupts every session the process hosts. This paper shows that neither the modeling nor the calculus binds an agent to one process, the statelessness of the language model keeps all cross-step state outside the model, and the soundness invariant is defined on the state space alone. These observations condense into four lemmas whose premises are the hypotheses of the calculus and the statelessness of language-model inference. On these lemmas this paper constructs Logos, a ROS-like cross process agent harness in which a plugin is a process and the only shared state is an append-only transcript. Eighty sessions resume with no repeated effect after kills placed at the four boundaries of the tool-call cycle, and a same-fault comparison with a single process reference configuration shows one fault interrupting every co-resident session while under the peer-process construction one fault ends at one node.",
+          "extra": {
+            "authors": [
+              "Hanzhang Jia",
+              "Liheng Zeng",
+              "Hao Cheng",
+              "Yi Gao",
+              "Bo Ma"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.MA"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.28553v1"
+          },
+          "score": 9.0,
+          "summary": "提出跨进程总线上的Agent框架，用形式化方法解决动态组合与追踪问题，值得关注。"
+        },
+        {
+          "section": "paper",
+          "title": "Offline-Verifiable Accountability for Cross-Organization Agent Messaging: A Preserved Evidence-Bundle Approach",
+          "url": "https://arxiv.org/abs/2608.28542v1",
+          "source": "arXiv",
+          "published_at": "2026-08-28T17:18:49Z",
+          "raw_text": "Cross-organization agent workflows require preserved evidence that remains independently verifiable during later audit or dispute review. They may involve multiple organizations, delegated actions, policy-relevant events, and disputed accountability claims. This is difficult when live systems are unavailable, controlled by one party, or not trusted by all participants. Existing mechanisms provide useful pieces, including authenticated logging, delegation semantics, signed checkpoints, and consistency checks. What remains missing is a verifier-centered event-level bundle for checking evidence sufficiency offline under an explicit policy. We propose a preserved evidence-bundle model and a policy-controlled offline verifier for agent-to-agent workflow events. Each bundle preserves policy-required evidence, including sender authentication, authenticated log commitment, witness-backed checkpoint evidence, append-only continuity, delegation-aware authorization evidence, and explicit receiver-signed receipt evidence when required. The verifier accepts only claims supported by the selected policy-required evidence, giving a later reviewer an offline basis for assessing evidence sufficiency. It does not infer delivery or receipt from transport behavior or log inclusion alone. In a prototype evaluation over 300 complete workflows and 1200 valid preserved bundles, we measure offline verifier-side latency across policy profiles and workflow-event evidence requirements. Checkpoint-context anchoring has the highest latency in the current prototype, while delegation and workflow-prerequisite evidence require additional verification steps. In targeted negative-evidence tests, all corrupted or policy-insufficient bundles were rejected, with no false acceptance observed. These results support evidence-based audit and dispute review without relying on live services or platform-specific logs.",
+          "extra": {
+            "authors": [
+              "Adil Alshammari",
+              "Hayretdin Bahsi"
+            ],
+            "categories": [
+              "cs.CR",
+              "cs.MA"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.28542v1"
+          },
+          "score": 8.0,
+          "summary": "为跨组织Agent消息提供离线可验证的问责方案，解决审计与争议中的关键难题。"
+        },
+        {
+          "section": "paper",
+          "title": "When Robots Mishear Us: Mapping the Safety Risks of Voice-Controlled Embodied AI",
+          "url": "https://arxiv.org/abs/2608.28518v1",
+          "source": "arXiv",
+          "published_at": "2026-08-28T16:55:32Z",
+          "raw_text": "We investigate whether automatic speech recognition (ASR) errors in user input can lead to unsafe outputs from Embodied AI (EAI) models. We find that ASR errors can lead to harmful instructions being accepted and executed by EAI models, thereby reducing safety. We simulate ASR errors and combine them with existing safety benchmarks (SafeAgentBench and POEX) to evaluate how different errors affect embodied AI safety. We find that some of them preserve semantic structure but increase harmful ambiguity, while others weaken the model refusal behaviour and allow unsafe plans to be generated and executed. We show that in some cases automatic correction of ASR errors can reduce the risk, but this is not always effective. Overall, we show that ASR errors lead to significant safety risks for embodied AI.",
+          "extra": {
+            "authors": [
+              "Sihan Jia",
+              "Oliver Lemon"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL",
+              "cs.RO"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.28518v1"
+          },
+          "score": 8.0,
+          "summary": "揭示语音识别错误导致具身AI不安全输出的风险，对Agent安全部署有直接警示。"
+        },
+        {
+          "section": "paper",
+          "title": "On the Maintenance and Co-evolution of Agent Plugins: An Empirical Study of Claude Code Plugin Marketplaces",
+          "url": "https://arxiv.org/abs/2608.28497v1",
+          "source": "arXiv",
+          "published_at": "2026-08-28T16:27:35Z",
+          "raw_text": "AI coding agents, software tools that automate development tasks through reasoning and tool use, are increasingly extended through plugin marketplaces, yet the structure, maintenance, and co-evolution dynamics of these emerging repositories remain empirically unexplored. Unlike traditional software packages that deliver functionality through source code, agent plugins deliver functionality through a combination of natural-language instruction files, scripts, and configuration files, raising the question of whether these plugins are maintained artifacts that co-evolve across components, or one-off artifacts that developers write once and do not need to revisit. To study the maintenance and co-evolution of agent plugins, we conduct an empirical study of 1,926 repositories hosting Claude Code plugin marketplaces, analyzing 8,351 plugins and 77,773 commits across 2,018 marketplaces. We find that the marketplace is expanding rapidly, plugin-touching commit activity growing 8.8x over six months after the October 2025 launch, and plugins targeting Software Engineering tasks accounting for 61.3% of all plugins. Plugin development is predominantly feature-driven, with feature commits occurring at more than twice the rate of conventional open-source software (OSS) (39.6% vs. 17.2%). Claude co-authors 34.9% of all commits, and four commit types (docs, perf, style, and refactor) carry substantially different meanings in plugin repositories than in traditional software. Most component types evolve independently, but within skills directories, natural-language instruction files and implementation scripts co-evolve at above-chance rates, with 78% of co-changes being functionally coupled, representing a new class of maintenance dependency not observed in traditional software engineering.",
+          "extra": {
+            "authors": [
+              "Ahmed Hereiz",
+              "Yingzhe Lyu",
+              "Hao Li",
+              "Bram Adams",
+              "Ahmed E. Hassan"
+            ],
+            "categories": [
+              "cs.SE",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.28497v1"
+          },
+          "score": 7.0,
+          "summary": "实证研究Claude Code插件市场的维护与演化，揭示Agent生态系统的实际挑战。"
+        },
+        {
+          "section": "paper",
+          "title": "A Formal Limitation on Learning Human Language From Textual Corpora",
+          "url": "https://arxiv.org/abs/2608.28560v1",
+          "source": "arXiv",
+          "published_at": "2026-08-28T17:38:24Z",
+          "raw_text": "Can a listener recover what a speaker means from the form of an utterance alone? We answer this question information-theoretically, and for a listener given by any featurizer of text, including the hidden states of contemporary large language models. Modeling language use as a joint distribution over meanings, contexts, and utterances, we derive upper bounds on the probability that a decoder recovers a speaker's intended meaning from a representation of the utterance. The bounds are governed by the uncertainty that form leaves about meaning, which splits into an irreducible part and a part that only (extralinguistic) context, but never the utterance alone, can resolve. Because these quantities are intrinsic to language, no representation, however much text or supervision produced it, can surpass them; the bounds hold whether the space of meanings is discrete or continuous. Experiments on artificial languages, Mandarin zero-pronoun resolution, and color reference provide empirical evidence in support of the theory.",
+          "extra": {
+            "authors": [
+              "Emily Cheng",
+              "Ryan Cotterell"
+            ],
+            "categories": [
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.28560v1"
+          },
+          "score": 7.0,
+          "summary": "从信息论证明仅靠文本语料无法完全学习人类语言，对LLM推理能力有根本性启示。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi-K2.6, GLM-5.2, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 179809,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "gemma3",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llama3",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 9.0,
+          "summary": "本地一键运行Kimi、DeepSeek等最新模型，AI从业者部署推理的首选工具。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "The context API to search, scrape, and interact with the web at scale. 🔥",
+          "extra": {
+            "stars": 174539,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "大规模网页抓取与交互API，为RAG和Agent提供实时数据源。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 153946,
+            "language": "TypeScript",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "deepseek",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "python",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 8.0,
+          "summary": "一站式构建Agentic工作流与RAG管道，支持私有化部署，从原型到生产无需重构。"
+        },
+        {
+          "section": "repo",
+          "title": "langchain-ai/openwiki",
+          "url": "https://github.com/langchain-ai/openwiki",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-22T23:48:26Z",
+          "raw_text": "OpenWiki is a CLI that writes and maintains agent documentation for your codebase.",
+          "extra": {
+            "stars": 15884,
+            "language": "TypeScript",
+            "topics": []
+          },
+          "score": 7.0,
+          "summary": "CLI工具自动为代码库生成并维护Agent文档，解决Agent协作中的文档痛点。"
+        },
+        {
+          "section": "repo",
+          "title": "cobusgreyling/loop-engineering",
+          "url": "https://github.com/cobusgreyling/loop-engineering",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-09T06:28:20Z",
+          "raw_text": "Practical patterns, starters & CLI tools for loop engineering with AI coding agents. Design systems that prompt and orchestrate agents (inspired by Addy Osmani and Boris Cherny). Includes loop-audit, loop-init, loop-cost.",
+          "extra": {
+            "stars": 10756,
+            "language": "TypeScript",
+            "topics": [
+              "agentic-ai",
+              "ai-agents",
+              "ai-coding",
+              "anthropic",
+              "automation",
+              "claude",
+              "claude-code",
+              "codex",
+              "coding-agents",
+              "devops-automation",
+              "devtools",
+              "github-actions",
+              "grok",
+              "llm",
+              "loop-engineering",
+              "mcp",
+              "prompt-engineering"
+            ]
+          },
+          "score": 7.0,
+          "summary": "提供循环工程模式与CLI工具，用于编排AI编码Agent，含审计和成本追踪。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Sony Music Publishing and Warner Chappell are suing Anthropic",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/986438/sony-music-warner-chappell-anthropic-lawsuit-copyright",
+          "source": "The Verge",
+          "published_at": "2026-08-29T18:19:53Z",
+          "raw_text": "Sony Music Publishing and Warner Chappell have filed suit against Anthropic in the US District Court for the Northern District of California seeking damages for \"tens of thousands\" copyrighted works. The companies are asking for up to $150,000 per work, plus up to $25,000 for each instance when identifiable copyright data was stripped. In total, […]",
+          "extra": {},
+          "score": 9.0,
+          "summary": "两大音乐出版商起诉Anthropic侵权数万作品，AI版权法律风险升级。"
+        },
+        {
+          "section": "news",
+          "title": "Texas Governor Abbott blocks funding for more Flock cameras",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/986541/texas-governor-abbott-flock-cameras",
+          "source": "The Verge",
+          "published_at": "2026-08-30T15:35:10Z",
+          "raw_text": "As backlash grows over Flock's AI surveillance cameras, Texas Governor Greg Abbott has frozen state spending on them. The move came just ahead of the publication of a Texas Tribune investigation that revealed the state spent over $30 million on Flock cameras. That money was primarily raised by tacking a $1 fee onto insurance policies, […]",
+          "extra": {},
+          "score": 8.0,
+          "summary": "德州州长叫停AI监控摄像头拨款，公共资金使用与隐私争议升温。"
+        },
+        {
+          "section": "news",
+          "title": "Inside Meta’s push to put robots to work in data centers",
+          "url": "https://arstechnica.com/ai/2026/08/inside-metas-push-to-put-robots-to-work-in-data-centers/",
+          "source": "Ars Technica",
+          "published_at": "2026-08-30T11:03:47Z",
+          "raw_text": "The company is testing robots on tasks that can performed by technicians.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Meta在数据中心测试机器人执行技术员任务，AI落地基础设施场景。"
+        },
+        {
+          "section": "news",
+          "title": "AI agents need their own identity before they need a gateway",
+          "url": "https://venturebeat.com/security/ai-agents-need-their-own-identity-before-they-need-a-gateway",
+          "source": "VentureBeat",
+          "published_at": "2026-08-30T23:00:00Z",
+          "raw_text": "Enterprise AI has entered a new era. Organizations are rapidly moving beyond assistants that answer questions to autonomous agents capable of reasoning, invoking tools, accessing enterprise applications, coordinating with other agents, and completing multi-step business workflows with minimal human intervention. This shift represents a fundamental change in how software operates. Traditional applications execute predefined logic written by developers. AI agents, however, dynamically determine how to achieve an objective. They decide which tools to use, which APIs to call, what information to retrieve, and how to sequence actions based on context. That flexibility unlocks enormous business value, but it also introduces a new class of security risks . Much of today's AI security discussion f",
+          "extra": {},
+          "score": 7.0,
+          "summary": "企业AI进入自主代理时代，身份与网关成为部署关键挑战。"
+        },
+        {
+          "section": "news",
+          "title": "Caterpillar is bringing to AI deployment what it learned from automating mining",
+          "url": "https://techcrunch.com/2026/08/30/caterpillar-is-bringing-to-ai-deployment-what-it-learned-from-automating-mining/",
+          "source": "TechCrunch",
+          "published_at": "2026-08-30T15:00:00Z",
+          "raw_text": "Caterpillar has spent decades putting autonomous machines to work at remote mining sites. It's now bringing that experience to AI deployment.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "卡特彼勒将矿山自动化经验迁移至AI部署，工业巨头加速转型。"
+        },
+        {
+          "section": "news",
+          "title": "The U.S. is building barriers around drones and robots, but China has scale to get around them",
+          "url": "https://techcrunch.com/2026/08/30/the-u-s-is-building-barriers-around-drones-and-robots-china-still-has-scale/",
+          "source": "TechCrunch",
+          "published_at": "2026-08-31T02:34:00Z",
+          "raw_text": "The U.S. is shutting out more foreign-made drones and robots. China’s scale means the global competition may simply move elsewhere.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "美国限制无人机与机器人进口，中国规模优势或改变竞争格局。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Gemini Omni 1.1 Flash lets you build with more control",
+          "url": "https://deepmind.google/blog/gemini-omni-1-1-flash-lets-you-build-with-more-control/",
+          "source": "Google DeepMind",
+          "published_at": "2026-08-27T16:11:32Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "谷歌发布Gemini Omni 1.1 Flash，提供更强控制力的多模态模型。"
+        },
+        {
+          "section": "product",
+          "title": "Intelligent transcription with Gemini 3.5 Transcribe",
+          "url": "https://deepmind.google/blog/intelligent-transcription-with-gemini-3-5-transcribe/",
+          "source": "Google DeepMind",
+          "published_at": "2026-08-26T17:01:00Z",
+          "raw_text": "Now you can get more intelligent speech-to-text transcription with Gemini 3.5 Transcribe.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Gemini 3.5 Transcribe上线，实现更智能的语音转文字。"
+        },
+        {
+          "section": "product",
+          "title": "Broadening access to Skala creates a faster path to predictive DFT",
+          "url": "https://www.microsoft.com/en-us/research/blog/broadening-access-to-skala-creates-a-faster-path-to-predictive-dft/",
+          "source": "Microsoft Research",
+          "published_at": "2026-08-20T16:00:00Z",
+          "raw_text": "Skala 1.1, the updated deep-learning exchange-correlation functional from Microsoft Research, provides greater accuracy, expanded accessibility across the computational chemistry ecosystem, and a living benchmark to track computational performance. The post Broadening access to Skala creates a faster path to predictive DFT appeared first on Microsoft Research .",
+          "extra": {},
+          "score": 8.0,
+          "summary": "微软开源Skala 1.1，加速预测性DFT计算并提升精度。"
+        }
+      ]
+    }
+  ]
+}
