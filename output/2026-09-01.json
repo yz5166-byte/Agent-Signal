@@ -1,0 +1,435 @@
+{
+  "date": "2026-09-01",
+  "tip": {
+    "title": "firecrawl/firecrawl",
+    "body": "当 Agent 需要从非结构化网页或文档中提取信息时，直接喂全文会导致 token 浪费且易超上下文窗口。做法：用 `firecrawl` 的 `scrape` 接口配合 `formats: ['markdown']` 参数，自动将网页转为结构化 Markdown，再按 `#` 标题切块后分批处理。\n\n```bash\ncurl -X POST https://api.firecrawl.dev/v1/scrape \\\n  -H 'Content-Type: application/json' \\\n  -d '{\"url\": \"https://example.com\", \"formats\": [\"markdown\"]}'\n```\n\n返回的 `data.markdown` 可直接按 `## ` 分割为独立段落，减少冗余 token。",
+    "ref_title": "firecrawl/firecrawl",
+    "ref_url": "https://github.com/firecrawl/firecrawl"
+  },
+  "errors": [],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "DIASENTINEL: An Auditable Multi-Agent System for Guideline-Grounded Diabetes Risk Screening",
+          "url": "https://arxiv.org/abs/2608.31128v1",
+          "source": "arXiv",
+          "published_at": "2026-08-31T17:40:43Z",
+          "raw_text": "Large language models (LLMs) offer promising clinical decision support but remain vulnerable to hallucinated facts, unsupported recommendations, and citation errors. We present DIASENTINEL, a fully on-premise multi-agent system for one-year type 2 diabetes mellitus (T2DM) risk screening and guideline-grounded report generation from electronic health records (EHRs). The system integrates calibrated risk prediction, deterministic clinical signal extraction, Reciprocal Rank Fusion over American Diabetes Association (ADA) guidelines, and a hybrid verification layer combining rule-based checks with LLM entailment. The demonstration provides a real-time batch-screening dashboard and an interactive patient report interface with cited recommendations, verification results, and raw EHR comparison. DIASENTINEL demonstrates a practical framework for reliable, auditable, and privacy-preserving LLM-based clinical decision support.",
+          "extra": {
+            "authors": [
+              "Yung Wei Shueh",
+              "Zhi-Jie Chen",
+              "Chia-Hsuan Hsu",
+              "Hsin-Ling Hsu",
+              "Donghua Zhang",
+              "Chenwei Wu",
+              "Jun-En Ding",
+              "Tongze Zhang",
+              "Shihao Yang",
+              "Pengfei Hu",
+              "Fang-Ming Hung",
+              "Feng Liu"
+            ],
+            "categories": [
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.31128v1"
+          },
+          "score": 9.0,
+          "summary": "提出可审计多智能体系统，用于糖尿病筛查，解决LLM幻觉与引用错误，值得关注。"
+        },
+        {
+          "section": "paper",
+          "title": "Aspire: Can Models Self-Evolve from Vague Goals?",
+          "url": "https://arxiv.org/abs/2608.31111v1",
+          "source": "arXiv",
+          "published_at": "2026-08-31T17:14:59Z",
+          "raw_text": "Many important forms of human learning begin with a vague goal, such as \"become a better physicist\" or \"improve at research.\" Learners must interpret the goal, identify capability gaps, decide how to learn, and determine whether they have actually improved. In contrast, existing work on LLM self-evolution typically begins with tasks and evaluation metrics specified by humans, reducing self-evolution to optimizing an explicit objective rather than deciding what and how to learn. We introduce ASPIRE, a benchmark for vague-goal-driven self-evolution. ASPIRE provides only a natural-language capability goal while downstream evaluation tasks remain hidden. The agent must operationalize the goal by choosing data and update methods, constructing training and validation signals, and deciding when to evaluate. ASPIRE supports both model-weight and agent-harness evolution in a unified interactive environment and evaluates the resulting systems on a hidden, expert-authored set of 520 items spanning six goals. Our experiments show that vague goals redirect search effort toward goal interpretation. Current agents routinely complete training and harness-editing loops, but weight-level gains remain sparse and unstable, and the strongest evolved harness remains below the engineered Qwen-Agent reference. Agents often train on mismatched data and trust narrow self-evaluations, so local gains fail to transfer to hidden evaluation and continued search and training can erase earlier improvements.",
+          "extra": {
+            "authors": [
+              "Yuhao Wu",
+              "Jingyuan Zhang",
+              "Jiajun Shi",
+              "Yuxuan Zhang",
+              "Xinping Lei",
+              "Junting Zhou",
+              "Zexuan Wang",
+              "Yuchen Wu",
+              "Huan Zhou",
+              "Duo Wang",
+              "Yinzhu Piao",
+              "Yongchang Peng",
+              "Yunfeng Shi",
+              "Jin Chen",
+              "Zuo Wang",
+              "Jinkai Liu",
+              "Jiaheng Liu",
+              "Wenxuan Zhang",
+              "Shen Yan",
+              "Wenhao Huang",
+              "Ge Zhang"
+            ],
+            "categories": [
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.31111v1"
+          },
+          "score": 8.0,
+          "summary": "探索LLM从模糊目标自我进化，填补了自演化研究的关键空白，有启发性。"
+        },
+        {
+          "section": "paper",
+          "title": "S3Gym: Can LLMs Turn Self-Testing and Self-Judging into Self-Improvement?",
+          "url": "https://arxiv.org/abs/2608.31100v1",
+          "source": "arXiv",
+          "published_at": "2026-08-31T17:05:41Z",
+          "raw_text": "Large language models (LLMs) increasingly interact with external environments and accumulate substantial behavioral experience, yet existing agent benchmarks largely evaluate them as fixed policies. It therefore remains unclear whether an agent can actively test its behavior, judge the resulting experience, and use that experience to improve future decisions. We introduce \\textbf{S\\textsuperscript{3}Gym}, an interactive benchmark for evaluating LLM self-improvement through three coupled capabilities: \\textbf{Self-Testing}, \\textbf{Self-Judging}, and \\textbf{Self-Improvement}. S$^3$Gym separates permissive exploration from strict held-out evaluation and instantiates this protocol in seven text-based games with executable environment verifiers. We evaluate three pathways for incorporating interaction experience: direct History ICL, score-conditioned Summary Memory, and parameter Training. Our experiments reveal that self-improvement is neither automatic nor uniform. Context-level experience improves performance for several model--game pairs, but the most effective pathway depends strongly on the task structure: summaries are beneficial when experience can be compressed into reusable strategic rules, yet often underperform raw history when success depends on precise, state-contingent information. Parameter training produces substantial gains on some tasks, but also exhibits unstable improvement and severe negative transfer on others. These findings show that recognizing successful actions is insufficient; agents must also transform feedback into executable and transferable policies. S$^3$Gym provides a unified framework for diagnosing this process and identifying the bottlenecks that prevent agents from translating interaction experience into reliable self-improvement.",
+          "extra": {
+            "authors": [
+              "Jiajun Shi",
+              "Siyuan Tao",
+              "Yuhao Wu",
+              "Zexuan Wang",
+              "Jingyuan Zhang",
+              "Jiaheng Liu",
+              "Xinping Lei",
+              "Xinrong Zhang",
+              "Siyuan Fang",
+              "Zhewen Tan",
+              "Tianle Cai",
+              "Junhao Fang",
+              "Jiameng Huang",
+              "Yueyang Wang",
+              "Jinkai Liu",
+              "Yuxuan Zhang",
+              "Jian Yang",
+              "Zhoujun Li",
+              "Shen Yan",
+              "Wenhao Huang",
+              "Ge Zhang"
+            ],
+            "categories": [
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.31100v1"
+          },
+          "score": 8.0,
+          "summary": "构建环境让LLM通过自测与自判实现自我改进，推进Agent自主学习能力。"
+        },
+        {
+          "section": "paper",
+          "title": "Auditing Anonymous AI Models: A Four-Stage Protocol for Black-Box Identity Verification",
+          "url": "https://arxiv.org/abs/2608.31142v1",
+          "source": "arXiv",
+          "published_at": "2026-08-31T17:48:24Z",
+          "raw_text": "The 2025--2026 AI market has seen a wave of stealth releases: frontier models launched anonymously on developer platforms under codenames. For their users, identity determines data-handling terms, supply-chain risk, and capability expectations. No validated methodology exists for black-box identity verification of anonymous models: practitioner checklists lack accuracy evidence, and self-identification is untrustworthy by design. We propose a four-stage forensic audit protocol for API-served models. Stage 0 reconstructs launch-time configuration from archived platform snapshots (Internet Archive), exposing preview--production drift. Stage 1 fingerprints configuration (context, output ceiling, reasoning, modality) against the platform catalog. Stage 2 tests tokenizer identity with a cross-length differential that rejects short-prompt collisions. Stage 3 corroborates with behavioral probes. We test declaration consistency on 10 known-identity releases (7 exact, 2 precision-differences, 1 partial, 0 counter-directional), not end-to-end identification under anonymity. Identification is validated prospectively on a flagship case whose 2026-08-23 analysis pointed to the GLM-5.3 version line and whose official reveal confirmed those family and version-line inferences (deployment variant was not pre-asserted; Flash was consistent post-reveal), and on three Stage-0-only cases where the protocol produced a graded hypothesis or declined rather than guessed. A standard-library-only implementation is provided as supplementary material.",
+          "extra": {
+            "authors": [
+              "Yisen Xi"
+            ],
+            "categories": [
+              "cs.SE",
+              "cs.AI",
+              "cs.CR"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.31142v1"
+          },
+          "score": 7.0,
+          "summary": "提出黑盒AI模型身份审计协议，应对匿名发布风险，实用性强。"
+        },
+        {
+          "section": "paper",
+          "title": "Token-Efficient Data Reasoning Agents via Adaptive Structuring of Unstructured Data",
+          "url": "https://arxiv.org/abs/2608.31082v1",
+          "source": "arXiv",
+          "published_at": "2026-08-31T16:53:45Z",
+          "raw_text": "Valuable data remains embedded in unstructured sources: web pages, reports, contracts, filings, earnings calls, and PDFs. The big bet in enterprise AI is deploying LLM agents that reason over this data to answer complex questions for every knowledge worker. Agents can do this today, but at prohibitive cost. Each question repeatedly opens large documents to recover scattered evidence, consuming up to a million tokens. However, if the data were already structured, the same question would reduce to a cheap database lookup. For example, on FanOutQA benchmark, reasoning over an ideal pre-structured store is 28X cheaper, and the gap grows to orders of magnitude as questions fan out over more documents. Yet structuring everything in advance is not viable: documents hold vastly more possible structure than any workload will use, and the useful structure and documents are unknown until queries arrive. We propose agentic data cracking, a method that structures unstructured data adaptively and speculatively as a byproduct of reasoning itself. Structuring is adaptive because observed queries decide when it happens and what matters, and speculative because it goes beyond the current question. Whenever the agent opens a document to answer, a cracking sub-agent forks from the already-loaded context at marginal cost and extracts grounded structure likely to serve related future queries. Over time, an increasing share of queries is fully covered by structured data and answered without opening a document, keeping agentic accuracy at close to RAG cost. On FanOutQA, extended with merely one related question per test question, cracking cuts cost by 53% while preserving accuracy. Agentic data cracking is a first step toward next-generation data infrastructure for agentic reasoning over unstructured data: a shared substrate beneath the model where knowledge that reasoning already paid to uncover accumulates.",
+          "extra": {
+            "authors": [
+              "Milad Rezaei Hajidehi",
+              "Qitong Wang",
+              "Stratos Idreos"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL",
+              "cs.DB"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2608.31082v1"
+          },
+          "score": 7.0,
+          "summary": "用自适应结构化减少非结构化数据推理的token消耗，提升Agent效率。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi-K2.6, GLM-5.2, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 179859,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "gemma3",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llama3",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 9.0,
+          "summary": "本地一键运行最新开源大模型，支持Kimi、GLM等，降低部署门槛。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 154049,
+            "language": "TypeScript",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "deepseek",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "python",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 9.0,
+          "summary": "一站式构建Agent工作流与RAG管道，支持私有化部署，从原型到生产无需重构。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "The context API to search, scrape, and interact with the web at scale. 🔥",
+          "extra": {
+            "stars": 174939,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 8.0,
+          "summary": "大规模网页搜索与抓取API，为RAG和Agent提供实时数据源。"
+        },
+        {
+          "section": "repo",
+          "title": "omnigent-ai/omnigent",
+          "url": "https://github.com/omnigent-ai/omnigent",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-11T12:18:13Z",
+          "raw_text": "Omnigent is an open-source AI agent framework and meta-harness: orchestrate Claude Code, Codex, Cursor, Pi, and custom agents — swap harnesses without rewriting, enforce policies and sandboxing, and collaborate in real time from any device.",
+          "extra": {
+            "stars": 9569,
+            "language": "Python",
+            "topics": [
+              "agent-framework",
+              "agent-governance",
+              "agent-orchestration",
+              "agents",
+              "ai",
+              "ai-agent",
+              "ai-agents",
+              "claude-code",
+              "codex",
+              "coding-agents",
+              "developer-tools",
+              "llm",
+              "ml",
+              "multi-agent",
+              "python",
+              "sandbox"
+            ]
+          },
+          "score": 8.0,
+          "summary": "统一编排Claude Code、Cursor等多Agent框架，支持策略管控与实时协作。"
+        },
+        {
+          "section": "repo",
+          "title": "langchain-ai/openwiki",
+          "url": "https://github.com/langchain-ai/openwiki",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-22T23:48:26Z",
+          "raw_text": "OpenWiki is a CLI that writes and maintains agent documentation for your codebase.",
+          "extra": {
+            "stars": 15918,
+            "language": "TypeScript",
+            "topics": []
+          },
+          "score": 7.0,
+          "summary": "CLI工具自动为代码库生成并维护Agent文档，解决文档滞后痛点。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "The Pentagon now has its own version of ChatGPT and Grok",
+          "url": "https://techcrunch.com/2026/08/31/the-pentagon-now-has-its-own-version-of-chatgpt-and-grok/",
+          "source": "TechCrunch",
+          "published_at": "2026-08-31T20:13:45Z",
+          "raw_text": "Versions of OpenAI's ChatGPT and SpaceXAI's Grok will join Google's Gemini on the Pentagon's central portal for AI tools.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "五角大楼将ChatGPT和Grok纳入官方AI工具，标志军事AI应用进入新阶段。"
+        },
+        {
+          "section": "news",
+          "title": "Apple shares ‘shocking evidence’ against former employee accused of stealing company data for OpenAI",
+          "url": "https://techcrunch.com/2026/08/31/apple-shares-shocking-evidence-against-former-employee-accused-of-stealing-company-data-for-openai/",
+          "source": "TechCrunch",
+          "published_at": "2026-09-01T00:13:00Z",
+          "raw_text": "Apple says it has evidence that a former employee destroyed evidence of data theft after learning he was under investigation.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "苹果指控前员工为OpenAI窃取数据，凸显科技巨头间商业机密争夺白热化。"
+        },
+        {
+          "section": "news",
+          "title": "ChatGPT to face tougher regulation in the EU",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/986682/openai-chatgpt-eu-dsa",
+          "source": "The Verge",
+          "published_at": "2026-08-31T13:27:36Z",
+          "raw_text": "OpenAI will soon be held accountable for mitigating risks related to ChatGPT's impact on minors, user mental health, and the spread of illegal content in the European Union. That's because ChatGPT is now considered a Very Large Online Search Engine under the EU's Digital Services Act, a set of laws regulating major online services and […]",
+          "extra": {},
+          "score": 8.0,
+          "summary": "ChatGPT被欧盟认定为超大型搜索引擎，面临最严在线安全监管。"
+        },
+        {
+          "section": "news",
+          "title": "“Zlibrary my beloved”: Anthropic staff chats extolling piracy cited in Sony suit",
+          "url": "https://arstechnica.com/tech-policy/2026/08/zlibrary-my-beloved-anthropic-staff-chats-extolling-piracy-cited-in-sony-suit/",
+          "source": "Ars Technica",
+          "published_at": "2026-08-31T18:10:45Z",
+          "raw_text": "Lawsuit: Anthropic’s torrenting totally screwed songwriters as AI songs top charts.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "Anthropic员工涉盗版数据被索尼起诉，AI训练数据合规争议升级。"
+        },
+        {
+          "section": "news",
+          "title": "Instagram puts new limits on undisclosed AI profiles",
+          "url": "https://techcrunch.com/2026/08/31/instagram-puts-new-limits-on-undisclosed-ai-profiles/",
+          "source": "TechCrunch",
+          "published_at": "2026-08-31T19:16:59Z",
+          "raw_text": "As frustration over AI influencers has been growing, Instagram is limiting the reach of undisclosed AI profiles.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "Instagram限制未标注AI账号流量，平台治理虚假AI影响者迈出关键一步。"
+        },
+        {
+          "section": "news",
+          "title": "Debian won’t ban AI code from its Linux distribution",
+          "url": "https://www.theverge.com/tech/986789/linux-debian-generative-ai-policy",
+          "source": "The Verge",
+          "published_at": "2026-08-31T15:34:58Z",
+          "raw_text": "Debian voted to allow developers to use AI tools in their contributions to the Linux distribution's \"development, maintenance, [and] documentation.\" The new policy on AI acknowledges that \"responsible\" use of AI can improve developers' productivity, and goes on to say, \"generative AI is neither exempt from nor subject to special rules beyond the standards already […]",
+          "extra": {},
+          "score": 6.0,
+          "summary": "Debian投票允许AI辅助开发，开源社区对AI工具态度转向务实。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "TimesFM-3: A zero-shot foundation model for multivariate forecasting",
+          "url": "https://research.google/blog/timesfm-3-a-zero-shot-foundation-model-for-multivariate-forecasting/",
+          "source": "Google Research",
+          "published_at": "2026-08-31T17:19:40Z",
+          "raw_text": "Data Management",
+          "extra": {},
+          "score": 9.0,
+          "summary": "发布零样本多变量时序预测基础模型，填补该领域空白。"
+        },
+        {
+          "section": "product",
+          "title": "Gemini Omni 1.1 Flash lets you build with more control",
+          "url": "https://deepmind.google/blog/gemini-omni-1-1-flash-lets-you-build-with-more-control/",
+          "source": "Google DeepMind",
+          "published_at": "2026-08-27T16:11:32Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Gemini Omni 1.1 Flash 更新，提供更强可控性，降低开发门槛。"
+        },
+        {
+          "section": "product",
+          "title": "Broadening access to Skala creates a faster path to predictive DFT",
+          "url": "https://www.microsoft.com/en-us/research/blog/broadening-access-to-skala-creates-a-faster-path-to-predictive-dft/",
+          "source": "Microsoft Research",
+          "published_at": "2026-08-20T16:00:00Z",
+          "raw_text": "Skala 1.1, the updated deep-learning exchange-correlation functional from Microsoft Research, provides greater accuracy, expanded accessibility across the computational chemistry ecosystem, and a living benchmark to track computational performance. The post Broadening access to Skala creates a faster path to predictive DFT appeared first on Microsoft Research .",
+          "extra": {},
+          "score": 8.0,
+          "summary": "微软 Skala 1.1 更新，提升预测精度并开放生态，加速计算化学研究。"
+        }
+      ]
+    }
+  ]
+}
