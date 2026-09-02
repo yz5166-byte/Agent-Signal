@@ -1,0 +1,416 @@
+{
+  "date": "2026-09-02",
+  "tip": {
+    "title": "语言强化学习",
+    "body": "在构建需要调用外部工具的Agent时，常遇到模型返回的JSON格式错误导致解析失败。可以使用Pydantic的`model_validate_json`方法替代裸`json.loads`，它能在解析时自动容错并给出清晰报错位置。\n\n```python\nfrom pydantic import BaseModel\n\nclass ToolCall(BaseModel):\n    name: str\n    args: dict\n\n# 安全解析，自动处理多余逗号、单引号等\nraw = \"{'name': 'search', 'args': {'q': 'agent'}}\"\ntry:\n    call = ToolCall.model_validate_json(raw)\nexcept Exception as e:\n    print(f\"解析失败: {e}\")  # 会提示具体字段错误\n```",
+    "ref_title": "The Rise of Verbal Reinforcement Learning",
+    "ref_url": "https://arxiv.org/abs/2609.01597v1"
+  },
+  "errors": [],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "The Rise of Verbal Reinforcement Learning",
+          "url": "https://arxiv.org/abs/2609.01597v1",
+          "source": "arXiv",
+          "published_at": "2026-09-01T17:58:18Z",
+          "raw_text": "Natural language is emerging as a primary feedback channel for improving language agents, capable of conveying intent, preferences, and causal structure in forms interpretable by both humans and modern language models. We call this paradigm Verbal Reinforcement Learning (VRL) and offer the first unified account of it. We organize the field around a single axis, \\textit{when} verbal feedback takes effect in an agent's lifecycle and \\textit{what} it modifies, yielding three pillars: (1) \\textbf{Language as Grounding Signal}, where language defines the task itself by specifying goals, states, and reward structures; (2) \\textbf{Language as Deliberative Feedback}, where natural language guides reasoning at test time without the need to update model parameters; (3) \\textbf{Language as Learning Signal}, where language-based feedback shapes model parameters through training. Within each pillar, we synthesize representative work, distinguish key subcategories of approaches, and outline the distinct role language plays in shaping agent behavior. Together, this taxonomy shows how verbal reinforcement is reshaping agent development, while also defining the challenges and opportunities for building more capable and aligned agents.",
+          "extra": {
+            "authors": [
+              "Kshitij Tayal",
+              "Arun Sharma",
+              "Genta Indra Winata",
+              "Anirban Das",
+              "Sambit Sahu"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.01597v1"
+          },
+          "score": 9.0,
+          "summary": "提出「语言强化学习」新范式，用自然语言替代数值奖励，为Agent提供更灵活、可解释的反馈信号。"
+        },
+        {
+          "section": "paper",
+          "title": "CordisBench: Can Language Models Reason About Component Lifecycles in Dynamic Agent Harnesses?",
+          "url": "https://arxiv.org/abs/2609.01600v1",
+          "source": "arXiv",
+          "published_at": "2026-09-01T17:59:13Z",
+          "raw_text": "Dynamic agent harnesses let language models change the software that shapes their own execution. This flexibility brings a new reasoning burden: a local plugin change can propagate through dependencies and cleanup. We introduce CordisBench, a 1,200-question benchmark of this lifecycle reasoning. It combines a controlled formal setting with programs executed against Cordis, a runtime that manages component dependencies and cleanup, and asks models to identify affected components, predict state after a specified teardown order, determine which conditions hold under all or some orders, and choose reconfigurations that succeed when executed. Across these tasks, we evaluate three efficiency-oriented models at low reasoning effort with 2, 4, 8, 16, 24, or 32 relevant interactions, using deterministic task-specific scoring. Models usually handle small systems well but grow less reliable as more interactions become relevant, especially when predicting final state and when reasoning across teardown orders. Additional inference effort recovers marked gains for some models. The cost is nontrivial: on our 16-interaction subset, GPT-5.6 Luna uses nearly 3,000 reasoning tokens per question at medium effort. For these controlled instances, that cost is avoidable: an independent finite reference semantics agrees with Cordis execution on every observation and action outcome used for scoring across all 528 executable questions.",
+          "extra": {
+            "authors": [
+              "Damien Sileo",
+              "Dimitri Kachler"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.01600v1"
+          },
+          "score": 8.0,
+          "summary": "首个测试LLM在动态Agent框架中推理组件生命周期与依赖传播的基准，直击Agent系统可靠性痛点。"
+        },
+        {
+          "section": "paper",
+          "title": "Efficient SWE Agent Benchmarking via Trajectory-Aware Evaluation",
+          "url": "https://arxiv.org/abs/2609.01603v1",
+          "source": "arXiv",
+          "published_at": "2026-09-01T17:59:46Z",
+          "raw_text": "Evaluating software engineering agents on realistic benchmarks is costly, since each task may require multi-step code exploration, modification, and test execution. Existing efficient evaluation methods select representative subsets to estimate full-benchmark performance, but are largely result-only: they fit historical pass/fail response matrices or static task semantics, discarding how agents solve problems. We propose PTA-IRT, a Privileged Trajectory-Aware Item Response Theory framework that fuses process and outcome signals. Historical execution trajectories supply process-level evidence beyond pass/fail, such as explored context, attempted edits, and solving paths, which PTA-IRT uses as privileged information for calibration subset selection and ability estimation. Under low calibration budgets, PTA-IRT consistently outperforms prior IRT baselines on score and ranking recovery across four SWE benchmarks. Code and data are publicly available at https://github.com/DeepSoftwareAnalytics/PTA-IRT.",
+          "extra": {
+            "authors": [
+              "Kefeng Duan",
+              "Dewu Zheng",
+              "Yanlin Wang",
+              "Xiwen Wang",
+              "Ensheng Shi",
+              "Xilin Liu",
+              "Yuchi Ma",
+              "Jiachi Chen",
+              "Mingwei Liu",
+              "Zibin Zheng"
+            ],
+            "categories": [
+              "cs.SE",
+              "cs.AI",
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.01603v1"
+          },
+          "score": 8.0,
+          "summary": "提出轨迹感知的SWE Agent高效评测方法，大幅降低评估成本，加速Agent迭代验证。"
+        },
+        {
+          "section": "paper",
+          "title": "Selective Agent Guidance via Entropy: Learning Autonomous Policies from Imperfect VLM Teachers",
+          "url": "https://arxiv.org/abs/2609.01567v1",
+          "source": "arXiv",
+          "published_at": "2026-09-01T17:33:41Z",
+          "raw_text": "Vision-Language Models (VLMs) provide useful priors for interactive decision-making, but using them directly as policies is expensive and brittle: they must be queried at every step, do not improve from environment interaction, and can repeat systematic errors. We study how to learn a cheap autonomous policy from an online, expensive, and imperfect but informative VLM teacher. We propose SAGE (Selective Agent Guidance via Entropy), a framework that queries a VLM only when the learner is uncertain, executes the suggested action during training, and distills guidance into a lightweight Reinforcement Learning (RL) policy. Because VLM advice is not always reliable, SAGE can weight teacher-action distillation using environment-derived advantages rather than treating all suggestions as equally useful. Across sparse-reward visual reasoning and navigation tasks, SAGE learns policies that act without VLM guidance at evaluation time and improves over unguided RL in several environments, including settings where the learned policy exceeds its VLM teacher. The results show that selective guidance is most beneficial when the VLM can help the agent discover high-reward trajectories, and less useful when unguided exploration already succeeds or teacher actions do not lead to informative experience. SAGE also reduces VLM usage by prompting the teacher only on a fraction of training steps and requiring no VLM calls at deployment. Overall, our results suggest that VLMs don't need to be used as fixed policies to be useful; they can instead act as temporary, imperfect sources of guidance whose value is tested and internalized through interaction.",
+          "extra": {
+            "authors": [
+              "Matteo Merler",
+              "Giovanni Bonetta",
+              "Davide Zago",
+              "Rossella Cancelliere",
+              "Bernardo Magnini"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.01567v1"
+          },
+          "score": 7.0,
+          "summary": "用熵引导Agent选择性调用VLM，在保持性能的同时大幅降低推理成本，实现自主策略学习。"
+        },
+        {
+          "section": "paper",
+          "title": "Adaptive Critical Token-Aware Retrieval for Repository-Level Code Generation",
+          "url": "https://arxiv.org/abs/2609.01601v1",
+          "source": "arXiv",
+          "published_at": "2026-09-01T17:59:39Z",
+          "raw_text": "The repository-level code generation task requires synthesizing code that satisfies task requirements while remaining consistent with the target repository context. Since real-world repositories often exceed the input length limits of LLMs, existing approaches commonly adopt retrieval-augmented generation (RAG) to provide repository-specific context. Despite improving repository-context retrieval, existing methods typically provide context as task-level support, without explicitly identifying the critical tokens that require fine-grained repository context during generation. During the autoregressive generation process of LLMs, errors often concentrate at a small number of decisive positions: once such tokens are generated incorrectly, subsequent code may follow an incorrect semantic path and eventually lead to functional failure. We refer to these positions as \"critical tokens\". In this paper, we propose ACToR, an adaptive critical token-aware retrieval framework for repository-level code generation. ACToR identifies critical tokens during generation and triggers targeted retrieval on demand to provide repository context at these decisive positions. In addition, we design a position-aware weighting method for dense retrievers to prioritize context that is more informative for generation. We evaluate ACToR on two representative repository-level benchmarks, RepoExec and CoderEval. Experimental results show that ACToR consistently outperforms state-of-the-art methods, achieving relative improvements of 8.4% on RepoExec and 15.4% on CoderEval. Beyond performance gains, we systematically quantify the impact of critical tokens, revealing their central role in major generation failures and highlighting the necessity of targeted retrieval strategies. We provide the code and data at https://github.com/DeepSoftwareAnalytics/ACToR.",
+          "extra": {
+            "authors": [
+              "Kefeng Duan",
+              "Dewu Zheng",
+              "Yanlin Wang",
+              "Terry Yue Zhuo",
+              "Mingwei Liu",
+              "Jianxing Yu",
+              "Jiachi Chen",
+              "Ensheng Shi",
+              "Xilin Liu",
+              "Yuchi Ma",
+              "Zibin Zheng"
+            ],
+            "categories": [
+              "cs.SE",
+              "cs.AI",
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.01601v1"
+          },
+          "score": 7.0,
+          "summary": "针对仓库级代码生成，提出自适应关键Token感知检索，解决长上下文与代码一致性难题。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "The context API to search, scrape, and interact with the web at scale. 🔥",
+          "extra": {
+            "stars": 175365,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "大规模网页抓取与交互的上下文API，可直接用于构建数据管道或RAG系统。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 154157,
+            "language": "TypeScript",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "deepseek",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "python",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 9.0,
+          "summary": "一站式构建Agent工作流与RAG管道，支持多模型与私有化部署，降低原型到生产门槛。"
+        },
+        {
+          "section": "repo",
+          "title": "langchain-ai/openwiki",
+          "url": "https://github.com/langchain-ai/openwiki",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-22T23:48:26Z",
+          "raw_text": "OpenWiki is a CLI that writes and maintains agent documentation for your codebase.",
+          "extra": {
+            "stars": 15974,
+            "language": "TypeScript",
+            "topics": []
+          },
+          "score": 8.0,
+          "summary": "CLI工具自动为代码库生成并维护Agent文档，解决AI协作中的文档滞后痛点。"
+        },
+        {
+          "section": "repo",
+          "title": "cobusgreyling/loop-engineering",
+          "url": "https://github.com/cobusgreyling/loop-engineering",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-09T06:28:20Z",
+          "raw_text": "Practical patterns, starters & CLI tools for loop engineering with AI coding agents. Design systems that prompt and orchestrate agents (inspired by Addy Osmani and Boris Cherny). Includes loop-audit, loop-init, loop-cost.",
+          "extra": {
+            "stars": 10815,
+            "language": "TypeScript",
+            "topics": [
+              "agentic-ai",
+              "ai-agents",
+              "ai-coding",
+              "anthropic",
+              "automation",
+              "claude",
+              "claude-code",
+              "codex",
+              "coding-agents",
+              "devops-automation",
+              "devtools",
+              "github-actions",
+              "grok",
+              "llm",
+              "loop-engineering",
+              "mcp",
+              "prompt-engineering"
+            ]
+          },
+          "score": 8.0,
+          "summary": "提供循环工程模式与CLI工具，用于设计编排AI编码Agent的系统，含审计与成本控制。"
+        },
+        {
+          "section": "repo",
+          "title": "omnigent-ai/omnigent",
+          "url": "https://github.com/omnigent-ai/omnigent",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-11T12:18:13Z",
+          "raw_text": "Omnigent is an open-source AI agent framework and meta-harness: orchestrate Claude Code, Codex, Cursor, Pi, and custom agents — swap harnesses without rewriting, enforce policies and sandboxing, and collaborate in real time from any device.",
+          "extra": {
+            "stars": 9602,
+            "language": "Python",
+            "topics": [
+              "agent-framework",
+              "agent-governance",
+              "agent-orchestration",
+              "agents",
+              "ai",
+              "ai-agent",
+              "ai-agents",
+              "claude-code",
+              "codex",
+              "coding-agents",
+              "developer-tools",
+              "llm",
+              "ml",
+              "multi-agent",
+              "python",
+              "sandbox"
+            ]
+          },
+          "score": 8.0,
+          "summary": "开源Agent元框架，可统一编排Claude Code、Codex等不同Agent，无需重写即可切换。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "AfterQuery reportedly becomes Y Combinator’s fastest-ever unicorn, now valued at $3.2B",
+          "url": "https://techcrunch.com/2026/09/01/afterquery-reportedly-becomes-y-combinators-fastest-ever-unicorn-now-valued-at-3-2b/",
+          "source": "TechCrunch",
+          "published_at": "2026-09-01T22:08:24Z",
+          "raw_text": "AI model-training startup AfterQuery has reportedly raised a round that valued it at $3.2 billion, just five months after announcing its $30 million Series A at a $300 million valuation in April.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "AI模型训练创企AfterQuery五个月内估值从3亿飙至32亿美元，创YC史上最快独角兽纪录。"
+        },
+        {
+          "section": "news",
+          "title": "Anthropic launches Claude Fable 5.1 and says it’s up to 45 percent cheaper for agentic work",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/987830/anthropic-claude-fable-mythos-5-1",
+          "source": "The Verge",
+          "published_at": "2026-09-01T22:01:36Z",
+          "raw_text": "Anthropic says its newest AI models, Fable 5.1 and Mythos 5.1, address criticisms from customers about price, data retention, and overzealous safeguards. The company claims Claude Fable 5.1 offers stronger performance than Fable 5, but costs around 25 percent less typically and up to 45 percent less for complex agentic tasks, thanks to reduced pricing […]",
+          "extra": {},
+          "score": 9.0,
+          "summary": "Anthropic发布Claude Fable 5.1，成本降低45%，回应客户对价格与安全边界的批评。"
+        },
+        {
+          "section": "news",
+          "title": "OpenAI’s Astra model is on the way — and very good at breaking into computer systems",
+          "url": "https://techcrunch.com/2026/09/01/open-ais-astra-model-is-on-the-way-and-very-good-at-breaking-into-computer-systems/",
+          "source": "TechCrunch",
+          "published_at": "2026-09-01T21:06:24Z",
+          "raw_text": "OpenAI previewed the precautions it is taking as it prepares to release Astra, its newest, cyber-critical LLM.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "OpenAI预告Astra模型具备强计算机系统入侵能力，同步披露安全防护措施。"
+        },
+        {
+          "section": "news",
+          "title": "OpenAI delayed its new model’s development after the Hugging Face hack",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/987695/openai-astra-unreleased-model-cybersecurity-delay",
+          "source": "The Verge",
+          "published_at": "2026-09-01T20:45:49Z",
+          "raw_text": "After an unreleased OpenAI model wreaked enough havoc to make international headlines, OpenAI delayed the development of a different unreleased model suite, Astra, in order to shore up its safety work, the company wrote Tuesday in a blog post. In July, an unreleased OpenAI model broke out of its restricted environment, finagled its way into […]",
+          "extra": {},
+          "score": 8.0,
+          "summary": "因Hugging Face安全事件，OpenAI推迟Astra模型开发以强化安全流程。"
+        },
+        {
+          "section": "news",
+          "title": "Frontier models can recover up to 65% of facts they can't directly recall — just by thinking longer",
+          "url": "https://venturebeat.com/orchestration/frontier-models-can-recover-up-to-65-of-facts-they-cant-directly-recall-just-by-thinking-longer",
+          "source": "VentureBeat",
+          "published_at": "2026-09-01T19:20:09Z",
+          "raw_text": "When large language models (LLMs) hallucinate, developers typically assume the model lacks the required facts. Engineering teams diagnose the error as missing knowledge. The standard response is to increase model size, expand training data, or build complex retrieval architectures. A new study by researchers at Google Research and Technion demonstrates that the knowledge is often not missing. The model has the information encoded parametrically but fails to surface it during generation. Their experiments show that frontier models like GPT-5 and Gemini-3 encode 95-98% of tested facts. This indicates that in many cases, recall, rather than encoding, is the primary bottleneck for factual accuracy. By understanding how to unlock existing knowledge through inference-time computation, engineerin",
+          "extra": {},
+          "score": 7.0,
+          "summary": "前沿模型可通过延长推理时间恢复65%无法直接回忆的事实，挑战传统知识缺失假设。"
+        },
+        {
+          "section": "news",
+          "title": "ChatGPT and Reddit now face EU's toughest online safety rules",
+          "url": "https://arstechnica.com/tech-policy/2026/08/chatgtp-and-reddit-now-face-eus-toughest-online-safety-rules/",
+          "source": "Ars Technica",
+          "published_at": "2026-08-31T13:41:40Z",
+          "raw_text": "Explosive growth comes with a new regulatory burden in the European Union.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "ChatGPT与Reddit被纳入欧盟最严在线安全法规，面临新合规压力。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Path to Astra: critical capabilities and frontier safeguards",
+          "url": "https://openai.com/index/path-to-astra",
+          "source": "OpenAI",
+          "published_at": "2026-09-01T13:00:00Z",
+          "raw_text": "Astra is the first OpenAI model to meet the Critical cybersecurity capability threshold under the Preparedness Framework, with stronger safeguards for release.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "OpenAI 首个通过关键网络安全阈值的新模型 Astra 发布，附带更强安全防护。"
+        },
+        {
+          "section": "product",
+          "title": "TimesFM-3: A zero-shot foundation model for multivariate forecasting",
+          "url": "https://research.google/blog/timesfm-3-a-zero-shot-foundation-model-for-multivariate-forecasting/",
+          "source": "Google Research",
+          "published_at": "2026-08-31T17:19:40Z",
+          "raw_text": "Data Management",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Google 发布零样本多变量时序预测基础模型 TimesFM-3，无需微调即可应用。"
+        },
+        {
+          "section": "product",
+          "title": "Gemini Omni 1.1 Flash lets you build with more control",
+          "url": "https://deepmind.google/blog/gemini-omni-1-1-flash-lets-you-build-with-more-control/",
+          "source": "Google DeepMind",
+          "published_at": "2026-08-27T16:11:32Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Gemini Omni 1.1 Flash 更新，提供更精细的模型行为控制能力。"
+        }
+      ]
+    }
+  ]
+}
