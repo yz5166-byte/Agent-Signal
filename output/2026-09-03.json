@@ -1,0 +1,416 @@
+{
+  "date": "2026-09-03",
+  "tip": {
+    "title": "用判别式世界模型为 Web Agent 做动作选择",
+    "body": "**场景：** 开发 Web Agent 时，面对多个候选动作（如点击不同按钮），如何选出最可靠的一个？\n\n**做法：** 用判别式世界模型（Discriminative World Model）替代直接执行。将候选动作输入 PRM（过程奖励模型），让它预测每个动作的成功概率，选最高分执行。\n\n```python\n# 伪代码示意：PRM 排序候选动作\ncandidates = [\"click_login\", \"click_signup\", \"click_help\"]\nscores = prm_model.score(candidates, context)  # 返回概率列表\nbest_action = candidates[argmax(scores)]\n```\n\n注意：PRM 需在沙箱环境中预训练，避免直接在生产环境执行未验证的模型输出。",
+    "ref_title": "Discriminative World Models for Web Agents",
+    "ref_url": "https://arxiv.org/abs/2609.02885v1"
+  },
+  "errors": [],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "Discriminative World Models for Web Agents",
+          "url": "https://arxiv.org/abs/2609.02885v1",
+          "source": "arXiv",
+          "published_at": "2026-09-02T17:59:40Z",
+          "raw_text": "Recent web agents use world models for test-time action selection by sampling candidate actions, predicting the resulting web states, and ranking them with a ranker model or a Process Reward Model (PRM). These world models are typically trained via supervised next-state prediction to generate fixed representations like HTML or AXTree snapshots. However, this objective is misaligned with the downstream ranker, which relies on predicted states being discriminative across candidates to accurately score them. To address this, we introduce predicted-state matching, a training objective where the predicted representation must distinguish the true resulting state from those reached by alternative actions. We train these models using a branching web-agent dataset derived from WebArena Go-Browse trajectories, where every decision point contains multiple alternative actions and their resulting states. Experiments on our held-out predicted-state matching benchmark show that our approach outperforms world models trained with supervised next-state prediction. We further show that our approach improves PRM-style action ranking on WebPRMBench compared with action-only PRMs and PRMs augmented with supervised-next-state world models. Finally, on WebArena-Lite, using our world model for test-time action selection improves end-to-end task success. Our project page is available at: https://dhruvpendharkar.github.io/dwm/.",
+          "extra": {
+            "authors": [
+              "Kelvin Li",
+              "Dhruv Pendharkar",
+              "Anish Pahilajani",
+              "Chuyi Shang",
+              "Leon Oks",
+              "Leonid Karlinsky",
+              "Rogerio Feris",
+              "Trevor Darrell",
+              "Roei Herzig"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.02885v1"
+          },
+          "score": 9.0,
+          "summary": "提出用判别式世界模型为Web Agent做测试时动作选择，用PRM排序候选动作，提升决策可靠性。"
+        },
+        {
+          "section": "paper",
+          "title": "SafeEvolve: Harness-Policy Co-Evolution from Agent Experience for Safety Alignment",
+          "url": "https://arxiv.org/abs/2609.02786v1",
+          "source": "arXiv",
+          "published_at": "2026-09-02T16:19:54Z",
+          "raw_text": "The performance of LLM-based agents is jointly shaped by the base model and the harness used when interacting with the environment. This exposes them to safety risks in both harmful final responses and multi-step execution trajectories. Existing safety alignment mechanisms often rely on either external harness updates or policy optimization, yet applying either paradigm in isolation fails to bridge runtime control with intrinsic safety. We propose SafeEvolve, an experience-driven self-evolving framework for agent safety alignment. SafeEvolve leverages safety experience from completed on-policy trajectories to drive a continual loop of harness-policy co-evolution. On the harness side, SafeEvolve converts trajectory-level safety evidence into bounded, component-level updates across safety prompt and hierarchical skills, yielding auditable and reversible harness artifacts. On the policy side, SafeEvolve follows a two-stage SFT-RL paradigm, where harness-use SFT bootstraps the policy to actively leverage evolved harness artifacts, and harness-augmented RL further shapes autonomous safety behaviors during multi-step exploration via verifier-decomposed rewards. Through harness-policy co-evolution, SafeEvolve converts safety experience into an evolved runtime harness and improved policy behavior. Experiments on agentic safety benchmarks show that SafeEvolve achieves a stronger safety-utility tradeoff than existing baselines. For Qwen3.5-4B, SafeEvolve achieves a $3\\times$ ASR reduction on AgentDojo while improving benign utility from 59.79% to 61.86%.",
+          "extra": {
+            "authors": [
+              "Qinghua Mao",
+              "Wanying Qu",
+              "Dadi Guo",
+              "Leitao Yuan",
+              "Qingyu Liu",
+              "Yu Li",
+              "Guanxu Chen",
+              "Yanwei Fu",
+              "Xi Lin",
+              "Xia Hu",
+              "Dongrui Liu"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CR"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.02786v1"
+          },
+          "score": 9.0,
+          "summary": "提出智能体安全对齐新范式，让基座模型与执行框架协同进化，从交互经验中自动修复安全漏洞。"
+        },
+        {
+          "section": "paper",
+          "title": "EarlyEval: Cheaper Agent Evaluation via Early Outcome Prediction",
+          "url": "https://arxiv.org/abs/2609.02783v1",
+          "source": "arXiv",
+          "published_at": "2026-09-02T16:15:18Z",
+          "raw_text": "Evaluating LLM agents is essential for guiding their development, yet it has grown prohibitively expensive: a single pass of a frontier model over an agentic benchmark can cost hundreds to thousands of dollars, a price paid repeatedly across iterative development cycles. Prior efforts, centered on benchmark distillation, reduce the number of evaluation tasks but leave the cost of executing each retained task untouched. In this work, we introduce early outcome prediction, a complementary axis of efficiency that instead cuts cost within each task. Our key insight is that an agent's final outcome is often evident from its intermediate behavior well before execution completes. We instantiate this idea in EarlyEval, a lightweight framework that trains a pair of LightGBM success and failure classifiers over behavioral, textual, and reference-solution features, and halts an agent run the moment either classifier crosses a calibrated confidence threshold, adding negligible per-step overhead. Across three benchmarks, SWE-bench Verified, TerminalBench, and Toolathlon, EarlyEval can eliminate 13%-26% of agent steps and up to 44.1% input tokens and 29.4% output tokens at 89%-97% prediction accuracy, while perturbing per-agent resolve rates by only one to two percentage points on average.",
+          "extra": {
+            "authors": [
+              "Yuling Shi",
+              "Zhensu Sun",
+              "Junsen Dong",
+              "Chengcheng Wan",
+              "David Lo",
+              "Xiaodong Gu"
+            ],
+            "categories": [
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.02783v1"
+          },
+          "score": 8.0,
+          "summary": "提出早期预测方法，用少量轨迹预判Agent最终表现，将评估成本降低一个数量级。"
+        },
+        {
+          "section": "paper",
+          "title": "Post-Training Language Models for Gold-Medal Performance in Coding Competitions",
+          "url": "https://arxiv.org/abs/2609.02849v1",
+          "source": "arXiv",
+          "published_at": "2026-09-02T17:33:37Z",
+          "raw_text": "Competitive programming has become a key test of large language model reasoning, with international competitions such as IOI and ICPC representing its most challenging settings. We present an end-to-end specialization pipeline combining large-scale problem curation, synthetic reasoning traces, supervised fine-tuning (SFT), and reinforcement learning (RL). Using 22,000 curated problems, we train Nemotron-3-Nano-CC (30B-A3B) with SFT and RL and Nemotron-3-Ultra-CC (550B-A55B) with SFT alone. We further introduce GenCorrect, a feedback-driven test-time compute strategy that iteratively generates, evaluates, and refines diverse solutions. On IOI 2025, Nano-CC improves from 130 points to 291 after post-training and to 468 with GenCorrect, exceeding the gold threshold of 438.3 while Ultra-CC reaches 502. Guided by these results, we develop a competition-specific Ultra-CC system and evaluate it prospectively during IOI 2026. Under the same time, internet-access, and submission constraints as human contestants, it scores 535.4 out of 600, exceeding both the gold threshold of 361.12 and the top human score of 498.27. To our knowledge, this is the first AI system to outscore the highest-scoring human contestant on an IOI problem set.",
+          "extra": {
+            "authors": [
+              "Aleksander Ficek",
+              "Sean Narenthiran",
+              "Mehrzad Samadi",
+              "Somshubra Majumdar",
+              "Boris Ginsburg"
+            ],
+            "categories": [
+              "cs.LG",
+              "cs.AI",
+              "cs.CL",
+              "cs.MA",
+              "cs.SE"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.02849v1"
+          },
+          "score": 8.0,
+          "summary": "发布端到端训练管线，用合成推理轨迹+强化学习让LLM在IOI/ICPC编程竞赛中达到金牌水平。"
+        },
+        {
+          "section": "paper",
+          "title": "Large Language Models (LLMs) for Telecom Root Cause Analysis (RCA): A Structured Reasoning Framework for Evidence-Grounded Diagnosis",
+          "url": "https://arxiv.org/abs/2609.02805v1",
+          "source": "arXiv",
+          "published_at": "2026-09-02T16:43:22Z",
+          "raw_text": "Root cause analysis (RCA) is a critical task in telecom network operations, but diagnosing performance degradations in modern 5G and emerging 6G networks remains challenging due to complex cross-layer dependencies. While large language models (LLMs) offer promising capabilities for reasoning and knowledge integration, directly applying vanilla LLMs to telecom RCA often leads to hallucination, unstable reasoning, and poor alignment with structured network evidence. This work first reviews the evolution of telecom RCA from rule-based and machine learning (ML) approaches to emerging LLM-enabled techniques, and provides an overview of recent paradigms, including structured reasoning, retrieval-augmented knowledge grounding, agentic orchestration, and verifiable reasoning. Building upon these insights, we propose a structured reasoning framework for LLM-enabled telecom RCA that aligns diagnostic reasoning with telecom-specific evidence and domain knowledge. The proposed approach first organizes heterogeneous network telemetry into canonical contexts, and then enforces decision-path reasoning during diagnosis, and finally generates evidence-grounded explanations for reliable fault identification. Experimental results on two 5G RCA datasets, TeleLogs and TelecomTS, demonstrate that the proposed framework consistently improves diagnostic accuracy and decision consistency compared with baseline techniques. These cross-dataset results highlight the importance of structured reasoning design for practical LLM-based RCA systems in next-generation telecom networks.",
+          "extra": {
+            "authors": [
+              "Hao Zhou",
+              "Mandar Kulkarni",
+              "Hao Chen",
+              "Yan Xin",
+              "Charlie",
+              "Zhang"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.02805v1"
+          },
+          "score": 7.0,
+          "summary": "为电信网络根因分析设计结构化推理框架，让LLM在5G/6G故障诊断中输出可追溯的证据链。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi-K2.6, GLM-5.2, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 180007,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "gemma3",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llama3",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 9.0,
+          "summary": "本地一键运行最新开源大模型，支持Kimi、GLM等，部署门槛极低。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 154276,
+            "language": "TypeScript",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "deepseek",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "python",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 9.0,
+          "summary": "一站式构建Agent工作流与RAG，支持多模型与私有化部署。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "The context API to search, scrape, and interact with the web at scale. 🔥",
+          "extra": {
+            "stars": 175801,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 8.0,
+          "summary": "大规模网页抓取与交互API，适合构建RAG和实时数据管道。"
+        },
+        {
+          "section": "repo",
+          "title": "omnigent-ai/omnigent",
+          "url": "https://github.com/omnigent-ai/omnigent",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-11T12:18:13Z",
+          "raw_text": "Omnigent is an open-source AI agent framework and meta-harness: orchestrate Claude Code, Codex, Cursor, Pi, and custom agents — swap harnesses without rewriting, enforce policies and sandboxing, and collaborate in real time from any device.",
+          "extra": {
+            "stars": 9632,
+            "language": "Python",
+            "topics": [
+              "agent-framework",
+              "agent-governance",
+              "agent-orchestration",
+              "agents",
+              "ai",
+              "ai-agent",
+              "ai-agents",
+              "claude-code",
+              "codex",
+              "coding-agents",
+              "developer-tools",
+              "llm",
+              "ml",
+              "multi-agent",
+              "python",
+              "sandbox"
+            ]
+          },
+          "score": 8.0,
+          "summary": "统一编排多Agent框架，支持策略沙箱与跨设备实时协作。"
+        },
+        {
+          "section": "repo",
+          "title": "langchain-ai/openwiki",
+          "url": "https://github.com/langchain-ai/openwiki",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-22T23:48:26Z",
+          "raw_text": "OpenWiki is a CLI that writes and maintains agent documentation for your codebase.",
+          "extra": {
+            "stars": 16024,
+            "language": "TypeScript",
+            "topics": []
+          },
+          "score": 7.0,
+          "summary": "CLI工具自动生成并维护代码库的Agent文档，减少手动编写。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Google’s Gemini 3.8 Flash is built for agents, while its Cyber twin hunts vulnerabilities",
+          "url": "https://venturebeat.com/security/googles-gemini-3-8-flash-is-built-for-agents-while-its-cyber-twin-hunts-vulnerabilities",
+          "source": "VentureBeat",
+          "published_at": "2026-09-03T00:02:18Z",
+          "raw_text": "Google keeps cranking out Flash models: the company on Wednesday announced two versions of a new 3.8 Flash . The variants include a standard Flash, a “workhorse” model for agentic tasks, software development, and multi-step reasoning, and Flash Cyber optimized for vulnerability detection and mitigation. Google CEO Sundar Pichai said in an X post that 3.8 Flash delivers “significant leaps” from 3.7 Flash across software engineering, agentic tasks, and multi-step reasoning. For instance, it outperformed many large frontier models on the DeepSWE coding benchmark, at far lower cost. Meanwhile, Flash Cyber is the company’s “most capable” cybersecurity model, Pichai said; it also matches frontier-level performance when it comes to discovering vulnerabilities and patching them at scale. The model",
+          "extra": {},
+          "score": 9.0,
+          "summary": "谷歌发布 Gemini 3.8 Flash，专为智能体任务与网络安全优化，是模型能力细分的重要信号。"
+        },
+        {
+          "section": "news",
+          "title": "Enterprises put non-Nvidia chips 14 points ahead of Nvidia's next-gen GPUs on their evaluation lists",
+          "url": "https://venturebeat.com/data/enterprises-put-non-nvidia-chips-14-points-ahead-of-nvidias-next-gen-gpus-on-their-evaluation-lists",
+          "source": "VentureBeat",
+          "published_at": "2026-09-02T21:05:59Z",
+          "raw_text": "When enterprise buyers build out their next AI accelerator evaluation list this cycle, they're more likely to put a non-Nvidia chip on it than Nvidia's own next-generation GPU. According to VentureBeat's July VB Pulse survey of 170 AI infrastructure respondents , 39.4% said they're likely to evaluate non-Nvidia accelerators — AWS Trainium, Google TPU, AMD Instinct, Intel Gaudi or in-house ASICs — over the next 12 months, compared with 25.3% for Nvidia Blackwell (GB300) or other next-generation Nvidia GPUs, a 14-point gap. Nvidia remains the default in most production environments. But organizations are building real optionality into their accelerator strategy rather than treating Nvidia as the only evaluation worth doing. The finding sits inside a broader pattern: enterprises are expanding",
+          "extra": {},
+          "score": 9.0,
+          "summary": "企业评估下一代AI芯片时，非英伟达方案首次领先14个百分点，标志算力市场格局转折。"
+        },
+        {
+          "section": "news",
+          "title": "Palo Alto Networks paid $500M for Thrive-backed Console, sources say",
+          "url": "https://techcrunch.com/2026/09/02/palo-alto-networks-paid-500m-for-thrive-backed-console-sources-say/",
+          "source": "TechCrunch",
+          "published_at": "2026-09-02T22:44:56Z",
+          "raw_text": "The acquisition also leaves Sequoia-backed Serval as the de facto startup leader in AI IT service automation, industry watchers believe.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Palo Alto Networks 5亿美元收购 AI 运维公司，凸显网络安全与自动化赛道整合加速。"
+        },
+        {
+          "section": "news",
+          "title": "Meta prices Muse Voice Transcribe at $0.18 an hour, with real-time diarization for 20+ speakers: a steal for enterprises?",
+          "url": "https://venturebeat.com/technology/meta-prices-muse-voice-transcribe-at-0-18-an-hour-with-real-time-diarization-for-20-speakers-a-steal-for-enterprises",
+          "source": "VentureBeat",
+          "published_at": "2026-09-02T21:32:59Z",
+          "raw_text": "Meta is entering the increasingly competitive real-time speech-to-text market with Muse Voice Transcribe, a new audio perception model that combines streaming transcription, endpoint detection and speaker diarization for more than 20 speakers — at a public API price of just $0.18 per hour of processed audio. Developed by Meta Superintelligence Labs, Muse is designed to process speech while it happens rather than waiting for a recording to finish. Meta’s launch post for Muse Voice Transcribe says the model supports long audio exceeding an hour, seamless multilingual code-switching, language and keyword biasing, and diarization without a separate post-processing pipeline. The model was trained across more than 70 languages, with 25 extensively validated for the initial release. The 20-plus-s",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Meta 推出低价实时语音转录模型，支持20+人说话人分离，可能颠覆企业级语音AI定价。"
+        },
+        {
+          "section": "news",
+          "title": "Researchers fear safety disaster ahead of OpenAI’s Astra release",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/988334/openai-astra-ai-monitoring-safety",
+          "source": "The Verge",
+          "published_at": "2026-09-02T16:40:50Z",
+          "raw_text": "OpenAI is on the cusp of releasing its most powerful AI model yet, Astra, following weeks of delays to shore up safety protocols after its agents attacked real targets during testing. As details about the model trickle out, researchers are warning it \"may be the single worst development for AI security/safety to date.\" Shortly after […]",
+          "extra": {},
+          "score": 8.0,
+          "summary": "OpenAI 即将发布 Astra 模型，测试中智能体攻击真实目标，引发安全灾难担忧。"
+        },
+        {
+          "section": "news",
+          "title": "Trump may be forced to reveal secret rules feds use for AI safety testing",
+          "url": "https://arstechnica.com/tech-policy/2026/09/trump-may-be-forced-to-reveal-secret-rules-feds-use-for-ai-safety-testing/",
+          "source": "Ars Technica",
+          "published_at": "2026-09-02T17:58:33Z",
+          "raw_text": "Trump’s secret reviews of frontier AI models may hide corruption, lawsuit says.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "特朗普政府或被强制公开AI安全测试秘密规则，涉及联邦监管透明度与腐败指控。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Introducing Gemini 3.8 Flash and 3.8 Flash Cyber",
+          "url": "https://deepmind.google/blog/introducing-gemini-3-8-flash-and-38-flash-cyber/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-02T16:18:31Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "谷歌发布 Gemini 3.8 系列，含专攻网络安全的版本，拓展模型能力边界。"
+        },
+        {
+          "section": "product",
+          "title": "Path to Astra: critical capabilities and frontier safeguards",
+          "url": "https://openai.com/index/path-to-astra",
+          "source": "OpenAI",
+          "published_at": "2026-09-01T13:00:00Z",
+          "raw_text": "Astra is the first OpenAI model to meet the Critical cybersecurity capability threshold under the Preparedness Framework, with stronger safeguards for release.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "OpenAI 首个达到关键网络安全阈值的模型 Astra 发布，附带前沿防护措施。"
+        },
+        {
+          "section": "product",
+          "title": "Introducing @huggingface/kernels: 200+ WebGPU Kernels for Local AI",
+          "url": "https://huggingface.co/blog/webgpu-kernels",
+          "source": "Hugging Face",
+          "published_at": "2026-09-01T00:00:00Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 7.0,
+          "summary": "Hugging Face 推出 200+ WebGPU 内核，加速本地 AI 推理与部署。"
+        }
+      ]
+    }
+  ]
+}
