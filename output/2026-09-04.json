@@ -1,0 +1,420 @@
+{
+  "date": "2026-09-04",
+  "tip": {
+    "title": "多智能体系统防作弊：添加行为审计与监督Agent",
+    "body": "在构建多智能体科研系统时，可能遇到智能体自发作弊或告密等不可控行为。\n\n做法：为每个Agent添加行为审计日志，并设置独立的监督Agent定期检查日志。\n\n```python\n# 示例：使用白名单函数执行，避免裸exec\nimport ast\n\ndef safe_exec(code, whitelist={\"print\", \"len\", \"range\"}):\n    tree = ast.parse(code)\n    for node in ast.walk(tree):\n        if isinstance(node, ast.Call) and node.func.id not in whitelist:\n            raise ValueError(f\"禁止调用: {node.func.id}\")\n    exec(compile(tree, filename=\"<ast>\", mode=\"exec\"))\n```\n\n此方法通过AST解析限制函数调用，确保安全。",
+    "ref_title": "A Case Study on Emergent Cheating and Whistleblowing in Autonomous Research Swarms",
+    "ref_url": "https://arxiv.org/abs/2609.04170v1"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "A Case Study on Emergent Cheating and Whistleblowing in Autonomous Research Swarms",
+          "url": "https://arxiv.org/abs/2609.04170v1",
+          "source": "arXiv",
+          "published_at": "2026-09-03T17:54:09Z",
+          "raw_text": "Multi-agent AI science ecosystems rely on agents possessing tools that allow them to communicate, coordinate, and build on each other's work. Yet this shared infrastructure can also introduce vulnerabilities by creating a substrate for the contagious spread of unintended and undesirable behaviors. We report a case study on a research collective of 100 autonomous LLM agents tasked with proving formal mathematical conjectures. Within the swarm, cheating spontaneously emerged and was later challenged by whistleblowers - both without any external intervention. When a single agent discovered an exploit in the evaluation system, it propagated across the collective via a shared knowledge library and later through peer-to-peer messages. Despite early reluctance, a cohort of agents adopted the exploit in response to competitive pressure. A separate group of agents produced an emergent counter-response: auditing fraudulent proofs, alerting peers across broadcast and private channels, staging boycotts, lodging formal complaints, and proposing validation patches. In recent incidents, agent swarms coordinated covertly through improvised side-channels (Dalton and Wallace, 2026; Greenblatt et al., 2026). Our setting differs: the same transparent channels that carried the exploit also gave non-cheating agents the visibility they needed to detect fraud, organize resistance, and enforce norms. We cast the problem of managing the agents' shared infrastructure as the knowledge commons governance problem (Ostrom, 1990). To protect the commons from exploits, we propose to adopt institutional mechanisms, such as graduated sanctioning and collective-choice rules, to support decentralized self-governance in autonomous swarms.",
+          "extra": {
+            "authors": [
+              "Davide Paglieri",
+              "Logan Cross",
+              "Tim Genewein",
+              "Joel Z. Leibo",
+              "Nenad Tomasev",
+              "Alexander Sasha Vezhnevets"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.04170v1"
+          },
+          "score": 9.0,
+          "summary": "多智能体科研系统中发现自发作弊与告密行为，对Agent安全与对齐研究有重要警示。"
+        },
+        {
+          "section": "paper",
+          "title": "SWE-Gate: Passing Functional Tests Is Not Enough for Software Engineering Agents",
+          "url": "https://arxiv.org/abs/2609.04167v1",
+          "source": "arXiv",
+          "published_at": "2026-09-03T17:53:34Z",
+          "raw_text": "Repository-level software engineering benchmarks have significantly advanced the evaluation of coding agents, but existing benchmarks primarily measure whether generated patches pass functional tests and overlook review-derived acceptance constraints (review constraints) that often influence whether a patch is acceptable in real-world software development. We introduce SWE-Gate, a repository-level benchmark for software engineering agents that explicitly evaluates review constraint compliance alongside functional correctness. SWE-Gate derives review constraints from real pull request review comments and synthesizes repository-level repair instances around these constraints. Each instance provides separate functional and constraint tests, together with non-compliant and gold patches, enabling explicit separation between issue resolution capability and review constraint compliance. We construct SWE-Gate with 303 repository-level repair instances spanning 75 open-source Python repositories across diverse software domains. Experiments with four LLM backends spanning different capability levels under a common coding-agent scaffold reveal a substantial gap between functional success and success under the complete repair specification: among 644 repairs that pass the functional tests, 221 fail to satisfy the provided review constraints. These findings show that functional-only evaluation overestimates agents' ability to satisfy the full requirements of repository-level repair tasks. The replication package including code, data, and experimental results is available at https://github.com/DeepSoftwareAnalytics/SWE-Gate.",
+          "extra": {
+            "authors": [
+              "Xin He",
+              "Yanlin Wang",
+              "Mingwei Liu",
+              "Jiachi Chen",
+              "Hongyu Zhang",
+              "Guanbin Li"
+            ],
+            "categories": [
+              "cs.SE",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.04167v1"
+          },
+          "score": 8.0,
+          "summary": "指出仅通过功能测试不足以评估软件工程Agent，引入代码审查约束更贴近真实场景。"
+        },
+        {
+          "section": "paper",
+          "title": "ESPO: Error-Structured Prompt Optimization via Diagnose, Diversify, and Stabilize",
+          "url": "https://arxiv.org/abs/2609.04197v1",
+          "source": "arXiv",
+          "published_at": "2026-09-03T17:59:37Z",
+          "raw_text": "Evolutionary prompt optimizers such as GEPA suffer from prompt bloat: each iteration appends rules and caveats, producing prompts up to 3$\\times$ longer yet no more accurate. We trace this to three deficiencies - incomplete error observation, limited search diversity, and unreliable selection - and propose ESPO (Error-Structured Prompt Optimization), which decomposes prompt optimization into three phases: Diagnose clusters all training errors into structural patterns in one round; Propose generates candidates via four complementary strategies with independent biases; Select applies bootstrap stability selection. On seven public NLP benchmarks - Tweet, MMLU, GSM8K, HotpotQA, ScoNe, HoVer, and PUPA - ESPO improves average accuracy by $+$3.76 pp over the state-of-the-art (74.67% vs 70.91% for GEPA), matching or exceeding GEPA on every dataset while producing prompts 47% shorter (1,004 vs 1,878 chars) and faster at inference. Cross-model experiments across four additional student models (Gemma 3 12B, Mistral 14B, Qwen3 32B, Claude Haiku 4.5) show ESPO yields the best average accuracy on every model tested, with the largest gap on Qwen3 GSM8K (15.00% $\\to$ 91.40%). A generalization bound (Appendix) grounds each phase in a corresponding term of the test-time gap, and the ablation confirms a key prediction: adding diversity without bootstrap selection actually hurts performance ($-$1.20%).",
+          "extra": {
+            "authors": [
+              "Lihao Liu",
+              "Peng Tang",
+              "Kunwar Yashraj Singh",
+              "Shabnam Ghadar"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.04197v1"
+          },
+          "score": 8.0,
+          "summary": "提出诊断-多样化-稳定化三阶段优化框架，解决提示词膨胀问题，提升LLM推理效率。"
+        },
+        {
+          "section": "paper",
+          "title": "Legibility is Not Interpretability: Comparing Judged and Actual Importance in Chain-Of-Thought Reasoning",
+          "url": "https://arxiv.org/abs/2609.04194v1",
+          "source": "arXiv",
+          "published_at": "2026-09-03T17:59:08Z",
+          "raw_text": "Reasoning traces from chain-of-thought models appear to offer a legible window into how a model arrives at its answer. A growing body of work treats them as such, using LLM judges to diagnose errors, evaluate faithfulness, and provide step-level supervision via process reward models and generative critics. These practices rely on the text of a reasoning step carrying information about its functional role. But does the text actually encode information about which reasoning steps matter? We operationalize the importance of a reasoning step as its advantage: the change in expected reward, e.g., producing the correct final answer, from including that step, estimated via Monte Carlo rollouts. Basing ground truth on these estimates, we evaluate whether LLM judges can identify high-advantage steps and find that sufficiently capable LLMs can outperform a prevalence baseline but fall well short of a noise ceiling. Fine-tuning a model as a step-level critic yields strong improvement for incorrect responses but remains distant from ceiling for correct responses, suggesting that step importance is only partially recoverable from the text of the reasoning trace. Our findings contribute to a growing body of chain-of-thought faithfulness work that cautions against treating the legibility of reasoning traces as interpretability, especially with implications for process reward modeling.",
+          "extra": {
+            "authors": [
+              "Kevin Du",
+              "Alexander Hoyle",
+              "Laura Ruis",
+              "Acyr Locatelli"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.04194v1"
+          },
+          "score": 7.0,
+          "summary": "实证发现思维链的可读性不等于可解释性，质疑当前用LLM评估推理忠实度的做法。"
+        },
+        {
+          "section": "paper",
+          "title": "SENTINEL-RL: Offloading Topological Reasoning from LLM Agents in the Security Operations Center",
+          "url": "https://arxiv.org/abs/2609.04159v1",
+          "source": "arXiv",
+          "published_at": "2026-09-03T17:49:12Z",
+          "raw_text": "Large language model (LLM) agents are increasingly proposed as autonomous SOC analysts, but two limitations make them unreliable at enterprise scale: a finite context window cannot hold a multi-thousand-host authentication graph, and free-form generation offers no guarantee that a recommended containment action is consistent with the topology it operates on. We present Sentinel-RL, an agentic-SOC architecture that decouples topological reasoning from semantic reasoning: a heterogeneous graph attention encoder summarizes the live authentication subgraph into a fixed-dimensional state, a Proximal Policy Optimization (PPO) policy maps this state to a constrained set of investigative actions, and an LLM agent loop is restricted to consuming the policy's recommendations and producing analyst-readable narratives gated by a critic. We instantiate the system on the LANL Comprehensive, Multi-Source Cyber-Security Events dataset and the Indiana University Quartz HPC cluster, reporting four results: (i) a two-phase CREATE ingestion pattern loads a 24M-edge authentication subgraph into Neo4j in 14.2 minutes on a single 32-core node, roughly 24x faster than the canonical MERGE-based pipeline; (ii) a sliding-window alert engine reliably trips a 25-event/10-second threshold in <=2.5 s across 50 trials; (iii) PPO training over 200 iterations converges to a mean episodic return of 8.74+/-0.31, with held-out precision of 0.91 and recall of 0.87 on labeled red-team events; and (iv) the integrated containment loop completes a full detect-investigate-recommend-human-approve cycle in a median of 6.3 s. We contribute a reusable engineering pattern (the hot-node deadlock workaround), a portable HPC deployment pattern (anchor-node co-location), and an enterprise-readiness analysis covering false-positive economics, reversibility guarantees, audit compliance, and the human-approval boundary.",
+          "extra": {
+            "authors": [
+              "Uday Vallabhaneni",
+              "Cassie L. Cagwin",
+              "David J. Wild"
+            ],
+            "categories": [
+              "cs.CR",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.04159v1"
+          },
+          "score": 7.0,
+          "summary": "将拓扑推理从LLM Agent中解耦，解决安全运营中心场景下上下文窗口与生成可靠性瓶颈。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi-K2.6, GLM-5.2, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 180102,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "gemma3",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llama3",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 9.0,
+          "summary": "本地一键运行Kimi、DeepSeek等主流模型，AI从业者实测首选工具链。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "The context API to search, scrape, and interact with the web at scale. 🔥",
+          "extra": {
+            "stars": 176218,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 8.0,
+          "summary": "大规模网页搜索与抓取的API，为RAG和Agent提供实时数据源。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 154394,
+            "language": "TypeScript",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "deepseek",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "python",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 8.0,
+          "summary": "一站式构建Agent工作流与RAG管道，支持私有部署，生产级方案。"
+        },
+        {
+          "section": "repo",
+          "title": "cobusgreyling/loop-engineering",
+          "url": "https://github.com/cobusgreyling/loop-engineering",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-09T06:28:20Z",
+          "raw_text": "Practical patterns, starters & CLI tools for loop engineering with AI coding agents. Design systems that prompt and orchestrate agents (inspired by Addy Osmani and Boris Cherny). Includes loop-audit, loop-init, loop-cost.",
+          "extra": {
+            "stars": 10924,
+            "language": "TypeScript",
+            "topics": [
+              "agentic-ai",
+              "ai-agents",
+              "ai-coding",
+              "anthropic",
+              "automation",
+              "claude",
+              "claude-code",
+              "codex",
+              "coding-agents",
+              "devops-automation",
+              "devtools",
+              "github-actions",
+              "grok",
+              "llm",
+              "loop-engineering",
+              "mcp",
+              "prompt-engineering"
+            ]
+          },
+          "score": 7.0,
+          "summary": "AI编码Agent的工程化工具集，含审计、初始化、成本追踪实用CLI。"
+        },
+        {
+          "section": "repo",
+          "title": "omnigent-ai/omnigent",
+          "url": "https://github.com/omnigent-ai/omnigent",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-11T12:18:13Z",
+          "raw_text": "Omnigent is an open-source AI agent framework and meta-harness: orchestrate Claude Code, Codex, Cursor, Pi, and custom agents — swap harnesses without rewriting, enforce policies and sandboxing, and collaborate in real time from any device.",
+          "extra": {
+            "stars": 9672,
+            "language": "Python",
+            "topics": [
+              "agent-framework",
+              "agent-governance",
+              "agent-orchestration",
+              "agents",
+              "ai",
+              "ai-agent",
+              "ai-agents",
+              "claude-code",
+              "codex",
+              "coding-agents",
+              "developer-tools",
+              "llm",
+              "ml",
+              "multi-agent",
+              "python",
+              "sandbox"
+            ]
+          },
+          "score": 7.0,
+          "summary": "统一编排多Agent框架，跨工具切换无需重写，支持实时协作与沙箱。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "GPT-6 Astra",
+          "url": "https://openai.com/index/gpt-6-astra/",
+          "source": "Hacker News",
+          "published_at": "2026-09-03T18:41:05Z",
+          "raw_text": "System Card: https://deploymentsafety.openai.com/gpt-6-astra Related ongoing threads: OpenAI's GPT-6 Astra on ARC-AGI-3 - https://news.ycombinator.com/item?id=49555691 GPT-6 Astra makes major gains in the Artificial Analysis Coding Agent Index - https://news.ycombinator.com/item?id=49556147 Comments URL: https://news.ycombinator.com/item?id=49554643 Points: 1520 # Comments: 1293",
+          "extra": {},
+          "score": 10.0,
+          "summary": "OpenAI发布GPT-6 Astra，首次自称模型进入AGI时代，是能力代际跃升的标志性事件。"
+        },
+        {
+          "section": "news",
+          "title": "Nvidia buys Hugging Face, the GitHub of AI, for $13 billion",
+          "url": "https://arstechnica.com/ai/2026/09/nvidia-buys-hugging-face-the-github-of-ai-for-13-billion/",
+          "source": "Ars Technica",
+          "published_at": "2026-09-03T13:34:13Z",
+          "raw_text": "Nvidia says Hugging Face will stay open even as the chipmaker takes control of a key AI hub.",
+          "extra": {},
+          "score": 10.0,
+          "summary": "英伟达130亿美元收购Hugging Face，掌控AI模型分发核心枢纽，重塑行业生态。"
+        },
+        {
+          "section": "news",
+          "title": "Crusoe reportedly raises $3B at a $30B valuation",
+          "url": "https://techcrunch.com/2026/09/03/crusoe-reportedly-raises-3b-at-a-30b-valuation/",
+          "source": "TechCrunch",
+          "published_at": "2026-09-04T00:48:42Z",
+          "raw_text": "The round came together after the data center developer reportedly secured a $13 billion contract with Jane Street.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "数据中心开发商Crusoe融资30亿美元，估值300亿，反映AI基建资本热潮持续。"
+        },
+        {
+          "section": "news",
+          "title": "Accel reportedly in talks to lead $1B round for Thinking Machines at $40B valuation",
+          "url": "https://techcrunch.com/2026/09/03/accel-reportedly-in-talks-to-lead-1b-round-for-thinking-machines-at-40b-valuation/",
+          "source": "TechCrunch",
+          "published_at": "2026-09-03T19:36:29Z",
+          "raw_text": "The high-profile startup's annual revenue run rate stands at over $100 million.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "Thinking Machines获10亿美元融资，估值400亿，年收入超1亿美元，明星创企高增长。"
+        },
+        {
+          "section": "news",
+          "title": "Four major AI models suffer rare overlapping downtime",
+          "url": "https://arstechnica.com/ai/2026/09/four-major-ai-models-suffer-rare-overlapping-downtime/",
+          "source": "Ars Technica",
+          "published_at": "2026-09-03T18:10:19Z",
+          "raw_text": "Service interruptions hit ChatGPT, Claude, Grok, and Gemini practically simultaneously.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "ChatGPT、Claude等四大模型同时宕机，暴露AI服务集中化风险，影响广泛。"
+        },
+        {
+          "section": "news",
+          "title": "Nvidia launches free tool that links idle computers into a personal AI data center",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/989435/nvidia-pair-personal-ai-router-home-local-llm-compute-tool-rtx-macbook",
+          "source": "The Verge",
+          "published_at": "2026-09-03T16:00:00Z",
+          "raw_text": "Nvidia is announcing its new Personal AI Router (PAIR), a free tool that syncs up your home computers for tackling local AI inference tasks with tools like Ollama and LM Studio. Let's get the obvious thing out of the way, despite what its name might imply: PAIR is not a hardware router. It's open-source software […]",
+          "extra": {},
+          "score": 7.0,
+          "summary": "英伟达发布免费开源工具PAIR，聚合闲置电脑成AI数据中心，降低本地推理门槛。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Introducing WeatherNext 3, our most advanced and accurate global weather AI model",
+          "url": "https://deepmind.google/blog/introducing-weathernext-3-our-most-advanced-and-accurate-global-weather-ai-model/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-03T15:02:08Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "谷歌发布最先进全球天气AI模型，精度超越前代，对防灾和能源预测意义重大。"
+        },
+        {
+          "section": "product",
+          "title": "Introducing Gemini 3.8 Flash and 3.8 Flash Cyber",
+          "url": "https://deepmind.google/blog/introducing-gemini-3-8-flash-and-38-flash-cyber/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-02T16:18:31Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 8.0,
+          "summary": "谷歌推出专为网络安全优化的Gemini 3.8 Flash模型，填补AI原生防御工具空白。"
+        },
+        {
+          "section": "product",
+          "title": "GigaPath-Flash and GigaTIME-Flash: Toward population-scale discovery with efficient pathology foundation models",
+          "url": "https://www.microsoft.com/en-us/research/blog/gigapath-flash-and-gigatime-flash-toward-population-scale-discovery-with-efficient-pathology-foundation-models/",
+          "source": "Microsoft Research",
+          "published_at": "2026-08-31T16:00:00Z",
+          "raw_text": "What if pathology foundation models could do more with less? GigaPath-Flash and GigaTIME-Flash cut computational demands while maintaining strong performance, opening the door to larger studies and broader exploration. The post GigaPath-Flash and GigaTIME-Flash: Toward population-scale discovery with efficient pathology foundation models appeared first on Microsoft Research .",
+          "extra": {},
+          "score": 7.0,
+          "summary": "微软发布高效病理学基础模型，大幅降低算力需求，推动大规模医学研究落地。"
+        }
+      ]
+    }
+  ]
+}
