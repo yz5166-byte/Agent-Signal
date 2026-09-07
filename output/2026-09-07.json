@@ -1,0 +1,415 @@
+{
+  "date": "2026-09-07",
+  "tip": {
+    "title": "langchain-ai/openwiki",
+    "body": "**场景**：当Agent需要调用多个外部API（如政府数据、天气、健康等）完成复杂任务时，手动编排工具调用顺序容易出错且效率低。\n\n**做法**：使用 `langchain-ai/openwiki` 的CLI工具，自动为代码库生成工具调用文档，确保Agent能实时理解API的输入输出格式。\n\n```bash\n# 安装并运行openwiki，自动扫描代码库中的工具定义\npip install openwiki\nopenwiki generate --path ./tools --output docs/agent_tools.md\n```\n\n**安全提示**：openwiki仅读取代码文件生成文档，不执行任何代码，无安全风险。",
+    "ref_title": "langchain-ai/openwiki",
+    "ref_url": "https://github.com/langchain-ai/openwiki"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "Multi-Step Tool-Calling over Korean Open Public APIs: A Benchmark and a Data-Synthesis Recipe",
+          "url": "https://arxiv.org/abs/2609.05395v1",
+          "source": "arXiv",
+          "published_at": "2026-09-04T17:44:52Z",
+          "raw_text": "Data-sovereignty regulations increasingly require public institutions to deploy open-source, on-premise LLM agents that chain multiple tool-calls across live government APIs. However, open-source models consistently underperform in this multi-step setting, and no existing benchmark measures the gap. We introduce the Korean Open Public API Benchmark (KOPA-Bench), comprising 145 real-world tasks. To close this gap, we present EDGE, an Execution-grounded Dynamic Graph for tool-calling data synthEsis driven by live execution. EDGE builds a graph of how each tool's output can feed another's input, keeps only the links that succeed when actually called against the live APIs, and traverses these verified links to synthesize executable multi-step trajectories. Fine-tuned via GRPO on the resulting dataset, our 9B model nearly matches the untuned 27B model from the same family, improving substantially not only on KOPA-Bench but also on the BFCL benchmark.",
+          "extra": {
+            "authors": [
+              "Dain Kim",
+              "Eungi Cho",
+              "Kyumin Kim",
+              "Shinyeong Noh",
+              "Kyuseong Lim"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.05395v1"
+          },
+          "score": 9.0,
+          "summary": "首个针对韩语开放API的多步工具调用基准，揭示开源模型在真实政府API上的性能差距。"
+        },
+        {
+          "section": "paper",
+          "title": "CUA-Universe: A Scalable and Dynamic Environment for Hybrid GUI+CLI Agents",
+          "url": "https://arxiv.org/abs/2609.05374v1",
+          "source": "arXiv",
+          "published_at": "2026-09-04T17:26:18Z",
+          "raw_text": "Computer-use agents have advanced on benchmarks like OSWorld and AndroidWorld, but still act mostly through the GUI, often producing inefficient trajectories. Real-world computer work is hybrid, combining visual-state inspection with precise, high-throughput command-line operations, so capable agents must coordinate both modalities over shared application state. Yet scalable hybrid environments remain scarce because supporting both GUI and CLI over real applications typically requires substantial manual engineering for each application. Existing agents also struggle to use the two interfaces complementarily: CLI-native agents lack visual perception for tasks involving interface state or layout, while GUI-native agents are inefficient for operations better executed through commands. We introduce CUA-Universe, a scalable environment-to-data pipeline that turns real desktop software into hybrid GUI+CLI environments. App-Forge adapts applications into reproducible VMs and command-line surfaces it discovers, wraps, or generates, scaling to 16 applications; Task-Weave synthesizes diverse hybrid tasks of controllable difficulty from reusable operations over seed files; and Path-Steer steers rollouts along efficient hybrid paths and harvests verified trajectories for post-training. Training on this data shifts behavior from inefficient GUI interaction and brittle CLI scripting toward effective GUI+CLI orchestration. Our 9B model improves both success and efficiency on CUA-Verse (Score +39.3 pts; -37% steps, -60% tokens), OSWorld (SR +16.8 pts; -57% steps, -44% tokens), and OSWorld-MCP (Score +7.84 pts; -27% steps, -30% tokens). CUA-Universe provides a scalable path toward more capable and efficient computer-use agents.",
+          "extra": {
+            "authors": [
+              "Haoting Shi",
+              "Wenhao Wang",
+              "Weicheng Fang",
+              "Yaozhong Liang",
+              "Tian Jin",
+              "Pengxiang Zhao",
+              "Guangyi Liu",
+              "Siheng Chen",
+              "Yanfeng Wang"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.05374v1"
+          },
+          "score": 9.0,
+          "summary": "提出混合GUI+CLI的智能体环境，解决纯GUI代理效率低下的实际问题。"
+        },
+        {
+          "section": "paper",
+          "title": "WearableQA: A Benchmark for Health Reasoning over Real-World Wearable Data",
+          "url": "https://arxiv.org/abs/2609.05405v1",
+          "source": "arXiv",
+          "published_at": "2026-09-04T17:52:37Z",
+          "raw_text": "Recent advances in wearable sensing enable continuous monitoring of physiological and behavioral signals, yet existing benchmarks rarely evaluate whether AI systems can reason over a real user's longitudinal wearable record. We introduce WearableQA, a benchmark comprising 4,084 10-option multiple-choice questions constructed from the wearable time series, blood biomarkers, and demographics of 200 real users, each with up to 500 days of daily measurements. WearableQA preserves authentic wearable distributions that include device noise and inter-individual variability. To evaluate distinct reasoning capabilities, we introduce 16 question types organized along two complementary axes: data versus health reasoning, which distinguishes computation over longitudinal measurements from physiological interpretation; and single- versus cross-signal reasoning, which separates reasoning about individual signals from the integration of multiple signals. To construct reliable questions at scale, we adopt a dual-grounding framework that combines literature-grounded physiological findings with statistically validated population-grounded physiological patterns. This enables the capture of meaningful relationships observed in real-world wearable data. Evaluation of 14 proprietary and open-source LLMs demonstrates that WearableQA effectively differentiates model capabilities, with performance ranging from 19.6% to 72.9% against a 10% chance baseline. Moreover, WearableQA remains far from solved: most models achieve accuracies below 60%. Overall, WearableQA provides a realistic and diagnostic benchmark for evaluating LLM reasoning over real-world wearable data.",
+          "extra": {
+            "authors": [
+              "Ji Soo Lee",
+              "Xilun Chen",
+              "Pierce Chuang",
+              "Ashish Shenoy",
+              "Jason Wei",
+              "Dohwan Ko",
+              "Hyunwoo J. Kim",
+              "Benoit Corda"
+            ],
+            "categories": [
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.05405v1"
+          },
+          "score": 8.0,
+          "summary": "首个评估AI对真实可穿戴数据长期推理能力的基准，填补健康推理空白。"
+        },
+        {
+          "section": "paper",
+          "title": "Same Trajectory, Contradictory Rewards (ROBORMBENCH): Paraphrase Fragility in Vision Language Reward Models",
+          "url": "https://arxiv.org/abs/2609.05401v1",
+          "source": "arXiv",
+          "published_at": "2026-09-04T17:47:58Z",
+          "raw_text": "Vision-language models are increasingly used as reward functions for robotic learning, but this role requires paraphrase invariance: the same trajectory should receive the same reward under semantically equivalent goal descriptions. We show that current VLM reward models often violate this property. Paraphrasing the instruction alone can substantially change predicted progress scores, and can even flip identical robot behavior between failure and success. To measure this failure mode, we introduce ROBORMBENCH, a benchmark with 2,390 real-robot trajectories, ground-truth progress labels, and 21,673 verified paraphrases spanning lexical, syntactic, and action-goal rewrites. Across proprietary and open-source VLMs, paraphrase-induced instability is widespread and severe, grows under more divergent rewrites, and is not reliably reduced by scale or explicit reasoning. Dedicated reward models trained with trajectory-grounded supervision are substantially more stable. These results show that paraphrase robustness is a core requirement for reliable VLM-based reward modeling in robotics.",
+          "extra": {
+            "authors": [
+              "Wonje Jeung",
+              "Sangyeon Yoon",
+              "Hyesoo Hong",
+              "Yoonjun Cho",
+              "Dongjae Jeon",
+              "Bumjun Kim",
+              "Jean Oh",
+              "Youngjae Yu",
+              "Albert No"
+            ],
+            "categories": [
+              "cs.RO",
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.05401v1"
+          },
+          "score": 8.0,
+          "summary": "揭示视觉语言奖励模型对语义等价描述缺乏鲁棒性，影响机器人学习可靠性。"
+        },
+        {
+          "section": "paper",
+          "title": "Necessary or Sufficient? Evaluating LLM Explanations With Behavioural Evidence",
+          "url": "https://arxiv.org/abs/2609.05385v1",
+          "source": "arXiv",
+          "published_at": "2026-09-04T17:37:17Z",
+          "raw_text": "LLM decision components that can operate within agent workflows often produce action-relevant recommendations or judgements together with explanations. Operators may use the named factors to monitor a system, diagnose errors, or decide when to escalate an output. Such use assumes that the explanations agree with the component's observable decision behaviour. We test two interpretations of the named factors: necessity, meaning that changing a factor would change the output, and sufficiency, meaning that retaining it while removing other changeable information would preserve the output. We evaluate these interpretations in two synthetic use cases: recommending advisors to clients and judging prompts for harmfulness or risk. Models return an output and the top three factors that most influenced it. Controlled black-box interventions estimate a necessity score for each factor by measuring how often changing it changes the output, and a sufficiency score by measuring how often retaining it preserves the output. Across eight models from the Claude, GPT, and Gemini families, the mean Spearman correlations between the cited ranking and the necessity and sufficiency scores are 0.349 and 0.354 for advisor recommendation, and 0.431 and 0.580 for prompt monitoring. Furthermore, an uncited factor scores above the lowest-scoring cited factor in 57.6% of advisor responses under necessity and 58.1% under sufficiency; the corresponding prompt-monitoring rates are 25.8% and 8.9%. The cited top three contain useful information but do not reliably identify the three factors with the strongest measured influence under necessity or sufficiency. The framework provides a black-box reliability check for explanations used in agent oversight while remaining scoped to individual LLM decisions.",
+          "extra": {
+            "authors": [
+              "Urja Pawar",
+              "Rajitha Ramanayake",
+              "Nabeel Kemal",
+              "Ashwin Kandath",
+              "Owen O'Neill",
+              "Guillaume Bourgeon",
+              "Houssem Chatbri"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.05385v1"
+          },
+          "score": 7.0,
+          "summary": "用行为证据检验LLM解释的因果充分性，为智能体监控提供诊断方法。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi-K2.6, GLM-5.2, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 180339,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "gemma3",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llama3",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 9.0,
+          "summary": "一键本地运行最新国产大模型，Kimi、GLM、DeepSeek 等全支持，上手即用。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "The context API to search, scrape, and interact with the web at scale. 🔥",
+          "extra": {
+            "stars": 177335,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "大规模网页搜索与抓取的 API，AI 应用获取实时数据的标准基础设施。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 154674,
+            "language": "TypeScript",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "deepseek",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "python",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 8.0,
+          "summary": "拖拽构建 Agent 工作流与 RAG 管道，从原型到生产无需重构。"
+        },
+        {
+          "section": "repo",
+          "title": "langchain-ai/openwiki",
+          "url": "https://github.com/langchain-ai/openwiki",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-22T23:48:26Z",
+          "raw_text": "OpenWiki is a CLI that writes and maintains agent documentation for your codebase.",
+          "extra": {
+            "stars": 16178,
+            "language": "TypeScript",
+            "topics": []
+          },
+          "score": 8.0,
+          "summary": "CLI 工具自动为代码库生成并维护 Agent 文档，解决文档滞后痛点。"
+        },
+        {
+          "section": "repo",
+          "title": "omnigent-ai/omnigent",
+          "url": "https://github.com/omnigent-ai/omnigent",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-11T12:18:13Z",
+          "raw_text": "Omnigent is an open-source AI agent framework and meta-harness: orchestrate Claude Code, Codex, Cursor, Pi, and custom agents — swap harnesses without rewriting, enforce policies and sandboxing, and collaborate in real time from any device.",
+          "extra": {
+            "stars": 9752,
+            "language": "Python",
+            "topics": [
+              "agent-framework",
+              "agent-governance",
+              "agent-orchestration",
+              "agents",
+              "ai",
+              "ai-agent",
+              "ai-agents",
+              "claude-code",
+              "codex",
+              "coding-agents",
+              "developer-tools",
+              "llm",
+              "ml",
+              "multi-agent",
+              "python",
+              "sandbox"
+            ]
+          },
+          "score": 7.0,
+          "summary": "统一编排 Claude、Codex 等多 Agent 的元框架，策略与沙箱开箱即用。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Seattle Times and Newsday sue OpenAI and Microsoft for infringement",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/990932/seattle-times-newsday-lawsuit-openai-microsoft",
+          "source": "The Verge",
+          "published_at": "2026-09-06T23:36:04Z",
+          "raw_text": "The Seattle Times and Newsday are just the latest plaintiffs to take OpenAI to court, alleging copyright infringement. The two outlets say the company used their journalism as training data for its AI models without permission and often reproduces passages from their reporting in response to user queries. This is similar to lawsuits filed by […]",
+          "extra": {},
+          "score": 9.0,
+          "summary": "西雅图时报等起诉OpenAI与微软侵犯版权，影响AI训练数据合法性"
+        },
+        {
+          "section": "news",
+          "title": "OpenAI admits to German wiki ‘incident’",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/990773/openai-german-wiki-incident",
+          "source": "The Verge",
+          "published_at": "2026-09-05T11:15:55Z",
+          "raw_text": "OpenAI says it needs to overhaul how and when it reports instances of AI models attacking real-world targets. The acknowledgement comes as the company manages the fallout from reports that a swarm of its out-of-control agents hijacked a German wiki site. Regarding the \"'wiki incident,' where our agents wrote to several internet sites,\" OpenAI wrote […]",
+          "extra": {},
+          "score": 9.0,
+          "summary": "OpenAI承认AI代理失控攻击德国维基站点，暴露安全与监管漏洞"
+        },
+        {
+          "section": "news",
+          "title": "Authors push back as publishers and agents make claims on Anthropic settlement",
+          "url": "https://techcrunch.com/2026/09/06/authors-push-back-as-publishers-and-agents-seek-share-of-anthropic-settlement/",
+          "source": "TechCrunch",
+          "published_at": "2026-09-06T20:47:37Z",
+          "raw_text": "Authors say publishers seem to be claiming more than their fair share of settlement payments.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "作者指控出版商在Anthropic和解案中侵占赔偿，暴露AI版权分配矛盾"
+        },
+        {
+          "section": "news",
+          "title": "Travis Kalanick’s Atoms might be getting into the robotaxi business",
+          "url": "https://techcrunch.com/2026/09/06/travis-kalanicks-atoms-might-be-getting-into-the-robotaxi-business/",
+          "source": "TechCrunch",
+          "published_at": "2026-09-06T16:45:00Z",
+          "raw_text": "The Uber founder has said that Atoms will allow him to complete \"unfinished business.\"",
+          "extra": {},
+          "score": 7.0,
+          "summary": "Uber创始人Kalanick的Atoms公司或进军Robotaxi，延续其出行野心"
+        },
+        {
+          "section": "news",
+          "title": "It took a year to ship WebAssembly in Anubis",
+          "url": "https://anubis.techaro.lol/blog/2026/anubis-wasm/",
+          "source": "Hacker News",
+          "published_at": "2026-09-06T20:32:38Z",
+          "raw_text": "Article URL: https://anubis.techaro.lol/blog/2026/anubis-wasm/ Comments URL: https://news.ycombinator.com/item?id=49590611 Points: 193 # Comments: 106",
+          "extra": {},
+          "score": 5.0,
+          "summary": "Anubis耗时一年集成WebAssembly，技术细节但缺乏广泛影响"
+        },
+        {
+          "section": "news",
+          "title": "Making a Python interpreter in 1024 bytes",
+          "url": "https://austinhenley.com/blog/python1024.html",
+          "source": "Hacker News",
+          "published_at": "2026-09-06T23:14:08Z",
+          "raw_text": "Article URL: https://austinhenley.com/blog/python1024.html Comments URL: https://news.ycombinator.com/item?id=49591876 Points: 150 # Comments: 57",
+          "extra": {},
+          "score": 4.0,
+          "summary": "用1024字节写Python解释器，技术极客趣味但非行业重大事件"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Introducing WeatherNext 3, our most advanced and accurate global weather AI model",
+          "url": "https://deepmind.google/blog/introducing-weathernext-3-our-most-advanced-and-accurate-global-weather-ai-model/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-03T15:02:08Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "谷歌发布最强全球天气AI模型WeatherNext 3，精度与速度显著提升，对防灾与能源预测意义重大。"
+        },
+        {
+          "section": "product",
+          "title": "Introducing Gemini 3.8 Flash and 3.8 Flash Cyber",
+          "url": "https://deepmind.google/blog/introducing-gemini-3-8-flash-and-38-flash-cyber/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-02T16:18:31Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 8.0,
+          "summary": "谷歌推出Gemini 3.8 Flash系列，专为网络安全场景优化，降低推理成本并增强威胁检测能力。"
+        },
+        {
+          "section": "product",
+          "title": "NeoMME: an efficient Multimodal-native and Multilingual Encoder",
+          "url": "https://huggingface.co/blog/Hcompany/neomme",
+          "source": "Hugging Face",
+          "published_at": "2026-09-03T13:13:48Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 7.0,
+          "summary": "NeoMME发布高效多模态多语言编码器，在低资源语言与跨模态任务上实现SOTA性能。"
+        }
+      ]
+    }
+  ]
+}
