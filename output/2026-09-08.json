@@ -1,0 +1,280 @@
+{
+  "date": "2026-09-08",
+  "tip": {
+    "title": "用 firecrawl 的 markdown 模式净化抓取内容",
+    "body": "**场景**：当你用 `firecrawl` 为 RAG 抓取网页时，直接返回的 HTML 可能包含广告、导航等噪声，影响 Agent 提取关键信息。\n\n**做法**：使用 `firecrawl` 的 `scrape` 接口并指定 `formats: ['markdown']`，自动过滤无关元素，得到干净的纯文本。\n\n```bash\ncurl -X POST https://api.firecrawl.dev/v1/scrape \\\n  -H 'Content-Type: application/json' \\\n  -d '{\"url\": \"https://example.com/article\", \"formats\": [\"markdown\"]}'\n```\n\n若需执行模型生成的抓取代码，请将 URL 加入白名单列表，避免 SSRF 攻击。",
+    "ref_title": "firecrawl/firecrawl",
+    "ref_url": "https://github.com/firecrawl/firecrawl"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError",
+    "arXiv 整体抓取失败：ReadTimeout"
+  ],
+  "sections": [
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi-K2.6, GLM-5.2, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 180433,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "gemma3",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llama3",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 9.0,
+          "summary": "一键本地运行最新开源大模型，含Kimi、GLM等，降低AI应用门槛。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "The context API to search, scrape, and interact with the web at scale. 🔥",
+          "extra": {
+            "stars": 177725,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "大规模网页搜索与抓取的API，为RAG和Agent提供实时数据源。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 154910,
+            "language": "TypeScript",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "deepseek",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "python",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 8.0,
+          "summary": "可视化构建Agent工作流与RAG管道，支持多模型与快速部署。"
+        },
+        {
+          "section": "repo",
+          "title": "omnigent-ai/omnigent",
+          "url": "https://github.com/omnigent-ai/omnigent",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-11T12:18:13Z",
+          "raw_text": "Omnigent is an open-source AI agent framework and meta-harness: orchestrate Claude Code, Codex, Cursor, Pi, and custom agents — swap harnesses without rewriting, enforce policies and sandboxing, and collaborate in real time from any device.",
+          "extra": {
+            "stars": 9768,
+            "language": "Python",
+            "topics": [
+              "agent-framework",
+              "agent-governance",
+              "agent-orchestration",
+              "agents",
+              "ai",
+              "ai-agent",
+              "ai-agents",
+              "claude-code",
+              "codex",
+              "coding-agents",
+              "developer-tools",
+              "llm",
+              "ml",
+              "multi-agent",
+              "python",
+              "sandbox"
+            ]
+          },
+          "score": 8.0,
+          "summary": "统一编排多Agent框架，无需重写即可切换Claude、Cursor等后端。"
+        },
+        {
+          "section": "repo",
+          "title": "langchain-ai/openwiki",
+          "url": "https://github.com/langchain-ai/openwiki",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-22T23:48:26Z",
+          "raw_text": "OpenWiki is a CLI that writes and maintains agent documentation for your codebase.",
+          "extra": {
+            "stars": 16211,
+            "language": "TypeScript",
+            "topics": []
+          },
+          "score": 7.0,
+          "summary": "CLI工具自动为代码库生成并维护Agent文档，提升协作效率。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "The complex corporate web behind a $3.2 billion AI data center",
+          "url": "https://arstechnica.com/features/2026/09/the-ai-data-center-boom-is-causing-new-accountability-problems/",
+          "source": "Ars Technica",
+          "published_at": "2026-09-07T11:00:03Z",
+          "raw_text": "When multiple companies are behind one project, who bears responsibility for problems?",
+          "extra": {},
+          "score": 9.0,
+          "summary": "《西雅图时报》等起诉OpenAI和微软侵犯版权，或影响AI训练数据合法性。"
+        },
+        {
+          "section": "news",
+          "title": "Authors push back as publishers and agents make claims on Anthropic settlement",
+          "url": "https://techcrunch.com/2026/09/06/authors-push-back-as-publishers-and-agents-seek-share-of-anthropic-settlement/",
+          "source": "TechCrunch",
+          "published_at": "2026-09-06T20:47:37Z",
+          "raw_text": "Authors say publishers seem to be claiming more than their fair share of settlement payments.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "作者指控出版商在Anthropic和解中多占赔偿，暴露AI数据版权分配矛盾。"
+        },
+        {
+          "section": "news",
+          "title": "I've factored the RSA keys of a Certificate Authority from the 90s",
+          "url": "https://mcpherrin.ca/2026/09/07/rsa.html",
+          "source": "Hacker News",
+          "published_at": "2026-09-08T01:16:59Z",
+          "raw_text": "Article URL: https://mcpherrin.ca/2026/09/07/rsa.html Comments URL: https://news.ycombinator.com/item?id=49604637 Points: 202 # Comments: 37",
+          "extra": {},
+          "score": 7.0,
+          "summary": "成功分解90年代CA的RSA密钥，警示旧加密算法在AI时代的脆弱性。"
+        },
+        {
+          "section": "news",
+          "title": "Seattle Times and Newsday sue OpenAI and Microsoft for infringement",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/990932/seattle-times-newsday-lawsuit-openai-microsoft",
+          "source": "The Verge",
+          "published_at": "2026-09-06T23:36:04Z",
+          "raw_text": "The Seattle Times and Newsday are just the latest plaintiffs to take OpenAI to court, alleging copyright infringement. The two outlets say the company used their journalism as training data for its AI models without permission and often reproduces passages from their reporting in response to user queries. This is similar to lawsuits filed by […]",
+          "extra": {},
+          "score": 7.0,
+          "summary": "320亿美元AI数据中心背后的复杂公司网，揭示责任归属难题。"
+        },
+        {
+          "section": "news",
+          "title": "Opaque recurrence, and other AI terms that you should probably know",
+          "url": "https://techcrunch.com/2026/09/07/artificial-intelligence-definition-glossary-hallucinations-guide-to-common-ai-terms/",
+          "source": "TechCrunch",
+          "published_at": "2026-09-07T19:24:00Z",
+          "raw_text": "The rise of AI has brought an avalanche of new terms and slang. Here is a glossary with definitions of some of the most important words and phrases you might encounter.",
+          "extra": {},
+          "score": 6.0,
+          "summary": "AI新术语汇编，帮助从业者快速理解行业黑话与前沿概念。"
+        },
+        {
+          "section": "news",
+          "title": "Travis Kalanick’s Atoms might be getting into the robotaxi business",
+          "url": "https://techcrunch.com/2026/09/06/travis-kalanicks-atoms-might-be-getting-into-the-robotaxi-business/",
+          "source": "TechCrunch",
+          "published_at": "2026-09-06T16:45:00Z",
+          "raw_text": "The Uber founder has said that Atoms will allow him to complete \"unfinished business.\"",
+          "extra": {},
+          "score": 6.0,
+          "summary": "Uber创始人Kalanick的Atoms或进军Robotaxi，行业竞争再添变数。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Introducing WeatherNext 3, our most advanced and accurate global weather AI model",
+          "url": "https://deepmind.google/blog/introducing-weathernext-3-our-most-advanced-and-accurate-global-weather-ai-model/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-03T15:02:08Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "发布全球最先进天气AI模型，精度与速度显著提升，影响气象预测与防灾。"
+        },
+        {
+          "section": "product",
+          "title": "Introducing Gemini 3.8 Flash and 3.8 Flash Cyber",
+          "url": "https://deepmind.google/blog/introducing-gemini-3-8-flash-and-38-flash-cyber/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-02T16:18:31Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 8.0,
+          "summary": "推出新一代多模态模型及专用安全版本，强化AI在网络安全领域的应用。"
+        },
+        {
+          "section": "product",
+          "title": "NeoMME: an efficient Multimodal-native and Multilingual Encoder",
+          "url": "https://huggingface.co/blog/Hcompany/neomme",
+          "source": "Hugging Face",
+          "published_at": "2026-09-03T13:13:48Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 7.0,
+          "summary": "发布高效多模态多语言编码器，降低计算成本，提升跨语言理解能力。"
+        }
+      ]
+    }
+  ]
+}
