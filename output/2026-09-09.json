@@ -1,0 +1,419 @@
+{
+  "date": "2026-09-09",
+  "tip": {
+    "title": "ExecCritic: Learn to Test, Test to Improve for Coding Agents",
+    "body": "当你的代码Agent修复失败时，不要只依赖模型直觉，而是让测试生成与修复形成闭环。\n\n**做法**：用ExecCritic方法，先让Agent为失败代码生成单元测试，再基于测试执行反馈生成补丁。\n\n```python\n# 安全沙箱示例：使用subprocess在隔离环境运行测试\nimport subprocess\n\ndef safe_test_and_fix(code, test_code):\n    # 写入临时文件\n    with open('/tmp/sandbox/test.py', 'w') as f:\n        f.write(code + '\\n' + test_code)\n    # 在受限容器中执行\n    result = subprocess.run(\n        ['docker', 'run', '--rm', '-v', '/tmp/sandbox:/code', 'python:3.11', 'python', '/code/test.py'],\n        capture_output=True, text=True\n    )\n    return result.returncode, result.stderr\n```\n\n**注意**：始终在Docker或Firecracker等沙箱中执行测试，禁止直接使用`exec`/`eval`。",
+    "ref_title": "ExecCritic: Learn to Test, Test to Improve for Coding Agents",
+    "ref_url": "https://arxiv.org/abs/2609.09133v1"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "Procedural Graphs: Self-Evolving Execution Structures for LLM Agents",
+          "url": "https://arxiv.org/abs/2609.09153v1",
+          "source": "arXiv",
+          "published_at": "2026-09-08T17:59:41Z",
+          "raw_text": "Large language models are increasingly deployed as agents that plan over long horizons and act through external tools. Most agents select actions through unconstrained generation over an accumulating history, leaving implicit the procedural knowledge of what to do, in what order, and under which conditions. As trajectories lengthen, agents can lose track of their objectives, invoke tools out of order, and repeat unproductive actions. We introduce the Procedural Graph: just as a knowledge graph organizes factual knowledge into (entity, relation, entity) triplets for what-is questions, a Procedural Graph organizes procedural knowledge into (procedure, relation, procedure) triplets for what-to-do questions. At each decision step, the framework localizes the agent's active node, and a guidance model translates the surrounding subgraph into step-level situational guidance that biases the solver's next action without dictating it. The graph is self-evolving: an LLM refiner contrasts failed trajectories with successful ones and edits the graph's topology and attributes, committing edits that preserve or improve held-out validation performance while retaining rejected ones to discourage repetition. Starting from a minimal skeleton, the loop builds graphs that match or surpass hand-designed ones. It can also repair a flawed expert prior. Across multiple datasets, task types, and LLMs, the Procedural Graph delivers consistent gains over memory-based baselines, and self-evolution further improves performance without manual engineering.",
+          "extra": {
+            "authors": [
+              "Yuxing Lu",
+              "Yicheng Chen",
+              "Shanchan Wu",
+              "Sercan Ö. Arık"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL",
+              "cs.MA"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.09153v1"
+          },
+          "score": 9.0,
+          "summary": "提出自进化执行图结构，让LLM Agent显式管理过程知识，提升长程任务可靠性。"
+        },
+        {
+          "section": "paper",
+          "title": "ReCite: Agentic Reasoning for Faithful Citation",
+          "url": "https://arxiv.org/abs/2609.09156v1",
+          "source": "arXiv",
+          "published_at": "2026-09-08T17:59:50Z",
+          "raw_text": "Accurate citations are the foundation of academic writing, tracing intellectual origins and substantiating core claims. However, manually navigating the growing volume of scientific literature is increasingly difficult, prompting reliance on automatic citation recommendation. While modern retrieval-augmented architectures have largely mitigated the fabrication of non-existent papers, current systems relying on semantic similarity struggle with misattribution, often citing authentic papers that fail to logically support the author's claim. To address this challenge, we argue that accurate citation requires a shift from similarity-based search to active, claim-level reasoning. We propose ReCite, a decoupled agentic framework that orchestrates location perception, intent-aware query planning, and reflective verification. Trained on synthesized reasoning trajectories, our agent verifies claim-evidence consistency and triggers self-correction loops when retrieved candidates lack logical support. Experiments demonstrate that our lightweight framework outperforms state-of-the-art massive generative models in strict citation accuracy. By grounding literature matching in verifiable logic rather than semantic overlap, ReCite establishes a reliable foundation for automated academic writing.",
+          "extra": {
+            "authors": [
+              "Yuyang Huang",
+              "Bobo Li",
+              "Jiajia Song",
+              "Yuzhe Ding",
+              "Chong Teng",
+              "Fei Li",
+              "Donghong Ji"
+            ],
+            "categories": [
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.09156v1"
+          },
+          "score": 8.0,
+          "summary": "用Agentic推理生成忠实引用，解决学术写作中自动引用推荐的可信度问题。"
+        },
+        {
+          "section": "paper",
+          "title": "ExecCritic: Learn to Test, Test to Improve for Coding Agents",
+          "url": "https://arxiv.org/abs/2609.09133v1",
+          "source": "arXiv",
+          "published_at": "2026-09-08T17:53:37Z",
+          "raw_text": "Execution feedback can guide coding agents toward correct repository repairs, but only when the tests capture the behavior requested by the issue. Agent-generated tests can encode incomplete or incorrect behavioral targets; when the same trajectory writes both the patch and the test, their errors can agree and create false confidence. We introduce ExecCritic, combining a test--verify--revise scaffold with a role-specific reinforcement learning recipe for training agents within it. The scaffold separates test construction from source-code repair: a Test agent independently generates repository-native tests, a fail-closed harness qualifies and freezes them, and a Repair agent revises source code from their execution feedback without changing the tests. Both roles use Qwen-3.5-35B-A3B as the backbone and are trained separately. In Learn to Test, the Test agent learns to produce behaviorally valid tests that distinguish correct from incorrect patches. In Test to Improve, the Repair agent learns both direct task resolution and feedback-guided revision. On SWE-bench Verified, test quality determines whether feedback helps: holding the base Repair agent fixed, tests from the base Test agent reduce resolved rate from a no-test baseline of 61.2% to 57.3%, whereas tests from GPT-5.6-sol raise it to 65.3%. Role-specific post-training raises the Qwen Test agent's Base-to-Gold success from 22.2% to 62.2%; composing the two post-trained Qwen agents reaches 72.6%, an 11.4-point gain over the original no-test baseline without stronger-model or Oracle feedback at evaluation time. Code is publicly available at https://github.com/MSR-Orchard/execcritic.",
+          "extra": {
+            "authors": [
+              "Leitian Tao",
+              "Baolin Peng",
+              "Haorui Wang",
+              "Hang Wang",
+              "Hao Cheng",
+              "Wenlin Yao",
+              "Qianhui Wu",
+              "Tao Ge",
+              "Sharon Li",
+              "Jianfeng Gao"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL",
+              "cs.SE"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.09133v1"
+          },
+          "score": 8.0,
+          "summary": "引入执行反馈驱动的测试生成与补丁优化循环，提升代码Agent修复正确性。"
+        },
+        {
+          "section": "paper",
+          "title": "Co-Evolving Harnesses and Models: On-Policy Correction Helps Weaker Models Catch Up Where Imitation Fails",
+          "url": "https://arxiv.org/abs/2609.09134v1",
+          "source": "arXiv",
+          "published_at": "2026-09-08T17:53:49Z",
+          "raw_text": "Agent harnesses (the system prompt, tool set, execution hooks, and context-management scaffolding around a model) are a critical determinant of agentic task success. Automated harness evolution can enable smaller models to perform well on domain-specific tasks at a fraction of frontier-model cost. Since both the harness and model weights shape behavior, we ask how harness evolution and lightweight fine-tuning should be combined. Across seven enterprise agent tasks, we first evolve a harness with the weaker model, then find that a stronger expert often uses it more effectively, suggesting expert supervision could close the remaining gap. However, training the weaker model on the expert's complete trajectories under the evolved harness backfires: performance regresses on all seven tasks by 4 to 30 points across Qwen3-Coder and Gemma 4, even though the same procedure helps under the unevolved harness. Our analysis shows that imitation transfers knowledge and increases scaffold usage, but disrupts model-harness fit: the weaker model adopts the expert's planning strategy without the competence to execute it and no longer matches the harness evolved around its native planning style. We therefore develop an on-policy expert-correction pipeline, automated by a meta-level MLE agent, that localizes the failing turn in the weaker model's own rollout and asks the expert to rewrite only that turn. This preserves the model's planning style and combines the gains of harness evolution and model adaptation. Our results identify and resolve a source of contention between harness and weight updates, yielding a compatibility-preserving recipe for economical co-evolution on domain-specific enterprise tasks.",
+          "extra": {
+            "authors": [
+              "Zhou Yu",
+              "Bin Bi",
+              "Shiva Kumar Pentyala",
+              "Shubham Mehrotra",
+              "Sougata Chaudhuri",
+              "Shilpa Bhagavath",
+              "Zeyuan Chen",
+              "Ran Xu",
+              "Phil Mui",
+              "James Zhu",
+              "Sitaram Asur"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.09134v1"
+          },
+          "score": 8.0,
+          "summary": "提出模型与Agent框架协同进化，让弱模型通过在线策略校正追赶强模型。"
+        },
+        {
+          "section": "paper",
+          "title": "MeClear: Cooperative Game-Theoretic Attribution and Risk-Aware Memory Clearance for Long-Horizon LLM Agents",
+          "url": "https://arxiv.org/abs/2609.09115v1",
+          "source": "arXiv",
+          "published_at": "2026-09-08T17:46:00Z",
+          "raw_text": "Long horizon Large Language Model (LLM) agents rely on external memory systems to preserve user preferences and task knowledge across extended interactions. Conventional retrieval mechanisms optimize semantic compatibility rather than downstream utility, frequently introducing outdated, misleading, or conflicting evidence into the active context. We present MeClear, a task conditioned memory clearance framework that identifies memories featuring negative downstream utility through cooperative attribution and selectively suppresses them from agent execution. MeClear combines Leave One Out screening with sampled cooperative Shapley attribution to distribute utility across interacting evidence, effectively resolving redundant conflict masking where single removal evaluations fail. Utilizing attribution rankings, MeClear executes a query scoped minimal clearance strategy over a nested filtration, verifying task recovery on the cleared context without permanently altering the persistent memory bank. Comprehensive experimental evaluations across ten long dialogue memory pools demonstrate that MeClear achieves a target recall of 85.9% and an overall task recovery rate of 82.3%, representing a 25.5 percentage point improvement over Leave One Out (LOO) baselines.",
+          "extra": {
+            "authors": [
+              "Boyu Yang",
+              "Jiazheng Sun",
+              "Zilong Lu",
+              "Zhi Qiu",
+              "Xin Peng",
+              "Jun Zheng"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.SE"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.09115v1"
+          },
+          "score": 7.0,
+          "summary": "用博弈论归因与风险感知记忆清理，提升长程LLM Agent的上下文质量。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi-K2.6, GLM-5.2, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 180491,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "gemma3",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llama3",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 10.0,
+          "summary": "本地一键运行最新开源大模型，支持Kimi、GLM、DeepSeek等，开发者实测首选。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "The context API to search, scrape, and interact with the web at scale. 🔥",
+          "extra": {
+            "stars": 178091,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "大规模网页搜索与抓取的API，为RAG和Agent提供实时数据源，开箱即用。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 155115,
+            "language": "TypeScript",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "deepseek",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "python",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 9.0,
+          "summary": "可视化构建Agent工作流与RAG管道，支持多模型，从原型到生产无需重搭。"
+        },
+        {
+          "section": "repo",
+          "title": "langchain-ai/openwiki",
+          "url": "https://github.com/langchain-ai/openwiki",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-22T23:48:26Z",
+          "raw_text": "OpenWiki is a CLI that writes and maintains agent documentation for your codebase.",
+          "extra": {
+            "stars": 16290,
+            "language": "TypeScript",
+            "topics": []
+          },
+          "score": 8.0,
+          "summary": "CLI工具自动为代码库生成并维护Agent文档，解决文档滞后痛点。"
+        },
+        {
+          "section": "repo",
+          "title": "trailhq/Graft",
+          "url": "https://github.com/trailhq/Graft",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-03T13:44:21Z",
+          "raw_text": "Turbocharge Claude Code, Cursor, Codex, Gemini & every coding agent: faster, cheaper, with contextual understanding specific to your codebase.",
+          "extra": {
+            "stars": 6544,
+            "language": "TypeScript",
+            "topics": [
+              "ai-agents",
+              "anthropic",
+              "claude-code",
+              "cli",
+              "code-graph",
+              "codex",
+              "context-engineering",
+              "cursor",
+              "developer-tools",
+              "gemini",
+              "knowledge-graph",
+              "llm",
+              "mcp",
+              "mcp-server",
+              "open-source",
+              "openai",
+              "tree-sitter"
+            ]
+          },
+          "score": 8.0,
+          "summary": "为Claude Code等编码Agent加速降本，注入代码库上下文，提升理解准确率。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Drama swirls around OpenAI’s legendary mathematical milestone",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/991710/openai-navier-stokes-solution",
+          "source": "The Verge",
+          "published_at": "2026-09-08T20:53:52Z",
+          "raw_text": "OpenAI says it found a solution to a major math problem that has remained unsolved for around 90 years, as reported earlier by The New York Times and Wired. In a blog post on Tuesday, OpenAI announced that it discovered a solution to the Navier-Stokes problem - which relates to the flow of liquid and […]",
+          "extra": {},
+          "score": 10.0,
+          "summary": "OpenAI声称攻克纳维-斯托克斯方程，若属实将颠覆数学与流体力学，但争议巨大。"
+        },
+        {
+          "section": "news",
+          "title": "Cognition hits $48B valuation, signaling investors believe AI coding is far from a winner-take-all market",
+          "url": "https://techcrunch.com/2026/09/08/cognition-hits-48b-valuation-signaling-investors-believe-ai-coding-is-far-from-a-winner-take-all-market/",
+          "source": "TechCrunch",
+          "published_at": "2026-09-08T21:04:06Z",
+          "raw_text": "Cognition's valuation multiple is higher than Cursor's was before selling to SpaceX.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "AI编码公司Cognition估值480亿美元，证明该赛道未形成赢家通吃格局。"
+        },
+        {
+          "section": "news",
+          "title": "Meta debuts its Muse AI agent. Will consumers trust it?",
+          "url": "https://techcrunch.com/2026/09/08/meta-debuts-its-muse-ai-agent-will-consumers-trust-it/",
+          "source": "TechCrunch",
+          "published_at": "2026-09-08T19:00:00Z",
+          "raw_text": "Meta's new personal AI agent Muse wants access to users' email, calendars, payments, health services, and more — making the company's biggest consumer AI bet yet a major test of whether people still trust Meta with their data.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "Meta发布个人AI代理Muse，需获取邮件等敏感数据，考验用户对Meta的信任。"
+        },
+        {
+          "section": "news",
+          "title": "Hackers are stealing Claude tokens from subscribers",
+          "url": "https://techcrunch.com/2026/09/08/hackers-are-stealing-claude-tokens-from-subscribers/",
+          "source": "TechCrunch",
+          "published_at": "2026-09-08T21:10:27Z",
+          "raw_text": "Last month, a Claude user noticed his account was consuming tokens even though he wasn't working. Anthropic has since warned users about hackers.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "黑客盗取Claude订阅者令牌，暴露AI服务账户安全漏洞，需立即关注。"
+        },
+        {
+          "section": "news",
+          "title": "Why this month's Microsoft patch release is a doozy",
+          "url": "https://arstechnica.com/security/2026/09/microsoft-patches-a-record-972-vulnerabilities-112-of-them-critical/",
+          "source": "Ars Technica",
+          "published_at": "2026-09-08T21:11:46Z",
+          "raw_text": "Security gnomes are pumping out patches ahead of an expected onslaught of AI-assisted attacks.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "微软本月安全更新规模罕见，因预期AI驱动攻击浪潮即将到来。"
+        },
+        {
+          "section": "news",
+          "title": "“This is the AI men actually use”: Meta ads pushed apps nudifying real teens",
+          "url": "https://arstechnica.com/tech-policy/2026/09/real-photos-of-young-girls-were-in-nudify-app-ads-on-facebook-instagram/",
+          "source": "Ars Technica",
+          "published_at": "2026-09-08T18:43:09Z",
+          "raw_text": "Meta dragged its feet removing ads that nudify young girls' Instagram pics.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "Meta广告被曝推送“脱衣”应用，涉及未成年人，引发监管与伦理危机。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "AlphaGenome Atlas: A predictive map of every possible DNA letter change in the human genome",
+          "url": "https://deepmind.google/blog/alphagenome-atlas-a-predictive-map-of-every-possible-dna-letter-change-in-the-human-genome/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-08T14:00:15Z",
+          "raw_text": "AlphaGenome Atlas maps the molecular effects of 9 billion single-letter DNA variants across the human genome.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "发布人类基因组90亿单碱基变异的预测图谱，为精准医学提供基础资源。"
+        },
+        {
+          "section": "product",
+          "title": "Introducing ChatGPT Images 2.5",
+          "url": "https://openai.com/index/introducing-chatgpt-images-2-5",
+          "source": "OpenAI",
+          "published_at": "2026-09-08T11:30:00Z",
+          "raw_text": "ChatGPT Images 2.5 helps turn your ideas, sketches, and reference photos into more personalized, polished images that better reflect your ideas.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "ChatGPT图像生成升级至2.5版，支持草图、参考图生成更个性化精修图像。"
+        },
+        {
+          "section": "product",
+          "title": "Introducing WeatherNext 3, our most advanced and accurate global weather AI model",
+          "url": "https://deepmind.google/blog/introducing-weathernext-3-our-most-advanced-and-accurate-global-weather-ai-model/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-03T15:02:08Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 8.0,
+          "summary": "推出全球最先进AI气象模型WeatherNext 3，提升预报精度与时效。"
+        }
+      ]
+    }
+  ]
+}
