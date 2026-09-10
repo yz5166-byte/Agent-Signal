@@ -1,0 +1,422 @@
+{
+  "date": "2026-09-10",
+  "tip": {
+    "title": "Avatar: Toward Autonomous End-to-End Orchestration of Scientific Workflows using LLMs",
+    "body": "**场景**：当你需要让 Agent 在本地安全地执行用户或模型生成的 Python 代码（如科学计算、数据处理）时，直接使用 `exec` 或 `eval` 存在严重安全风险。\n\n**做法**：使用 `subprocess` 在隔离的子进程中运行代码，并设置超时和资源限制。示例：\n\n```python\nimport subprocess\n\ndef run_code_safely(code: str, timeout: 10):\n    try:\n        result = subprocess.run(\n            ['python3', '-c', code],\n            capture_output=True, text=True, timeout=timeout\n        )\n        return result.stdout\n    except subprocess.TimeoutExpired:\n        return \"Timeout\"\n```\n\n此方法将代码交给独立 Python 进程执行，即使崩溃也不会影响主 Agent 进程。",
+    "ref_title": "Avatar: Toward Autonomous End-to-End Orchestration of Scientific Workflows using LLMs",
+    "ref_url": "https://arxiv.org/abs/2609.10509v1"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "Avatar: Toward Autonomous End-to-End Orchestration of Scientific Workflows using LLMs",
+          "url": "https://arxiv.org/abs/2609.10509v1",
+          "source": "arXiv",
+          "published_at": "2026-09-09T17:45:36Z",
+          "raw_text": "Scientific workflow management (WMSs) systems automate execution, yet orchestrate using fixed, hand-tuned rules. LLM agents promise more autonomous orchestration, but it remains unclear where to introduce agentic reasoning, how to bound its risk, and when it actually helps. We present Avatar, an actor-based architecture comprising an orchestrator, an executor, and a provenance monitor. Each actor's decision policy is pluggable (rule-based or LLM-backed) via a single adapter-validated action catalog, so conventional and agentic control run on the same core across different WMSs. We present an implementation using the Academy framework and evaluate Avatar across three workloads. We observe that Avatar's rule mode reproduces native execution, with a single unchanged core running all three. Moreover, LLM-backed Avatar reports a reduction of compute wastage by $55\\%$ and cuts GPU-busy time by $40\\%$. Overall, we envision Avatar as a step toward workflow systems that reason about their own orchestration rather than follow pre-fixed rules.",
+          "extra": {
+            "authors": [
+              "Suman Raj",
+              "Hai Duc Nguyen",
+              "Haochen Pan",
+              "Ryan Chard",
+              "Kyle Chard",
+              "Ian Foster"
+            ],
+            "categories": [
+              "cs.DC",
+              "cs.MA"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.10509v1"
+          },
+          "score": 9.0,
+          "summary": "提出LLM智能体自主编排科学工作流，在风险可控下提升自动化效率。"
+        },
+        {
+          "section": "paper",
+          "title": "JarvisGUI: Towards Cross-Device GUI Agents with Dynamic Task Composition",
+          "url": "https://arxiv.org/abs/2609.10451v1",
+          "source": "arXiv",
+          "published_at": "2026-09-09T16:59:59Z",
+          "raw_text": "Real-world GUI usage frequently involves workflows that span multiple devices and platforms, requiring the transfer of intermediate results, maintenance of shared state, and coordination across heterogeneous environments. However, existing GUI benchmarks overwhelmingly evaluate agents on single-device, statically defined tasks, thus leaving such cross-device capabilities largely unexamined, resulting in an overly optimistic assessment of agents' readiness for real-world usage. We introduce JarvisGUI, a dynamic benchmark that evaluates GUI agents on cross-device workflows requiring coordinated interaction across heterogeneous platforms, including Android, Windows, and Ubuntu. Specifically, JarvisGUI formulates GUI tasks as input-output transformations under a lightweight type system, which allows us to automatically compose multi-step, cross-device workflows and dynamically evaluate agent performance within a unified framework. By evaluating agents in virtual environments spanning multiple operating systems, JarvisGUI reveals that state-of-the-art open-source GUI agents struggle with the state-transfer awareness, cross-platform contextual reasoning, and long-horizon dependency management required for real-world workflows, exposing a critical capability gap invisible to existing benchmarks.",
+          "extra": {
+            "authors": [
+              "Zixiang Chen",
+              "Yuheng Lu",
+              "Zihao Cheng",
+              "Zeming Liu",
+              "Jizeng Bai",
+              "Ziye Huang",
+              "Zhiyin Lin",
+              "Zihan Li",
+              "Yuhang Guo",
+              "Yunhong Wang",
+              "Haifeng Wang"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.10451v1"
+          },
+          "score": 8.0,
+          "summary": "首个跨设备GUI智能体基准，支持动态任务组合与多平台协调。"
+        },
+        {
+          "section": "paper",
+          "title": "Fortunate Recall: Ontology-Driven Memory Lifecycle Management for Persistent Coherence in LLMs",
+          "url": "https://arxiv.org/abs/2609.10413v1",
+          "source": "arXiv",
+          "published_at": "2026-09-09T16:31:45Z",
+          "raw_text": "Current LLM memory systems treat all personal facts identically, so stores grow without bound while retrieval precision degrades. The core challenge is lifecycle management: which memories should persist, which should be replaced, and at what rate, conditioned on the behavioral type of each fact. Fortunate Recall (FR) is a composable policy layer that classifies personal facts into a 10+1 behavioral ontology and applies category-specific lifecycle policies (differential temporal decay, slot-key supersession, event-time validity, and category-aware retrieval routing) as deterministic functions over LLM-extracted metadata. FR-Bank, our infrastructure-independent implementation, reaches a 76.9% pass rate on LifecycleBench, a new 516-question temporal-disambiguation benchmark, ahead of Mem0, A-MEM, Memory-R1, and MemoryOS (61% to 70.5%), and 75.2% on the full LongMemEval-S under the canonical Wu et al. judge protocol, so lifecycle policies impose no measurable cost on standard retrieval. A pre-registered ablation locates the gains: replacing the typed layer with three generic lifecycle primitives leaves correctness statistically unchanged (-1.7pp, 95% CI [-6.0, +2.7]), so the generic lifecycle metadata carries the correctness advantage, while the behavioral ontology carries calibration, halving downstream confabulation (12.0% vs 24.2%, p<0.001). End-to-end, FR-Bank cuts confabulation from Mem0's 45.1% to 22.4% over answered queries and from 32.2% to 13.0% over all queries while answering more of them correctly (31.2% vs 18.6%); the ranking replicates on the open-weight Kimi K2.5. The decomposition transfers to BEAM, an independently built benchmark: 46.8% correct vs Mem0's 32.9% over 280 questions, with the ontology's benefit concentrated in contradiction resolution and saturating near seven policy clusters. The ontology, benchmark, and code are released.",
+          "extra": {
+            "authors": [
+              "Ansuman Mullick",
+              "Eray Tüzün"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.10413v1"
+          },
+          "score": 8.0,
+          "summary": "本体驱动的记忆生命周期管理，解决LLM长时记忆退化问题。"
+        },
+        {
+          "section": "paper",
+          "title": "Show-Harness: Just a VLM Agent Can Play Robots",
+          "url": "https://arxiv.org/abs/2609.10522v1",
+          "source": "arXiv",
+          "published_at": "2026-09-09T17:53:38Z",
+          "raw_text": "Foundation vision-language models (VLMs) exhibit broad intelligence about the world, yet translating this intelligence into robot control remains challenging. We present Show-Harness, an Embodied Harness that enables VLMs to \"play\" robots through a compact semantic interface linking intent to action. Show-Harness exposes discrete semantic action units that VLMs can naturally reason over, while embodiment-specific interpreters deterministically ground them into local robot actions, keeping the VLM directly responsible for fine-grained physical decisions. Through the same interface, Show-Harness demonstrates the feasibility of (1) directly unlocking closed-source frontier VLMs for zero-shot robot control, and (2) adapting small-scale open-source VLMs for low-cost deployment with just a few GPU-hours of fine-tuning. We further develop GUMI (GUI Manipulation Interface), which extends the same semantic action space to GUI-based demonstration collection, allowing humans and agents to \"play\" robots across embodiments without specialized teleoperation hardware. Extensive experiments show that Show-Harness-equipped VLM agents generalize robustly across tasks, embodiments, and environments, outperforming representative agentic and VLA paradigms. These results suggest that the right interface can unlock substantial embodied capability from foundation VLMs, without requiring additional model capacity or costly embodiment-specific pretraining.",
+          "extra": {
+            "authors": [
+              "Yanzhe Chen",
+              "Zechen Bai",
+              "Zhijun Cao",
+              "Wenzheng Zeng",
+              "Kevin Qinghong Lin",
+              "Yiqi Lin",
+              "Guoqiang Liang",
+              "Kevin Yuchen Ma",
+              "Qiming Huang",
+              "Mike Zheng Shou"
+            ],
+            "categories": [
+              "cs.RO",
+              "cs.AI",
+              "cs.CV",
+              "cs.MM"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.10522v1"
+          },
+          "score": 7.0,
+          "summary": "用VLM智能体直接操控机器人，通过语义接口实现零样本控制。"
+        },
+        {
+          "section": "paper",
+          "title": "ConvMem: Convolutional Memory for Long-Context Reasoning",
+          "url": "https://arxiv.org/abs/2609.10441v1",
+          "source": "arXiv",
+          "published_at": "2026-09-09T16:53:02Z",
+          "raw_text": "While Large Language Models (LLMs) have demonstrated impressive capabilities, they often struggle with extremely long contexts due to fixed context limits. To address this, sequential approaches like MemAgent extend the effective context by reading text in segments and iteratively updating a fixed-size memory. However, this sequential paradigm suffers from high latency and requires costly reinforcement learning (RL) training, which can lead to overfitting on specific datasets. To overcome these limitations, we propose ConvMem, a training-free, highly parallelizable framework that reformulates long-context reasoning as a hierarchical convolution. Inspired by CNNs, ConvMem treats an LLM prompted with a specific query as a convolutional kernel. This kernel summarizes text segments hierarchically, shortening the reasoning path from a linear chain into a logarithmic tree. Specifically, ConvMem integrates \\textit{Configurable Strides} and \\textit{Skip Connections} to ensure robust evidence capture and propagation, while employing \\textit{Multi-Kernel Convolution} to decompose complex queries into disentangled semantic channels. This design not only mitigates error accumulation but also enables massive parallelization across both text segments and reasoning threads. Experiments on RULER-HotpotQA and RULER-2WikiMultiHopQA demonstrate that ConvMem outperforms training-free baselines and avoids the risk of overfitting to parametric priors often observed in RL-trained models on out-of-distribution tasks.",
+          "extra": {
+            "authors": [
+              "Hongming Zhang",
+              "Zhaozhen Gu",
+              "Fengshuo Bai",
+              "Ming Hao",
+              "Qingyang Zhang",
+              "Yuanyuan Wang",
+              "Shiyang Tang",
+              "Yanna Wang",
+              "Bo Xu"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.10441v1"
+          },
+          "score": 7.0,
+          "summary": "卷积记忆架构扩展LLM长上下文推理，突破固定长度限制。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi-K2.6, GLM-5.2, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 180539,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "gemma3",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llama3",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 9.0,
+          "summary": "本地运行最新大模型（Kimi、GLM等），一键部署，开发者必备。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 155281,
+            "language": "TypeScript",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "deepseek",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "python",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 9.0,
+          "summary": "一站式构建Agent工作流与RAG管道，支持私有部署，从原型到生产。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "The context API to search, scrape, and interact with the web at scale. 🔥",
+          "extra": {
+            "stars": 178479,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 8.0,
+          "summary": "大规模网页抓取与交互API，为AI应用提供实时数据源。"
+        },
+        {
+          "section": "repo",
+          "title": "genspark-ai/genoffice",
+          "url": "https://github.com/genspark-ai/genoffice",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-31T09:40:58Z",
+          "raw_text": "Free, open-source alternative to Microsoft Office with built-in AI agents — Word (.docx), Excel (.xlsx), PowerPoint (.pptx), PDF and Markdown editing for macOS, Windows & Linux.",
+          "extra": {
+            "stars": 6336,
+            "language": "TypeScript",
+            "topics": [
+              "agent",
+              "agentic",
+              "ai",
+              "ai-agent",
+              "ai-agents",
+              "ai-office",
+              "docx",
+              "excel",
+              "markdown-editor",
+              "microsoft-office",
+              "office",
+              "office-agent",
+              "office-suite",
+              "pdf-converter",
+              "pdf-editor",
+              "powerpoint",
+              "pptx",
+              "spreadsheet",
+              "word-processor",
+              "xlsx"
+            ]
+          },
+          "score": 8.0,
+          "summary": "开源AI版Office，内置智能体，支持主流文档格式，跨平台免费。"
+        },
+        {
+          "section": "repo",
+          "title": "langchain-ai/openwiki",
+          "url": "https://github.com/langchain-ai/openwiki",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-22T23:48:26Z",
+          "raw_text": "OpenWiki is a CLI that writes and maintains agent documentation for your codebase.",
+          "extra": {
+            "stars": 16343,
+            "language": "TypeScript",
+            "topics": []
+          },
+          "score": 7.0,
+          "summary": "CLI工具自动为代码库生成并维护Agent文档，提升协作效率。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "AI research startup Listen Labs scrubbed a $1.5B funding round for Salesforce talks",
+          "url": "https://techcrunch.com/2026/09/09/ai-research-startup-listen-labs-scrubbed-a-1-5b-funding-round-for-salesforce-talks/",
+          "source": "TechCrunch",
+          "published_at": "2026-09-10T00:00:37Z",
+          "raw_text": "Listen Labs walked away from a signed Series C term sheet from Menlo Ventures, sources say.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "Listen Labs 放弃 15 亿美元融资，转向与 Salesforce 谈判，反映 AI 初创融资策略重大转变。"
+        },
+        {
+          "section": "news",
+          "title": "OpenAI adds a prominent AI doomer to its board of directors",
+          "url": "https://techcrunch.com/2026/09/09/openai-adds-a-prominent-ai-doomer-to-its-board-of-directors/",
+          "source": "TechCrunch",
+          "published_at": "2026-09-09T22:25:22Z",
+          "raw_text": "Paul Christiano, an influential AI researcher focused on alignment, is joining the OpenAI Foundation as a member of its board.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "OpenAI 吸纳对齐研究代表人物 Paul Christiano 加入董事会，强化安全治理信号。"
+        },
+        {
+          "section": "news",
+          "title": "Massachusetts hits data centers with new clean power rules",
+          "url": "https://techcrunch.com/2026/09/09/massachusetts-hits-data-centers-with-new-clean-power-rules/",
+          "source": "TechCrunch",
+          "published_at": "2026-09-09T21:43:34Z",
+          "raw_text": "Massachusetts has become the third state in as many months to slap new restrictions on data center development.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "马萨诸塞州出台数据中心清洁能源新规，或成 AI 算力扩张的监管风向标。"
+        },
+        {
+          "section": "news",
+          "title": "Suno releases its first AI music model made with record industry help",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/991977/suno-releases-its-first-ai-music-model-made-with-record-industry-help",
+          "source": "The Verge",
+          "published_at": "2026-09-09T21:42:19Z",
+          "raw_text": "Suno's new v6 AI music model is its first made with support from the record industry. Suno's Jack Brody told The Verge that v6 was \"trained from the ground up, with a new set of data that does not include the same data that our previous models were trained on.\" The data includes content licensed […]",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Suno 发布首个获唱片业授权的 AI 音乐模型 v6，标志版权合规新路径。"
+        },
+        {
+          "section": "news",
+          "title": "Six Chinese AI firms accused of aggressively copying US frontier models",
+          "url": "https://arstechnica.com/tech-policy/2026/09/six-chinese-ai-firms-accused-of-aggressively-copying-us-frontier-models/",
+          "source": "Ars Technica",
+          "published_at": "2026-09-09T20:06:28Z",
+          "raw_text": "US urges AI firms to ID, then secretly switch, Chinese users to less-capable models.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "美国指控六家中国 AI 公司抄袭前沿模型，要求限制其访问能力，升级技术管制。"
+        },
+        {
+          "section": "news",
+          "title": "Anthropic researcher quits with a warning: Self-improving AI could \"kill us all\"",
+          "url": "https://arstechnica.com/ai/2026/09/anthropic-researcher-quits-with-a-warning-self-improving-ai-could-kill-us-all/",
+          "source": "Ars Technica",
+          "published_at": "2026-09-09T16:59:40Z",
+          "raw_text": "\"We really do earnestly believe AI could kill all humans!\"",
+          "extra": {},
+          "score": 7.0,
+          "summary": "Anthropic 研究员离职警告自我改进 AI 可能灭绝人类，引发行业安全讨论。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "GPT-6 Astra: The next generation in intelligence for work",
+          "url": "https://openai.com/index/gpt-6-astra-next-generation-work",
+          "source": "OpenAI",
+          "published_at": "2026-09-09T11:00:00Z",
+          "raw_text": "Meet GPT-6 Astra, OpenAI’s most capable model for business, with advanced reasoning, computer use, and stronger writing and design judgment.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "OpenAI发布GPT-6 Astra，专为企业设计，具备高级推理、计算机操作和更强的写作与设计判断能力。"
+        },
+        {
+          "section": "product",
+          "title": "AlphaGenome Atlas: A predictive map of every possible DNA letter change in the human genome",
+          "url": "https://deepmind.google/blog/alphagenome-atlas-a-predictive-map-of-every-possible-dna-letter-change-in-the-human-genome/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-08T14:00:15Z",
+          "raw_text": "AlphaGenome Atlas maps the molecular effects of 9 billion single-letter DNA variants across the human genome.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "AlphaGenome Atlas绘制了人类基因组中90亿个单字母变异的分子效应图，是基因组预测的重要里程碑。"
+        },
+        {
+          "section": "product",
+          "title": "Introducing WeatherNext 3, our most advanced and accurate global weather AI model",
+          "url": "https://deepmind.google/blog/introducing-weathernext-3-our-most-advanced-and-accurate-global-weather-ai-model/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-03T15:02:08Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 7.0,
+          "summary": "Google发布WeatherNext 3，目前最先进、最准确的全球天气AI模型，提升极端天气预测能力。"
+        }
+      ]
+    }
+  ]
+}
