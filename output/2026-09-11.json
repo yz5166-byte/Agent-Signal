@@ -1,0 +1,428 @@
+{
+  "date": "2026-09-11",
+  "tip": {
+    "title": "用动态驱力替代静态目标，解决Agent长期行为漂移",
+    "body": "在构建长期自主Agent时，静态目标会导致行为漂移。若想让Agent在数小时任务中保持行为一致性，可引入“驱力”概念：用动态优先级队列替代固定目标。\n\n做法：在Agent循环中维护一个优先级列表，每次决策前根据当前状态重新排序。\n```python\n# 安全写法：仅操作内部数据结构，不执行外部代码\ndrives = [\n    {\"name\": \"explore\", \"priority\": 0.8},\n    {\"name\": \"exploit\", \"priority\": 0.5}\n]\n# 根据环境反馈更新优先级\ndef update_drives(state):\n    for d in drives:\n        d[\"priority\"] *= (1 + 0.1 * state.get(d[\"name\"], 0))\n    drives.sort(key=lambda x: x[\"priority\"], reverse=True)\n    return drives[0][\"name\"]\n```\n此方法无需执行模型生成代码，仅调整Agent内部逻辑。",
+    "ref_title": "Artificial Id: Drive and Persistent Alignment in Agentic AI",
+    "ref_url": "https://arxiv.org/abs/2609.11911v1"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "Artificial Id: Drive and Persistent Alignment in Agentic AI",
+          "url": "https://arxiv.org/abs/2609.11911v1",
+          "source": "arXiv",
+          "published_at": "2026-09-10T17:56:41Z",
+          "raw_text": "Agentic AI is moving from bounded task execution toward systems that retain consequential state, continue operating and adapt across task boundaries. That shift creates a control problem that current harnesses largely solve by hand: objectives, retries, verification, stopping rules and other behavioral transitions are specified externally. We propose an artificial id, an adaptive internal drive for determining whether behavior should continue, stop or change. In a minimal virtual Petri-dish experiment, a controller too small to perform general-purpose reasoning and receiving no task-specific behavioral objective develops useful control through differential persistence. The same mechanism selects an unintended physical strategy when that behavior persists better and later replaces a learned sensor mapping when its environmental meaning changes. These results show that adaptive direction can emerge without being explicitly specified as a behavioral objective. The same persistence that makes such adaptive agency useful can also allow misalignment, corrupted state and unintended behavior to persist across task boundaries. A scalable artificial id would carry consequential state and adaptive drive across those boundaries, making alignment a property of the continuing agentic system rather than of a model response or single trajectory. Such systems require a persistent alignment boundary over trusted observations, consequence channels, persistent state, authority, identity, provenance and hard constraints.",
+          "extra": {
+            "authors": [
+              "Yakov Pyotr Shkolnikov"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.11911v1"
+          },
+          "score": 9.0,
+          "summary": "提出Agentic AI的持久对齐问题，用“驱力”概念替代静态目标，为长期自主系统提供新控制框架。"
+        },
+        {
+          "section": "paper",
+          "title": "The Last AI Built by Humans: Toward Genuine Recursive Self-Improvement",
+          "url": "https://arxiv.org/abs/2609.11873v1",
+          "source": "arXiv",
+          "published_at": "2026-09-10T17:44:23Z",
+          "raw_text": "Recursive self-improvement (RSI) enables AI systems to turn experience and feedback into persistent changes that improve both their capabilities and the process of future improvement. We first use the Headroom-Closed Index (HCI) to reveal the problems of existing LLMs, then introduce the RSI concept and its development roadmap: from improvement-execution autonomy, improvement-strategy autonomy, experience-acquisition autonomy, and environment-adaptation autonomy, to recursive meta-improvement. Next we examine RSI across scenarios (e.g., scientific discovery, embodied intelligence, software engineering), highlighting their distinct requirements and development speeds. Drawing on diverse industry practices and preliminary empirical evidence, we connect RSI research with practical systems and identify key challenges to achieving genuine RSI.",
+          "extra": {
+            "authors": [
+              "Yi Duan",
+              "Ying Liu",
+              "Zirui Tang",
+              "Haodong Chen",
+              "Jun Zhou",
+              "Yumou Liu",
+              "Bangrui Xu",
+              "Yukai Wu",
+              "Sidi Chen",
+              "Yuhan Zhou",
+              "Haoyu Wang",
+              "Xiaoyou Yu",
+              "Shaokun Han",
+              "Xuzhou Zhu",
+              "Le Zhou",
+              "Bolin Lu",
+              "Wei Zhou",
+              "Jiachen Liu",
+              "Nuozhou Fang",
+              "Jiaxin Tian",
+              "Ruoyu Chen",
+              "Yuxuan Li",
+              "Kai Zuo",
+              "Kaiyan Zhang",
+              "Jiantao Qiu",
+              "Conghui He",
+              "Guoliang Li",
+              "Bowen Zhou",
+              "Zhiyuan Liu",
+              "Zhoufutu Wen",
+              "Jihua Kang",
+              "Xuanhe Zhou",
+              "Fan Wu"
+            ],
+            "categories": [
+              "cs.LG",
+              "cs.AI",
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.11873v1"
+          },
+          "score": 8.0,
+          "summary": "定义递归自我改进（RSI）标准，揭示当前LLM局限，为通向自主进化AI提供理论路径。"
+        },
+        {
+          "section": "paper",
+          "title": "GPU-CFR: 80x Faster Counterfactual Regret Minimization by Compiling the Game to Static Dataflow and CUDA Graph Replay",
+          "url": "https://arxiv.org/abs/2609.11923v1",
+          "source": "arXiv",
+          "published_at": "2026-09-10T17:58:14Z",
+          "raw_text": "Counterfactual regret minimization (CFR) is one of the few large numerical workloads that still runs faster on CPUs than on GPUs. Each iteration sweeps a game tree with up to billions of states in millions of small, interdependent gather and scatter steps issued through a generic tree interface. On a GPU every kernel finishes in microseconds, so kernel launches and framework dispatch dominate the run time, and prior GPU implementations have lost to optimized CPU code. We observe that for a fixed game, everything about a CFR iteration except the numerical values is known before the first iteration runs. We propose GPU-CFR, a compiler and runtime built on this observation. It compiles any game once into static dataflow: flat edge and information-set arrays, precomputed indices, and depth-level batched passes fix the entire operation sequence, and only solver state changes between iterations. Static chance folding, depth-level execution blocks, and a dual-lane reach buffer cut the number of framework operations by up to 18.1x. Because shapes, indices, and buffer addresses never change, CUDA Graph Replay records the iteration once and replays it with a single graph launch. On one A100, across an eight-game suite that spans card games, dice games, and board games, GPU-CFR runs 29.8--80.4x faster than the fastest prior GPU CFR on the same accelerator, and 14--258x faster than LiteEFG, one of the fastest open-source CPU implementations, on the four largest games. The compiled representation carries most of that margin: on eight CPU threads with no accelerator it is already 2.2--51.1x faster than the GPU baseline. On the CPU the optimized path reproduces the reference iterates bitwise, and tree construction and graph capture pay for themselves within the first solve. GPU-CFR beats every CPU and GPU baseline on the mid-to-large games of the suite without changing the update rule.",
+          "extra": {
+            "authors": [
+              "Boning Li",
+              "Longbo Huang"
+            ],
+            "categories": [
+              "cs.DC",
+              "cs.AI",
+              "cs.GT",
+              "cs.MS",
+              "cs.PL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.11923v1"
+          },
+          "score": 8.0,
+          "summary": "将博弈求解算法CFR编译为CUDA图，实现80倍加速，突破CPU主导的数值计算瓶颈。"
+        },
+        {
+          "section": "paper",
+          "title": "Data Scarcity and Model Sparsity: Mixtures-of-Experts Overfit More to Repeated Data",
+          "url": "https://arxiv.org/abs/2609.11917v1",
+          "source": "arXiv",
+          "published_at": "2026-09-10T17:57:33Z",
+          "raw_text": "As the supply of human-written text is exhausted, it has become standard practice to repeat language model training data. Prior work has studied data repetition for densely activated Transformers, but the effects of data repetition remains largely unexplored for recently dominant sparse architectures such as Mixture-of-Experts (MoE), despite their increased compute efficiency. We vary data repetition rates across single- and multi-domain data mixes, and across MoE settings, including expert count and granularity. We consistently find, for models ranging from 80M to 1B active (8.5B total) parameters, that MoEs degrade more rapidly under data repetition. This effect increases with sparsity, dictated by total rather than active parameters. While 80M dense models can repeat data over 8x with minimal degradation, MoEs instead begin to suffer at 4x, and deteriorate rapidly, ceding their performance benefits in all-unique data settings to underperform dense models after 32x. We experiment with existing regularization methods as a potential remedy. We find that some methods, such as dropout, can mitigate overfitting. In particular, with strong masking-based regularization, MoEs are able to outperform dense models even when data is repeated more than 64 times. However, no method fully matches the performance of all-unique training data. Finally, we analyze internal mechanisms correlated with MoE overfitting in high repetition regimes, and find that MoE routing universally stabilizes early in training, and that expert specialization correlates with overfitting to repeated data. In sum, our work addresses the adverse interactions between sparsity and data repetition: we present evidence for the core mechanisms of overfitting and its potential remediation, and suggest promising avenues for future methods to reduce over-specialization in model parameters by disrupting memorization patterns.",
+          "extra": {
+            "authors": [
+              "Atindra Jha",
+              "Margaret Li",
+              "Jure Leskovec",
+              "Percy Liang",
+              "Luke Zettlemoyer"
+            ],
+            "categories": [
+              "cs.LG",
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.11917v1"
+          },
+          "score": 7.0,
+          "summary": "揭示MoE架构在数据重复训练时比稠密模型更易过拟合，对稀疏模型训练策略有重要警示。"
+        },
+        {
+          "section": "paper",
+          "title": "Domain-Specific Hallucination Detection in Large Language Models",
+          "url": "https://arxiv.org/abs/2609.11878v1",
+          "source": "arXiv",
+          "published_at": "2026-09-10T17:45:36Z",
+          "raw_text": "Large language models generate fluent text that can contain unfaithful claims -- a phenomenon known as hallucination. We present a multi-signal detection pipeline combining fine-tuned DeBERTa-v3 classification, Monte Carlo (MC) Dropout uncertainty quantification, and temperature-scaled calibration for response-level hallucination detection. Evaluated on the HaluEval benchmark, our pipeline achieves F1=0.915 and AUROC=0.977 on general-domain tasks, with per-task F1 scores of 0.97 (QA), 0.96 (Summarization), and 0.82 (Dialogue). MC Dropout inference further improves accuracy to 93.2%. A context ablation study confirms the model performs genuine entailment reasoning rather than exploiting surface patterns, with summarization F1 dropping 24% when knowledge context is removed. Learning curve analysis reveals that 25% of training data captures 77% of full-data performance. Beyond detection, we apply Direct Preference Optimization (DPO) to a Qwen2.5-0.5B generator, reducing its hallucination rate from 85.5% to 37.7% (55.9% relative reduction) as measured by our detector. Cross-domain evaluation on the SciFact biomedical benchmark shows that general-domain training transfers poorly (F1=0.52), motivating domain-specific fine-tuning. PubMedBERT fine-tuned on SciFact achieves F1=0.63 and AUROC=0.81, demonstrating that domain-matched pre-training is the strongest adaptation strategy. Code and models are available at https://github.com/varunteja99/hallucination-detection-nlp",
+          "extra": {
+            "authors": [
+              "Varun Teja Chundru",
+              "Debasmita Biswas"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.AI",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.11878v1"
+          },
+          "score": 7.0,
+          "summary": "提出多信号融合的领域特定幻觉检测流水线，结合微调、不确定性量化与校准，提升可信度。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi-K2.6, GLM-5.2, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 180618,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "gemma3",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llama3",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 9.0,
+          "summary": "本地一键运行最新开源大模型，支持Kimi、GLM等，部署门槛极低。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "The context API to search, scrape, and interact with the web at scale. 🔥",
+          "extra": {
+            "stars": 178895,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "大规模网页搜索与抓取的API，为RAG和Agent提供实时数据源。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 155378,
+            "language": "TypeScript",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "deepseek",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "python",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 8.0,
+          "summary": "一站式构建Agent工作流与RAG管道，支持多模型与生产级部署。"
+        },
+        {
+          "section": "repo",
+          "title": "langchain-ai/openwiki",
+          "url": "https://github.com/langchain-ai/openwiki",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-22T23:48:26Z",
+          "raw_text": "OpenWiki is a CLI that writes and maintains agent documentation for your codebase.",
+          "extra": {
+            "stars": 16380,
+            "language": "TypeScript",
+            "topics": []
+          },
+          "score": 8.0,
+          "summary": "CLI工具自动为代码库生成并维护Agent文档，提升协作效率。"
+        },
+        {
+          "section": "repo",
+          "title": "trailhq/Graft",
+          "url": "https://github.com/trailhq/Graft",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-03T13:44:21Z",
+          "raw_text": "Turbocharge Claude Code, Cursor, Codex, Gemini & every coding agent: faster, cheaper, with contextual understanding specific to your codebase.",
+          "extra": {
+            "stars": 7003,
+            "language": "TypeScript",
+            "topics": [
+              "ai-agents",
+              "anthropic",
+              "claude-code",
+              "cli",
+              "code-graph",
+              "codex",
+              "context-engineering",
+              "cursor",
+              "developer-tools",
+              "gemini",
+              "knowledge-graph",
+              "llm",
+              "mcp",
+              "mcp-server",
+              "open-source",
+              "openai",
+              "tree-sitter"
+            ]
+          },
+          "score": 8.0,
+          "summary": "为Claude Code等编码Agent加速并注入代码库上下文，降本增效。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "OpenAI puts Pro subscriptions on hold due to Astra demand",
+          "url": "https://techcrunch.com/2026/09/10/openai-puts-pro-subscriptions-on-hold-due-to-astra-demand/",
+          "source": "TechCrunch",
+          "published_at": "2026-09-10T20:59:51Z",
+          "raw_text": "The company said Pro subscriptions put the most strain on its systems, so it's pausing sign-ups while adding more capacity.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "OpenAI因Astra需求暂停Pro订阅，反映算力瓶颈与用户增长矛盾。"
+        },
+        {
+          "section": "news",
+          "title": "OpenAI Agents API",
+          "url": "https://developers.openai.com/api/docs/guides/agents-api/overview",
+          "source": "Hacker News",
+          "published_at": "2026-09-10T19:43:22Z",
+          "raw_text": "Article URL: https://developers.openai.com/api/docs/guides/agents-api/overview Comments URL: https://news.ycombinator.com/item?id=49649213 Points: 188 # Comments: 118",
+          "extra": {},
+          "score": 9.0,
+          "summary": "OpenAI发布Agents API，降低AI自主任务开发门槛，生态关键一步。"
+        },
+        {
+          "section": "news",
+          "title": "Google will buy half the electricity from one of Finland's nuclear power plants",
+          "url": "https://www.bbc.com/news/articles/c8r6y4me2g6o",
+          "source": "Hacker News",
+          "published_at": "2026-09-11T00:42:41Z",
+          "raw_text": "Article URL: https://www.bbc.com/news/articles/c8r6y4me2g6o Comments URL: https://news.ycombinator.com/item?id=49652105 Points: 150 # Comments: 110",
+          "extra": {},
+          "score": 8.0,
+          "summary": "谷歌购买芬兰核电厂一半电力，显示科技巨头为AI能源需求锁定核电。"
+        },
+        {
+          "section": "news",
+          "title": "Panic builds over bankrupt Spirit’s looming data sale to Google",
+          "url": "https://arstechnica.com/tech-policy/2026/09/panic-builds-over-bankrupt-spirits-looming-data-sale-to-google/",
+          "source": "Ars Technica",
+          "published_at": "2026-09-10T18:14:14Z",
+          "raw_text": "\"Bankruptcy cannot become the new land grab for AI.”",
+          "extra": {},
+          "score": 8.0,
+          "summary": "破产公司Spirit拟向谷歌出售数据引争议，触及AI数据获取伦理红线。"
+        },
+        {
+          "section": "news",
+          "title": "Universal Music is launching an AI music platform with ElevenLabs",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/993465/universal-music-elevenlabs-ai",
+          "source": "The Verge",
+          "published_at": "2026-09-10T15:38:19Z",
+          "raw_text": "Universal Music Group is launching a new AI-powered platform that will allow users to draw from its catalog of licensed music to create song remixes, mashups, and new takes on tracks, according to an announcement on Thursday. The record label is developing the platform through a multiyear licensing agreement with ElevenLabs, a company that specializes […]",
+          "extra": {},
+          "score": 7.0,
+          "summary": "环球音乐与ElevenLabs推AI音乐平台，版权方首次深度参与AI创作。"
+        },
+        {
+          "section": "news",
+          "title": "Six Chinese AI firms accused of aggressively copying US frontier models",
+          "url": "https://arstechnica.com/tech-policy/2026/09/six-chinese-ai-firms-accused-of-aggressively-copying-us-frontier-models/",
+          "source": "Ars Technica",
+          "published_at": "2026-09-09T20:06:28Z",
+          "raw_text": "US urges AI firms to ID, then secretly switch, Chinese users to less-capable models.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "美方指控六家中国AI公司抄袭前沿模型，加剧技术脱钩与监管博弈。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Introducing WeatherNext 3, our most advanced and accurate global weather AI model",
+          "url": "https://deepmind.google/blog/introducing-weathernext-3-our-most-advanced-and-accurate-global-weather-ai-model/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-03T15:02:08Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "发布最先进全球天气AI模型，预测精度与速度显著提升，对防灾、能源等领域影响直接。"
+        },
+        {
+          "section": "product",
+          "title": "Introducing ChatGPT for Financial Services",
+          "url": "https://openai.com/index/introducing-chatgpt-financial-services",
+          "source": "OpenAI",
+          "published_at": "2026-09-10T07:00:00Z",
+          "raw_text": "Introducing ChatGPT for Financial Services, combining built-in financial data and GPT-6 Astra for research, modeling, and client-ready materials.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "推出金融专用ChatGPT，内置金融数据与GPT-6 Astra，可生成研报与模型，行业应用门槛骤降。"
+        },
+        {
+          "section": "product",
+          "title": "AlphaGenome Atlas: A predictive map of every possible DNA letter change in the human genome",
+          "url": "https://deepmind.google/blog/alphagenome-atlas-a-predictive-map-of-every-possible-dna-letter-change-in-the-human-genome/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-08T14:00:15Z",
+          "raw_text": "AlphaGenome Atlas maps the molecular effects of 9 billion single-letter DNA variants across the human genome.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "发布人类基因组90亿单碱基变异预测图谱，为精准医学与疾病研究提供基础资源。"
+        }
+      ]
+    }
+  ]
+}
