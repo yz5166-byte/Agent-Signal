@@ -1,0 +1,286 @@
+{
+  "date": "2026-09-15",
+  "tip": {
+    "title": "用本地CLI让Agent安全编辑Office文档",
+    "body": "**场景**：当你的Agent需要直接操作Office文档（如生成报告、修改表格），但依赖第三方API有延迟或隐私风险时。\n\n**做法**：使用 `genspark-ai/genoffice` 的CLI接口，让Agent通过命令行安全调用本地Office编辑功能。\n\n```bash\n# 示例：Agent调用CLI创建并写入文档\ngenoffice create report.docx --content \"# 周报\\n- 完成模块A\"\ngenoffice edit report.docx --replace \"模块A\" \"模块B\"\n```\n\n**注意**：CLI运行在本地沙箱中，Agent仅传递结构化参数，不执行任意代码，避免裸 `exec` 风险。",
+    "ref_title": "genspark-ai/genoffice",
+    "ref_url": "https://github.com/genspark-ai/genoffice"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError",
+    "arXiv 整体抓取失败：ReadTimeout"
+  ],
+  "sections": [
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "genspark-ai/genoffice",
+          "url": "https://github.com/genspark-ai/genoffice",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-31T09:40:58Z",
+          "raw_text": "Free, open-source AI Office suite: Docs, Sheets, Slides, PDF, Markdown and HTML editors with a built-in AI agent, plus a `genoffice` CLI and agent skill so Claude Code, Codex and Cursor can create and edit real .docx/.xlsx/.pptx files locally. Bring your own key. macOS, Windows & Linux.",
+          "extra": {
+            "stars": 6784,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agent",
+              "claude-code",
+              "cli",
+              "codex",
+              "cursor",
+              "docx",
+              "excel",
+              "libreoffice-alternative",
+              "local-first",
+              "markdown-editor",
+              "microsoft-office-alternative",
+              "office-suite",
+              "pdf-editor",
+              "pdf-to-word",
+              "powerpoint",
+              "pptx",
+              "skills",
+              "spreadsheet",
+              "xlsx"
+            ]
+          },
+          "score": 9.0,
+          "summary": "开源AI办公套件，支持本地编辑Office文档，并集成CLI供AI代理直接调用。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "The context API to search, scrape, and interact with the web at scale. 🔥",
+          "extra": {
+            "stars": 180513,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "大规模网页搜索、抓取与交互的上下文API，适合构建数据管道。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 155750,
+            "language": "TypeScript",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "deepseek",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "python",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 8.0,
+          "summary": "一站式构建Agent工作流与RAG管道，支持多模型与私有部署。"
+        },
+        {
+          "section": "repo",
+          "title": "trailhq/Graft",
+          "url": "https://github.com/trailhq/Graft",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-03T13:44:21Z",
+          "raw_text": "Turbocharge Claude Code, Cursor, Codex, Gemini & every coding agent: faster, cheaper, with contextual understanding specific to your codebase.",
+          "extra": {
+            "stars": 7867,
+            "language": "TypeScript",
+            "topics": [
+              "ai-agents",
+              "anthropic",
+              "claude-code",
+              "cli",
+              "code-graph",
+              "codex",
+              "context-engineering",
+              "cursor",
+              "developer-tools",
+              "gemini",
+              "knowledge-graph",
+              "llm",
+              "mcp",
+              "mcp-server",
+              "open-source",
+              "openai",
+              "tree-sitter"
+            ]
+          },
+          "score": 8.0,
+          "summary": "为Claude Code等编码代理加速，提供代码库上下文理解，更省成本。"
+        },
+        {
+          "section": "repo",
+          "title": "langchain-ai/openwiki",
+          "url": "https://github.com/langchain-ai/openwiki",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-22T23:48:26Z",
+          "raw_text": "OpenWiki is a CLI that writes and maintains agent documentation for your codebase.",
+          "extra": {
+            "stars": 16499,
+            "language": "TypeScript",
+            "topics": []
+          },
+          "score": 7.0,
+          "summary": "CLI工具，自动为代码库编写并维护代理文档，提升协作效率。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Ex-FTC boss Khan: break out the handcuffs for AI CEOs, citing 1934 precedent",
+          "url": "https://www.theregister.com/ai-and-ml/2026/09/14/ex-ftc-boss-khan-urges-uncle-sam-to-break-out-the-handcuffs-for-ai-ceos-citing-1934-precedent/5296325",
+          "source": "Hacker News",
+          "published_at": "2026-09-15T00:40:14Z",
+          "raw_text": "Article URL: https://www.theregister.com/ai-and-ml/2026/09/14/ex-ftc-boss-khan-urges-uncle-sam-to-break-out-the-handcuffs-for-ai-ceos-citing-1934-precedent/5296325 Comments URL: https://news.ycombinator.com/item?id=49706223 Points: 103 # Comments: 50",
+          "extra": {},
+          "score": 9.0,
+          "summary": "前FTC主席呼吁对AI CEO采取刑事手段，援引1934年先例，监管信号极强。"
+        },
+        {
+          "section": "news",
+          "title": "Is Big Tech’s AI slowdown a safety pact or a cartel?",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/995186/is-big-techs-ai-slowdown-a-safety-pact-or-a-cartel",
+          "source": "The Verge",
+          "published_at": "2026-09-14T22:59:41Z",
+          "raw_text": "When OpenAI CEO Sam Altman, Anthropic CEO Dario Amodei, Google DeepMind cofounder Demis Hassabis, and SpaceX head Elon Musk loosely agreed over the weekend to slow down AI development, skeptics spotted an ulterior motive immediately. The AI titans had declared that their aim was to \"pace the frontier,\" signing on at least partially to a […]",
+          "extra": {},
+          "score": 8.0,
+          "summary": "AI巨头被质疑以安全为名组建卡特尔，行业竞争格局或生变。"
+        },
+        {
+          "section": "news",
+          "title": "Amazon vs. Perplexity – U.S. Court of Appeals for the Ninth Circuit",
+          "url": "https://law.justia.com/cases/federal/appellate-courts/ca9/26-1444/26-1444-2026-08-04.html",
+          "source": "Hacker News",
+          "published_at": "2026-09-14T21:05:22Z",
+          "raw_text": "Article URL: https://law.justia.com/cases/federal/appellate-courts/ca9/26-1444/26-1444-2026-08-04.html Comments URL: https://news.ycombinator.com/item?id=49704008 Points: 193 # Comments: 195",
+          "extra": {},
+          "score": 8.0,
+          "summary": "亚马逊诉Perplexity案进入第九巡回上诉法院，将影响AI搜索版权边界。"
+        },
+        {
+          "section": "news",
+          "title": "OpenAI buys smartphone camera maker Glass Imaging for $300 million, report says",
+          "url": "https://techcrunch.com/2026/09/14/openai-buys-smartphone-camera-maker-glass-imaging-for-300-million-report-says/",
+          "source": "TechCrunch",
+          "published_at": "2026-09-14T20:44:14Z",
+          "raw_text": "Glass Imaging was founded by a pair of former Apple engineers who previously led the team that developed Apple's Portrait Mode.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "OpenAI 3亿美元收购苹果前工程师创立的相机公司，布局多模态硬件。"
+        },
+        {
+          "section": "news",
+          "title": "OpenAI stuck fighting Musk antitrust suit after Apple finds a way out",
+          "url": "https://arstechnica.com/tech-policy/2026/09/musk-drops-apple-from-antitrust-suit-but-keeps-gunning-for-openai/",
+          "source": "Ars Technica",
+          "published_at": "2026-09-14T19:45:13Z",
+          "raw_text": "Musk stops attacking Apple over ChatGPT integration but not OpenAI.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "苹果退出马斯克反垄断诉讼，OpenAI仍陷法律战，科技巨头博弈加剧。"
+        },
+        {
+          "section": "news",
+          "title": "AI agents blew the whistle on their cheating colleagues",
+          "url": "https://www.technologyreview.com/2026/09/14/1144037/ai-agents-blew-whistle-o-cheating-colleagues/",
+          "source": "MIT Tech Review",
+          "published_at": "2026-09-14T16:00:00Z",
+          "raw_text": "A group of AI agents asked to solve a series of math problems split into rival factions—when some cheated, others tried to stop them. That whistleblowing behavior, seen for the first time in a recent experiment run by Google DeepMind, could have implications for alignment researchers trying to keep swarms of autonomous AI agents in…",
+          "extra": {},
+          "score": 6.0,
+          "summary": "DeepMind实验首次发现AI代理举报作弊行为，对齐研究获新突破。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Introducing WeatherNext 3, our most advanced and accurate global weather AI model",
+          "url": "https://deepmind.google/blog/introducing-weathernext-3-our-most-advanced-and-accurate-global-weather-ai-model/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-03T15:02:08Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "谷歌发布最先进全球天气AI模型，精度超越此前所有版本，对气象预测与防灾有直接价值。"
+        },
+        {
+          "section": "product",
+          "title": "IBM releases SOTA Granite Time Series PatchTST-FM-r2 model with commercial-friendly license",
+          "url": "https://huggingface.co/blog/ibm-research/ibm-releases-sota-granite-time-series",
+          "source": "Hugging Face",
+          "published_at": "2026-09-09T15:36:24Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 8.0,
+          "summary": "IBM发布商用友好许可的时序预测SOTA模型，填补了工业级时间序列基础模型空白。"
+        },
+        {
+          "section": "product",
+          "title": "AlphaGenome Atlas: A predictive map of every possible DNA letter change in the human genome",
+          "url": "https://deepmind.google/blog/alphagenome-atlas-a-predictive-map-of-every-possible-dna-letter-change-in-the-human-genome/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-08T14:00:15Z",
+          "raw_text": "AlphaGenome Atlas maps the molecular effects of 9 billion single-letter DNA variants across the human genome.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "AlphaGenome发布人类基因组90亿单碱基变异预测图谱，为精准医学提供全新基础资源。"
+        }
+      ]
+    }
+  ]
+}
