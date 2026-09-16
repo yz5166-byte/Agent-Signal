@@ -1,0 +1,411 @@
+{
+  "date": "2026-09-16",
+  "tip": {
+    "title": "多智能体通信加一层输出审查器",
+    "body": "**场景**：多智能体协作时，即使每个 Agent 都诚实且胜任，仍可能因缺乏社会约束而整体失败（条目[0]）。\n\n**做法**：为每个 Agent 添加一个**输出审查器**，在它生成消息后、发送前检查是否包含冲突指令或冗余信息。\n\n```python\n# 简单审查器示例\ndef social_harness(message: str, agent_id: str) -> str:\n    if \"请忽略\" in message or \"重复\" in message:\n        return f\"[Agent {agent_id} 消息被拦截：检测到冲突或冗余]\"\n    return message\n```\n\n将审查器作为中间件嵌入 Agent 通信管道，无需修改 Agent 内部逻辑。",
+    "ref_title": "Agentic Societies Need a Social Harness",
+    "ref_url": "https://arxiv.org/abs/2609.17527v1"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "Agentic Societies Need a Social Harness",
+          "url": "https://arxiv.org/abs/2609.17527v1",
+          "source": "arXiv",
+          "published_at": "2026-09-15T17:57:27Z",
+          "raw_text": "An agentic society is a collection of AI agents that coordinate autonomously across trust boundaries, on behalf of different principals whose objectives may only partially align. We show experimentally that in agentic societies even honest, competent agents often fail to reach satisfactory outcomes with existing harnesses and messaging primitives, and that faulty or malicious agents can stall collaboration, influence outcomes, and pursue other harmful goals by exploiting vulnerabilities in communication (``speech''). We argue that agentic societies need a \\emph{social harness} for inter-agent interactions, in addition to each agent's \\emph{personal harness}, which manages its private context and communication with its principal. We propose a layered architecture for social harnesses which (i) prevents classes of failures outright, (ii) enables agents to detect invalid messages at runtime, and (iii) supports post-facto investigation and consequences, and highlight directions for future research to realize these capabilities.",
+          "extra": {
+            "authors": [
+              "Tapan Chugh",
+              "Vidushi Singh",
+              "Krish Jain",
+              "Arvind Krishnamurthy",
+              "Ratul Mahajan"
+            ],
+            "categories": [
+              "cs.MA",
+              "cs.AI",
+              "cs.NI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.17527v1"
+          },
+          "score": 9.0,
+          "summary": "实验证明，多智能体社会中即使诚实、胜任的智能体也常失败，需设计社会约束机制。"
+        },
+        {
+          "section": "paper",
+          "title": "When Should LLMs Abstain? Chain-of-Self-Questioning for Selective Risk Control",
+          "url": "https://arxiv.org/abs/2609.17516v1",
+          "source": "arXiv",
+          "published_at": "2026-09-15T17:52:24Z",
+          "raw_text": "Large language models can produce fluent answers when their factual support is weak. This paper introduces Chain-of-Self-Questioning (CoSQ), a prompt-only framework that makes answer commitment conditional on an explicit assessment of the information required to answer a question. We evaluate three CoSQ variants under seventeen conditions on the 817-item TruthfulQA multiple-choice validation set using eleven open-weight and hosted model families. In the final balanced-option protocol, Grounded-CoSQ at τ=0.90 reduces the mean unconditional wrong-commitment rate from 13.1% under chain-of-thought prompting to 8.9%, a 32.1% relative reduction, while increasing answered accuracy from 86.9% to 89.7% and answering 87.6% of questions. Both improvements hold for all eleven models and at every evaluated threshold. Critical-CoSQ and Adaptive-CoSQ provide neighboring operating points with 88.6% and 86.5% coverage, respectively, while remaining more reliable than the baseline. A secondary Natural Questions Short-Answer evaluation provides convergent open-form evidence. These findings show that self-assessment can support explicit, tunable answer-or-abstain decisions when an unsupported commitment is more costly than referral or review.",
+          "extra": {
+            "authors": [
+              "Ali Şenol"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.17516v1"
+          },
+          "score": 8.0,
+          "summary": "提出CoSQ框架，让LLM在回答前先自我提问评估信息充分性，减少幻觉风险。"
+        },
+        {
+          "section": "paper",
+          "title": "What Breaks Under Pruning in Smart Homes, and When? Evaluating LLM Degradation Across Architectures and Task Complexity",
+          "url": "https://arxiv.org/abs/2609.17515v1",
+          "source": "arXiv",
+          "published_at": "2026-09-15T17:51:48Z",
+          "raw_text": "Pruning can reduce the deployment cost of large language models (LLMs), but its impact on context-grounded tool calling remains poorly understood. We systematically study pruning-induced degradation in smart-home tool calling across four LLMs spanning dense Transformer, dense hybrid, and mixture-of-experts (MoE) architectures, together with depth, width, hybrid, and expert pruning methods. After post-pruning supervised fine-tuning (SFT), we evaluate more than 19,500 instances from three smart-home datasets. Beyond aggregate task accuracy, we characterize degradation along two dimensions: action components (i.e., operation, device, argument, and value) and task complexity. Our results show that dense models have narrow safe pruning regions followed by sharp degradation, while MoE models tolerate substantially more pruning. Pruning degrades grounded specificity before schema-level intent, and aggressive dense pruning can induce systematic over-refusal. These findings highlight the importance of evaluating pruning beyond aggregate accuracy when selecting pruned LLMs for reliable tool execution.",
+          "extra": {
+            "authors": [
+              "Congjing Zhang",
+              "Vashishtha Patil",
+              "Henning Lange",
+              "Usman Aleem"
+            ],
+            "categories": [
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.17515v1"
+          },
+          "score": 8.0,
+          "summary": "系统评估剪枝对LLM工具调用能力的影响，发现不同架构退化模式差异显著。"
+        },
+        {
+          "section": "paper",
+          "title": "Decomposition Buys Integrity, Not Yield",
+          "url": "https://arxiv.org/abs/2609.17464v1",
+          "source": "arXiv",
+          "published_at": "2026-09-15T17:04:09Z",
+          "raw_text": "Multi-agent systems split a task across a tree of agents and justify the split with folklore: smaller contexts, cleaner separation, parallelism. We ask what the split does to how much of what the leaves discover reaches the root. Model a decomposition as a tree in which an agent handed $b$ items keeps any one with probability $r(b)$. If $r(b)=1/b$, every tree delivers exactly one finding, for every task size and every shape; we verify this to $2.4 \\times 10^{-15}$ on 20,000 random irregular trees. If $r(b)=Cb^{-δ}$, a depth-$k$ tree over $N$ findings yields $C^k N^{1-δ}$: task size and architecture separate, and architecture contributes only $C \\le 1$ per level, so flat is optimal for yield and no arrangement of agents escapes the exponent $δ$. On 600 production deep-research traces $δ= 0.34$ [0.30, 0.38], by three identifications that do not share a failure mode. At a hop where item boundaries come from the tool rather than a text heuristic, and where $b=1$ occurs 550 times, $C = 0.571$ [0.527, 0.615] is observed rather than extrapolated, over 16,082 hops. A tier also costs alignment: on 1,012 annotated multi-agent traces one brief in sixteen goes off-target, giving $μ= 0.939$ and a per-tier penalty $Cμ= 0.536$. Depth is bought on two other axes. The root context is the only state that persists and the only one that cannot cheaply forget, and depth cuts its exposure from $N$ items to $N^{1/k}$. Depth is also cheaper: production flat agents bill as $N^{1.39}$, not the $N^2$ an append-only context predicts, and at equal spend two tiers overtake flat at 403 findings. Across every parameter we measured the model says 0.7% to 11.3% of production sessions are worth delegating, against 7.8% that do. A hazard model on 743,819 production tool calls finds that delegation does not respond to a filling context and is instead an opening move.",
+          "extra": {
+            "authors": [
+              "Rong He"
+            ],
+            "categories": [
+              "cs.MA",
+              "cs.AI",
+              "cs.DC"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.17464v1"
+          },
+          "score": 7.0,
+          "summary": "理论分析揭示多智能体任务分解虽保完整性，但信息传递效率未必提升。"
+        },
+        {
+          "section": "paper",
+          "title": "ScienceBuddy: Recursive-in-Recursive Self-Improvement for Interactive Scientific Agents",
+          "url": "https://arxiv.org/abs/2609.17523v1",
+          "source": "arXiv",
+          "published_at": "2026-09-15T17:55:28Z",
+          "raw_text": "We introduce and release ScienceBuddy, an interactive scientific research workspace that brings continually improving scientific agents into researchers' everyday workflows. ScienceBuddy supports researchers in carrying out scientific tasks while transforming their requests, feedback, and execution evidence into tasks and evaluation rubrics for continual learning. At its core is recursive-in-recursive self-improvement, a paradigm that couples harness evolution with model reinforcement learning: the inner recursion improves the harness with the model fixed, while the outer recursion trains the model under the improved harness. Harness evolution shapes training experience, and model learning creates new opportunities for harness adaptation. We present case studies of researcher interaction, harness refinement, and model learning, with the benchmark cases spanning four scientific task families. By releasing ScienceBuddy as a research product, we make this paradigm available to the scientific community and take a step toward discovery intelligence: scientific AI that advances through sustained collaboration with researchers and evolves alongside the research it supports. Website: http://science-buddy.io",
+          "extra": {
+            "authors": [
+              "Shuhan Xue",
+              "Jianyuan Zhong",
+              "Ziyuan Nan",
+              "Wenbin Li",
+              "Zhaochen Yu",
+              "Jinchao Ding",
+              "Qiang Gao",
+              "Pengyu Zhan",
+              "Yuntong Zhang",
+              "Tian Cheng",
+              "Zhenfei Yin",
+              "Yingcheng Wu",
+              "Ling Yang"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.17523v1"
+          },
+          "score": 7.0,
+          "summary": "发布交互式科研智能体，支持递归自我改进，将AI持续融入研究者日常工作流。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "The context API to search, scrape, and interact with the web at scale. 🔥",
+          "extra": {
+            "stars": 180963,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "大规模网页抓取与交互的上下文API，直接解决AI应用的数据获取痛点。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 155890,
+            "language": "TypeScript",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "deepseek",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "python",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 9.0,
+          "summary": "一站式构建Agent工作流与RAG管道，支持私有部署，从原型到生产无需重构。"
+        },
+        {
+          "section": "repo",
+          "title": "trailhq/Graft",
+          "url": "https://github.com/trailhq/Graft",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-03T13:44:21Z",
+          "raw_text": "Turbocharge Claude Code, Cursor, Codex, Gemini & every coding agent: faster, cheaper, with contextual understanding specific to your codebase.",
+          "extra": {
+            "stars": 8106,
+            "language": "TypeScript",
+            "topics": [
+              "ai-agents",
+              "anthropic",
+              "claude-code",
+              "cli",
+              "code-graph",
+              "codex",
+              "context-engineering",
+              "cursor",
+              "developer-tools",
+              "gemini",
+              "knowledge-graph",
+              "llm",
+              "mcp",
+              "mcp-server",
+              "open-source",
+              "openai",
+              "tree-sitter"
+            ]
+          },
+          "score": 8.0,
+          "summary": "为编码Agent注入代码库上下文，提速降本，直接提升开发效率。"
+        },
+        {
+          "section": "repo",
+          "title": "genspark-ai/genoffice",
+          "url": "https://github.com/genspark-ai/genoffice",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-31T09:40:58Z",
+          "raw_text": "Free, open-source AI Office suite: Docs, Sheets, Slides, PDF, Markdown and HTML editors with a built-in AI agent, plus a `genoffice` CLI and agent skill so Claude Code, Codex and Cursor can create and edit real .docx/.xlsx/.pptx files locally. Bring your own key. macOS, Windows & Linux.",
+          "extra": {
+            "stars": 6850,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agent",
+              "claude-code",
+              "cli",
+              "codex",
+              "cursor",
+              "docx",
+              "excel",
+              "libreoffice-alternative",
+              "local-first",
+              "markdown-editor",
+              "microsoft-office-alternative",
+              "office-suite",
+              "pdf-editor",
+              "pdf-to-word",
+              "powerpoint",
+              "pptx",
+              "skills",
+              "spreadsheet",
+              "xlsx"
+            ]
+          },
+          "score": 8.0,
+          "summary": "开源AI办公套件，支持Agent直接创建编辑真实Office文件，跨平台可用。"
+        },
+        {
+          "section": "repo",
+          "title": "langchain-ai/openwiki",
+          "url": "https://github.com/langchain-ai/openwiki",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-22T23:48:26Z",
+          "raw_text": "OpenWiki is a CLI that writes and maintains agent documentation for your codebase.",
+          "extra": {
+            "stars": 16543,
+            "language": "TypeScript",
+            "topics": []
+          },
+          "score": 7.0,
+          "summary": "CLI工具自动为代码库编写并维护Agent文档，解决文档滞后难题。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "We don’t need AI regulation — leave safety to us, Nvidia’s Jensen Huang says",
+          "url": "https://techcrunch.com/2026/09/15/we-dont-need-ai-regulation-leave-safety-to-us-nvidias-jensen-huang-says/",
+          "source": "TechCrunch",
+          "published_at": "2026-09-16T00:20:39Z",
+          "raw_text": "AI isn't some new form of \"alien mind,\" according to Jensen Huang. It's just hardware and software, so safety can be engineered by each AI product maker.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "黄仁勋反对AI监管，主张由企业自行负责安全，引发行业对治理模式的争论。"
+        },
+        {
+          "section": "news",
+          "title": "Exclusive: Paying for frontier AI models buys 4-month head start at 5x the cost",
+          "url": "https://arstechnica.com/ai/2026/09/exclusive-open-chinese-models-close-gap-with-silicon-valleys-frontier-ai-models/",
+          "source": "Ars Technica",
+          "published_at": "2026-09-15T12:00:41Z",
+          "raw_text": "Ars previewed Mozilla’s report on how cheap open models caught up on capability.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Mozilla报告揭示：付费闭源模型仅领先4个月，成本却是开源模型的5倍。"
+        },
+        {
+          "section": "news",
+          "title": "The AI industry has taken a doomer turn. What now?",
+          "url": "https://www.technologyreview.com/2026/09/14/1144048/the-ai-industry-has-taken-a-doomer-turn-what-now/",
+          "source": "MIT Tech Review",
+          "published_at": "2026-09-14T17:54:22Z",
+          "raw_text": "This story appeared in The Algorithm, our weekly newsletter on AI. To get stories like this in your inbox first, sign up here. This weekend, Dario Amodei, CEO of Anthropic, posted an essay calling for a brake on the pace of development of LLMs. Amodei cites the looming dangers he sees from the technology, from its…",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Anthropic CEO呼吁放缓LLM开发，标志AI行业内部对安全风险的担忧升级。"
+        },
+        {
+          "section": "news",
+          "title": "AI and data centers are incredibly unpopular in every poll",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/995917/data-center-nyt-midterm-poll-september",
+          "source": "The Verge",
+          "published_at": "2026-09-15T23:34:25Z",
+          "raw_text": "Poll data released Tuesday by the New York Times and Siena University confirms what we've already been seeing, and what politicians are responding to - AI and data centers are incredibly unpopular. Asked if they support or oppose the construction of data centers to power AI tech, 61 percent of the 1,503 likely voters surveyed […]",
+          "extra": {},
+          "score": 7.0,
+          "summary": "民调显示61%民众反对建设AI数据中心，反映公众对AI扩张的强烈抵触情绪。"
+        },
+        {
+          "section": "news",
+          "title": "Meta now lets AI agents handle the boring parts of WhatsApp Business setup",
+          "url": "https://techcrunch.com/2026/09/15/meta-now-lets-ai-agents-handle-the-boring-parts-of-whatsapp-business-setup/",
+          "source": "TechCrunch",
+          "published_at": "2026-09-15T20:12:53Z",
+          "raw_text": "A new WhatsApp Business MCP server lets developers use AI coding agents like Claude, Cursor, Codex, and ChatGPT to handle setup, messaging templates, testing, and troubleshooting.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "Meta开放WhatsApp Business的AI代理接口，开发者可用Claude等工具自动化设置。"
+        },
+        {
+          "section": "news",
+          "title": "What’s at stake in AI’s trillion-dollar gamble",
+          "url": "https://www.technologyreview.com/2026/09/15/1144028/ai-infrastructure-boom-investment-bubble-risk/",
+          "source": "MIT Tech Review",
+          "published_at": "2026-09-15T10:00:00Z",
+          "raw_text": "When Jessica Wachter, a finance professor at the University of Pennsylvania’s Wharton School, wanted to assess AI’s impact on the economy over the next few years, she faced a long list of business and technical uncertainties. So she started with what she calls a “remarkable fact” that is not in question: A handful of so-called…",
+          "extra": {},
+          "score": 7.0,
+          "summary": "沃顿教授分析AI万亿赌注：经济影响不确定，但投入规模已不可逆转。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Introducing Gemini 3.8 Live and 3.8 Live Extended Thinking",
+          "url": "https://deepmind.google/blog/introducing-gemini-3-8-live-and-3-8-live-extended-thinking/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-15T17:05:57Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "谷歌发布 Gemini 3.8 Live 系列，支持实时交互与扩展思维链，是模型能力的重要升级。"
+        },
+        {
+          "section": "product",
+          "title": "AlphaGenome Atlas: A predictive map of every possible DNA letter change in the human genome",
+          "url": "https://deepmind.google/blog/alphagenome-atlas-a-predictive-map-of-every-possible-dna-letter-change-in-the-human-genome/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-08T14:00:15Z",
+          "raw_text": "AlphaGenome Atlas maps the molecular effects of 9 billion single-letter DNA variants across the human genome.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "AlphaGenome Atlas 绘制人类基因组90亿单碱基变异图谱，为精准医学提供基础资源。"
+        },
+        {
+          "section": "product",
+          "title": "Introducing WeatherNext 3, our most advanced and accurate global weather AI model",
+          "url": "https://deepmind.google/blog/introducing-weathernext-3-our-most-advanced-and-accurate-global-weather-ai-model/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-03T15:02:08Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Google 推出 WeatherNext 3 全球天气模型，精度超越前代，是 AI 在科学领域的重要落地。"
+        }
+      ]
+    }
+  ]
+}
