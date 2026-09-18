@@ -1,0 +1,433 @@
+{
+  "date": "2026-09-18",
+  "tip": {
+    "title": "用显式进度日志防止Agent虚假完成报告",
+    "body": "当Agent在长程任务中因“过度承诺”而虚假报告完成度时（如条目[0]所述），可用**显式进度日志**替代隐式状态判断。做法：在Agent的每一步操作后插入结构化日志，记录当前子任务完成状态与置信度。\n\n```python\n# 安全写法：仅记录日志，不执行模型生成的代码\nlog_entry = {\n    \"step\": current_step,\n    \"task\": task_name,\n    \"status\": \"completed\" if confidence > 0.8 else \"in_progress\",\n    \"confidence\": round(confidence, 2)\n}\nappend_to_audit_trail(log_entry)  # 写入只追加的审计文件\n```\n\n此方法让开发者可离线验证Agent的真实进度，避免模型自评偏差。",
+    "ref_title": "Quantifying Overclaiming Propensity in Frontier LLM Agents",
+    "ref_url": "https://arxiv.org/abs/2609.20812v1"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "Quantifying Overclaiming Propensity in Frontier LLM Agents",
+          "url": "https://arxiv.org/abs/2609.20812v1",
+          "source": "arXiv",
+          "published_at": "2026-09-17T17:59:04Z",
+          "raw_text": "Frontier coding agents are increasingly trusted to work autonomously for long periods, yet an agent's final response is often the only account of that work a user sees. We quantify the propensity of frontier agents to \\emph{overclaim} task completion, a misrepresentation that can mislead the user. An agent overclaims when its final response contradicts information in its context. This definition requires no inference about intent and is independent of task success. We introduce \\emph{OverclaimBench}, an evaluation suite composed of five file-review scenarios, transcript-based coverage measurements, and registered planted defects. We evaluate eight proprietary frontier models in their own production command-line interfaces, and four open-weight models under a single fixed harness on OverclaimBench and find that 1) agents do not read all the files they were asked to review in 67.9\\% of runs; 2) among runs where not all files are read, agents are \\emph{misleading} 80.4\\% of the time (59--96\\% per model), either falsely claiming to have read all files or omitting that coverage is incomplete; 3) requiring delegation to subagents increased reading coverage, but among reviews that remained incomplete, a large majority were still misleading; and 4) agents that falsely claimed a complete review missed planted defects at about 1.8 times the rate of agents that read every file, showing that claims of completion can conceal substantive failures. Together, these results show that agents' final responses are not reliable accounts of their actions.",
+          "extra": {
+            "authors": [
+              "Nolan Smyth",
+              "Yorguin-Jose Mantilla-Ramos",
+              "Pascal Jr Tikeng Notsawo",
+              "Saskia Helbling",
+              "Alberto Tosato",
+              "Mohamed Amine Merzouk",
+              "Nouha Dziri",
+              "Gauthier Gidel",
+              "Tommaso Tosato"
+            ],
+            "categories": [
+              "cs.SE",
+              "cs.AI",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.20812v1"
+          },
+          "score": 9.0,
+          "summary": "量化前沿AI Agent在自主任务中夸大完成度的倾向，揭示安全评估盲区。"
+        },
+        {
+          "section": "paper",
+          "title": "An Empirical Study of Harness Design for Coding Agents",
+          "url": "https://arxiv.org/abs/2609.20804v1",
+          "source": "arXiv",
+          "published_at": "2026-09-17T17:58:07Z",
+          "raw_text": "Coding harnesses shape how autonomous coding agents translate model capabilities into long-horizon software-engineering performance, yet existing work typically evaluates harnesses as monolithic systems, leaving the effectiveness of individual components unclear. To enable component-level comparisons, we study this question with a lightweight coding harness whose execution loop is fixed while three components are varied: planning, action space, and context management. Across four models evaluated on SWE-Bench Verified and Terminal-Bench 2.1, we evaluate 176 matched settings spanning five context-management strategies, four context-window budgets, and targeted ablations of planning and action space. We find that: (1) Context management becomes increasingly valuable as the context-window budget tightens, with most of its benefit coming from preventing context-overflow failures. (2) Staging rule-based elision before LLM-based summarization provides the strongest overall efficiency among the context-management strategies, whereas making elided content recoverable adds machinery that models rarely use and yields no accuracy gain. (3) Planning shifts from an accuracy scaffold for weaker models to a cost saver for stronger models, with little change in accuracy. (4) Predefined tools improve performance for models with weaker bash proficiency, whereas bash-capable models can operate effectively with a bash-only interface and achieve substantially lower cost, especially on command-line-centric tasks. Trajectory-level analysis explains these effects: context management extends execution trajectories without substantially altering agent behavior, planning changes where trajectories stop, and the action space changes the granularity at which code is written. These findings inform model- and budget-aware harness design and provide a modular framework for evaluating future harness components.",
+          "extra": {
+            "authors": [
+              "Run-Ze Fan",
+              "Zihao Zhang",
+              "Simin Ma",
+              "Yebowen Hu",
+              "Shouju Wang",
+              "Kaiqiang Song",
+              "Fei Liu",
+              "Hamed Zamani",
+              "Xiaoyang Wang"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL",
+              "cs.LG",
+              "cs.SE"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.20804v1"
+          },
+          "score": 8.0,
+          "summary": "拆解编码Agent的框架组件，为优化长程软件工程性能提供实证依据。"
+        },
+        {
+          "section": "paper",
+          "title": "RetireOPD: Self-Retiring On-Policy Distillation for Agentic Reinforcement Learning",
+          "url": "https://arxiv.org/abs/2609.20784v1",
+          "source": "arXiv",
+          "published_at": "2026-09-17T17:52:08Z",
+          "raw_text": "Multi-turn agents trained with reinforcement learning (RL) receive a single scalar reward per trajectory, which motivates self on-policy distillation (OPD) to supply dense token-level supervision from a self-teacher with privileged task skills, letting a skill-free student internalize them. This recipe, however, is undermined by two findings in agentic tasks: privileged information alone does not always make a teacher reliable, and the benefit of teacher supervision is stage-dependent. We therefore propose RetireOPD (Self-Retiring On-Policy Distillation), which first optimizes a decoupled, skill-conditioned teacher with environment rewards and then trains a skill-free student jointly with RL and OPD. Rather than following a predefined distillation schedule, RetireOPD adopts Adaptive Retirement: the student drops the teacher on its own once their discrepancy stops shrinking and it reaches a target fraction of the teacher's success rate, after which training proceeds with RL alone. Across Qwen2.5 models from 1.5B to 7B, RetireOPD improves ALFWorld success rate over RL baseline by 14.1% to 18.8% and WebShop accuracy by 11.8% to 19.0%, and surpasses its own skill-conditioned teacher in every setting.",
+          "extra": {
+            "authors": [
+              "Yan Yu",
+              "Zhengxi Lu",
+              "Yizhou Liu",
+              "Yichen Pan",
+              "Aozhe Wang",
+              "Qipeng Chen",
+              "Hua Yang",
+              "Wenqi Zhang",
+              "Weiming Lu",
+              "Qianglong Chen",
+              "Yongliang Shen"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.20784v1"
+          },
+          "score": 8.0,
+          "summary": "提出自退火策略蒸馏方法，用密集token监督提升多轮Agent的RL训练效率。"
+        },
+        {
+          "section": "paper",
+          "title": "GeoAAC: Geometry-Based Adaptive Action Chunking from Denoising Trajectories in VLA Policies",
+          "url": "https://arxiv.org/abs/2609.20776v1",
+          "source": "arXiv",
+          "published_at": "2026-09-17T17:48:07Z",
+          "raw_text": "Action chunking is widely used for action generation and execution in Vision-Language-Action (VLA) policies, yet existing approaches commonly use a fixed action horizon. During a rollout, different task stages may require different levels of action continuity, control precision, and closed-loop feedback, making a fixed horizon unable to accommodate changing control requirements. We propose \\textbf{GeoAAC}, a geometry-based adaptive action chunking method for flow-based VLA policies that adjusts the action horizon according to the reliability of the current action prediction. We show that the geometry of Flow Matching denoising trajectories provides process-level information for characterizing prediction reliability, with geometric variation across action prefixes remaining positively correlated with predictive uncertainty. GeoAAC uses this prefix-wise geometry to construct a horizon-wise geometric profile and adaptively determine the action horizon from a single generation without additional training. Experiments with GR00T N1.5 and π0.5 on LIBERO, LIBERO-Pro, RoboCasa365, and real-world manipulation tasks show consistent improvements over fixed-action-horizon baselines and existing adaptive methods, including up to 8.7 percentage points in simulation and an increase in average real-world success rate from 53.3\\% to 74.4\\%.",
+          "extra": {
+            "authors": [
+              "Xin Chen",
+              "Sen Chen",
+              "Yujuan Ding",
+              "Jian Liu",
+              "Guoqing Wang",
+              "Wei Ye",
+              "Heng Tao Shen",
+              "Yi Bin"
+            ],
+            "categories": [
+              "cs.RO",
+              "cs.AI",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.20776v1"
+          },
+          "score": 7.0,
+          "summary": "基于几何的自适应动作分块，让VLA策略在不同任务阶段灵活调整控制粒度。"
+        },
+        {
+          "section": "paper",
+          "title": "Coding Agents with an Obstacle-Aware Harness for Safe Robot Manipulation",
+          "url": "https://arxiv.org/abs/2609.20822v1",
+          "source": "arXiv",
+          "published_at": "2026-09-17T17:59:58Z",
+          "raw_text": "Coding agents have emerged as a promising paradigm for robot manipulation: a language model writes the robot controller as a program, and agents built in this way now operate robots without robot-specific training.Whether this paradigm is also safe, however, has not been asked. We evaluate coding agent under a safety constraint, where each task pairs a manipulation goal with an obstacle the robot must not touch. The agent pursues the goal but collides with the obstacle in most cases, treating task completion as its sole objective while neglecting safety. The agent reasons about the obstacle in its traces, and the prompt already forbids touching it, so neither perception nor instruction is at fault; the fault lies in the planning, where the stated constraint never becomes a priority. By decomposing manipulation into a route phase and a contact-rich moment, we locate the source of the failure. Along the route, the model cannot prioritize the safety constraint, having no notion of a clearing route and none of replanning once a chosen route becomes infeasible. At the contact, it is unaware that contact execution is bounded by the same constraint. To close this gap, we present SafeHarness, which equips the model with two obstacle-aware harnesses that enable it to prioritize the safety constraint. Obstacle-aware route planning grounds the objects as bounding boxes and draws candidate routes over them as sequences of waypoints. The agent then plans a route in advance, verifies it, replans when necessary, and only then executes it. Obstacle-aware contact execution instead selects the contact position so that the contact itself avoids the obstacle. SafeHarness attains 71.9% task success and 87.5% collision avoidance, surpassing the previous SOTA by 6.5% and 27.0%, respectively. These results are $2.3\\times$ and $1.5\\times$ those of the same agent without harnesses.",
+          "extra": {
+            "authors": [
+              "Bingxin Xu",
+              "Yuzhang Shang",
+              "Zhen Dong",
+              "Emilio Ferrara"
+            ],
+            "categories": [
+              "cs.RO",
+              "cs.AI",
+              "cs.CL",
+              "cs.CV"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.20822v1"
+          },
+          "score": 7.0,
+          "summary": "为编码Agent引入障碍感知安全框架，首次系统评估机器人操作中的安全性。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "The web data API to search, scrape, and interact at scale. 🔥",
+          "extra": {
+            "stars": 181752,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "提供搜索、抓取、交互的Web数据API，可直接用于构建数据管道。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 156216,
+            "language": "TypeScript",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "deepseek",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "python",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 9.0,
+          "summary": "一站式构建Agent工作流和RAG管道，支持多种模型和部署方式。"
+        },
+        {
+          "section": "repo",
+          "title": "langchain-ai/openwiki",
+          "url": "https://github.com/langchain-ai/openwiki",
+          "source": "GitHub 新星",
+          "published_at": "2026-06-22T23:48:26Z",
+          "raw_text": "OpenWiki is a CLI that writes and maintains agent documentation for your codebase.",
+          "extra": {
+            "stars": 16609,
+            "language": "TypeScript",
+            "topics": []
+          },
+          "score": 8.0,
+          "summary": "CLI工具自动为代码库编写并维护Agent文档，提升协作效率。"
+        },
+        {
+          "section": "repo",
+          "title": "hypit-ai/hypit",
+          "url": "https://github.com/hypit-ai/hypit",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-29T18:49:19Z",
+          "raw_text": "Clone any viral video with AI agents. Not just a script, the whole workflow: swap the face, the words, the B-roll, ship 100 variants in one command, and get your 100M views.",
+          "extra": {
+            "stars": 9199,
+            "language": "TypeScript",
+            "topics": [
+              "agentic-ai",
+              "ai",
+              "ai-agents",
+              "ai-video",
+              "compiler",
+              "dsl",
+              "ffmpeg",
+              "generative-ai",
+              "llm",
+              "markup-language",
+              "monorepo",
+              "plugin-system",
+              "programming-language",
+              "text-to-video",
+              "typescript",
+              "video",
+              "video-automation",
+              "video-clone",
+              "video-editing",
+              "video-generation"
+            ]
+          },
+          "score": 8.0,
+          "summary": "AI Agent一键克隆爆款视频，支持换脸、改词、批量生成。"
+        },
+        {
+          "section": "repo",
+          "title": "trailhq/Graft",
+          "url": "https://github.com/trailhq/Graft",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-03T13:44:21Z",
+          "raw_text": "Turbocharge Claude Code, Cursor, Codex, Gemini & every coding agent: faster, cheaper, with contextual understanding specific to your codebase.",
+          "extra": {
+            "stars": 8438,
+            "language": "TypeScript",
+            "topics": [
+              "ai-agents",
+              "anthropic",
+              "claude-code",
+              "cli",
+              "code-graph",
+              "codex",
+              "context-engineering",
+              "cursor",
+              "developer-tools",
+              "gemini",
+              "knowledge-graph",
+              "llm",
+              "mcp",
+              "mcp-server",
+              "open-source",
+              "openai",
+              "tree-sitter"
+            ]
+          },
+          "score": 8.0,
+          "summary": "为Claude Code等编码Agent加速，降低费用并增强代码上下文理解。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Crusoe raises $3.9B to build massive data centers and small modular ‘AI factories’",
+          "url": "https://techcrunch.com/2026/09/17/crusoe-raises-3-9b-to-build-massive-data-centers-and-small-modular-ai-factories/",
+          "source": "TechCrunch",
+          "published_at": "2026-09-17T23:25:52Z",
+          "raw_text": "The round values the data center giant at $30.9 billion.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "Crusoe 以 309 亿美元估值融资 39 亿美元，建设大规模数据中心与模块化 AI 工厂，反映 AI 基础设施投资热潮。"
+        },
+        {
+          "section": "news",
+          "title": "Microsoft exec called AI scraping the “largest theft of labor in human history”",
+          "url": "https://arstechnica.com/tech-policy/2026/09/microsoft-exec-called-ai-scraping-the-largest-theft-of-labor-in-human-history/",
+          "source": "Ars Technica",
+          "published_at": "2026-09-17T20:10:41Z",
+          "raw_text": "Microsoft, OpenAI emails reveal fear of AI “doom loop” killing news orgs.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "微软高管称 AI 抓取是“史上最大盗窃”，内部邮件揭示对新闻业生存危机的担忧，引发行业监管讨论。"
+        },
+        {
+          "section": "news",
+          "title": "Google DeepMind launches institute to widen the AGI debate",
+          "url": "https://techcrunch.com/2026/09/17/google-deepmind-launches-institute-to-widen-the-agi-debate/",
+          "source": "TechCrunch",
+          "published_at": "2026-09-17T23:21:17Z",
+          "raw_text": "The new institute aims to surface differing views between Google, Google DeepMind, and the broader global research community around AGI. \"They will not always agree, and they will likely change their minds, as more data and information comes to light at the fast-moving frontier.\"",
+          "extra": {},
+          "score": 8.0,
+          "summary": "DeepMind 成立新机构，旨在拓宽 AGI 辩论范围，引入学界与内部不同观点，影响 AI 治理走向。"
+        },
+        {
+          "section": "news",
+          "title": "Bonsai 2 27B: Near-Lossless Compression in a 9x Smaller Footprint",
+          "url": "https://prismml.com/news/bonsai-2-27b",
+          "source": "Hacker News",
+          "published_at": "2026-09-17T21:13:31Z",
+          "raw_text": "Article URL: https://prismml.com/news/bonsai-2-27b Comments URL: https://news.ycombinator.com/item?id=49746618 Points: 326 # Comments: 106",
+          "extra": {},
+          "score": 8.0,
+          "summary": "PrismML 发布 27B 参数模型，实现近无损压缩至 1/9 体积，对边缘部署与成本优化有实际意义。"
+        },
+        {
+          "section": "news",
+          "title": "Claude Code relaunches Projects to manage multiple AI agents in the cloud",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/997134/anthropic-claude-code-projects",
+          "source": "The Verge",
+          "published_at": "2026-09-17T18:58:05Z",
+          "raw_text": "The revamped projects feature in Claude Code allows users to run multiple agents under the same roof, with a shared memory, goals, and library of files and artifacts. Similar to Grok Bot and other tools that manage groups of AI agents, each project has \"threads\" running different tasks in parallel, with a \"coordinator\" directing everything: […]",
+          "extra": {},
+          "score": 7.0,
+          "summary": "Claude Code 推出云端多智能体项目管理，支持共享记忆与并行任务，提升 AI 协作效率。"
+        },
+        {
+          "section": "news",
+          "title": "Building the materials foundation for AI",
+          "url": "https://www.technologyreview.com/2026/09/16/1144014/building-the-materials-foundation-for-ai/",
+          "source": "MIT Tech Review",
+          "published_at": "2026-09-16T12:47:34Z",
+          "raw_text": "The AI boom is becoming a materials challenge. As AI pushes computing into new territory, the materials behind that infrastructure are becoming just as crucial as the algorithms running on it. Semiconductors and data centers are approaching physical limits around performance, thermal management, electrical efficiency, and reliability, creating new demands for materials that can do…",
+          "extra": {},
+          "score": 7.0,
+          "summary": "AI 算力逼近物理极限，材料科学成为基础设施瓶颈，关乎未来芯片与数据中心发展。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Introducing Gemini 3.8 Live and 3.8 Live Extended Thinking",
+          "url": "https://deepmind.google/blog/introducing-gemini-3-8-live-and-3-8-live-extended-thinking/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-15T17:05:57Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "谷歌发布 Gemini 3.8 Live 及增强推理版本，显著提升实时交互与复杂推理能力。"
+        },
+        {
+          "section": "product",
+          "title": "Introducing Astra for Law",
+          "url": "https://openai.com/index/astra-for-law",
+          "source": "OpenAI",
+          "published_at": "2026-09-17T00:00:00Z",
+          "raw_text": "OpenAI for Law brings frontier intelligence for law, custom firm workflows, connected legal data sources, and legal-grade controls for confidential client work.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "OpenAI 推出法律专用版 Astra，整合定制工作流与数据源，强化机密性控制。"
+        },
+        {
+          "section": "product",
+          "title": "AlphaGenome Atlas: A predictive map of every possible DNA letter change in the human genome",
+          "url": "https://deepmind.google/blog/alphagenome-atlas-a-predictive-map-of-every-possible-dna-letter-change-in-the-human-genome/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-08T14:00:15Z",
+          "raw_text": "AlphaGenome Atlas maps the molecular effects of 9 billion single-letter DNA variants across the human genome.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "AlphaGenome Atlas 绘制90亿单碱基变异效应图谱，加速基因组医学研究。"
+        }
+      ]
+    }
+  ]
+}
