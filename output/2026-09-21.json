@@ -1,0 +1,514 @@
+{
+  "date": "2026-09-21",
+  "tip": {
+    "title": "firecrawl/firecrawl",
+    "body": "**场景：** 当你的 Agent 需要从海量网页中提取结构化数据（如竞品价格、新闻列表），但目标网站没有 API 时，手动写爬虫既慢又易被屏蔽。\n\n**做法：** 用 `firecrawl` 的 `crawl` 命令一键抓取并转为 Markdown。先安装 `pip install firecrawl-py`，再运行：\n\n```python\nfrom firecrawl import FirecrawlApp\napp = FirecrawlApp(api_key=\"your-key\")\nresult = app.crawl(url=\"https://example.com\", params={\"limit\": 50, \"scrapeOptions\": {\"formats\": [\"markdown\"]}})\n# result 包含所有页面的 Markdown 内容，可直接喂给 LLM 解析\n```\n\n注意：`api_key` 需从 [firecrawl.dev](https://firecrawl.dev) 获取，免费额度足够日常测试。代码只调用官方 SDK，不执行任何用户输入，安全无风险。",
+    "ref_title": "firecrawl/firecrawl",
+    "ref_url": "https://github.com/firecrawl/firecrawl"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "Designer-RSI: Evolving Procedural Memory from User Traffic for Agentic Graphic Design",
+          "url": "https://arxiv.org/abs/2609.22086v1",
+          "source": "arXiv",
+          "published_at": "2026-09-18T17:59:56Z",
+          "raw_text": "Professional graphic design is a long-horizon agentic task in which structured, editable artifacts emerge from many interdependent actions, yet outcomes admit no reliable programmatic oracle. We introduce a continual adaptation framework in which a frozen frontier model operates professional design software through more than 230 tools, while an external procedural memory of natural-language skills accumulates and refines reusable design procedures from experience. The memory widens by acquiring procedures for recurring uncovered subtasks and deepens by revising existing procedures against their own successful and failed executions, while a matched replay gate admits only changes that repair failures without regressing observed successes. Five rounds over 1,406 real user briefs and 1,869 automatically graded trajectories, with no weight updates and no human labels, grow the bank from 76 documentation-derived skills to 139 and raise GenEval2 execution success on Claude-Sonnet-4 from 72.7% to 99.3% (+11.99 points in generation quality), with 61.8% and 67.6% win rates against the no-skill agent across four specialized design benchmarks on Claude-Sonnet-4 and Claude-Opus-4.6. We further show the two mechanisms are effective in combination: on 200 held-out briefs from user-traffic benchmark, widening or deepening alone reaches a 49.4% / 48.6% win rate over the no-skill agent, while their combination reaches 58.5% (p = 0.025). Procedural memory offers a practical route to continual adaptation of agents under noisy, unverifiable feedback.",
+          "extra": {
+            "authors": [
+              "Hongyang Du",
+              "Lan Yan",
+              "Christian Flores",
+              "Asim Kadav"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CV"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.22086v1"
+          },
+          "score": 9.0,
+          "summary": "提出持续适应框架，让冻结模型通过用户流量演化程序记忆，解决长周期设计任务无可靠评估的难题。"
+        },
+        {
+          "section": "paper",
+          "title": "CodeMidas: Scaling Agentic Coding RL Environments from Code Itself",
+          "url": "https://arxiv.org/abs/2609.22068v1",
+          "source": "arXiv",
+          "published_at": "2026-09-18T17:55:17Z",
+          "raw_text": "Training capable coding agents via reinforcement learning (RL) requires diverse tasks with reliable verifiers. Open-source codebases offer a rich source of such tasks, while existing methods typically rely on development artifacts such as issues and commits, limiting the range of tasks that can be extracted. To better scale RL environments, we present CodeMidas, an agentic pipeline that turns implemented functionality in existing codebases into executable RL environments using source code as its only task-specific input. CodeMidas allocates agentic compute to every stage of environment construction: agents explore implemented functionality to formulate behavioral specifications, construct tests grounded in execution of the original code, and validate and filter candidate tasks through execution checks and repeated solution rollouts. The resulting dataset has 5,545 training tasks from 3,185 open-source codebases spanning 23 programming languages and 15 technical domains. Training MiMo-V2.5 on these tasks with GRPO improves performance on all five diverse benchmarks, covering issue repair (DeepSWE + 11.7%), whole-program construction (ProgramBench +17%), and terminal work (Terminal-Bench v2.1 +8.5%). Ablations show that increasing the number of high-quality training tasks improves performance. Trajectory analysis shows the RL-trained agent demonstrates better behaviors like increasing codebase exploration and more diverse self-verification. These results establish source code as a scalable foundation for constructing RL environments that improve coding agents across diverse software tasks.",
+          "extra": {
+            "authors": [
+              "Bowen Ye",
+              "Lei Li",
+              "Shicheng Li",
+              "Zihao Yue",
+              "Linghao Zhang",
+              "Hanglong Lv",
+              "Yuanxin Liu",
+              "Wenhan Ma",
+              "Hao Tian",
+              "Rang Li",
+              "Jinhao Dong",
+              "Yikai Zhao",
+              "Xiangwei Deng",
+              "Hailin Zhang",
+              "Liang Zhao",
+              "Qi Liu",
+              "Lingpeng Kong",
+              "Tong Yang",
+              "Fuli Luo"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.22068v1"
+          },
+          "score": 9.0,
+          "summary": "从开源代码自动生成带验证器的RL训练环境，大幅扩展编码Agent可学习的任务范围。"
+        },
+        {
+          "section": "paper",
+          "title": "RecreationWorld: Scalable and Verifiable Environments for Hybrid Computer-Use Agents",
+          "url": "https://arxiv.org/abs/2609.22000v1",
+          "source": "arXiv",
+          "published_at": "2026-09-18T17:00:56Z",
+          "raw_text": "Computer-use agents (CUAs) have advanced along two separate lines: graphical interaction and software development through code and the command line. Real digital work requires both, interleaved rather than stacked end to end. We study hybrid CUAs that autonomously decide when to explore an interface, implement software, and run and visually verify their artifacts. We introduce RecreationWorld, a five-platform framework built around recreation: given a running reference, an agent must discover its behavior and build a faithful implementation with no prescribed workflow. RecreationWorld provides reproducible environments on Ubuntu, macOS, Windows, Android, and Web, plus a unified harness with native GUI control and coding tools. The running reference serves as an oracle for hidden behavioral tests, providing execution-grounded rewards. We scale trajectory generation with high-quality open-source applications. Models trained on these trajectories improve across five out-of-distribution coding and hybrid computer-use benchmarks and more frequently verify their rendered outputs, providing evidence of transfer beyond recreation. For held-out evaluation, we introduce RecreationBench, comprising 250 diverse tasks across domains and platforms. Reference-grounded programmatic and visual assertions cover action-conditioned outcomes at multiple interaction depths; each is validated on the reference and by human reviewers before the suite is frozen for automatic scoring. GPT-6 Astra leads at 58.1% overall, but passes all programmatic tests on just 2.8% of tasks. Agents reproduce static interface structure more reliably than interactions and computed outputs, while generated applications remain smaller and more monolithic than their references. We release the benchmark, environments, and test suites.",
+          "extra": {
+            "authors": [
+              "Shuai Bai",
+              "Jiayong Deng",
+              "Yikun Fu",
+              "Chang Gao",
+              "Xuhao Hu",
+              "Mianqiu Huang",
+              "Yizhen Jiang",
+              "Yuheng Jing",
+              "Dehui Kong",
+              "Keliang Li",
+              "Ning Li",
+              "Wanli Li",
+              "Dayiheng Liu",
+              "Dunjie Lu",
+              "Changwei Luo",
+              "Que Shen",
+              "Zheyuan Wang",
+              "Zijian Wang",
+              "Jie Wu",
+              "Gao Wu",
+              "Zhihui Xie",
+              "Rui Xie",
+              "Haiyang Xu",
+              "An Yang",
+              "Jiakang Yuan",
+              "Yanming Zhang",
+              "Jiajun Zhang",
+              "Xi Zhang",
+              "Zhenru Zhang",
+              "Zhuo Zhen",
+              "Mingkang Zhu",
+              "Bowen Zhou"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.SE"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.22000v1"
+          },
+          "score": 8.0,
+          "summary": "构建可验证混合环境，让Agent自主切换图形界面与命令行操作，弥合两类计算机使用Agent的鸿沟。"
+        },
+        {
+          "section": "paper",
+          "title": "Bayesian Belief Layer for Controllable Opinion Dynamics in LLM Agents",
+          "url": "https://arxiv.org/abs/2609.21997v1",
+          "source": "arXiv",
+          "published_at": "2026-09-18T16:57:14Z",
+          "raw_text": "LLM agents in social simulation revise their opinions implicitly, in context: how open an agent is to persuasion can neither be specified nor verified, and collective outcomes inherit the model's training prior. We introduce Bayesian Chronicle Agents (BCA), a minimal belief layer separating \\emph{what} an agent believes from \\emph{how} it speaks. Each stance is a probability, updated by one Bayesian step per utterance heard. A single prior-strength parameter $κ$ encodes stubbornness, modeled after its role in Friedkin--Johnsen (FJ) opinion dynamics. We then sweep this parameter to yield three canonical regimes of opinion dynamics on demand (consensus, persistent disagreement, committed-minority influence), with persistent disagreement matching the FJ closed-form fixed points at $R^2\\!=\\!0.93$--$0.99$. We further show that prescribed $κ$ remains recoverable after the language round-trip, with perfect rank-order recovery across all four models. Explicit belief also makes simulation auditable: the layer surfaces systematic per-model stance biases that end-to-end simulation would silently absorb.",
+          "extra": {
+            "authors": [
+              "Hafsa Akbar",
+              "Daniel Platnick",
+              "Marjan Alirezaie",
+              "Hossein Rahnama"
+            ],
+            "categories": [
+              "cs.MA",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.21997v1"
+          },
+          "score": 8.0,
+          "summary": "为LLM Agent引入贝叶斯信念层，实现可控观点演化，解决社会模拟中说服力不可指定与验证的问题。"
+        },
+        {
+          "section": "paper",
+          "title": "NemotronLabs VoiceChat: An Open Full-duplex Speech-to-Speech Model with Tool Calling Capabilities",
+          "url": "https://arxiv.org/abs/2609.21967v1",
+          "source": "arXiv",
+          "published_at": "2026-09-18T16:27:22Z",
+          "raw_text": "We introduce NemotronLabs VoiceChat, an open full-duplex speech-to-speech model with native tool-calling capabilities. NemotronLabs VoiceChat combines a streaming speech encoder and decoder-only language model with parallel specialized output streams for agent text and structured function calls, an auxiliary RNN-T branch for incremental user transcription, and a streaming TTS decoder. This design enables the model to listen, transcribe, reason, invoke tools, and speak within a unified streaming architecture while preserving the temporal behavior required for natural conversation. On Full-Duplex-Bench 1.0, NemotronLabs VoiceChat achieves the lowest pause-handling takeover rates among evaluated open-weight systems, 100\\% takeover following user interruptions, and a 4.33/5 post-interruption response-quality score. On Full-Duplex-Bench 1.5, it resumes its response after user backchannels in 93\\% of cases. NemotronLabs VoiceChat obtains a 55.1 normalized average on VoiceBench and, on Full-Duplex-Bench 3.0 (FDB 3.0), achieves 82.5\\% tool-selection F1, while argument accuracy and end-to-end tool execution remain areas for improvement. These results demonstrate that full-duplex interaction, speech recognition and generation, general language capabilities, and external tool use can be integrated in a single open speech-to-speech model without sacrificing real-time conversational behavior.",
+          "extra": {
+            "authors": [
+              "Jagadeesh Balam",
+              "Travis Bartley",
+              "Edresson Casanova",
+              "Sanjay Chauhan",
+              "Chen Chen",
+              "Zhehuai Chen",
+              "Zijia Chen",
+              "Francesco Ciannella",
+              "Slyne Deng",
+              "Mikyas Desta",
+              "Harishchandra Dubey",
+              "Slim Essid",
+              "Nourchene Ferchichi",
+              "Boris Ginsburg",
+              "Mariana Graterol Fuenmayor",
+              "Negar Habibi",
+              "Kevin Hu",
+              "Anand Joseph",
+              "Viraj Karandikar",
+              "Myungjong Kim",
+              "Viacheslav Klimkov",
+              "Seelan Lakshmi Narasimhan",
+              "Lily Lee",
+              "Jason Li",
+              "Eileen Long",
+              "Ameya Mahabaleshwarkar",
+              "Aditya Malte",
+              "Adi Margolin",
+              "Sasha Meister",
+              "Valentin Mendelev",
+              "Oluwatobi Olabiyi",
+              "Ankita Pasad",
+              "Yifan Peng",
+              "Elena Rastorgueva",
+              "Jayda Ritchie",
+              "Jason Roche",
+              "Nikhil Srihari",
+              "Yuanhang Su",
+              "Yoshi Suhara",
+              "Viet Anh Trinh",
+              "Jinhan Wang",
+              "Piotr Zelasko",
+              "Hui Wang",
+              "Puhui Meng",
+              "Chaosen Zhang",
+              "Yunsheng Liu",
+              "Shawn Wang",
+              "Wenjing Li",
+              "Zhonglei He"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.21967v1"
+          },
+          "score": 8.0,
+          "summary": "开源全双工语音对话模型，原生支持工具调用与结构化函数输出，推动语音Agent实用化。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "hypit-ai/hypit",
+          "url": "https://github.com/hypit-ai/hypit",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-29T18:49:19Z",
+          "raw_text": "Clone any viral video with AI agents. Not just a script, the whole workflow: swap the face, the words, the B-roll, ship 100 variants in one command, and get your 100M views.",
+          "extra": {
+            "stars": 12067,
+            "language": "TypeScript",
+            "topics": [
+              "agentic-ai",
+              "ai",
+              "ai-agents",
+              "ai-video",
+              "compiler",
+              "dsl",
+              "ffmpeg",
+              "generative-ai",
+              "llm",
+              "markup-language",
+              "monorepo",
+              "plugin-system",
+              "programming-language",
+              "text-to-video",
+              "typescript",
+              "video",
+              "video-automation",
+              "video-clone",
+              "video-editing",
+              "video-generation"
+            ]
+          },
+          "score": 9.0,
+          "summary": "一键克隆爆款视频：换脸、改词、换B-roll，单命令生成100个变体，直击流量需求。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "The web data API to search, scrape, and interact at scale. 🔥",
+          "extra": {
+            "stars": 182653,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 8.0,
+          "summary": "大规模网页数据抓取API，支持搜索、爬取与交互，数据采集基础设施级工具。"
+        },
+        {
+          "section": "repo",
+          "title": "trailhq/Graft",
+          "url": "https://github.com/trailhq/Graft",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-03T13:44:21Z",
+          "raw_text": "Turbocharge Claude Code, Cursor, Codex, Gemini & every coding agent: faster, cheaper, with contextual understanding specific to your codebase.",
+          "extra": {
+            "stars": 8846,
+            "language": "TypeScript",
+            "topics": [
+              "ai-agents",
+              "anthropic",
+              "claude-code",
+              "cli",
+              "code-graph",
+              "codex",
+              "context-engineering",
+              "cursor",
+              "developer-tools",
+              "gemini",
+              "knowledge-graph",
+              "llm",
+              "mcp",
+              "mcp-server",
+              "open-source",
+              "openai",
+              "tree-sitter"
+            ]
+          },
+          "score": 8.0,
+          "summary": "为Claude Code等编码代理加速降本，理解代码库上下文，提升开发效率。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 156664,
+            "language": "TypeScript",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "deepseek",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "python",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 7.0,
+          "summary": "一站式构建Agent工作流与RAG管道，支持多模型与工具，从原型到生产无需重构。"
+        },
+        {
+          "section": "repo",
+          "title": "genspark-ai/genoffice",
+          "url": "https://github.com/genspark-ai/genoffice",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-31T09:40:58Z",
+          "raw_text": "Free, open-source AI Office suite: Docs, Sheets, Slides, PDF, Markdown and HTML editors with a built-in AI agent, plus a `genoffice` CLI and agent skill so Claude Code, Codex and Cursor can create and edit real .docx/.xlsx/.pptx files locally. Bring your own key. macOS, Windows & Linux.",
+          "extra": {
+            "stars": 7365,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agent",
+              "claude-code",
+              "cli",
+              "codex",
+              "cursor",
+              "docx",
+              "excel",
+              "libreoffice-alternative",
+              "local-first",
+              "markdown-editor",
+              "microsoft-office-alternative",
+              "office-suite",
+              "pdf-editor",
+              "pdf-to-word",
+              "powerpoint",
+              "pptx",
+              "skills",
+              "spreadsheet",
+              "xlsx"
+            ]
+          },
+          "score": 7.0,
+          "summary": "开源AI办公套件，内置代理编辑文档/表格/幻灯片，支持CLI与编码代理协作。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "AX – Google’s Open Agentic Orchestrator",
+          "url": "https://agentexecutor.io",
+          "source": "Hacker News",
+          "published_at": "2026-09-20T22:32:43Z",
+          "raw_text": "Article URL: https://agentexecutor.io Comments URL: https://news.ycombinator.com/item?id=49780797 Points: 350 # Comments: 133",
+          "extra": {},
+          "score": 9.0,
+          "summary": "Google 发布开源智能体编排框架 AX，或改变 AI 应用开发范式。"
+        },
+        {
+          "section": "news",
+          "title": "World model companies are keeping a lot of secrets",
+          "url": "https://techcrunch.com/2026/09/20/world-model-companies-are-keeping-a-lot-of-secrets/",
+          "source": "TechCrunch",
+          "published_at": "2026-09-20T20:29:07Z",
+          "raw_text": "Everyone in the world-models space is sitting on a pile of cash and a ton of buzz, but good luck getting anyone — from the founders to their own data suppliers — to tell you what they're actually building.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "世界模型公司秘而不宣，行业透明度危机引发对技术真实进展的质疑。"
+        },
+        {
+          "section": "news",
+          "title": "Trump now says he wants to form an ‘AI Force’",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/997867/trump-ai-force-ai-czar",
+          "source": "The Verge",
+          "published_at": "2026-09-20T15:39:22Z",
+          "raw_text": "The president posted on Truth Social that he wanted to appoint an \"AI czar\" to lead a new \"AI force.\" He made the announcement amid growing calls from across the political spectrum and even within the industry to pump the brakes on AI development. He posted that his administration \"will not in any way hinder […]",
+          "extra": {},
+          "score": 8.0,
+          "summary": "特朗普提议组建‘AI 部队’并设‘AI 沙皇’，监管政策走向引关注。"
+        },
+        {
+          "section": "news",
+          "title": "Is the AI industry really ready to slow down?",
+          "url": "https://techcrunch.com/2026/09/20/is-the-ai-industry-really-ready-to-slow-down/",
+          "source": "TechCrunch",
+          "published_at": "2026-09-20T18:56:04Z",
+          "raw_text": "On Equity, we debated whether Ai executives are serious about wanting to slow down.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "AI 高管呼吁减速，但行业实际投入与扩张速度形成鲜明矛盾。"
+        },
+        {
+          "section": "news",
+          "title": "No one is surprised that Nvidia’s Jensen Huang thinks AI fears are overblown.",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/997936/nvidia-jensen-huang-ai-fears-overblown",
+          "source": "The Verge",
+          "published_at": "2026-09-20T18:50:18Z",
+          "raw_text": "The man who may stand to make the most money from the AI boom seems to think he knows better than anyone else, including researchers who have studied and worked on AI for decades. In an interview with CBS Sunday Morning, he claimed there was a \"0% chance\" of AI being the end of the […]",
+          "extra": {},
+          "score": 7.0,
+          "summary": "黄仁勋称 AI 毁灭风险为零，利益相关方立场与学界警告形成对立。"
+        },
+        {
+          "section": "news",
+          "title": "Humans, not rogue AI, are still the biggest cybersecurity risk to energy systems",
+          "url": "https://www.theverge.com/science/997834/ai-cyberattack-energy-critical-infrastructure",
+          "source": "The Verge",
+          "published_at": "2026-09-20T12:00:00Z",
+          "raw_text": "Before recent high-profile hacks raised the specter of AI possibly \"killing all humans,\" our energy systems were already disturbingly vulnerable to cyberattack - and the risk is growing. \"We were always prey. We were just kind of surviving at the appetite of our predators,\" Joshua Corman, executive in residence for public safety and resilience at […]",
+          "extra": {},
+          "score": 6.0,
+          "summary": "报告指出人为失误仍是能源系统最大安全漏洞，AI 威胁被过度聚焦。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Introducing Gemini 3.8 Live and 3.8 Live Extended Thinking",
+          "url": "https://deepmind.google/blog/introducing-gemini-3-8-live-and-3-8-live-extended-thinking/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-15T17:05:57Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 10.0,
+          "summary": "谷歌发布 Gemini 3.8 系列，支持实时交互与扩展思维链，是前沿多模态模型的重要更新。"
+        },
+        {
+          "section": "product",
+          "title": "AlphaGenome Atlas: A predictive map of every possible DNA letter change in the human genome",
+          "url": "https://deepmind.google/blog/alphagenome-atlas-a-predictive-map-of-every-possible-dna-letter-change-in-the-human-genome/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-08T14:00:15Z",
+          "raw_text": "AlphaGenome Atlas maps the molecular effects of 9 billion single-letter DNA variants across the human genome.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "AlphaGenome Atlas 绘制了 90 亿种单碱基变异效应图，为基因组学与精准医疗提供基础资源。"
+        },
+        {
+          "section": "product",
+          "title": "Introducing Astra for Law",
+          "url": "https://openai.com/index/astra-for-law",
+          "source": "OpenAI",
+          "published_at": "2026-09-17T00:00:00Z",
+          "raw_text": "OpenAI for Law brings frontier intelligence for law, custom firm workflows, connected legal data sources, and legal-grade controls for confidential client work.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "OpenAI 推出法律专用版 Astra，整合前沿模型与合规控制，瞄准垂直行业深度应用。"
+        }
+      ]
+    }
+  ]
+}
