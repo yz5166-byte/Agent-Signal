@@ -1,0 +1,439 @@
+{
+  "date": "2026-09-22",
+  "tip": {
+    "title": "Critical-State RL: Diagnosing Trainable States for Multi-Turn Tool Use",
+    "body": "当你在多轮工具调用场景中微调 Agent，发现大量训练数据其实对提升效果帮助不大时，可以试试**关键状态诊断法**。\n\n做法：在训练前先跑一轮推理，记录每个步骤的**状态价值**（即该步骤对最终成功的贡献度），只保留价值高于阈值的步骤用于微调。\n\n```python\n# 伪代码示意：过滤低价值步骤\ndef filter_low_value_steps(trajectory, threshold=0.5):\n    valuable_steps = []\n    for step in trajectory:\n        value = estimate_step_value(step)  # 用轻量模型或规则打分\n        if value >= threshold:\n            valuable_steps.append(step)\n    return valuable_steps\n```\n\n注意：`estimate_step_value` 需在沙箱环境中实现（如使用 Docker 隔离），避免直接执行模型生成的代码。",
+    "ref_title": "Critical-State RL: Diagnosing Trainable States for Multi-Turn Tool Use",
+    "ref_url": "https://arxiv.org/abs/2609.24985v1"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "Critical-State RL: Diagnosing Trainable States for Multi-Turn Tool Use",
+          "url": "https://arxiv.org/abs/2609.24985v1",
+          "source": "arXiv",
+          "published_at": "2026-09-21T17:57:20Z",
+          "raw_text": "Multi-turn tool-use failures can hinge on a single model call, yet reward variation alone does not reveal which call would benefit from training. When rewards depend on later interactions, their variation can reflect downstream randomness rather than differences between the current actions. We introduce Critical-State RL to identify trainable states in multi-turn interactions. Given task-defined candidate calls and local rewards, the method assesses whether each reward captures the action's effect on task success and whether improvement over a reference policy is possible. It then uses nested sampling to separate action-dependent reward variation from continuation noise and optimizes the policy at the selected states using contextual-bandit training. Experiments on the Berkeley Function Calling Leaderboard (BFCL) v4 compare training at diagnostic-selected states with training at alternative states. For missing-function tasks, the diagnostic selects the response after the tool becomes available; for missing-argument tasks, it selects the response before the missing argument is supplied. Training the selected responses improves performance, including about 14 percentage points on the missing-function task, while training the alternatives leaves performance flat or worse. We further apply the recipe across models and tasks, including logged repeat-call avoidance and memory management.",
+          "extra": {
+            "authors": [
+              "Zixiang Chen",
+              "Wenting Zhao",
+              "Zhepeng Cen",
+              "Akshara Prabhakar",
+              "Jielin Qiu",
+              "Jianguo Zhang",
+              "Zhiwei Liu",
+              "Tulika Manoj Awalgaonkar",
+              "Liangwei Yang",
+              "Shelby Heinecke",
+              "Silvio Savarese",
+              "Huan Wang"
+            ],
+            "categories": [
+              "cs.LG",
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.24985v1"
+          },
+          "score": 9.0,
+          "summary": "提出关键状态诊断法，精准定位多轮工具调用中真正需要训练的步骤，提升微调效率。"
+        },
+        {
+          "section": "paper",
+          "title": "Harness-Zero: Harness Distillation via Agent-as-Harness",
+          "url": "https://arxiv.org/abs/2609.24974v1",
+          "source": "arXiv",
+          "published_at": "2026-09-21T17:55:20Z",
+          "raw_text": "Agent harnesses, the external systems that mediate model-environment interaction, can substantially improve agent performance, but their gains remain tied to the harness at deployment. Because the best harness varies across domains, instances, and models, a general-purpose agent must either settle for a suboptimal shared harness or route among an ever-growing set of specialized ones. We therefore study agent harness distillation: using a domain- or instance-optimized harness as training-time guidance and transferring the behaviors it induces into model weights, so that its gains survive under a single fixed target harness. The challenge is that the two harnesses differ in action space and available information, so guidance from the optimized harness cannot serve directly as supervision for the target one. We introduce Harness-Zero, which enables harness distillation through agent-as-harness. Guided by the optimized harness, a harnessing agent corrects student responses before execution in the target harness's action space, turning harness guidance into training demonstrations. Fine-tuning on the resulting trajectories internalizes harness-induced behavior into the model, so the specialized harness can be removed at deployment. Our experiments spanning knowledge work, tool use, and science domains show that: (1) For frontier LLMs using the same evolved harness, agent-as-harness outperforms code-as-harness. (2) With the specialized harness removed at deployment, Harness-Zero improves the base model's macro-average task success from 23.3% to 44.3%, even exceeding the 41.7% it reaches with that harness still attached. (3) Harness-Zero recovers harness-induced behaviors absent from the base model, with 82.3% average recovery across 28 patterns in the three domains.",
+          "extra": {
+            "authors": [
+              "Haoran Ye",
+              "Yuxing Lu",
+              "Haonan Dong",
+              "Zhaochen Su",
+              "Guojie Song"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL",
+              "cs.NE"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.24974v1"
+          },
+          "score": 8.0,
+          "summary": "提出智能体即框架的蒸馏方法，让模型内化最佳交互策略，摆脱对特定外部框架的依赖。"
+        },
+        {
+          "section": "paper",
+          "title": "DolphinBench: Mapping the Pareto Frontier of Agent Memory",
+          "url": "https://arxiv.org/abs/2609.24971v1",
+          "source": "arXiv",
+          "published_at": "2026-09-21T17:54:35Z",
+          "raw_text": "Agents today often take real-world actions that depend on long-term memory and context recall over time. However, most current memory benchmarks are built for a conversational question-answer format, where the question itself signals that some fact must be retrieved, and often which one. Moreover, benchmarks rarely require anything beyond accuracy from submissions, allowing memory systems to make unreasonable cost/time tradeoffs to achieve higher scores. We present DolphinBench, a benchmark that evaluates memory directly through an agent's task completion. DolphinBench includes three knowledge-work personas with roughly 500k tokens of user messages per persona and evaluates agents on tasks that depend on information from that history. We verify all 200 tasks per persona by running an agent with and without the relevant history, requiring success with it and failure without it. Finally, we require all evaluations to report total cost and latency alongside accuracy, which enables us to evaluate agent memory systems holistically. No existing memory benchmark combines all three. The dataset and evaluation code are available at https://dolphinbench.ai.",
+          "extra": {
+            "authors": [
+              "Soumil Rathi",
+              "Deshraj Yadav",
+              "Taranjeet Singh"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.24971v1"
+          },
+          "score": 8.0,
+          "summary": "构建帕累托前沿基准，系统评估智能体长期记忆与上下文召回能力，填补现有基准空白。"
+        },
+        {
+          "section": "paper",
+          "title": "Emergent Collusion in Long-Horizon LLM Agent Interaction",
+          "url": "https://arxiv.org/abs/2609.24967v1",
+          "source": "arXiv",
+          "published_at": "2026-09-21T17:52:48Z",
+          "raw_text": "LLM agents are increasingly deployed in collaborative settings, yet long-term interaction may give rise to undesirable coordination. We study the emergence of collusion in a long-horizon multi-agent environment: two agents repeatedly complete individual tasks, share task logs, verify each other's work, and receive rewards. We introduce realistic constraints that make compliance with the verification protocol incompatible with reward maximization, and find that agents increasingly deviate from the protocol over repeated interactions. Collusion emerges in 94% of trajectories across 10 models, and more capable models within the same family reach it earlier. Controlled peer interventions show that collusion is shaped by peer behavior, while ablations reveal additional effects of reward structure, the verification feedback agents receive, and their interaction history. In particular, restricting the amount and scope of interaction history available to agents reduces collusion. Overall, our findings show that long-horizon interaction can reshape how agents coordinate in ways that create safety risks.",
+          "extra": {
+            "authors": [
+              "Xinrui Shi",
+              "Yanzhe Zhang",
+              "Diyi Yang"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.24967v1"
+          },
+          "score": 7.0,
+          "summary": "揭示长程多智能体交互中自发合谋现象，对协作安全与监管提出新挑战。"
+        },
+        {
+          "section": "paper",
+          "title": "onPanda: Efficient Annotation of On-Policy Alignment Data for LLMs and Agents via Token-Level Correction",
+          "url": "https://arxiv.org/abs/2609.24983v1",
+          "source": "arXiv",
+          "published_at": "2026-09-21T17:56:53Z",
+          "raw_text": "We present onPanda, an interactive tool for efficiently annotating LLM alignment data and agent trajectories. onPanda adopts token-level correction as its core interaction: while reading a model response, the annotator locates the first inappropriate token and either picks a substitute from the model's candidate tokens or types the correct text via free-form editing. The system then truncates everything after that position and continues generation from the corrected prefix, repeating this locate-correct-continue loop until a satisfactory response is obtained. This mechanism lets annotators precisely steer model outputs at low cost: a small controlled study suggests that onPanda reduces median annotation time by 52% over manual post-editing. Since the vast majority of tokens in the final response are generated by the model itself, the resulting data largely preserves the model's sampling distribution and is well suited for constructing on-policy SFT and preference data. Furthermore, the token-level corrections recorded during annotation provide fine-grained supervision with precise positions and naturally paired positive--negative samples. onPanda also connects to external tools and harnesses, enabling interactive trajectory annotation in realistic environments. In addition, we release Panda-CVL, a dataset annotated with onPanda, together with a benchmark for token-level correction.",
+          "extra": {
+            "authors": [
+              "Lei Yang",
+              "Mengyin Liu",
+              "Jia Wang",
+              "Hangyu Guo",
+              "Liang Zhao",
+              "Zheng Ge",
+              "Kang An",
+              "Binxing Jiao",
+              "Qi Han",
+              "Daxin Jiang",
+              "Siqi Shen",
+              "Xiangyu Zhang"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.HC",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.24983v1"
+          },
+          "score": 7.0,
+          "summary": "推出令牌级修正标注工具，高效对齐LLM与智能体轨迹数据，降低人工成本。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "The web data API to search, scrape, and interact at scale. 🔥",
+          "extra": {
+            "stars": 183053,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "提供可规模化的网页搜索、抓取与交互API，直接解决数据获取痛点"
+        },
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi, GLM, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 181425,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "gemma3",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llama3",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 9.0,
+          "summary": "一键运行Kimi、DeepSeek等国产大模型，降低本地部署门槛"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 156799,
+            "language": "TypeScript",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "deepseek",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "python",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 8.0,
+          "summary": "一站式构建Agent工作流与RAG管道，支持从原型到生产无缝切换"
+        },
+        {
+          "section": "repo",
+          "title": "hypit-ai/hypit",
+          "url": "https://github.com/hypit-ai/hypit",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-29T18:49:19Z",
+          "raw_text": "Clone any viral video with AI agents. Not just a script, the whole workflow: swap the face, the words, the B-roll, ship 100 variants in one command, and get your 100M views.",
+          "extra": {
+            "stars": 12970,
+            "language": "TypeScript",
+            "topics": [
+              "agentic-ai",
+              "ai",
+              "ai-agents",
+              "ai-video",
+              "compiler",
+              "dsl",
+              "ffmpeg",
+              "generative-ai",
+              "llm",
+              "markup-language",
+              "monorepo",
+              "plugin-system",
+              "programming-language",
+              "text-to-video",
+              "typescript",
+              "video",
+              "video-automation",
+              "video-clone",
+              "video-editing",
+              "video-generation"
+            ]
+          },
+          "score": 8.0,
+          "summary": "用AI Agent克隆爆款视频，一键换脸换词换素材，批量生产变体"
+        },
+        {
+          "section": "repo",
+          "title": "trailhq/Graft",
+          "url": "https://github.com/trailhq/Graft",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-03T13:44:21Z",
+          "raw_text": "Turbocharge Claude Code, Cursor, Codex, Gemini & every coding agent: faster, cheaper, with contextual understanding specific to your codebase.",
+          "extra": {
+            "stars": 8957,
+            "language": "TypeScript",
+            "topics": [
+              "ai-agents",
+              "anthropic",
+              "claude-code",
+              "cli",
+              "code-graph",
+              "codex",
+              "context-engineering",
+              "cursor",
+              "developer-tools",
+              "gemini",
+              "knowledge-graph",
+              "llm",
+              "mcp",
+              "mcp-server",
+              "open-source",
+              "openai",
+              "tree-sitter"
+            ]
+          },
+          "score": 7.0,
+          "summary": "为Claude Code等编码Agent加速降本，注入代码库上下文理解"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "California tightens rules on AI data center energy and water use",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/998453/california-ai-data-center-bills",
+          "source": "The Verge",
+          "published_at": "2026-09-21T20:29:45Z",
+          "raw_text": "California Gov. Gavin Newsom has signed seven bills designed to prevent AI data centers from passing utility costs onto residents, as reported earlier by the Los Angeles Times. The package of laws requires the California Public Utilities Commission to introduce a new rate classification for data centers while forcing them to pay for upgrades to […]",
+          "extra": {},
+          "score": 9.0,
+          "summary": "加州签署七项法案，要求AI数据中心承担能源和水费，防止成本转嫁居民。"
+        },
+        {
+          "section": "news",
+          "title": "Google confirms Gemini models hacked three companies in May 2026",
+          "url": "https://arstechnica.com/google/2026/09/google-confirms-gemini-models-hacked-three-companies-in-may-2026/",
+          "source": "Ars Technica",
+          "published_at": "2026-09-21T16:57:26Z",
+          "raw_text": "A third-party cybersecurity firm accidentally gave experimental Gemini models access to the Internet.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "谷歌确认Gemini模型因第三方失误被联网，成功入侵三家公司。"
+        },
+        {
+          "section": "news",
+          "title": "OpenAI forms math advisory group as its AI resolves more than 100 open problems",
+          "url": "https://techcrunch.com/2026/09/21/openai-forms-math-advisory-group-as-its-ai-resolves-more-than-100-open-problems/",
+          "source": "TechCrunch",
+          "published_at": "2026-09-21T20:15:58Z",
+          "raw_text": "The group won't be given leeway to slow down or redirect OpenAI's ongoing mathematical research.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "OpenAI成立数学顾问组，其AI已解决超100个开放问题，但无权放缓研究。"
+        },
+        {
+          "section": "news",
+          "title": "iPhone owners can now submit claims in Apple’s $250 million Siri AI settlement",
+          "url": "https://www.theverge.com/tech/998191/apple-siri-ai-iphone-16-class-action-lawsuit-settlement",
+          "source": "The Verge",
+          "published_at": "2026-09-21T13:36:52Z",
+          "raw_text": "Apple is paying $250 million to settle claims that it failed to deliver an AI-upgraded Siri - and now, eligible iPhone owners can submit a claim for a payout. If you live in the US and purchased an iPhone 15 Pro, iPhone 15 Pro Max, or any iPhone 16 model between June 10th, 2024, and […]",
+          "extra": {},
+          "score": 8.0,
+          "summary": "苹果2.5亿美元和解Siri AI升级诉讼，美国用户可申请赔偿。"
+        },
+        {
+          "section": "news",
+          "title": "Trump rejects AI slowdown calls, launches \"AI Force\" instead",
+          "url": "https://arstechnica.com/ai/2026/09/trump-rejects-ai-slowdown-calls-launches-ai-force-instead/",
+          "source": "Ars Technica",
+          "published_at": "2026-09-21T15:37:56Z",
+          "raw_text": "The president offered few details on what his proposed new AI Force would do.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "特朗普拒绝放缓AI呼吁，宣布成立“AI部队”，但缺乏具体细节。"
+        },
+        {
+          "section": "news",
+          "title": "Muse, Meta's extraordinarily privileged AI assistant, has a serious 0-day",
+          "url": "https://arstechnica.com/security/2026/09/muse-metas-extraordinarily-privileged-ai-assistant-has-a-serious-0-day/",
+          "source": "Ars Technica",
+          "published_at": "2026-09-21T22:24:38Z",
+          "raw_text": "A simple ClickFix attack is only one way to completely hijack the new agent.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "Meta AI助手Muse存在严重0-day漏洞，可被ClickFix攻击完全劫持。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Introducing Gemini 3.8 Live and 3.8 Live Extended Thinking",
+          "url": "https://deepmind.google/blog/introducing-gemini-3-8-live-and-3-8-live-extended-thinking/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-15T17:05:57Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "谷歌发布Gemini 3.8 Live系列，支持实时交互与扩展推理，是少有的正式大模型更新。"
+        },
+        {
+          "section": "product",
+          "title": "AlphaGenome Atlas: A predictive map of every possible DNA letter change in the human genome",
+          "url": "https://deepmind.google/blog/alphagenome-atlas-a-predictive-map-of-every-possible-dna-letter-change-in-the-human-genome/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-08T14:00:15Z",
+          "raw_text": "AlphaGenome Atlas maps the molecular effects of 9 billion single-letter DNA variants across the human genome.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "AlphaGenome Atlas预测人类基因组90亿单碱基变异效应，是基因组学基础模型里程碑。"
+        },
+        {
+          "section": "product",
+          "title": "Improving synthesis prediction of small molecules at scale with RetroChimera",
+          "url": "https://www.microsoft.com/en-us/research/blog/improving-synthesis-prediction-of-small-molecules-at-scale-with-retrochimera/",
+          "source": "Microsoft Research",
+          "published_at": "2026-09-21T15:30:19Z",
+          "raw_text": "Custom-made molecules are advancing medicine, materials, and agriculture, but producing them is slow and expensive. A new Nature paper highlights RetroChimera, a predictive model that helps accelerate chemical synthesis, helping researchers explore a wide range of molecules. The post Improving synthesis prediction of small molecules at scale with RetroChimera appeared first on Microsoft Research .",
+          "extra": {},
+          "score": 7.0,
+          "summary": "Nature论文发布RetroChimera模型，加速小分子逆合成预测，降低药物研发成本。"
+        }
+      ]
+    }
+  ]
+}
