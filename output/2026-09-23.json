@@ -1,0 +1,432 @@
+{
+  "date": "2026-09-23",
+  "tip": {
+    "title": "Agensh: Scaling Organizational Intelligence to 1,024 Agents",
+    "body": "在构建多智能体系统时，若使用中心化编排器（如条目[0]所述），1024个Agent的通信会迅速耗尽上下文窗口。\n\n做法：采用**去中心化消息总线**替代中心化编排。每个Agent只向总线发布结构化事件，其他Agent按需订阅。\n\n```python\n# 使用Redis Pub/Sub实现轻量级消息总线\nimport redis\n\nbus = redis.Redis()\n\n# Agent A发布事件\nbus.publish('agent:task:done', '{\"agent_id\":\"A\",\"result\":\"...\"}')\n\n# Agent B订阅\npubsub = bus.pubsub()\npubsub.subscribe('agent:task:done')\nfor msg in pubsub.listen():\n    print(msg['data'])\n```\n\n此模式避免单点瓶颈，支持水平扩展。注意：生产环境需对消息内容做JSON Schema校验，防止恶意数据注入。",
+    "ref_title": "Agensh: Scaling Organizational Intelligence to 1,024 Agents",
+    "ref_url": "https://arxiv.org/abs/2609.26781v1"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "Agensh: Scaling Organizational Intelligence to 1,024 Agents",
+          "url": "https://arxiv.org/abs/2609.26781v1",
+          "source": "arXiv",
+          "published_at": "2026-09-22T17:56:25Z",
+          "raw_text": "A multi-agent system can reduce latency on complex tasks by executing work concurrently. Several pioneering harness frameworks support multi-agent systems. However, the scalability of current multi-agent harnesses is often constrained by a central orchestrator's capacity to allocate tasks and coordinate workers. To address this limitation, we introduce Agensh, a scalable self-organized multi-agent harness without a central orchestrator: concurrent workers execute a multi-agent cooperation loop, continuously gathering context, claiming and self-assigning sub-tasks, taking action and sharing findings, verifying results, and merging progress in an asynchronous manner. The loop is supported by the agentic organization infrastructure comprising three components: a shared workspace holds proposed, ongoing, and completed work; a message interface lets workers communicate; and shared context retains reusable findings and work intentions. To test the scalability of Agensh, we evaluate it on the five hardest ProgramBench tasks with GPT-5.6-sol (high). Scaling from 1 to 128 agents raises the mean final test-pass rate from 19.31% to 28.78%, an approximately 49% relative improvement. Larger organizations reach comparable test-pass rates earlier. On pandoc, scaling from 1 to 1,024 agents raises the final test-pass rate from 33.89% to 55.06%. Worker trajectories further show that different forms of self-organized cooperation gradually emerges and standardizes as the organization grows. These results reveal the number of agents as a new scaling dimension for multi-agent organizations to expand the frontier of general intelligence, offering a practical solution for complex tasks under hard latency constraints or time budgets.",
+          "extra": {
+            "authors": [
+              "Zhihao Zhan",
+              "Ting Song",
+              "Li Dong",
+              "Shaohan Huang",
+              "Jianxun Lian",
+              "Yan Xia",
+              "Furu Wei"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.MA"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.26781v1"
+          },
+          "score": 9.0,
+          "summary": "提出支持1024个智能体协同的框架，突破中心化编排器的扩展瓶颈，对多智能体系统规模化部署有直接参考价值。"
+        },
+        {
+          "section": "paper",
+          "title": "CliffCompaction: Cost-Efficient Compaction for Long-Horizon Coding Agents",
+          "url": "https://arxiv.org/abs/2609.26779v1",
+          "source": "arXiv",
+          "published_at": "2026-09-22T17:55:59Z",
+          "raw_text": "Agents often work on complex problems that require millions of tokens of context, which necessitates compacting across sessions due to limited context windows. We develop CliffCompaction, an autocompaction technique that reduces cost by up to 50% under a bounded context while maintaining or improving performance on Terminal-Bench and achieving new levels of efficiency for test-time scaling and state-of-the-art results on KernelBench. The per-rollout savings of CliffCompaction make the performance--cost trade-off of test-time scaling more efficient, adding over 10 percentage points on Terminal-Bench for less than the cost of two full-context runs. Under parallel test-time scaling, CliffCompaction lets Kimi K2.6 match Opus 4.7, and exceed Opus 4.6 and GPT-5.3 Codex at lower cost. The key to CliffCompaction's effectiveness is that it keeps compacted information faithful by only truncating or dropping content, never rephrasing or rewriting it. We never compact a compaction---each pass operates only on original content, and prior compacted output is discarded, preventing context drift from accumulating. These properties sustain continual learning over sessions exceeding a million tokens: on KernelBench, CliffCompaction reaches CUDA kernel speedups of $2.23\\times$ after 200 steps and $3.58\\times$ after 400 steps, surpassing specialized search algorithms and trained agents despite being a general-purpose compaction technique. We open-source a scaffold-agnostic API-proxy implementation of CliffCompaction usable with Claude Code, Codex and other harnesses.",
+          "extra": {
+            "authors": [
+              "Trang Nguyen",
+              "Eulrang Cho",
+              "Bingqing Chen",
+              "Tim Dettmers"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.LG",
+              "cs.SE"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.26779v1"
+          },
+          "score": 8.0,
+          "summary": "为长周期编码智能体设计自动压缩技术，在有限上下文窗口下降低50%成本，提升Agent实用性与经济性。"
+        },
+        {
+          "section": "paper",
+          "title": "A2M: Trace-Optimized Agent Hijacking in the MCP Ecosystem",
+          "url": "https://arxiv.org/abs/2609.26761v1",
+          "source": "arXiv",
+          "published_at": "2026-09-22T17:41:34Z",
+          "raw_text": "Agents using the Model Context Protocol (MCP) rely on semantic matching to select tools from third-party servers, exposing a semantic supply-chain risk through attacker-controlled metadata and outputs. We introduce A2M (Attraction-to-Manipulation), a two-stage black-box framework for hijacking MCP agents. The Attraction phase optimizes tool metadata to increase invocation probability; the Manipulation phase uses execution traces to refine adversarial tool returns that steer agents toward attacker-desired outcomes. On LiveMCPBench, direct attacks optimized and evaluated on GLM-4.6 achieve a macro-average malicious tool invocation rate of 93.6% across four scenarios, increase weighted token costs to 32.4$\\times$ the benign baseline under Cognitive Denial of Service, and attain a mean attack success rate of 74.4% across Information Exfiltration, Environment Integrity Compromise, and Reasoning Derailment. Transfer to four other models without re-optimization yields corresponding macro-averages of 63.6%, 2.7$\\times$, and 24.5%. These findings motivate stronger tool vetting and runtime isolation in MCP ecosystems. Code is publicly available at https://github.com/Lilaizhen/A2M.",
+          "extra": {
+            "authors": [
+              "Laizhen Li",
+              "Xuan Wang",
+              "Peicheng Zhao",
+              "Juanjuan Zhao",
+              "Kejiang Ye",
+              "Cheng-zhong Xu",
+              "Xitong Gao"
+            ],
+            "categories": [
+              "cs.CR",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.26761v1"
+          },
+          "score": 8.0,
+          "summary": "揭示MCP协议中工具选择的语义供应链风险，提出两阶段劫持框架，对Agent安全架构设计有警示意义。"
+        },
+        {
+          "section": "paper",
+          "title": "Grow the Harness, Not the Context: From Strategy-Free Scaffolds to Reusable Specialist Agents",
+          "url": "https://arxiv.org/abs/2609.26760v1",
+          "source": "arXiv",
+          "published_at": "2026-09-22T17:40:45Z",
+          "raw_text": "Large language model (LLM) agents often handle streams of related tasks, yet standard harnesses repeatedly ask the model to reconstruct the same control decisions inside each task's context. We study whether task feedback can instead turn recurring control into reusable executable code, while reserving LLM calls for task-specific semantic reasoning. We introduce Growing Harness, a failure-guided training paradigm that learns the agent harness itself from a strategy-free scaffold that exposes fixed model and tool interfaces but encodes no task-solving controller. Function-level execution traces localize each failure to a bounded code surface, an optimizer repairs a window of failures jointly, and a success-first held-out gate rolls back repair sequences that harm prior capability. Accepted edits accumulate in one shared harness, allowing its control structure to emerge from task feedback. Across BrowseComp-Plus and WebArena-Verified with three deployment models from 4B to 120B parameters, Growing Harness achieves the highest mean success in five of six benchmark-model settings and trails the best mean by 0.7 pp. in the sixth. Relative to a Tool-Calling agent, it reduces LLM calls by 76.0-91.8% and deployed-agent inference cost by 74.4-98.6%. On WebArena-Verified, its success remains 44.7-45.3% across model scales, whereas Tool-Calling falls to 6.7% with the 4B model. Ablations show that trace-local edits, joint repair, and gate-based rollback each improve final success. These results show that persistent program growth can move recurring control out of model context and into low-cost code, yielding reusable specialist agents that remain effective with smaller deployment models.",
+          "extra": {
+            "authors": [
+              "Laizhen Li",
+              "Jiarui Li",
+              "Juanjuan Zhao",
+              "Kejiang Ye",
+              "Ye Li",
+              "Cheng-zhong Xu",
+              "Xitong Gao"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.SE"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.26760v1"
+          },
+          "score": 7.0,
+          "summary": "提出将Agent重复控制逻辑转化为可复用代码，减少上下文浪费，为构建高效专用智能体提供新思路。"
+        },
+        {
+          "section": "paper",
+          "title": "The Sirens' Song: When Proximal Background Context Overshadows Distant Evidence",
+          "url": "https://arxiv.org/abs/2609.26718v1",
+          "source": "arXiv",
+          "published_at": "2026-09-22T17:06:51Z",
+          "raw_text": "Long-context LLMs focus on retrieving distant evidence from extensive context, yet existing work has largely focused on overcoming distance alone. In this work, we identify the Proximity Trap, insufficient attention to distant evidence often arises less from distance itself than from cumulative competition with abundant, task-irrelevant proximal background. To address the Proximity Trap, we introduce LYRA (Long-context heavY-tailed Relevance Alignment), a t-distributed directional matching mechanism that reshapes the context retrieval distribution, directing more attention mass toward task-relevant evidence, while preserving the relative positional information encoded. Extensive experiments on LongBench-v2, RULER, and LongBench demonstrate consistent improvements across context lengths and task categories. We further introduce ProxBench, a multi-level fine-grained benchmark for evaluating distant evidence utilization under increasing proximal background interference. Project page: https://xiaoyuyoung.github.io/LYRA/",
+          "extra": {
+            "authors": [
+              "Xiaoyu Yang",
+              "Jie Lu",
+              "Wei Duan",
+              "En Yu"
+            ],
+            "categories": [
+              "cs.LG",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.26718v1"
+          },
+          "score": 7.0,
+          "summary": "发现长上下文LLM存在“近端陷阱”，即近处背景信息会掩盖远处关键证据，对Agent长程推理设计有启发。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "The web data API to search, scrape, and interact at scale. 🔥",
+          "extra": {
+            "stars": 183503,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "提供搜索、抓取、交互的规模化网页数据API，直接解决AI应用的数据获取痛点。"
+        },
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi, GLM, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 181498,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "gemma3",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llama3",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 9.0,
+          "summary": "一键运行Kimi、DeepSeek等国产模型，降低本地部署门槛，实用性强。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 156913,
+            "language": "TypeScript",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "deepseek",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "python",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 8.0,
+          "summary": "一站式构建Agent工作流与RAG管道，支持私有化部署，从原型到生产无需重构。"
+        },
+        {
+          "section": "repo",
+          "title": "hypit-ai/hypit",
+          "url": "https://github.com/hypit-ai/hypit",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-29T18:49:19Z",
+          "raw_text": "Clone any viral video with AI agents. Not just a script, the whole workflow: swap the face, the words, the B-roll, ship 100 variants in one command, and get your 100M views.",
+          "extra": {
+            "stars": 14526,
+            "language": "TypeScript",
+            "topics": [
+              "agentic-ai",
+              "ai",
+              "ai-agents",
+              "ai-video",
+              "compiler",
+              "dsl",
+              "ffmpeg",
+              "generative-ai",
+              "llm",
+              "markup-language",
+              "monorepo",
+              "plugin-system",
+              "programming-language",
+              "text-to-video",
+              "typescript",
+              "video",
+              "video-automation",
+              "video-clone",
+              "video-editing",
+              "video-generation"
+            ]
+          },
+          "score": 8.0,
+          "summary": "用AI Agent克隆爆款视频，一键换脸换词换素材，批量生产变体，直接面向内容创作。"
+        },
+        {
+          "section": "repo",
+          "title": "trailhq/Graft",
+          "url": "https://github.com/trailhq/Graft",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-03T13:44:21Z",
+          "raw_text": "Turbocharge Claude Code, Cursor, Codex, Gemini & every coding agent: faster, cheaper, with contextual understanding specific to your codebase.",
+          "extra": {
+            "stars": 9045,
+            "language": "TypeScript",
+            "topics": [
+              "ai-agents",
+              "anthropic",
+              "claude-code",
+              "cli",
+              "code-graph",
+              "codex",
+              "context-engineering",
+              "cursor",
+              "developer-tools",
+              "gemini",
+              "knowledge-graph",
+              "llm",
+              "mcp",
+              "mcp-server",
+              "open-source",
+              "openai",
+              "tree-sitter"
+            ]
+          },
+          "score": 7.0,
+          "summary": "为Claude Code等编码Agent加速降本，注入代码库上下文理解，提升开发效率。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Pentagon says overreliance on AI contributed to missile strike on Iran school",
+          "url": "https://www.bloomberg.com/graphics/2026-iran-school-attack/",
+          "source": "Hacker News",
+          "published_at": "2026-09-22T19:03:38Z",
+          "raw_text": "https://archive.ph/0V37g Comments URL: https://news.ycombinator.com/item?id=49806430 Points: 521 # Comments: 256",
+          "extra": {},
+          "score": 10.0,
+          "summary": "五角大楼承认过度依赖 AI 导致误袭伊朗学校，暴露军事 AI 决策的致命风险。"
+        },
+        {
+          "section": "news",
+          "title": "Snorkel AI triples valuation to $3.5B as demand for AI training data booms",
+          "url": "https://techcrunch.com/2026/09/22/snorkel-ai-triples-valuation-to-3-5b-as-demand-for-ai-training-data-booms/",
+          "source": "TechCrunch",
+          "published_at": "2026-09-22T21:56:43Z",
+          "raw_text": "The seven-year-old startup has raised a $350 million Series E to fuel its data-as-a-service approach.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "Snorkel AI 获 3.5 亿美元 E 轮融资，估值翻三倍至 35 亿美元，反映 AI 训练数据需求爆发。"
+        },
+        {
+          "section": "news",
+          "title": "New Anthropic, OpenAI models make same promise: A little more for a lot less money",
+          "url": "https://arstechnica.com/ai/2026/09/new-anthropic-openai-models-make-same-promise-a-little-more-for-a-lot-less-money/",
+          "source": "Ars Technica",
+          "published_at": "2026-09-22T21:25:18Z",
+          "raw_text": "The frontier AI model race has entered its comparison shopping phase.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "Anthropic 和 OpenAI 新模型主打更低价、更高性价比，前沿模型竞赛进入性价比比拼阶段。"
+        },
+        {
+          "section": "news",
+          "title": "Microsoft disrupts AI-assisted platform that compromised 12,000 accounts",
+          "url": "https://arstechnica.com/security/2026/09/microsoft-disrupts-ai-assisted-platform-that-compromised-12000/",
+          "source": "Ars Technica",
+          "published_at": "2026-09-22T19:45:47Z",
+          "raw_text": "EvilTokens provided an end-to-end platform that makes mass compromises faster and easier.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "微软捣毁 AI 辅助账号劫持平台 EvilTokens，该平台曾入侵 1.2 万个账户。"
+        },
+        {
+          "section": "news",
+          "title": "Lawsuit demands OpenAI pay for new school after ChatGPT used in shooting",
+          "url": "https://arstechnica.com/tech-policy/2026/09/lawsuit-demands-openai-pay-for-new-school-after-chatgpt-used-in-shooting/",
+          "source": "Ars Technica",
+          "published_at": "2026-09-22T19:28:23Z",
+          "raw_text": "British Columbia sues OpenAI, demands Tumbler Ridge shooter’s ChatGPT logs.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "加拿大 BC 省起诉 OpenAI，要求为 ChatGPT 被用于校园枪击案担责并赔偿。"
+        },
+        {
+          "section": "news",
+          "title": "OpenAI wants to consult elite mathematicians about how to not fumble again",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/999167/openai-elite-mathematicians-panel",
+          "source": "The Verge",
+          "published_at": "2026-09-23T00:17:17Z",
+          "raw_text": "After turning a string of spectacular mathematical results into a reputational crisis, OpenAI is consulting human mathematicians to help it figure out a less disastrous path forward. On Monday, the company announced a new independent panel of mathematicians tasked with advising it and other AI companies on their interactions with mathematical research and the wider […]",
+          "extra": {},
+          "score": 7.0,
+          "summary": "OpenAI 组建独立数学家顾问团，试图挽回因数学成果争议受损的声誉。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Introducing GPT-6 Sol and Luna",
+          "url": "https://openai.com/index/introducing-gpt-6-sol-and-luna",
+          "source": "OpenAI",
+          "published_at": "2026-09-22T18:00:00Z",
+          "raw_text": "Meet GPT-6 Sol and Luna, two models that bring frontier intelligence to everyday work with different balances of capability and cost.",
+          "extra": {},
+          "score": 10.0,
+          "summary": "OpenAI 发布 GPT-6 Sol 和 Luna 两款新模型，在能力与成本间提供不同平衡点，是前沿智能向日常应用落地的关键一步。"
+        },
+        {
+          "section": "product",
+          "title": "Better prompt caching for GPT-6",
+          "url": "https://openai.com/index/better-prompt-caching-for-gpt-6",
+          "source": "OpenAI",
+          "published_at": "2026-09-22T21:00:00Z",
+          "raw_text": "Learn how GPT-6 improves prompt caching with higher cache hit rates, new diagnostics, explicit breakpoints, and controls that reduce latency and costs.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "GPT-6 推出更优的提示缓存机制，通过更高命中率与显式断点控制，直接降低延迟和成本，对推理优化意义重大。"
+        },
+        {
+          "section": "product",
+          "title": "Introducing Gemini 3.8 Live and 3.8 Live Extended Thinking",
+          "url": "https://deepmind.google/blog/introducing-gemini-3-8-live-and-3-8-live-extended-thinking/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-15T17:05:57Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Google 发布 Gemini 3.8 Live 及扩展思考版本，标志着多模态实时交互与深度推理能力的正式产品化。"
+        }
+      ]
+    }
+  ]
+}
