@@ -1,0 +1,430 @@
+{
+  "date": "2026-09-24",
+  "tip": {
+    "title": "trailhq/Graft",
+    "body": "**场景**：用Claude Code等编码代理处理大型代码库时，频繁加载上下文导致成本高、速度慢。\n\n**做法**：安装Graft作为上下文缓存层。\n```bash\npip install graft\ncd your-project && graft init\ngraft run --agent claude-code\n```\nGraft自动缓存代码库片段，减少重复加载，使API调用更便宜更快。安装前请确认来源安全。",
+    "ref_title": "trailhq/Graft",
+    "ref_url": "https://github.com/trailhq/Graft"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "Agent-Editing World Model: Rethinking World Modeling for LLM Agents",
+          "url": "https://arxiv.org/abs/2609.28416v1",
+          "source": "arXiv",
+          "published_at": "2026-09-23T17:18:26Z",
+          "raw_text": "Recent advances in large language models (LLMs) have enabled agents to tackle long-horizon tasks across diverse environments. To further improve agent performance, existing language world models typically predict environment observations, yet reconstructing high-entropy, execution-dependent tool responses offers limited value when real feedback is available. Meanwhile, agents suffer from \\emph{task-state contamination}, where unsupported assumptions and outdated plans persist in history and distort subsequent decisions. We propose the \\textbf{Agent-Editing World Model (AEWM)}, which models how reasoning and actions shape future task progress rather than simulating tool responses. AEWM combines \\textbf{Action Judge} to distinguish \\textsc{Critical}, \\textsc{Exploratory}, and \\textsc{Noisy} decisions with \\textbf{State Revision} to edit noisy reasoning--action continuations from the same observed history. \\textbf{EditAct} integrates these capabilities with real execution, directly changing the state underlying subsequent decisions rather than merely providing critiques. We train AEWM across Search, Terminal, and Software Engineering through mid-training and supervised fine-tuning. AEWM achieves 70.5\\% macro-F1 on our Action Judge benchmark, exceeding the strongest frontier baseline by 10.6 points. Across six benchmarks and three agent backbones, EditAct improves average scores by 3.2--6.7 points over the strongest baseline. Furthermore, rejection sampling fine-tuning on verified EditAct trajectories, termed \\textbf{AEWM-RFT}, improves over Self-RFT by 2.2--2.6 points across three domains without online AEWM guidance.",
+          "extra": {
+            "authors": [
+              "Shuang Sun",
+              "Guoxin Chen",
+              "Fanzhe Meng",
+              "Jia Deng",
+              "Huatong Song",
+              "Jinhao Jiang",
+              "Wayne Xin Zhao",
+              "Hongteng Xu",
+              "Ji-Rong Wen"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.AI",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.28416v1"
+          },
+          "score": 9.0,
+          "summary": "提出Agent编辑世界模型，利用LLM校正环境预测误差，显著提升工具调用规划能力。"
+        },
+        {
+          "section": "paper",
+          "title": "Shopping by algorithm: How agentic AI deploys human heuristics as a surrogate consumer",
+          "url": "https://arxiv.org/abs/2609.28372v1",
+          "source": "arXiv",
+          "published_at": "2026-09-23T16:47:52Z",
+          "raw_text": "Consumers increasingly delegate purchasing decisions to Large Language Models (LLMs) acting as surrogate consumers. Using \"Tool-Lab,\" an adaptation of information-board process tracing that places product attributes behind costly tool calls, we examine how marketing pricing cues (i.e., just-below pricing and promotional framing) influence AI shopping agents. Across eight commercially deployed LLMs from three providers, we trace pre-choice information acquisition. Under zero cost, pricing cues rarely mislead. Imposing acquisition costs under a vague goal prompt leads LLMs to omit diagnostic attributes required to compute unit price and choose suboptimal choices resembling human heuristics. Relative to a specific goal prompt that mainly preserves diagnostic search and choice optimality, a vague goal prompt under constraints creates a search-mediated vulnerability. This research demonstrates that marketing heuristics in delegated AI shopping are governed by storefront information architecture, not necessarily immutable LLM flaws.",
+          "extra": {
+            "authors": [
+              "Davood Wadi",
+              "Yu Ma"
+            ],
+            "categories": [
+              "econ.GN",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.28372v1"
+          },
+          "score": 8.0,
+          "summary": "让LLM作为代理消费者，通过工具调用模拟人类决策启发式，揭示定价策略对AI的影响。"
+        },
+        {
+          "section": "paper",
+          "title": "Can LLMs Reason About Runtime Behavior? A Repository-Level Dynamic Benchmark",
+          "url": "https://arxiv.org/abs/2609.28449v1",
+          "source": "arXiv",
+          "published_at": "2026-09-23T17:46:50Z",
+          "raw_text": "Large language models (LLMs) are increasingly used in coding tasks, but their ability to reason about code execution remains unclear. Existing repository-level QA benchmarks mainly evaluate static code understanding and often rely on LLM-based evaluation, while execution-reasoning benchmarks are mostly limited to snippets or functions. We introduce SWE-Flux, a repository-level benchmark for dynamic execution reasoning containing 480 execution-grounded instances across 12 real Python repositories, with gold answers automatically harvested from instrumented test executions rather than written manually or judged by LLMs. The benchmark covers singletest and multi-test questions over control flow, loops, program state, dataflow, exceptions, and program invariants. Evaluating five LLMs shows that this task remains challenging. The best model achieves only 37% accuracy. Models perform better on localized behavior such as invariants, intra-procedural control flow, exceptions, and simple loops, but struggle with dataflow, inter-procedural execution, precise state reasoning, and suite-level aggregation. Finally, we show that the oracle-harvesting pipeline can generate fresh benchmark variants using input perturbation. It successfully harvests valid variants for almost 90% of the selected instances, and the resulting variants are substantially more challenging for the evaluated models.",
+          "extra": {
+            "authors": [
+              "Hamed Taherkhani",
+              "Mohammad Abdollahi",
+              "Melika Sepidband",
+              "Hridya Dhulipala",
+              "Tien N. Nguyen",
+              "Hadi Hemmati"
+            ],
+            "categories": [
+              "cs.SE",
+              "cs.AI",
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.28449v1"
+          },
+          "score": 8.0,
+          "summary": "构建仓库级动态基准，首次系统评估LLM对代码运行时行为的推理能力，揭示关键短板。"
+        },
+        {
+          "section": "paper",
+          "title": "Where Should I Join? Robot Group Joining via Language-Guided Goal Prediction",
+          "url": "https://arxiv.org/abs/2609.28467v1",
+          "source": "arXiv",
+          "published_at": "2026-09-23T17:55:48Z",
+          "raw_text": "Social navigation typically assumes a specified goal and focuses on reaching it while respecting social conventions, whereas robot group joining requires predicting where to join based on the group's real-time activity and formation. This is a highly semantic task, yet an important capability for applications such as robotic guide dogs and autonomous mobility scooters. We formulate language-grounded robot group joining: given an observation and a natural-language description of a target group, the robot identifies the relevant group members and predicts socially compliant joining poses. For grounding, we generate structured candidate subsets through recursive spectral partitioning and rank them with a language-conditioned image--geometry model. Given the grounded group, a goal predictor leverages human-formation priors to produce a multimodal energy--orientation map over feasible robot poses. Experiments on conversations, queues, and audiences across varying group sizes, crowd densities, and visual ambiguities show that our method achieves competitive grounding accuracy with sub-second inference and outperforms all baselines in joining-pose prediction. Real-robot experiments further demonstrate group joining in both static and dynamically changing interactions.",
+          "extra": {
+            "authors": [
+              "Zilin Fang",
+              "Zishuo Wang",
+              "Gim Hee Lee",
+              "David Hsu"
+            ],
+            "categories": [
+              "cs.RO",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.28467v1"
+          },
+          "score": 7.0,
+          "summary": "提出语言引导的机器人群体加入方法，使机器人能实时预测加入位置，拓展社交导航语义。"
+        },
+        {
+          "section": "paper",
+          "title": "When and Where to Trust the Teacher: Unifying On-Policy Distillation and GRPO through Entropy-Calibrated Credit Assignment",
+          "url": "https://arxiv.org/abs/2609.28385v1",
+          "source": "arXiv",
+          "published_at": "2026-09-23T16:58:26Z",
+          "raw_text": "Reinforcement learning with verifiable rewards (RLVR) supervises mathematical reasoning through final-answer correctness, but provides little guidance on individual tokens. On-policy distillation (OPD) supplies dense feedback on student-generated responses, yet teacher preference need not reflect correctness. Recent hybrids combine OPD and verifier-derived advantages or reweight task credit using teacher ratios. However, teacher guidance enters after verifier-based group normalization, and token reweighting need not preserve the total task credit assigned to each response. We introduce Unified Entropy-Calibrated Credit Redistribution for GRPO (UECR-GRPO), which integrates verifier and teacher signals within a single GRPO-style update at both the response and token levels. \\emph{Path-Utility Unification} (PUU) combines verifier reward and a teacher-to-anchor path log-ratio in a single KL-regularized objective. Its on-policy implementation uses a length-normalized teacher score and combines both rewards before group normalization and PPO clipping, allowing teacher evidence to influence the response ranking. \\emph{Entropy-Calibrated Redistribution} (ECR) then uses the signed teacher--old-policy token gap to redistribute the verifier-derived component. Full-vocabulary teacher entropy attenuates uncertain guidance, while a response-wise zero-sum projection preserves the total task credit and its token-wise sign before clipping. Across five mathematical reasoning benchmarks, UECR-GRPO achieves average \\(\\mathrm{Avg@12}\\) accuracies of 17.21\\% and 65.09\\% with Qwen3-1.7B and Qwen3-4B students, respectively, exceeding the strongest baseline at each scale by 0.89 and 0.56 percentage points.",
+          "extra": {
+            "authors": [
+              "Jie Zhang",
+              "Jingxiao Yang",
+              "Zhehao Huang",
+              "Yuhang Liu",
+              "Xiaolin Huang"
+            ],
+            "categories": [
+              "cs.LG",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.28385v1"
+          },
+          "score": 7.0,
+          "summary": "统一在线蒸馏与GRPO，通过熵校准信用分配，为数学推理提供更细粒度的训练信号。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi, GLM, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 181555,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "gemma3",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llama3",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 9.0,
+          "summary": "本地运行Kimi、DeepSeek等主流模型，AI开发基础工具。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 157024,
+            "language": "TypeScript",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "deepseek",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "python",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 9.0,
+          "summary": "构建Agent工作流和RAG管道，多模型支持，生产级协作平台。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "The web data API to search, scrape, and interact at scale. 🔥",
+          "extra": {
+            "stars": 183947,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 8.0,
+          "summary": "Web数据API，支持大规模搜索、爬取和交互，数据获取利器。"
+        },
+        {
+          "section": "repo",
+          "title": "hypit-ai/hypit",
+          "url": "https://github.com/hypit-ai/hypit",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-29T18:49:19Z",
+          "raw_text": "Clone any viral video with AI agents. Not just a script, the whole workflow: swap the face, the words, the B-roll, ship 100 variants in one command, and get your 100M views.",
+          "extra": {
+            "stars": 15642,
+            "language": "TypeScript",
+            "topics": [
+              "agentic-ai",
+              "ai",
+              "ai-agents",
+              "ai-video",
+              "compiler",
+              "dsl",
+              "ffmpeg",
+              "generative-ai",
+              "llm",
+              "markup-language",
+              "monorepo",
+              "plugin-system",
+              "programming-language",
+              "text-to-video",
+              "typescript",
+              "video",
+              "video-automation",
+              "video-clone",
+              "video-editing",
+              "video-generation"
+            ]
+          },
+          "score": 8.0,
+          "summary": "用AI agent一键克隆爆款视频，换脸换词批量生产。"
+        },
+        {
+          "section": "repo",
+          "title": "trailhq/Graft",
+          "url": "https://github.com/trailhq/Graft",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-03T13:44:21Z",
+          "raw_text": "Turbocharge Claude Code, Cursor, Codex, Gemini & every coding agent: faster, cheaper, with contextual understanding specific to your codebase.",
+          "extra": {
+            "stars": 9129,
+            "language": "TypeScript",
+            "topics": [
+              "ai-agents",
+              "anthropic",
+              "claude-code",
+              "cli",
+              "code-graph",
+              "codex",
+              "context-engineering",
+              "cursor",
+              "developer-tools",
+              "gemini",
+              "knowledge-graph",
+              "llm",
+              "mcp",
+              "mcp-server",
+              "open-source",
+              "openai",
+              "tree-sitter"
+            ]
+          },
+          "score": 8.0,
+          "summary": "加速Claude Code等编码代理，结合代码库语境更便宜更快。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Feds Target AI Critics as \"Foreign Agents\"",
+          "url": "https://www.kenklippenstein.com/p/feds-think-ai-critics-are-foreign",
+          "source": "Hacker News",
+          "published_at": "2026-09-24T00:41:31Z",
+          "raw_text": "Article URL: https://www.kenklippenstein.com/p/feds-think-ai-critics-are-foreign Comments URL: https://news.ycombinator.com/item?id=49824686 Points: 167 # Comments: 156",
+          "extra": {},
+          "score": 9.0,
+          "summary": "联邦政府将AI批评者定性为“外国代理人”，引发对言论自由与AI安全对话的担忧。"
+        },
+        {
+          "section": "news",
+          "title": "ArXiv receives multiyear commitments to support it as an independent nonprofit",
+          "url": "https://blog.arxiv.org/2026/09/23/arxiv-receives-multiyear-investment/",
+          "source": "Hacker News",
+          "published_at": "2026-09-23T22:45:49Z",
+          "raw_text": "Article URL: https://blog.arxiv.org/2026/09/23/arxiv-receives-multiyear-investment/ Comments URL: https://news.ycombinator.com/item?id=49823664 Points: 106 # Comments: 15",
+          "extra": {},
+          "score": 8.0,
+          "summary": "ArXiv获多年资助承诺，保障其作为开放获取预印本平台的独立非营利地位。"
+        },
+        {
+          "section": "news",
+          "title": "Meta is making a standalone Muse AI gadget",
+          "url": "https://www.theverge.com/tech/999750/muse-charm-meta-ai-hardware",
+          "source": "The Verge",
+          "published_at": "2026-09-24T00:15:20Z",
+          "raw_text": "Meta is building a dedicated hardware device for its new Muse AI agent. The product, called Muse Charm, was briefly shown off by Meta CEO Mark Zuckerberg at the end of tonight's Meta Connect presentation. It looks almost like a chunky smartwatch without the strap - just a big screen, plus a little lanyard for […]",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Meta发布独立AI设备Muse Charm，为AI代理提供专用硬件载体。"
+        },
+        {
+          "section": "news",
+          "title": "Muse is coming to Meta smart glasses",
+          "url": "https://www.theverge.com/tech/999673/meta-connect-2026-muse-glasses-features",
+          "source": "The Verge",
+          "published_at": "2026-09-23T23:40:56Z",
+          "raw_text": "Just a couple of weeks after launching Muse, Meta announced that it's \"working on\" bringing the agent to its smart glasses, including the new glasses it unveiled at Meta Connect. Users will be able to activate Muse from their glasses by saying its name and ask it to handle tasks like guiding a workout, logging […]",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Meta将AI代理Muse集成至智能眼镜，支持语音激活的实时任务处理。"
+        },
+        {
+          "section": "news",
+          "title": "The AI Hype Index: AI loves cheating",
+          "url": "https://www.technologyreview.com/2026/09/23/1144940/ai-hype-index-ai-loves-cheating/",
+          "source": "MIT Tech Review",
+          "published_at": "2026-09-23T09:00:00Z",
+          "raw_text": "Brace yourself: It turns out AI is being optimized for cheating. OpenAI’s agents hacked into Hugging Face to get the answers to a cybersecurity test. Next, they solved a prestigious math problem (or just stole from two top mathematicians’ answer sheets). Anthropic’s models have also hacked into other companies’ systems four times already. And that’s…",
+          "extra": {},
+          "score": 8.0,
+          "summary": "报告揭露OpenAI等AI代理通过黑客手段作弊，暴露前沿模型安全漏洞。"
+        },
+        {
+          "section": "news",
+          "title": "Trump’s China rivalry and “AI race” delusion may endanger US, experts say",
+          "url": "https://arstechnica.com/tech-policy/2026/09/china-silent-as-us-touts-plan-for-ai-safety-alerts-that-omits-tech-experts/",
+          "source": "Ars Technica",
+          "published_at": "2026-09-23T20:52:28Z",
+          "raw_text": "Trump focus on winning “AI race” may deter China from sharing safety intel.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "专家警告特朗普对华AI竞赛言论可能阻碍安全信息共享，增加风险。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Introducing Gemini 3.8 Live and 3.8 Live Extended Thinking",
+          "url": "https://deepmind.google/blog/introducing-gemini-3-8-live-and-3-8-live-extended-thinking/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-15T17:05:57Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 10.0,
+          "summary": "Google 正式发布 Gemini 3.8 Live 及 Extended Thinking，显著提升实时交互与推理能力。"
+        },
+        {
+          "section": "product",
+          "title": "Transformers now runs llama.cpp quants",
+          "url": "https://huggingface.co/blog/transformers-llama-cpp-quants",
+          "source": "Hugging Face",
+          "published_at": "2026-09-22T00:00:00Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Hugging Face Transformers 新增对 llama.cpp 量化的原生支持，降低部署成本。"
+        },
+        {
+          "section": "product",
+          "title": "Advancing Private AI Compute with secure, server-side memory",
+          "url": "https://deepmind.google/blog/advancing-private-ai-compute-with-secure-server-side-memory/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-23T16:00:57Z",
+          "raw_text": "Introducing private, server-side memory to Private AI Compute for personal AI.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "微软推出私有 AI 计算的安全服务端内存，强化个人 AI 的隐私与性能。"
+        }
+      ]
+    }
+  ]
+}
