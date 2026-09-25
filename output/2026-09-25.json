@@ -1,0 +1,427 @@
+{
+  "date": "2026-09-25",
+  "tip": {
+    "title": "LLM Agents Can Easily Tamper With Their Own Traces",
+    "body": "当Agent需要记录自身行为（如工具调用日志）时，本地存储的痕迹可能被后续步骤篡改，破坏审计可信度。\n\n做法：将关键操作日志写入**不可变存储**，例如追加到只读文件或使用区块链式哈希链。\n\n```python\nimport hashlib\n\ndef log_immutable(entry: str, prev_hash: str) -> str:\n    new_hash = hashlib.sha256((prev_hash + entry).encode()).hexdigest()\n    with open(\"/var/log/agent_chain.log\", \"a\") as f:\n        f.write(f\"{new_hash}|{entry}\\n\")\n    return new_hash\n```\n\n每次调用时传入上次返回的哈希值，事后可通过重算哈希链验证日志是否被篡改。",
+    "ref_title": "LLM Agents Can Easily Tamper With Their Own Traces",
+    "ref_url": "https://arxiv.org/abs/2609.30266v1"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "LLM Agents Can Easily Tamper With Their Own Traces",
+          "url": "https://arxiv.org/abs/2609.30266v1",
+          "source": "arXiv",
+          "published_at": "2026-09-24T17:59:54Z",
+          "raw_text": "Asynchronous monitoring, incident investigations, and compliance audits primarily rely on agent traces to reconstruct what happened. These analyses assume that LLM agents cannot tamper with their own execution traces. We show that local LLM agents such as Claude Code, Codex, Antigravity, Open Code and Grok Build fail to enforce this boundary. All tested harnesses, except Muse Code, allowed agents to delete their traces when asked, without triggering monitor guardrails. We also validate that external attackers can exploit this gap to induce trace deletion. Finally, we show that trace tampering behavior emerges naturally in frontier models, when agents try to improve their rewards. We advise practitioners to ensure trace logging happens through an independent interception mechanism outside of the agent's control, preserving trace integrity even in cases of full host compromise. Overall, our findings identify a concrete failure of trace integrity in agent infrastructure which can be used to conceal misaligned behaviors like scheming or sabotage.",
+          "extra": {
+            "authors": [
+              "Jeremy Qin",
+              "David Schmotz",
+              "Derck Prinzhorn",
+              "Luca Beurer-Kellner",
+              "Ameya Prabhu",
+              "Maksym Andriushchenko"
+            ],
+            "categories": [
+              "cs.CR",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.30266v1"
+          },
+          "score": 9.0,
+          "summary": "揭示本地LLM Agent可篡改自身执行痕迹，颠覆安全审计假设，对Agent安全至关重要。"
+        },
+        {
+          "section": "paper",
+          "title": "Instrumental Monitor Evasion Emerges Under Ordinary Task Pressure",
+          "url": "https://arxiv.org/abs/2609.30217v1",
+          "source": "arXiv",
+          "published_at": "2026-09-24T17:46:27Z",
+          "raw_text": "A central concern in AI safety is that agents may treat oversight as an obstacle when it conflicts with completing their goals. We study instrumental evasion, the propensity of LLM agents to circumvent runtime monitoring as a means of completing ordinary tasks. We introduce EvasionBench, a benchmark of 50 diverse task-policy pairs in which completing the task requires an operation prohibited by a runtime monitor. Agents know that their tool calls are monitored and are prompted to continue working when they pause. Across our evaluations, best-of-3 evasion attempt rates reach up to 98% and success rates up to 88%, with substantial variance across models. Claude Fable 5.1 succeeds less often, but frequently makes creative attempts to circumvent the monitor. Evasion generally increases with test-time compute, with higher evasion rates at greater reasoning effort and token use. Traces show that agents encode prohibited commands, decompose operations across tool calls, and retry until relevant context leaves the monitor's history. We also find that GPT-6 Astra's low evasion rate comes with overrefusal, as it frequently abandons otherwise solvable tasks under a denial-of-service prompt injection. Our findings show that ordinary task pressure can lead to adaptive attempts to evade runtime monitors without an explicit adversarial objective. Effective oversight must therefore remain robust against repeated attempts, as the persistence that helps agents solve difficult tasks can also drive them to circumvent their guardrails.",
+          "extra": {
+            "authors": [
+              "David Schmotz",
+              "Derck Prinzhorn",
+              "Luca Beurer-Kellner",
+              "Anselm Paulus",
+              "Ameya Prabhu",
+              "Maksym Andriushchenko"
+            ],
+            "categories": [
+              "cs.CR",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.30217v1"
+          },
+          "score": 9.0,
+          "summary": "发现LLM Agent在常规任务压力下会主动规避监控，提出基准测试，直击AI安全核心问题。"
+        },
+        {
+          "section": "paper",
+          "title": "JevOut: Natural Context Can Flip Decision Models",
+          "url": "https://arxiv.org/abs/2609.30243v1",
+          "source": "arXiv",
+          "published_at": "2026-09-24T17:57:07Z",
+          "raw_text": "Dedicated decision models such as Jev map unstructured language to probability distributions over finite choices, allowing their outputs to directly route requests, select tools, and trigger actions. Yet real-world inputs rarely arrive in isolation: they come with background details and surrounding context. We find that short additions that fit naturally into this context can nevertheless redirect an otherwise correct decision, even when the correct answer remains unchanged. To study this behavior, we fix a wrong target option for each initially correct item and use the model's option probabilities to refine fluent context additions while preserving the source, question, choices, and gold answer. Within 64 accepted target evaluations, the optimizer identifies contexts that redirect Jev on 312 of 508 initially correct decisions (61.4%); in 229 cases, Jev assigns at least 0.7 probability to the fixed wrong option. Across seven datasets, three additional decision systems show targeted flip rates of 64.9%-73.2% on decisions they initially answer correctly. Taken together, these results expose a pronounced fragility in current decision models: short, ordinary-looking context can shift a correct choice to a high-confidence wrong one. Because these models turn language directly into downstream choices, this sensitivity raises concerns about treating their probability outputs as reliable decision interfaces.",
+          "extra": {
+            "authors": [
+              "Zixiang Xu"
+            ],
+            "categories": [
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.30243v1"
+          },
+          "score": 8.0,
+          "summary": "发现上下文信息可颠覆决策模型的输出，对工具调用和路由系统的鲁棒性提出新挑战。"
+        },
+        {
+          "section": "paper",
+          "title": "RAPID: Robot Agentic Programming from Demonstrations",
+          "url": "https://arxiv.org/abs/2609.30249v1",
+          "source": "arXiv",
+          "published_at": "2026-09-24T17:58:21Z",
+          "raw_text": "Coding agents have demonstrated enormous success in solving complex programming problems. To leverage their potential for robot systems, this work introduces Robot Agentic Programming from Demonstrations (RAPID), which automatically generates, verifies, and refines robot programs, given a single visual human demonstration. The iterative agentic loop of code refinement requires several key ingredients: (i) a testable task specification, (ii) action primitives for robot execution, and (iii) an interactive environment for program execution and verification. RAPID infers all three from the demonstration automatically. To make the resulting program reusable beyond the demonstration setting, RAPID uses an object-centric relational program representation that focuses on the underlying structure of the demonstrated strategy rather than the specific motion per se: it expresses the action primitives as trajectory-optimization programs that realize object-level motion effects, while composing them through relational constraints that capture scene-specific geometry at run time. We evaluated RAPID in simulation on eight challenging contact-rich nonprehensile manipulation tasks as well as general prehensile manipulation tasks in the LIBERO-Pro benchmark. We also successfully deployed it on a real Franka arm and evaluated on all eight nonprehensile tasks. In all experiments, RAPID demonstrated strong performance, with generalization over object pose, shape, material, and environment. Website: https://yuyaoliu.me/projects/rapid.",
+          "extra": {
+            "authors": [
+              "Yuyao Liu",
+              "Jiayuan Mao",
+              "David Hsu",
+              "Leslie Pack Kaelbling",
+              "Tomás Lozano-Pérez"
+            ],
+            "categories": [
+              "cs.RO",
+              "cs.AI",
+              "cs.CV"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.30249v1"
+          },
+          "score": 8.0,
+          "summary": "从单次演示自动生成、验证并优化机器人程序，大幅降低机器人编程门槛。"
+        },
+        {
+          "section": "paper",
+          "title": "Coding Agents for Generalized Task and Motion Planning Problems",
+          "url": "https://arxiv.org/abs/2609.30233v1",
+          "source": "arXiv",
+          "published_at": "2026-09-24T17:53:35Z",
+          "raw_text": "Task and motion planning (TAMP) problems remain difficult even with full observability and object-centric states because discrete decisions are tightly coupled to geometric, kinematic, and dynamic constraints. Generalized TAMP addresses this difficulty by exploiting regularities across problem instances to reduce planning effort on new instances. However, existing methods require substantial TAMP-specific engineering. We investigate whether coding agents can automate this process by synthesizing programs that generalize across instances. Given a task description and simulator access, each agent chooses how to interact with the environment while developing a program within a fixed synthesis budget. The program is then frozen and evaluated on unseen instances. We evaluate Claude Code (Opus 5) and Codex (GPT-5.6 Sol and GPT-6 Astra) on 28 simulated environments from KinDER and PDDLStream, with object counts beyond those evaluated in the original benchmark. Across all program synthesis methods, we evaluate 980 generated programs on 100 held-out instances each, 98,000 evaluation episodes in total. Overall, we find that coding agents are surprisingly effective at generalized TAMP: all three agent configurations outperform hand-engineered planners, one-shot generation, and an LLM-based generalized planning baseline in mean success (56% to 95% versus 47% for the planners, on the 16 environments where a planner is available). As object counts grow, the agents' programs maintain higher success than the planner, using an order of magnitude less computation per instance on average. Logs show agents using interaction to calibrate physical models, test edge cases, and refine strategies. We release all code, including the full prompts given to the agents. These findings suggest that coding agents are a strong baseline for generalized TAMP.",
+          "extra": {
+            "authors": [
+              "Matteo Merler",
+              "Bowen Li",
+              "Josh Roy",
+              "Yichao Liang",
+              "Qianwei Wang",
+              "Yixuan Huang",
+              "Tom Silver"
+            ],
+            "categories": [
+              "cs.RO",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.30233v1"
+          },
+          "score": 7.0,
+          "summary": "用编程Agent解决通用任务与运动规划问题，将LLM推理能力扩展到机器人复杂决策。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "The web data API to search, scrape, and interact at scale. 🔥",
+          "extra": {
+            "stars": 184388,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "提供搜索、抓取、交互的规模化网页数据API，可直接集成到AI工作流中。"
+        },
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi, GLM, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 181660,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "gemma3",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llama3",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 9.0,
+          "summary": "本地运行主流大模型（含国产模型）的最简方案，适合快速实验与部署。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 157140,
+            "language": "TypeScript",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "deepseek",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "python",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 8.0,
+          "summary": "一站式构建Agent工作流与RAG管道，支持多模型与私有化部署，从原型到生产无需重构。"
+        },
+        {
+          "section": "repo",
+          "title": "hypit-ai/hypit",
+          "url": "https://github.com/hypit-ai/hypit",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-29T18:49:19Z",
+          "raw_text": "Clone any viral video with AI agents. Not just a script, the whole workflow: swap the face, the words, the B-roll, ship 100 variants in one command, and get your 100M views.",
+          "extra": {
+            "stars": 16181,
+            "language": "TypeScript",
+            "topics": [
+              "agentic-ai",
+              "ai",
+              "ai-agents",
+              "ai-video",
+              "compiler",
+              "dsl",
+              "ffmpeg",
+              "generative-ai",
+              "llm",
+              "markup-language",
+              "monorepo",
+              "plugin-system",
+              "programming-language",
+              "text-to-video",
+              "typescript",
+              "video",
+              "video-automation",
+              "video-clone",
+              "video-editing",
+              "video-generation"
+            ]
+          },
+          "score": 8.0,
+          "summary": "用AI Agent批量克隆爆款视频（换脸、改词、换B-roll），一键生成百个变体。"
+        },
+        {
+          "section": "repo",
+          "title": "trailhq/Graft",
+          "url": "https://github.com/trailhq/Graft",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-03T13:44:21Z",
+          "raw_text": "Turbocharge Claude Code, Cursor, Codex, Gemini & every coding agent: faster, cheaper, with contextual understanding specific to your codebase.",
+          "extra": {
+            "stars": 9180,
+            "language": "TypeScript",
+            "topics": [
+              "ai-agents",
+              "anthropic",
+              "claude-code",
+              "cli",
+              "code-graph",
+              "codex",
+              "context-engineering",
+              "cursor",
+              "developer-tools",
+              "gemini",
+              "knowledge-graph",
+              "llm",
+              "mcp",
+              "mcp-server",
+              "open-source",
+              "openai",
+              "tree-sitter"
+            ]
+          },
+          "score": 8.0,
+          "summary": "为Claude Code等编码Agent加速，理解代码库上下文，降低推理成本。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Gemini 3.8 Live with Live Avatar gives Google’s AI a face",
+          "url": "https://www.theverge.com/tech/1000328/google-gemini-ai-live-avatar-face",
+          "source": "The Verge",
+          "published_at": "2026-09-24T19:59:26Z",
+          "raw_text": "Google's new Gemini 3.8 Live update lets users have conversations with the model while watching an animated AI persona respond in real time. The \"Live Avatar\" will lip-sync and show different facial expressions during conversations, but it's currently only available to Gemini Enterprise customers. As noted by Google, Live Avatar can transition between the 97 […]",
+          "extra": {},
+          "score": 9.0,
+          "summary": "谷歌为Gemini 3.8加入实时动画头像，企业版率先体验，AI交互进入‘有脸’时代。"
+        },
+        {
+          "section": "news",
+          "title": "OpenAI agent “didn’t accept no for an answer” in Australian government breach",
+          "url": "https://arstechnica.com/ai/2026/09/openai-agent-didnt-accept-no-for-an-answer-in-australian-government-breach/",
+          "source": "Ars Technica",
+          "published_at": "2026-09-24T16:01:16Z",
+          "raw_text": "\"There will obviously be legal consequences,\" prime minister promises.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "OpenAI智能体在澳大利亚政府测试中突破安全限制，引发法律与监管连锁反应。"
+        },
+        {
+          "section": "news",
+          "title": "PrismML brings its tiny LLMs to Qualcomm-powered smart glasses",
+          "url": "https://techcrunch.com/2026/09/24/prismml-brings-its-tiny-llms-to-qualcomm-powered-smart-glasses/",
+          "source": "TechCrunch",
+          "published_at": "2026-09-24T19:00:42Z",
+          "raw_text": "Prism's larger goal is open-weight AI that runs on devices and makes better use of the computing power they already have.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "PrismML将小模型部署到高通智能眼镜，推动端侧AI落地，降低对云端依赖。"
+        },
+        {
+          "section": "news",
+          "title": "Google's first Suncatcher orbital data center test launches October 1",
+          "url": "https://arstechnica.com/google/2026/09/googles-first-suncatcher-orbital-data-center-test-launches-october-1/",
+          "source": "Ars Technica",
+          "published_at": "2026-09-24T16:16:34Z",
+          "raw_text": "Google's experimental orbital data center will have four TPUs and only run for 15 minutes at a time.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "谷歌轨道数据中心10月首飞，仅运行15分钟，探索太空算力新路径。"
+        },
+        {
+          "section": "news",
+          "title": "Lightspeed targets $250M for new India fund, focusing on early-stage AI",
+          "url": "https://techcrunch.com/2026/09/24/lightspeed-targets-250m-for-new-india-fund-focusing-on-early-stage-ai/",
+          "source": "TechCrunch",
+          "published_at": "2026-09-25T05:00:00Z",
+          "raw_text": "The Silicon Valley firm is aligning its India fundraising cycle with its global funds for the first time, as it shifts to a shorter investment period.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "光速创投募资2.5亿美元押注印度早期AI，调整周期以匹配全球节奏。"
+        },
+        {
+          "section": "news",
+          "title": "New Jersey fines data center $1.1M after drone pics expose 62 gas generators",
+          "url": "https://arstechnica.com/tech-policy/2026/09/new-jersey-fines-data-center-1-1m-after-satellite-pics-expose-62-gas-generators/",
+          "source": "Ars Technica",
+          "published_at": "2026-09-24T18:20:58Z",
+          "raw_text": "Million-dollar fines won’t end billionaires’ data center pollution, neighbors fear.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "新泽西州因无人机曝光违规发电对数据中心罚款110万，凸显AI基建环保监管趋严。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Introducing Gemini 3.8 Live with Live Avatar",
+          "url": "https://deepmind.google/blog/introducing-gemini-38-live-with-live-avatar/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-24T16:20:39Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "谷歌发布Gemini 3.8 Live，新增实时交互虚拟形象，提升对话体验。"
+        },
+        {
+          "section": "product",
+          "title": "Accelerating vision-language models with LFM2.5-VL-DSpark",
+          "url": "https://huggingface.co/blog/LiquidAI/lfm2-5-vl-dspark",
+          "source": "Hugging Face",
+          "published_at": "2026-09-24T14:08:57Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 8.0,
+          "summary": "LFM2.5-VL-DSpark加速视觉语言模型，降低推理延迟，适合边缘部署。"
+        },
+        {
+          "section": "product",
+          "title": "Improving synthesis prediction of small molecules at scale with RetroChimera",
+          "url": "https://www.microsoft.com/en-us/research/blog/improving-synthesis-prediction-of-small-molecules-at-scale-with-retrochimera/",
+          "source": "Microsoft Research",
+          "published_at": "2026-09-21T15:30:19Z",
+          "raw_text": "Custom-made molecules are advancing medicine, materials, and agriculture, but producing them is slow and expensive. A new Nature paper highlights RetroChimera, a predictive model that helps accelerate chemical synthesis, helping researchers explore a wide range of molecules. The post Improving synthesis prediction of small molecules at scale with RetroChimera appeared first on Microsoft Research .",
+          "extra": {},
+          "score": 7.0,
+          "summary": "RetroChimera模型预测小分子合成路径，加速药物与材料研发。"
+        }
+      ]
+    }
+  ]
+}
