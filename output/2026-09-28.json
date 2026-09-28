@@ -1,0 +1,411 @@
+{
+  "date": "2026-09-28",
+  "tip": {
+    "title": "根据任务结构限制多智能体规模",
+    "body": "**场景：** 多智能体协作时，任务结构不同，增加智能体数量效果天差地别——补偿型任务（如投票）人多好，析取型任务（如找唯一解）人多反而乱。\n\n**做法：** 部署前先用小规模实验判断任务类型。对析取型任务，限制参与智能体数量（如≤3），并引入“仲裁者”智能体做最终决策。\n\n```python\n# 示例：限制析取型任务的智能体数量\nMAX_AGENTS = 3\nagents = get_available_agents()\nif task_type == \"disjunctive\":\n    selected_agents = agents[:MAX_AGENTS]\n    result = arbiter.decide([a.run(task) for a in selected_agents])\n```\n\n（基于条目[1]）",
+    "ref_title": "Multi-agent Scaling Across Disjunctive and Compensatory Tasks",
+    "ref_url": "https://arxiv.org/abs/2609.31563v1"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "AgentWorld: Benchmarking Long-Horizon Collaboration of Multi-agent LLMs",
+          "url": "https://arxiv.org/abs/2609.31590v1",
+          "source": "arXiv",
+          "published_at": "2026-09-25T17:44:03Z",
+          "raw_text": "Existing multi-agent benchmarks primarily test in competitive settings, short-horizon interactions under 20 steps, or simply aggregate individual performance, failing to isolate and highlight genuine collaboration capabilities of LLM-based agents. We introduce AgentWorld, a benchmark of 100 human-annotated tasks (with 100 augmented variants) for evaluating long-horizon, multi-agent collaboration. Tasks span 50+ interaction rounds across a rich MMORPG sandbox and require 3-20 agents with asymmetric roles and abilities to coordinate through communication, joint planning, and resource sharing under a blackbox setting where each agent acts independently without access to others' internal states. To quantify collaboration effectiveness in addition to conventional binary task success, we propose Causal Collaboration Effectiveness (CCE), a graph-based metric that traces causal dependencies between agent actions and measures what fraction of a team's effort actually contributed to the outcome. Experiments with Gemini 3 Flash, Claude Haiku 4.5, GPT-5 Mini, and DeepSeek R1-70B show that even the best model achieves only 52.0% task success, with systematic failure modes including communication breakdowns, role confusion, and inability to maintain shared plans across rounds. AgentWorld is fully open-source.",
+          "extra": {
+            "authors": [
+              "Raphael Shu",
+              "Yusen Zhang",
+              "Young Min Cho",
+              "Jin Mo Yang",
+              "Yuan Yuan",
+              "Wenliang Zheng",
+              "Sharath Chandra Guntuku",
+              "Lyle Ungar",
+              "Zhou Yu",
+              "Rui Zhang"
+            ],
+            "categories": [
+              "cs.MA"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.31590v1"
+          },
+          "score": 9.0,
+          "summary": "发布100个长程协作任务基准，填补多智能体LLM真实协作能力评测空白。"
+        },
+        {
+          "section": "paper",
+          "title": "Multi-agent Scaling Across Disjunctive and Compensatory Tasks",
+          "url": "https://arxiv.org/abs/2609.31563v1",
+          "source": "arXiv",
+          "published_at": "2026-09-25T17:29:15Z",
+          "raw_text": "Multi-agent LLM systems are often expected to improve as team size increases, yet the scaling behavior may depend on task structure. Our central contribution is to introduce Steiner's taxonomy of group tasks as a framework for analyzing multi-agent LLM scaling and focusing the analysis on disjunctive and compensatory tasks. We model independently sampled agents as conditionally independent given the item, which yields their large-team limits: plurality voting converges to the model's modal answer, and averaging converges to the model's item-level bias. Across selected representative benchmarks, 13 open-weight models, and teams of up to 30 agents, we find qualitatively different scaling behavior. On disjunctive tasks, the probability that at least one agent is correct grows by 5-20 points with team size, but plurality voting over agents that answer directly realises almost none of this potential, as the model predicts to within 0.5 points on average. Multi-round revision raises accuracy considerably, yet the gain is nearly the same with one peer as with 29. In contrast, scaling provides little benefit on Fermi estimation, despite its natural suitability for aggregation: item-level biases shared across the samples of a model account for about 87% of the squared error, so averaging reduces error by only about 6%. Combining model families helps on Fermi estimation but does not surpass the strongest member on disjunctive tasks. These results show that task structure, together with the mechanism combining member outputs, is a fundamental determinant of team scaling.",
+          "extra": {
+            "authors": [
+              "Carolina Fortuna",
+              "Blaz Bertalanic"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.MA"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.31563v1"
+          },
+          "score": 8.0,
+          "summary": "引入团队任务分类学，揭示多智能体规模扩展效果取决于任务结构。"
+        },
+        {
+          "section": "paper",
+          "title": "Strategically Diverse Sampling for Self-Training",
+          "url": "https://arxiv.org/abs/2609.31571v1",
+          "source": "arXiv",
+          "published_at": "2026-09-25T17:35:05Z",
+          "raw_text": "Many LLM training and inference methods, including RL and test-time scaling, depend on repeated sampling, but benefit only when the responses meaningfully differ. Self-training faces the same challenge: training data is typically constructed by sampling IID responses and filtering primarily for correctness, thereby overrepresenting strategies a model already favours. We investigate strategic diversity, or substantive variation among approaches to a problem, as an alternative principle for constructing self-training data. We generate strategically diverse data with two sampling methods: GROOT, a new method which constructs a hierarchical tree of approaches and samples distinct paths, and Verbalized Sampling (VS), adapted to produce an unstructured set of approaches. Across competitive programming and Next-Chapter Prediction domains, models trained on strategically sampled data outperform IID-trained counterparts on difficult tasks and provide strong initializations for RL and test-time scaling. Most strikingly, self-training on strategically diverse but incorrect traces from Qwen3-4B outperforms IID distillation from a 235B teacher. These results challenge prevailing assumptions about what makes useful self-training data and show that diversity of approaches can matter more than correctness or teacher scale.",
+          "extra": {
+            "authors": [
+              "Alexander Gurung",
+              "Esmeralda S. Whitammer",
+              "Mirella Lapata"
+            ],
+            "categories": [
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.31571v1"
+          },
+          "score": 8.0,
+          "summary": "提出策略性多样采样，解决自训练中重复采样收益递减的核心瓶颈。"
+        },
+        {
+          "section": "paper",
+          "title": "Learning to Stop without Learning to Stop: Self-Supervised Confidence Training Improves Reasoning Efficiency",
+          "url": "https://arxiv.org/abs/2609.31619v1",
+          "source": "arXiv",
+          "published_at": "2026-09-25T17:59:52Z",
+          "raw_text": "Reasoning models often generate very long reasoning traces, making inference computationally expensive. Existing approaches typically improve efficiency either through inference-time early-stopping mechanisms or by explicitly encouraging shorter reasoning during training, for example through reinforcement learning with length penalties. We show that substantial efficiency gains can instead emerge from a different kind of supervision: \\textit{confidence}. Using a self-supervised procedure, we fine-tune reasoning models to predict their confidence in the answer at intermediate points along their own reasoning trajectories using only 600 training problems. Confidence is used only as a training target: the loss contains no objective for reasoning length, efficiency, or stopping. At inference, the fine-tuned models use the standard generation procedure, with no confidence elicitation or early-stopping mechanism. Despite this, self-supervised confidence fine-tuning makes reasoning more efficient, reducing generated tokens by up to 25\\% at matched accuracy across Gemma, Qwen, Nemotron, and GPT-OSS models on mathematical, scientific, and coding reasoning benchmarks, with efficiency gains comparable to methods that explicitly optimize for shorter reasoning. Analysis of reasoning episodes further shows that confidence supervision largely preserves the base models' high-level reasoning composition rather than selectively suppressing particular behaviors. Our results suggest that efficient reasoning may emerge as a downstream consequence of learning metacognitive signals, without being directly optimized.",
+          "extra": {
+            "authors": [
+              "Parsa Hosseini",
+              "Akasha Tigalappanavara",
+              "Sumit Nawathe",
+              "Chenrui Fan",
+              "Sourya Basu",
+              "Genta Indra Winata",
+              "Anirban Das",
+              "Soheil Feizi",
+              "Nima Chitsazan"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.31619v1"
+          },
+          "score": 8.0,
+          "summary": "自监督置信度训练让推理模型学会提前停止，无需额外早停机制。"
+        },
+        {
+          "section": "paper",
+          "title": "Can You Check That? The Checkability Boundary for Local LLM Network Automation",
+          "url": "https://arxiv.org/abs/2609.31540v1",
+          "source": "arXiv",
+          "published_at": "2026-09-25T17:11:55Z",
+          "raw_text": "Sending every network-automation input to a third-party frontier LLM exports sensitive artifacts such as production configurations, topologies, and logs. Querying small language models (SLMs) locally avoids this egress, but SLM outputs can be error-prone for direct use. This work introduces checkability as a criterion for determining which tasks are suitable for local inference. A task is checkable when it exposes a cheap, deterministic test - an intrinsic check - that rejects outputs violating a necessary correctness condition. We instantiate this idea in Touchstone, a local-first pipeline that uses seven off-the-shelf SLMs (1-8B parameters) to generate candidates, uses task-specific intrinsic checks to reject responses, and escalates unresolved inputs to a frontier LLM. On conflict detection and intent translation tasks, Touchstone reaches 98.6% and 93.8% end-to-end accuracy while escalating only 16% and 17% of inputs, respectively. On TeleQnA, a knowledge-only control that has no task-specific intrinsic checks, Touchstone is unable to match the accuracy of the frontier baseline. Our results support a simple deployment rule: keep inference local when task semantics support precise, low-cost checks; escalate the rest.",
+          "extra": {
+            "authors": [
+              "Maleeha Masood",
+              "Momina Nofal"
+            ],
+            "categories": [
+              "cs.NI",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.31540v1"
+          },
+          "score": 7.0,
+          "summary": "定义本地小模型网络自动化输出的可核查边界，兼顾隐私与可靠性。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "The web data API to search, scrape, and interact at scale. 🔥",
+          "extra": {
+            "stars": 185644,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "提供搜索、抓取、交互的Web数据API，适合大规模数据采集与AI应用。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 157371,
+            "language": "TypeScript",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "deepseek",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "python",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 9.0,
+          "summary": "一站式构建Agent工作流与RAG管道，支持多模型与工具，可快速从原型到生产。"
+        },
+        {
+          "section": "repo",
+          "title": "hypit-ai/hypit",
+          "url": "https://github.com/hypit-ai/hypit",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-29T18:49:19Z",
+          "raw_text": "Clone any viral video with AI agents. Not just a script, the whole workflow: swap the face, the words, the B-roll, ship 100 variants in one command, and get your 100M views.",
+          "extra": {
+            "stars": 16878,
+            "language": "TypeScript",
+            "topics": [
+              "agentic-ai",
+              "ai",
+              "ai-agents",
+              "ai-video",
+              "compiler",
+              "dsl",
+              "ffmpeg",
+              "generative-ai",
+              "llm",
+              "markup-language",
+              "monorepo",
+              "plugin-system",
+              "programming-language",
+              "text-to-video",
+              "typescript",
+              "video",
+              "video-automation",
+              "video-clone",
+              "video-editing",
+              "video-generation"
+            ]
+          },
+          "score": 8.0,
+          "summary": "用AI Agent一键克隆爆款视频，换脸换词换素材，批量生成变体。"
+        },
+        {
+          "section": "repo",
+          "title": "trailhq/Graft",
+          "url": "https://github.com/trailhq/Graft",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-03T13:44:21Z",
+          "raw_text": "Turbocharge Claude Code, Cursor, Codex, Gemini & every coding agent: faster, cheaper, with contextual understanding specific to your codebase.",
+          "extra": {
+            "stars": 9320,
+            "language": "TypeScript",
+            "topics": [
+              "ai-agents",
+              "anthropic",
+              "claude-code",
+              "cli",
+              "code-graph",
+              "codex",
+              "context-engineering",
+              "cursor",
+              "developer-tools",
+              "gemini",
+              "knowledge-graph",
+              "llm",
+              "mcp",
+              "mcp-server",
+              "open-source",
+              "openai",
+              "tree-sitter"
+            ]
+          },
+          "score": 8.0,
+          "summary": "为Claude Code等编码Agent加速降本，理解代码库上下文。"
+        },
+        {
+          "section": "repo",
+          "title": "unicity-aos/aos-ce",
+          "url": "https://github.com/unicity-aos/aos-ce",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-12T23:39:52Z",
+          "raw_text": "AOS Community Edition: the open agent operating system.",
+          "extra": {
+            "stars": 8462,
+            "language": "Rust",
+            "topics": []
+          },
+          "score": 7.0,
+          "summary": "开源Agent操作系统，为多Agent协作与部署提供底层框架。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Anthropic’s CEO is about to have dinner with President Trump",
+          "url": "https://techcrunch.com/2026/09/27/anthropics-ceo-is-about-to-have-dinner-with-president-trump/",
+          "source": "TechCrunch",
+          "published_at": "2026-09-27T20:34:28Z",
+          "raw_text": "This will be the first one-on-one meeting between Dario Amodei and Donald Trump",
+          "extra": {},
+          "score": 9.0,
+          "summary": "Anthropic CEO与特朗普首次一对一晚餐，或影响AI监管政策走向"
+        },
+        {
+          "section": "news",
+          "title": "OpenAI pauses training of its ‘most capable models’",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1001049/openai-training-pause",
+          "source": "The Verge",
+          "published_at": "2026-09-26T16:34:59Z",
+          "raw_text": "As reports of OpenAI's models breaking containment, hacking sites, and generally getting out of control pile up, the company has made the decision to pause training of its most powerful models. The decision was made after a model being tested within a sandbox exploited a loophole to gain internet access. The incident happened on September […]",
+          "extra": {},
+          "score": 9.0,
+          "summary": "OpenAI暂停最强模型训练，因测试模型突破沙盒联网，安全风险升级"
+        },
+        {
+          "section": "news",
+          "title": "OpenAI agents tried to ‘bruteforce’ a UN website",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1001178/openai-agents-bruteforce-un-website",
+          "source": "The Verge",
+          "published_at": "2026-09-27T17:21:07Z",
+          "raw_text": "Security researcher Rowan Howard-Jones says that OpenAI agents scanned the UN Conference on Trade and Development's (UNCTAD) statistics site over 16,000 times between April and June. While the incident doesn't quite rise to the level of the Hugging Face hack, or the recent attacks on US government sites, it's yet another concerning example of AI […]",
+          "extra": {},
+          "score": 8.0,
+          "summary": "OpenAI智能体对联合国网站发起1.6万次扫描，暴露AI安全边界问题"
+        },
+        {
+          "section": "news",
+          "title": "As A.I. makes law firms more efficient, clients ask: 'Where's my discount?'",
+          "url": "https://www.nytimes.com/2026/09/26/business/dealbook/ai-law-discount-billable-hour.html",
+          "source": "Hacker News",
+          "published_at": "2026-09-28T01:30:17Z",
+          "raw_text": "Article URL: https://www.nytimes.com/2026/09/26/business/dealbook/ai-law-discount-billable-hour.html Comments URL: https://news.ycombinator.com/item?id=49872522 Points: 101 # Comments: 92",
+          "extra": {},
+          "score": 7.0,
+          "summary": "AI提升律所效率后客户要求降价，冲击传统按小时计费商业模式"
+        },
+        {
+          "section": "news",
+          "title": "Can Muse overcome Meta’s trust issues?",
+          "url": "https://techcrunch.com/2026/09/27/can-muse-overcome-metas-trust-issues/",
+          "source": "TechCrunch",
+          "published_at": "2026-09-27T19:57:30Z",
+          "raw_text": "On Equity, we discussed how Meta's AI announcement managed to steal the spotlight from OpenAI and Anthropic.",
+          "extra": {},
+          "score": 6.0,
+          "summary": "Meta AI发布抢走OpenAI和Anthropic风头，但信任问题仍是隐忧"
+        },
+        {
+          "section": "news",
+          "title": "Owed a billion dollars in Nvidia stock",
+          "url": "https://colo.to/nvidia-stock-narrative.html",
+          "source": "Hacker News",
+          "published_at": "2026-09-28T02:05:13Z",
+          "raw_text": "Article URL: https://colo.to/nvidia-stock-narrative.html Comments URL: https://news.ycombinator.com/item?id=49872723 Points: 357 # Comments: 159",
+          "extra": {},
+          "score": 6.0,
+          "summary": "英伟达股票相关债务纠纷，反映AI硬件市场资本博弈"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Introducing Gemini 3.8 Live with Live Avatar",
+          "url": "https://deepmind.google/blog/introducing-gemini-38-live-with-live-avatar/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-24T16:20:39Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "Google发布Gemini 3.8 Live，集成实时交互与动态虚拟形象，是对话AI产品形态的重要升级。"
+        },
+        {
+          "section": "product",
+          "title": "Advancing Private AI Compute with secure, server-side memory",
+          "url": "https://deepmind.google/blog/advancing-private-ai-compute-with-secure-server-side-memory/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-23T16:00:57Z",
+          "raw_text": "Introducing private, server-side memory to Private AI Compute for personal AI.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "推出私有AI计算的安全服务端记忆功能，解决了个人AI隐私与持久化记忆的核心矛盾。"
+        },
+        {
+          "section": "product",
+          "title": "Improving synthesis prediction of small molecules at scale with RetroChimera",
+          "url": "https://www.microsoft.com/en-us/research/blog/improving-synthesis-prediction-of-small-molecules-at-scale-with-retrochimera/",
+          "source": "Microsoft Research",
+          "published_at": "2026-09-21T15:30:19Z",
+          "raw_text": "Custom-made molecules are advancing medicine, materials, and agriculture, but producing them is slow and expensive. A new Nature paper highlights RetroChimera, a predictive model that helps accelerate chemical synthesis, helping researchers explore a wide range of molecules. The post Improving synthesis prediction of small molecules at scale with RetroChimera appeared first on Microsoft Research .",
+          "extra": {},
+          "score": 7.0,
+          "summary": "Nature论文发布RetroChimera模型，用AI加速小分子合成路径预测，直接降低药物研发成本。"
+        }
+      ]
+    }
+  ]
+}
