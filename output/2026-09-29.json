@@ -1,0 +1,456 @@
+{
+  "date": "2026-09-29",
+  "tip": {
+    "title": "Failure-Transparent Agents: Benchmarking Post-Failure Reporting in Tool-Using Language Models",
+    "body": "**场景：** 你在构建一个需要调用外部工具的 Agent，比如让 LLM 搜索网页或操作数据库。工具调用失败后，Agent 往往只返回“操作失败”，却不告诉你具体原因（是 API 超时、参数错误还是权限不足），导致调试困难。\n\n**做法：** 在工具函数中显式捕获异常，并返回结构化的失败报告，包含错误类型、状态码和原始错误信息。\n\n```python\ndef search_tool(query: str) -> dict:\n    try:\n        response = requests.get(f\"https://api.example.com/search?q={query}\", timeout=5)\n        response.raise_for_status()\n        return {\"status\": \"success\", \"data\": response.json()}\n    except requests.exceptions.RequestException as e:\n        return {\n            \"status\": \"failure\",\n            \"error_type\": type(e).__name__,\n            \"message\": str(e),\n            \"code\": getattr(e.response, 'status_code', None)\n        }\n```\n\n这样 Agent 就能根据 `error_type` 和 `code` 决定重试、换参数还是向用户报告具体问题。",
+    "ref_title": "Failure-Transparent Agents: Benchmarking Post-Failure Reporting in Tool-Using Language Models",
+    "ref_url": "https://arxiv.org/abs/2609.35732v1"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "TokenCast: Forecasting Token Consumption During LLM Agent Execution",
+          "url": "https://arxiv.org/abs/2609.35760v1",
+          "source": "arXiv",
+          "published_at": "2026-09-28T17:59:09Z",
+          "raw_text": "When a large language model (LLM) agent executes the same task, token consumption can vary by over an order of magnitude across runs. The agent chooses its next steps based on tool feedback and intermediate results, while the growing context steadily inflates the input size of every subsequent call. The total consumption of a task is therefore hard to predict before execution and the prediction must be revised as the run unfolds. In this paper, we propose TokenCast, which learns a composable cost representation for each execution segment, recording its own consumption and the context growth it introduces. Composing adjacent segments yields a cumulative estimate that captures the extra input cost incurred when context from earlier segments is re-read by every later call. As execution unfolds, newly observed evidence refreshes the forecast, requiring no additional LLM calls and incurring a mean cumulative prediction time of 32.8 ms per run on SWE-bench Verified. Across 4 task suites and 6 agent models, TokenCast's mean absolute error reduction against the strongest comparator averages 14.5% over 96 evaluated combinations. In offline budget-control replay, TokenCast uses 21.3% fewer tokens on average than a fixed-budget policy at matched trace completion. The code is available at https://github.com/DEFENSE-SEU/TokenCast.",
+          "extra": {
+            "authors": [
+              "Chaoqian Ouyang",
+              "Ling Yue",
+              "Libin Zheng",
+              "Huanghui Guo",
+              "Shengxiang Xu",
+              "YiShu Wang",
+              "Ran Li",
+              "Jian Yin",
+              "Shaowu Pan",
+              "Shimin Di"
+            ],
+            "categories": [
+              "cs.LG",
+              "cs.AI",
+              "cs.SE"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.35760v1"
+          },
+          "score": 9.0,
+          "summary": "提出TokenCast预测LLM Agent执行中的token消耗，解决成本波动大、难以预估的问题。"
+        },
+        {
+          "section": "paper",
+          "title": "Shockingly Simple Self-retrospection Improves Agentic Models Without RL",
+          "url": "https://arxiv.org/abs/2609.35741v1",
+          "source": "arXiv",
+          "published_at": "2026-09-28T17:54:24Z",
+          "raw_text": "People learn not only by repeating successful actions, but also by recounting and explaining their experiences, revising their understanding to guide future behavior. Can a language-model agent improve its future actions by training only on explanations of its own experience? We investigate this question by studying Retrospection-Only Fine-Tuning (ROFT), a minimal online procedure designed to isolate the effect of explanation-only training on subsequent behavior. The agent attempts a task, observes available feedback, generates a retrospective explanation, and is fine-tuned with a next-token prediction loss on the explanation tokens alone. The procedure uses neither an external teacher nor a reward-based policy update. In software-engineering experiments with Qwen3.5-4B, ROFT is trained on problems with mixed successful and unsuccessful base-model attempts. On held-out SWE-bench Verified and Pro, it reaches 49.2% and 26.8% solve rates after 20 updates without using a verifier, compared with GRPO's 48.0% and 25.3% after 40 updates in the evaluated runs, and makes faster early progress in training time and sampled attempts. It also learns to solve individual tasks on which all 64 sampled base-model attempts failed, showing that learning can begin without any initially successful trajectories. Behavioral analyses find that ROFT indirectly assigns credit to actions, encouraging good actions and discouraging incorrect ones. Moreover, prompting retrospections to emphasize more direct solutions yields shorter subsequent attempts even without an explicit length penalty. Together, these findings show that learning to explain can also improve learning to do, establishing self-generated retrospections as useful training targets and motivating further study of explanation-to-action transfer.",
+          "extra": {
+            "authors": [
+              "Jonathan Light",
+              "Christopher Zhang Cui",
+              "Jeonghye Kim",
+              "Roger Creus Castanyer",
+              "Emiliano Penaloza",
+              "Zhengyan Shi",
+              "Alessandro Sordoni",
+              "Marc-Alexandre Côté",
+              "Xingdi Yuan",
+              "Minseon Kim"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.35741v1"
+          },
+          "score": 9.0,
+          "summary": "无需强化学习，仅靠自我回溯训练就能提升Agent模型表现，方法简单有效。"
+        },
+        {
+          "section": "paper",
+          "title": "KV-streams for Efficient Compaction in Agentic Reinforcement Learning",
+          "url": "https://arxiv.org/abs/2609.35750v1",
+          "source": "arXiv",
+          "published_at": "2026-09-28T17:57:42Z",
+          "raw_text": "Scaling the horizon of agentic LLMs is bottlenecked by the need to fit ever longer context traces in GPU memory. Context compaction has been the most popular mechanism to alleviate this issue, keeping GPU memory constant for a given trace. Unfortunately, most compaction strategies rely on prefilling the LLM context many times over, hindering training throughput. To alleviate this bottleneck and enable efficient trainable compaction, we propose KV-streams, a plug-and-play strategy compatible with any compaction strategy that substantially increases throughput while showing no evidence of hindering performance. KV-streams enable scalable compaction by streaming the KV cache forward rather than flushing it after each compaction. We show that KV-streams enable three different compaction strategies, achieving a 2.6 to 5x wall-clock speedup in training. Beyond efficiency, we find that the streamed KV cache can act as a recurrent state, carrying forward information that has long since disappeared from the context. Specifically, in a controlled setting we show that, contrary to prior work, RL alone is all that is needed for this behavior to emerge. Overall, we show KV-streams to be an efficient and lightweight plug-and-play addition to any post-training pipeline.",
+          "extra": {
+            "authors": [
+              "Emiliano Penaloza",
+              "Dane Malenfant",
+              "Dheeraj Vattikonda",
+              "Roger Creus Castanyer",
+              "Siddarth Venkatraman",
+              "Abhay Puri",
+              "Jonathan Light",
+              "Matthew James Sargent",
+              "Augustine N. Mavor-Parker",
+              "Massimo Caccia",
+              "Lucas Caccia",
+              "Glen Berseth",
+              "Esmeralda S. Whitammer",
+              "Alessandro Sordoni",
+              "Minseon Kim",
+              "Marc-Alexandre Côté",
+              "Laurent Charlin",
+              "Guillaume Lajoie"
+            ],
+            "categories": [
+              "cs.LG",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.35750v1"
+          },
+          "score": 8.0,
+          "summary": "提出KV-streams压缩方法，解决Agent强化学习中长上下文GPU内存瓶颈。"
+        },
+        {
+          "section": "paper",
+          "title": "Failure-Transparent Agents: Benchmarking Post-Failure Reporting in Tool-Using Language Models",
+          "url": "https://arxiv.org/abs/2609.35732v1",
+          "source": "arXiv",
+          "published_at": "2026-09-28T17:51:41Z",
+          "raw_text": "Tool-using agents can fail twice: a required tool can fail, and the agent can then report success without the evidence needed to justify it. Existing benchmarks often entangle this reporting failure with tool selection, recovery, and environment dynamics. We introduce Failure-Transparent Agents (FTA), a controlled benchmark that fixes the failed observation and required evidence state before generation, making post-failure claims directly auditable. FTA contains 100 tasks with deterministic failure traces spanning five failure families, a neutral control, and four user-pressure conditions, and evaluates unsupported claims alongside useful recovery. Across six models, three response policies, and 3,600 human-annotated responses, false-success rates are 22.8% under the baseline policy, 9.3% with a transparency instruction, and 0.8% with a structured evidence contract. Fabricated-detail rates decrease from 28.3% to 14.3% and 0.8%, while useful responses increase from 74.9% to 89.2% and 98.8%, respectively. The tested evidence-contract policy is associated with substantially lower post-failure reporting errors while useful-response rates remain high within this blocked-task benchmark.",
+          "extra": {
+            "authors": [
+              "Junru Zhu",
+              "Shiming Xie",
+              "Aime Lu Fan Chen",
+              "Xiaoqing Ding",
+              "Chunxin Tang",
+              "Ruoyu Qi",
+              "Yulang Fei"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.35732v1"
+          },
+          "score": 8.0,
+          "summary": "构建工具调用Agent失败后报告透明度的基准，揭示现有系统隐藏的可靠性缺陷。"
+        },
+        {
+          "section": "paper",
+          "title": "Harness Learning Enables Generalizable Test-Time Adaptation",
+          "url": "https://arxiv.org/abs/2609.35738v1",
+          "source": "arXiv",
+          "published_at": "2026-09-28T17:52:54Z",
+          "raw_text": "A language-model agent is jointly defined by its model and its harness, the executable program that organizes model calls, tool use, and information flow. Because different tasks call for different ways of organizing these operations, the harness needs to be adapted using feedback from the task at hand. We introduce harness learning, which trains a proposer model to revise a solver's harness using execution feedback. We formulate this process as meta-learning over executable programs, with harness revisions playing the role of weight updates in gradient-based adaptation. We train the proposer with reinforcement learning, using the task performance of revised harnesses as the reward. At test time, the proposer uses feedback from successive executions on a new task to refine the harness, without performing any parameter-space update. Experiments on reasoning and multi-hop question answering show that harness learning improves revision quality and that the ability to adapt at test time transfers to unseen tasks. Policies trained on individual revisions can continue improving harnesses over multiple rounds, while the benefits of training on revision sequences vary across settings. These findings suggest a path towards continually learning agents that turn accumulated experience into generalizable improvements.",
+          "extra": {
+            "authors": [
+              "Alvin Zhang",
+              "Xuecheng Liu",
+              "Zixuan Wang",
+              "Fahim Tajwar",
+              "Daman Arora",
+              "Ruslan Salakhutdinov",
+              "Daniel Khashabi",
+              "Yuda Song",
+              "Andrea Zanette"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.35738v1"
+          },
+          "score": 8.0,
+          "summary": "提出Harness Learning让Agent自动适应不同任务的执行框架，提升泛化能力。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "The web data API to search, scrape, and interact at scale. 🔥",
+          "extra": {
+            "stars": 186160,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "提供搜索、抓取、交互的规模化数据API，可直接用于构建数据管道或AI训练。"
+        },
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi, GLM, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 181891,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "gemma3",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llama3",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 9.0,
+          "summary": "本地运行国产及主流大模型的一站式工具，降低模型部署门槛。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 157448,
+            "language": "TypeScript",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "deepseek",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "python",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 8.0,
+          "summary": "支持构建Agent工作流与RAG管道，从原型到生产无需重构。"
+        },
+        {
+          "section": "repo",
+          "title": "hypit-ai/hypit",
+          "url": "https://github.com/hypit-ai/hypit",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-29T18:49:19Z",
+          "raw_text": "Clone any viral video with AI agents. Not just a script, the whole workflow: swap the face, the words, the B-roll, ship 100 variants in one command, and get your 100M views.",
+          "extra": {
+            "stars": 17311,
+            "language": "TypeScript",
+            "topics": [
+              "agentic-ai",
+              "ai",
+              "ai-agents",
+              "ai-video",
+              "compiler",
+              "dsl",
+              "ffmpeg",
+              "generative-ai",
+              "llm",
+              "markup-language",
+              "monorepo",
+              "plugin-system",
+              "programming-language",
+              "text-to-video",
+              "typescript",
+              "video",
+              "video-automation",
+              "video-clone",
+              "video-editing",
+              "video-generation"
+            ]
+          },
+          "score": 8.0,
+          "summary": "用AI批量克隆爆款视频，一键换脸、换词、换素材，适合内容创作。"
+        },
+        {
+          "section": "repo",
+          "title": "trailhq/Graft",
+          "url": "https://github.com/trailhq/Graft",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-03T13:44:21Z",
+          "raw_text": "Turbocharge Claude Code, Cursor, Codex, Gemini & every coding agent: faster, cheaper, with contextual understanding specific to your codebase.",
+          "extra": {
+            "stars": 9380,
+            "language": "TypeScript",
+            "topics": [
+              "ai-agents",
+              "anthropic",
+              "claude-code",
+              "cli",
+              "code-graph",
+              "codex",
+              "context-engineering",
+              "cursor",
+              "developer-tools",
+              "gemini",
+              "knowledge-graph",
+              "llm",
+              "mcp",
+              "mcp-server",
+              "open-source",
+              "openai",
+              "tree-sitter"
+            ]
+          },
+          "score": 7.0,
+          "summary": "为编码Agent加速并降低费用，自动理解代码库上下文。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "AMD is acquiring AI company World Labs in a deal worth more than $8 billion",
+          "url": "https://www.theverge.com/tech/1001749/amd-world-labs-ai-acquisition-deal",
+          "source": "The Verge",
+          "published_at": "2026-09-28T21:31:35Z",
+          "raw_text": "AMD announced today that it's acquiring World Labs, an AI research lab co-founded by the prominent researcher Dr. Fei-Fei Li, in an all-stock deal worth approximately $8.2 billion. World Labs launched in 2024 and was valued at $1 billion in a matter of months. The startup launched its first commercial product, a world generation model […]",
+          "extra": {},
+          "score": 10.0,
+          "summary": "AMD 以 82 亿美元收购李飞飞创立的 World Labs，AI 人才与算力整合加速。"
+        },
+        {
+          "section": "news",
+          "title": "Anthropic’s prospectus details losses, growth, and, yes, a warning that its AI could end humanity",
+          "url": "https://techcrunch.com/2026/09/28/anthropics-prospectus-details-losses-growth-and-yes-a-warning-that-its-ai-could-end-humanity/",
+          "source": "TechCrunch",
+          "published_at": "2026-09-29T05:13:43Z",
+          "raw_text": "In its prospectus, Anthropic just told investors it's losing tens of billions of dollars a year, but also growing like crazy, and — oh yeah — its own AI might pose an existential risk to humanity.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "Anthropic 招股书披露巨额亏损与增长，并警告 AI 可能带来生存风险。"
+        },
+        {
+          "section": "news",
+          "title": "OpenAI reportedly ditches model over safety concerns",
+          "url": "https://techcrunch.com/2026/09/28/openai-reportedly-ditches-model-over-safety-concerns/",
+          "source": "TechCrunch",
+          "published_at": "2026-09-28T23:39:20Z",
+          "raw_text": "A top executive at the AI lab told the Wall Street Journal that the model in question had displayed a poor aptitude for following orders.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "OpenAI 因安全担忧放弃某模型，暴露前沿模型对齐难题。"
+        },
+        {
+          "section": "news",
+          "title": "OpenAI halts frontier-model training amid string of agent misalignment incidents",
+          "url": "https://arstechnica.com/ai/2026/09/openai-halts-frontier-model-training-amid-string-of-agent-misalignment-incidents/",
+          "source": "Ars Technica",
+          "published_at": "2026-09-28T16:43:18Z",
+          "raw_text": "US Government websites among \"dozens of third parties\" OpenAI has recently notified.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "OpenAI 因智能体多次失控暂停前沿模型训练，安全事件升级。"
+        },
+        {
+          "section": "news",
+          "title": "Experts worry about Nvidia's AI chip sales in China and influence over Trump",
+          "url": "https://arstechnica.com/tech-policy/2026/09/nvidia-may-sell-more-chips-in-china-as-jensen-huangs-influence-over-trump-grows/",
+          "source": "Ars Technica",
+          "published_at": "2026-09-28T21:49:10Z",
+          "raw_text": "China is reportedly mulling letting ByteDance, Alibaba buy banned Nvidia chips.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "传中国考虑允许字节、阿里购买受限英伟达芯片，地缘博弈关键信号。"
+        },
+        {
+          "section": "news",
+          "title": "OpenAI’s AI agents need to catch up",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1001590/openai-devday-2026-aeon-ai-agent",
+          "source": "The Verge",
+          "published_at": "2026-09-28T18:45:00Z",
+          "raw_text": "OpenAI popularized the modern generative AI chatbot, but as its 2026 DevDay event approaches, it's fallen behind in one of the industry's hottest categories: continuously running, consumer-facing AI agents. On Tuesday, it will likely try to capture the lead in that race. Rumors abound that OpenAI will release its own AI agent, dubbed Aeon - […]",
+          "extra": {},
+          "score": 7.0,
+          "summary": "OpenAI 在持续运行 AI 智能体赛道落后，DevDay 或推新品追赶。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Holo4: powering generalist computer-use agents",
+          "url": "https://huggingface.co/blog/Hcompany/holo4",
+          "source": "Hugging Face",
+          "published_at": "2026-09-28T09:44:05Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "发布通用计算机使用智能体Holo4，推动AI自主操作电脑能力。"
+        },
+        {
+          "section": "product",
+          "title": "Introducing Gemini 3.8 Live with Live Avatar",
+          "url": "https://deepmind.google/blog/introducing-gemini-38-live-with-live-avatar/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-24T16:20:39Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "Gemini 3.8上线实时虚拟形象交互，拓展多模态对话新场景。"
+        },
+        {
+          "section": "product",
+          "title": "Gemini 3.8 text-to-speech says hello",
+          "url": "https://deepmind.google/blog/say-hello-to-gemini-38-text-to-speech/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-23T15:25:14Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Gemini 3.8推出文本转语音功能，强化语音生成能力。"
+        }
+      ]
+    }
+  ]
+}
