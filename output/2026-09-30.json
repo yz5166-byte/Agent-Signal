@@ -1,0 +1,441 @@
+{
+  "date": "2026-09-30",
+  "tip": {
+    "title": "多智能体协作中的硬约束解耦引导",
+    "body": "在构建多智能体协作系统时，常遇到智能体间生成结果冲突、不满足物理约束的问题。\n\n做法：使用**解耦生成引导**，为每个智能体独立计算流匹配轨迹，再通过投影算子将联合结果强制修正到约束空间。\n\n```python\n# 伪代码：解耦引导修正\nfrom scipy.optimize import linear_sum_assignment\n\ndef enforce_constraints(agents_outputs):\n    # 示例：用匈牙利算法解决任务分配冲突\n    cost_matrix = compute_conflict_cost(agents_outputs)\n    row_ind, col_ind = linear_sum_assignment(cost_matrix)\n    return reorder_outputs(agents_outputs, col_ind)\n```\n\n此方法无需修改模型，仅在推理后处理阶段加入约束检查与修正。",
+    "ref_title": "Multi-Agent Flow Matching with Decoupled Generative Guidance",
+    "ref_url": "https://arxiv.org/abs/2609.38133v1"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "Thinking Before Thinking: Scaling Agentic Inference Through Meta-Reasoning",
+          "url": "https://arxiv.org/abs/2609.38147v1",
+          "source": "arXiv",
+          "published_at": "2026-09-29T17:57:25Z",
+          "raw_text": "As agents take on longer and more complex problems, controlling the execution becomes a task in its own right. Each step in the run brings new control choices, like which partial work to build on, whether to start fresh, or when to stop. We introduce agentic meta-reasoning, an inference-time harness that makes these choices an explicit and structured reasoning process. Workers carry out the task-level computation, while a controller consolidates what the run has established, explores next options, assesses what each option is worth under the remaining budget, and dispatches the chosen work with context drawn from persistent memory. Between decisions the controller carries only a compact account of the run rather than replaying its full history. Our baselines span production coding agents and research harnesses, together with a Direct Control Agent using the same workers and compute budget allowance. On ProgramBench, which tests long-horizon agentic capability through program reconstruction, meta-reasoning achieves 71.5% with GPT-5.5 against 58.0% for Codex; with Opus 4.8 it achieves 67.2% against 65.5% for Claude Code. On the other benchmarks, spanning abstract reasoning, multi-domain long-horizon reasoning, and proof generation, it gains between 3.6 and 4.2 points over direct control, averaged across three frontier models. It keeps improving over the tested budget ranges where direct control plateaus, though its overhead can hurt at small budgets. Artifact-graph analysis reveals more reuse of earlier work, higher coverage of correct solutions in most settings, and nonuniform gains in final selection. These results indicate that spending computation on structured control becomes more important as agents scale to longer runs.",
+          "extra": {
+            "authors": [
+              "Paras Dahal",
+              "Anton Bakhtin",
+              "Taco Cohen",
+              "Zhengxing Chen",
+              "Carole-Jean Wu",
+              "Rob Fergus",
+              "Scott Yih",
+              "Gabriel Synnaeve",
+              "Ruslan Salakhutdinov",
+              "Sanjeev Arora",
+              "Jason Weston",
+              "Anirudh Goyal"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.38147v1"
+          },
+          "score": 9.0,
+          "summary": "提出元推理机制，让智能体在执行中自主决策下一步行动，显著提升复杂任务成功率。"
+        },
+        {
+          "section": "paper",
+          "title": "Learning Meta-Skills for Agent Harness Design in Test-Time AI4AI",
+          "url": "https://arxiv.org/abs/2609.38143v1",
+          "source": "arXiv",
+          "published_at": "2026-09-29T17:55:56Z",
+          "raw_text": "Agent performance depends on both reasoning ability and the environment in which it acts. We study test-time AI-for-AI, asking how a Builder can learn to construct better execution environments for a Target while both models' weights remain fixed. To make the Builder's experience reusable, we introduce Meta-Skill: principles specifying when support is needed and what resources to provide. The Builder learns these principles from Target's execution feedback on the development set, then uses the frozen skill bank to construct harnesses for unseen tasks. Across Harness-Bench and NewtonBench, full-bank meta-skills improve macro-average performance by 8.95 percentage points over no-skill construction, and 12.02 points over direct delivery of the same bank to the Target. These results highlight the value of translating experience into executable support. Gains when the same model serves both roles further suggest a path to system level self-improvement through learning to build better environments.",
+          "extra": {
+            "authors": [
+              "Cheng Qian",
+              "Kunlun Zhu",
+              "Beibin Li",
+              "Zhenhailong Wang",
+              "Heng Ji"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.38143v1"
+          },
+          "score": 8.0,
+          "summary": "让一个模型学会为另一个模型设计执行环境，实现无需微调的性能提升，开辟AI自我优化新路径。"
+        },
+        {
+          "section": "paper",
+          "title": "AdviSD: Learning to Advise Frontier LLMs via Targeted Multi-Turn Self-Distillation",
+          "url": "https://arxiv.org/abs/2609.38142v1",
+          "source": "arXiv",
+          "published_at": "2026-09-29T17:55:40Z",
+          "raw_text": "A small trainable advisor can steer a frozen language-model executor using natural-language advice. In addition to learning from task rewards, the advisor can use feedback from completed interactions to improve its advice. However, a plausible correction need not change execution, yet learning from such corrections can still affect the advisor's future decisions in other contexts. In a shared-parameter model, we prove that such corrections can limit learning if their targets favor useful advice less strongly than those of other corrections. Keeping them less often than the rest improves the model's eventual performance compared to learning from every correction. Motivated by this, our method, Advisor Self-Distillation (AdviSD), pairs outcome-based reinforcement learning with self-distillation from a feedback-conditioned copy of the advisor selectively. Reflection proposes corrections, and the advisor scores the same recorded executor response with and without its issued advice, using the magnitude of the difference to select decisions for supervision. This approach does not require executor likelihoods or additional executor rollouts. Experiments with Qwen3-8B advisors for Gemini and Claude show that AdviSD outperforms advisor-GRPO by 4.2-6.4 percentage points on BFCL-v3 and by 3.9-5.1 score points on EnvScaler. The trained advisors generalize to out-of-domain tasks and transfer across different executor versions and model families. AdviSD also beats matched-count random selection, supporting the value of its selection rule.",
+          "extra": {
+            "authors": [
+              "Rishabh Agrawal",
+              "Hejie Cui",
+              "Shasha Li",
+              "Shanchan Wu",
+              "Sercan Ö. Arık"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.38142v1"
+          },
+          "score": 8.0,
+          "summary": "小型可训练模型通过自然语言建议引导冻结大模型，从交互反馈中持续改进，低成本提升LLM表现。"
+        },
+        {
+          "section": "paper",
+          "title": "Beyond the Timeline: Augmenting Long-Video Memory with Grounded Entity Biographies",
+          "url": "https://arxiv.org/abs/2609.38155v1",
+          "source": "arXiv",
+          "published_at": "2026-09-29T17:59:01Z",
+          "raw_text": "Answering questions about long videos often requires connecting events involving the same objects across hours or days. Chronological descriptions and text-derived entities can leave physical identity unresolved: different objects may share a description, while observations of the same object remain disconnected across events. Retrieving relevant events therefore does not necessarily recover the \"biography\" of the particular entity a question concerns. To address this, we introduce Grounded Entity Biographies (GEB), a long-video memory framework that groups visually grounded observations of the same physical instance across clips into retrievable biographies while preserving the context of each moment. During question answering, the biography is retrieved alongside episodic evidence, allowing the model to follow an entity through events using identity links established during memory construction. Evaluations across four benchmarks, including day-long and week-long recordings, demonstrate improvements over prior memory frameworks in both multiple-choice and open-ended question answering. On EgoLifeQA, GEB achieves 72.0% accuracy, 4.4 percentage points above the best published result. Ablations show that grounded identity association and biography reading both contribute to the gains, which additional descriptions alone do not fully recover.",
+          "extra": {
+            "authors": [
+              "Hui Ren",
+              "Lei Fan",
+              "Henry Pao",
+              "Han Guo",
+              "Zeeshan Zia",
+              "Ying Chen",
+              "Alexander Schwing",
+              "Gang Hua"
+            ],
+            "categories": [
+              "cs.CV",
+              "cs.AI",
+              "cs.CL",
+              "cs.IR",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.38155v1"
+          },
+          "score": 7.0,
+          "summary": "为长视频问答构建实体传记，解决跨时间片段的对象身份追踪难题，提升多模态理解能力。"
+        },
+        {
+          "section": "paper",
+          "title": "Multi-Agent Flow Matching with Decoupled Generative Guidance",
+          "url": "https://arxiv.org/abs/2609.38133v1",
+          "source": "arXiv",
+          "published_at": "2026-09-29T17:54:07Z",
+          "raw_text": "Generative modeling is widely used for producing diverse objects from complex, multimodal distributions. However, its expressivity does not, in general, come with formal guarantees that the generated objects satisfy hard constraints or requirements. In multi-agent generation, this problem becomes more challenging because a hard requirement can depend on multiple agents, while each agent may need to determine its own guidance input without relying on the simultaneously computed guidance inputs of other agents. To this end, we introduce DeGG-Flow, a general framework for multi-agent flow matching with decoupled generative guidance. By representing the generative process as a control-affine dynamical system, we develop guidance conditions for two classes of coupled requirements: shared requirements whose satisfaction depends on multiple agents together, and private requirements associated with each individual agent dependent on its neighbors. For both classes, we establish feasibility conditions and finite-horizon convergence guarantees. We further derive a Wasserstein bound that characterizes the distributional deviation induced by the guidance. We demonstrate DeGG-Flow on multi-robot collaboration for crossing a spatial gap by reconfiguring the environment, and on multi-object scene generation with affordance requirements. Across both applications, DeGG-Flow directly generates objects that satisfy all corresponding hard requirements, including at team sizes unseen during training.",
+          "extra": {
+            "authors": [
+              "Ruoyu Lin",
+              "Magnus Egerstedt",
+              "Fabio Pasqualetti"
+            ],
+            "categories": [
+              "cs.LG",
+              "cs.MA",
+              "cs.RO",
+              "math.OC"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.38133v1"
+          },
+          "score": 7.0,
+          "summary": "将流匹配扩展到多智能体生成，通过解耦引导确保生成结果满足硬约束，适用于协作规划场景。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "🔥 Supercharge your AI agents with data from the web and beyond. A web data API to search, scrape, and access more sources.",
+          "extra": {
+            "stars": 186766,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "为AI代理提供网页数据抓取与搜索API，直接解决数据获取痛点。"
+        },
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi, GLM, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 181938,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "gemma3",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llama3",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 9.0,
+          "summary": "本地运行主流大模型的一站式工具，降低部署门槛，实用性强。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 157546,
+            "language": "TypeScript",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "deepseek",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "python",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 8.0,
+          "summary": "构建Agent工作流与RAG管线的协作平台，支持快速从原型到生产。"
+        },
+        {
+          "section": "repo",
+          "title": "hypit-ai/hypit",
+          "url": "https://github.com/hypit-ai/hypit",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-29T18:49:19Z",
+          "raw_text": "Clone any viral video with AI agents. Not just a script, the whole workflow: swap the face, the words, the B-roll, ship 100 variants in one command, and get your 100M views.",
+          "extra": {
+            "stars": 17722,
+            "language": "TypeScript",
+            "topics": [
+              "agentic-ai",
+              "ai",
+              "ai-agents",
+              "ai-video",
+              "compiler",
+              "dsl",
+              "ffmpeg",
+              "generative-ai",
+              "llm",
+              "markup-language",
+              "monorepo",
+              "plugin-system",
+              "programming-language",
+              "text-to-video",
+              "typescript",
+              "video",
+              "video-automation",
+              "video-clone",
+              "video-editing",
+              "video-generation"
+            ]
+          },
+          "score": 8.0,
+          "summary": "用AI代理一键克隆爆款视频，支持换脸改词，批量生产变体。"
+        },
+        {
+          "section": "repo",
+          "title": "trailhq/Graft",
+          "url": "https://github.com/trailhq/Graft",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-03T13:44:21Z",
+          "raw_text": "Turbocharge Claude Code, Cursor, Codex, Gemini & every coding agent: faster, cheaper, with contextual understanding specific to your codebase.",
+          "extra": {
+            "stars": 9414,
+            "language": "TypeScript",
+            "topics": [
+              "ai-agents",
+              "anthropic",
+              "claude-code",
+              "cli",
+              "code-graph",
+              "codex",
+              "context-engineering",
+              "cursor",
+              "developer-tools",
+              "gemini",
+              "knowledge-graph",
+              "llm",
+              "mcp",
+              "mcp-server",
+              "open-source",
+              "openai",
+              "tree-sitter"
+            ]
+          },
+          "score": 8.0,
+          "summary": "为编码代理注入代码库上下文，提速降本，提升代码理解精准度。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "AMD acquires World Labs AI startup, upping the ante against Nvidia",
+          "url": "https://arstechnica.com/ai/2026/09/amd-acquires-world-labs-ai-pioneer-fei-fei-lis-world-models-startup/",
+          "source": "Ars Technica",
+          "published_at": "2026-09-29T21:14:49Z",
+          "raw_text": "The deal, which is expected to close by year's end, is worth $8.2 billion.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "AMD 以 82 亿美元收购 AI 创企 World Labs，直接挑战英伟达在 AI 芯片领域的统治地位。"
+        },
+        {
+          "section": "news",
+          "title": "Sam Altman says OpenAI won’t go public until its models are safe",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1002505/sam-altman-openai-ipo-devday-ai-safety",
+          "source": "The Verge",
+          "published_at": "2026-09-30T00:19:13Z",
+          "raw_text": "For months, people have wondered when OpenAI will go public. CEO Sam Altman says it won't happen until the company can make better promises about model safety, with no firm timeline in sight. \"We intend to continue with AI progress … but as the models have had this surge forward in capability, and we see […]",
+          "extra": {},
+          "score": 8.0,
+          "summary": "OpenAI CEO 称模型不安全前不上市，将安全承诺与资本退出挂钩，影响行业估值逻辑。"
+        },
+        {
+          "section": "news",
+          "title": "OpenAI’s latest features take direct aim at the app store model",
+          "url": "https://techcrunch.com/2026/09/29/openais-latest-features-take-direct-aim-at-the-app-store-model/",
+          "source": "TechCrunch",
+          "published_at": "2026-09-29T20:15:47Z",
+          "raw_text": "OpenAI is building out the pieces of an alternative to the traditional app store model, turning ChatGPT into a place where software can be discovered and used by people and AI agents alike.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "OpenAI 推出新功能，将 ChatGPT 打造成软件发现与使用平台，直接挑战传统应用商店模式。"
+        },
+        {
+          "section": "news",
+          "title": "Here's what actually happened in OpenAI's Australian gov't server hack",
+          "url": "https://arstechnica.com/ai/2026/09/heres-what-actually-happened-in-openais-australian-govt-server-hack/",
+          "source": "Ars Technica",
+          "published_at": "2026-09-29T18:11:09Z",
+          "raw_text": "Without a \"full set of safeguards,\" agent accessed \"system information and source code.\"",
+          "extra": {},
+          "score": 7.0,
+          "summary": "OpenAI 澳大利亚政府服务器遭黑客入侵，暴露 AI 代理在缺乏安全措施下的实际风险。"
+        },
+        {
+          "section": "news",
+          "title": "Trump orders US government to call AI ‘Super Intelligence’",
+          "url": "https://www.theverge.com/policy/1002468/trump-ai-superintelligence-executive-order-ai",
+          "source": "The Verge",
+          "published_at": "2026-09-29T22:25:45Z",
+          "raw_text": "The US executive branch is no longer acknowledging the existence of \"artificial intelligence.\" Going forward, official policy websites, policy documents, and press releases will refer only to \"Super Intelligence,\" thanks to a new executive order signed by President Donald Trump. \"The word super is the best word of all, and it's the simplest,\" Trump said […]",
+          "extra": {},
+          "score": 7.0,
+          "summary": "特朗普签署行政令，要求美国政府将 AI 官方称谓改为“超级智能”，影响政策与术语标准。"
+        },
+        {
+          "section": "news",
+          "title": "When can we say AI made a scientific discovery?",
+          "url": "https://www.technologyreview.com/2026/09/28/1145230/when-can-we-say-ai-made-a-scientific-discovery/",
+          "source": "MIT Tech Review",
+          "published_at": "2026-09-28T17:03:16Z",
+          "raw_text": "This story originally appeared in The Algorithm, our weekly newsletter on AI. To get stories like this in your inbox first, sign up here. Last Wednesday, Anthropic announced that earlier this year it had launched a molecular biology lab, where Claude agents read and conjecture about hard biology problems and human scientists run experiments on what…",
+          "extra": {},
+          "score": 6.0,
+          "summary": "Anthropic 设立分子生物学实验室，用 Claude 代理进行科研，引发 AI 能否算科学发现的讨论。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Introducing GPT-6.1 Sol",
+          "url": "https://openai.com/index/introducing-gpt-6-1-sol",
+          "source": "OpenAI",
+          "published_at": "2026-09-29T10:00:00Z",
+          "raw_text": "Meet GPT-6.1 Sol: near-Astra intelligence for coding, computer use, and professional work at one-fifth of Astra’s standard API input and output token prices.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "OpenAI 发布 GPT-6.1 Sol，以五分之一价格提供接近 Astra 的编码与专业能力。"
+        },
+        {
+          "section": "product",
+          "title": "DevDay 2026 Recap",
+          "url": "https://openai.com/index/devday-2026-recap",
+          "source": "OpenAI",
+          "published_at": "2026-09-29T10:00:00Z",
+          "raw_text": "Explore more than 20 announcements from OpenAI DevDay 2026, including GPT-6 Astra, ChatGPT, Codex, APIs, security, and new tools for builders.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "OpenAI DevDay 2026 发布 GPT-6 Astra 等 20 余项更新，覆盖模型、工具与安全。"
+        },
+        {
+          "section": "product",
+          "title": "Introducing Gemini 3.8 Live with Live Avatar",
+          "url": "https://deepmind.google/blog/introducing-gemini-38-live-with-live-avatar/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-24T16:20:39Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Google 推出 Gemini 3.8 Live 与 Live Avatar，强化实时交互与虚拟形象能力。"
+        }
+      ]
+    }
+  ]
+}
