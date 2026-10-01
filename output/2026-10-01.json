@@ -1,0 +1,430 @@
+{
+  "date": "2026-10-01",
+  "tip": {
+    "title": "PivotOPD: Learning to Recover from Pivotal Mistakes in Multi-Turn Agents",
+    "body": "在构建多轮对话Agent时，错误会像雪球一样越滚越大，导致长程任务失败。今天就用PivotOPD的思路，在关键错误点插入恢复机制。做法：在Agent的每次工具调用后，添加一个错误检测步骤，若检测到关键错误（如API返回空结果），立即触发恢复策略（如重新生成查询）。代码示例：\n\n```python\ndef safe_agent_step(state):\n    result = call_tool(state['action'])\n    if is_pivotal_mistake(result):  # 自定义检测函数\n        state['action'] = recover_action(state)  # 白名单恢复策略\n    return state\n```\n\n注意：恢复策略需预定义在安全白名单中，避免模型自主生成危险操作。",
+    "ref_title": "PivotOPD: Learning to Recover from Pivotal Mistakes in Multi-Turn Agents",
+    "ref_url": "https://arxiv.org/abs/2609.40285v1"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "EvoDuet: Bilevel Co-Evolution of Web Searching and Task Solving for Scientific Discovery",
+          "url": "https://arxiv.org/abs/2609.40340v1",
+          "source": "arXiv",
+          "published_at": "2026-09-30T17:58:28Z",
+          "raw_text": "Evolutionary search with large language models (LLMs) can stall when progress requires external knowledge the model lacks. Supplying relevant documents helps, but simply adding web search tool can keep returning the same pages as solutions change. We introduce EvoDuet, a bi-level optimization method that co-evolves solutions and search queries with fixed model parameters. At each iteration, a retrieval gate lets the LLM assess its knowledge gap and choose to retrieve new documents, reuse stored ones, or proceed without them. An inner loop refines queries and ranks documents by the solution scores they are predicted to yield; an outer loop generates candidates in parallel from these documents and records the evaluated outcomes for later searches. Across 21 optimization tasks with one candidate per iteration, EvoDuet raises OpenEvolve's normalized discovery gain from 74.1% to 78.0% with GPT-5.6-Luna and from 61.3% to 82.3% with Gemini-3.8-Flash, whereas Qwen3.5-9B does not benefit. Our best runs surpass the previously reported best scores on eight tasks, including Swap Reduction on Q20 and Rosetta, and match them on three more. EvoDuet also improves with other scaffolds (e.g., Top-K, EvoX) on Sums/Diffs and Denoising, demonstrating its applicability across evolutionary search scaffolds.",
+          "extra": {
+            "authors": [
+              "Young-Jun Lee",
+              "Jinheon Baek",
+              "Soyeong Jeong",
+              "Minki Kang",
+              "Seungyeon Jwa",
+              "Jonghyun Choi",
+              "Seungho Han",
+              "Dongyeop Kang"
+            ],
+            "categories": [
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.40340v1"
+          },
+          "score": 9.0,
+          "summary": "提出双层协同进化框架，让LLM在搜索与推理间动态平衡，解决科学发现中知识瓶颈问题。"
+        },
+        {
+          "section": "paper",
+          "title": "Cogentic: Multi-Agent Orchestration for Automated Proof Discovery",
+          "url": "https://arxiv.org/abs/2609.40324v1",
+          "source": "arXiv",
+          "published_at": "2026-09-30T17:55:22Z",
+          "raw_text": "We present Cogentic, a multi-agent harness for automated proof discovery on open research problems. While frontier language models can generate strong mathematical ideas in a single shot, single-shot generation is often insufficient for open problems that require exploring multiple competing conjectures, overcoming subtle technical obstructions, and retaining intermediate progress over a long horizon. Cogentic addresses these challenges through an iterative prove--verify loop in which an orchestrator allocates a population of independent provers across distinct proof directions, subjects their output to adversarial verification by several specialized components, and promotes confirmed intermediate results into a persistent verified ledger that later rounds build on. The harness is designed to be able to solve research-level math and theoretical computer science problems. Using Gemini as the base model, Cogentic produced novel results on five open problems across online learning, auction theory, and mechanism design. Each result was independently verified by domain experts and is developed in full in companion papers. We list these results, and new ones as they are verified, at https://sites.google.com/view/cogentic .",
+          "extra": {
+            "authors": [
+              "Yang Cai",
+              "Vineet Gupta",
+              "Yanchen Jiang",
+              "Christopher Liaw",
+              "Aranyak Mehta",
+              "Grigoris Velegkas",
+              "Di Wang"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.GT"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.40324v1"
+          },
+          "score": 9.0,
+          "summary": "多智能体编排系统，自动探索数学证明路径，突破单次生成在开放问题上的局限。"
+        },
+        {
+          "section": "paper",
+          "title": "Turbo Harness: Instance-Adaptive Harness Optimization",
+          "url": "https://arxiv.org/abs/2609.40330v1",
+          "source": "arXiv",
+          "published_at": "2026-09-30T17:56:09Z",
+          "raw_text": "Automating the search for effective harnesses is an important step toward enabling agents to recursively self-improve. Existing harness optimizations typically produce a single global harness that is applied uniformly across task instances. However, a harness that works well on average may not be optimal for every instance. We introduce Turbo Harness, a framework that can adapt a globally optimized harness to each instance by reusing information generated during the original optimization process. Specifically, Turbo Harness recycles artifacts produced during a completed global harness optimization run, and summarizes them into a structured playbook. We train a harness editor to leverage this prior optimization experience to generate instance-specific patches to the global harness. At inference time, the editor uses the instance and the playbook to construct a tailored harness in which the execution model operates. Through numerical experiments, we show that Turbo Harness consistently outperforms existing harness optimization baselines across seven benchmarks spanning interactive agent tasks, software engineering, and long-horizon terminal tasks.",
+          "extra": {
+            "authors": [
+              "Tunyu Zhang",
+              "Hao Wang",
+              "Kai Xu",
+              "Dimitris N. Metaxas"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.40330v1"
+          },
+          "score": 8.0,
+          "summary": "实例自适应工具链优化，让Agent针对不同任务自动调整策略，而非使用固定方案。"
+        },
+        {
+          "section": "paper",
+          "title": "PivotOPD: Learning to Recover from Pivotal Mistakes in Multi-Turn Agents",
+          "url": "https://arxiv.org/abs/2609.40285v1",
+          "source": "arXiv",
+          "published_at": "2026-09-30T17:48:11Z",
+          "raw_text": "On-policy distillation (OPD) is a promising approach for training language agents, providing dense teacher supervision on student-generated trajectories. However, in multi-turn interaction, an incorrect action changes the states the student encounters later, so errors compound across turns. In preliminary experiments across three Qwen3 models (8B to 235B), we find that more than half of the failed rollouts contain a pivotal mistake, an action that moves the agent farther from completing the task, and this mistake typically occurs early. These pivotal mistakes often remain recoverable: guiding the model for only a few turns after the pivotal turn can restore task success. We therefore propose PivotOPD, an on-policy distillation framework that jointly trains the student to prevent pivotal mistakes and to recover from the states they create. At each pivotal mistake, a teacher model provides a gold action and then names a recovery action at each of the next few turns. Preventive distillation uses the gold action with reverse KL to steer the student away from the pivotal mistake, while recovery distillation uses the recovery actions with forward KL to transfer recovery behaviors that the student rarely samples. Against 13 baselines on ALFWorld, WebShop, and Search-based QA, PivotOPD achieves the strongest average performance for both Qwen3-1.7B and Qwen3-8B students, improving over the strongest baseline on ALFWorld by +5.5% with the 1.7B student. The gains also transfer to another model family on the software engineering domain, where PivotOPD raises the resolve rate of a Nemotron-3.5 student on SWE-Bench Verified by +3.2%. Project page: https://research.nvidia.com/labs/lpr/pivotopd/",
+          "extra": {
+            "authors": [
+              "Yinghui He",
+              "Yapei Chang",
+              "Khushi Bhardwaj",
+              "Daniele Molinari",
+              "Tugrul Konuk",
+              "Jan Kautz",
+              "Ali Hatamizadeh"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.40285v1"
+          },
+          "score": 8.0,
+          "summary": "针对多轮Agent中错误累积问题，提出从关键错误中恢复的学习方法，提升长程任务鲁棒性。"
+        },
+        {
+          "section": "paper",
+          "title": "How Much of a Harness Does a Strong Agent Need for Autonomous ML Engineering?",
+          "url": "https://arxiv.org/abs/2609.40303v1",
+          "source": "arXiv",
+          "published_at": "2026-09-30T17:51:30Z",
+          "raw_text": "Recent autonomous machine learning engineering (MLE) agents have made significant progress on public leaderboards. Often motivated by progress stagnation over long-horizon cycles and limited Large Language Model (LLM) primitives, modern MLE agents are deployed on top of increasingly elaborate machinery: multi-agent orchestrators, dedicated retrieval subagents, and more. While such harnesses expand, the use of more primitive but improved coding agents - where LLMs have direct access to the execution environment through read, write, and bash primitives - has received little attention in the field. In this paper we find that, under an equal time budget and the same frontier LLM backbone, open-source state-of-the-art harnesses provide no advantages over a single session of a minimal-harness coding agent baseline, pointing to the backbone as the primary driver for performance. Via a series of large-scale systematic ablation studies, we argue that the machinery layers become redundant in the coding agent setting. We conclude that the effort spent elaborating hand-crafted harnesses around strong models yields poor returns for current MLE benchmarks.",
+          "extra": {
+            "authors": [
+              "Kirill Brilliantov",
+              "Alejandro Hernández-Cano",
+              "Emmanuel Abbé"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2609.40303v1"
+          },
+          "score": 7.0,
+          "summary": "系统评估强Agent在自主ML工程中所需工具链复杂度，为实际部署提供量化参考。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "🔥 Supercharge your AI agents with data from the web and beyond. A web data API to search, scrape, and access more sources.",
+          "extra": {
+            "stars": 187264,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "为AI智能体提供网页数据抓取API，解决数据获取痛点。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 157631,
+            "language": "TypeScript",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "deepseek",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "python",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 9.0,
+          "summary": "一站式构建智能体工作流与RAG，从原型到生产无需重构。"
+        },
+        {
+          "section": "repo",
+          "title": "hypit-ai/hypit",
+          "url": "https://github.com/hypit-ai/hypit",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-29T18:49:19Z",
+          "raw_text": "Clone any viral video with AI agents. Not just a script, the whole workflow: swap the face, the words, the B-roll, ship 100 variants in one command, and get your 100M views.",
+          "extra": {
+            "stars": 18204,
+            "language": "TypeScript",
+            "topics": [
+              "agentic-ai",
+              "ai",
+              "ai-agents",
+              "ai-video",
+              "compiler",
+              "dsl",
+              "ffmpeg",
+              "generative-ai",
+              "llm",
+              "markup-language",
+              "monorepo",
+              "plugin-system",
+              "programming-language",
+              "text-to-video",
+              "typescript",
+              "video",
+              "video-automation",
+              "video-clone",
+              "video-editing",
+              "video-generation"
+            ]
+          },
+          "score": 8.0,
+          "summary": "用AI批量克隆爆款视频，一键换脸换词换素材，直击流量需求。"
+        },
+        {
+          "section": "repo",
+          "title": "genspark-ai/genoffice",
+          "url": "https://github.com/genspark-ai/genoffice",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-31T09:40:58Z",
+          "raw_text": "Free, open-source AI Office suite: Docs, Sheets, Slides, PDF, Markdown and HTML editors with a built-in AI agent, plus a `genoffice` CLI and agent skill so Claude Code, Codex and Cursor can create and edit real .docx/.xlsx/.pptx files locally. Bring your own key. macOS, Windows & Linux.",
+          "extra": {
+            "stars": 8285,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agent",
+              "claude-code",
+              "cli",
+              "codex",
+              "cursor",
+              "docx",
+              "excel",
+              "libreoffice-alternative",
+              "local-first",
+              "markdown-editor",
+              "microsoft-office-alternative",
+              "office-suite",
+              "pdf-editor",
+              "pdf-to-word",
+              "powerpoint",
+              "pptx",
+              "skills",
+              "spreadsheet",
+              "xlsx"
+            ]
+          },
+          "score": 8.0,
+          "summary": "开源AI办公套件，支持本地创建编辑Office文件，可被智能体调用。"
+        },
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi, GLM, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 181992,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "gemma3",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llama3",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 7.0,
+          "summary": "本地运行国产及主流大模型，降低AI应用部署门槛。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Google releases Gemini 4 Argon, called its most powerful model yet",
+          "url": "https://techcrunch.com/2026/09/30/google-releases-gemini-4-argon-called-its-most-powerful-model-yet/",
+          "source": "TechCrunch",
+          "published_at": "2026-09-30T23:43:07Z",
+          "raw_text": "Google has released its latest Gemini model, marketing it as a workhorse for coding and cybersecurity work.",
+          "extra": {},
+          "score": 10.0,
+          "summary": "Google发布最强模型Gemini 4 Argon，主攻编程与网络安全，但仅限可信防御者使用。"
+        },
+        {
+          "section": "news",
+          "title": "Valor, Atreides, and Sequoia back AI startup Flow Engineering at $750M valuation",
+          "url": "https://techcrunch.com/2026/09/30/valor-atreides-and-sequoia-back-ai-startup-flow-engineering-at-750m-valuation/",
+          "source": "TechCrunch",
+          "published_at": "2026-09-30T21:07:40Z",
+          "raw_text": "Flow Engineering, which is bringing AI agents to hardware design, also landed Roelof Botha as an angel investor and board member.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "AI硬件设计初创Flow Engineering获7500万美元融资，红杉等参投，估值达7.5亿。"
+        },
+        {
+          "section": "news",
+          "title": "Trump plan to combat AI risks hinges on Big Tech pals policing themselves",
+          "url": "https://arstechnica.com/tech-policy/2026/09/trump-plan-to-combat-ai-risks-hinges-on-big-tech-pals-policing-themselves/",
+          "source": "Ars Technica",
+          "published_at": "2026-09-30T18:47:01Z",
+          "raw_text": "Trump gets dozens of AI firms to agree to voluntary safety tests.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "特朗普要求数十家AI企业签署自愿安全测试协议，以防范AI风险。"
+        },
+        {
+          "section": "news",
+          "title": "“We’re not going to shoot ourselves in the foot” over hack fallout, says OpenAI’s chief research officer",
+          "url": "https://www.technologyreview.com/2026/09/30/1145339/were-not-going-to-shoot-ourselves-in-the-foot-over-hugging-face-says-openais-chief-research-officer/",
+          "source": "MIT Tech Review",
+          "published_at": "2026-09-30T10:40:30Z",
+          "raw_text": "Two months after the bombshell news that a swarm of its agents had broken their containment and hacked into the computers of the AI company Hugging Face, OpenAI is still putting out fires. A steady drip of disclosures about other hacks in the weeks since has kept OpenAI in the spotlight and raised serious questions…",
+          "extra": {},
+          "score": 8.0,
+          "summary": "OpenAI首席研究官回应AI代理逃逸事件，称不会因黑客攻击而自毁长城。"
+        },
+        {
+          "section": "news",
+          "title": "The AI Tamagotchis are coming",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1002779/openai-dots-meta-muse-ai-agents-hardware-devices",
+          "source": "The Verge",
+          "published_at": "2026-09-30T18:07:38Z",
+          "raw_text": "While AI has made plenty of inroads on people's phones and computers, it's largely failed in dedicated devices. But over the next year, two major AI companies, Meta and OpenAI, will attempt to change that. And they're apparently betting on a similar path: testing appetites for physical hardware with their cutesy software agents. \"Hardware is […]",
+          "extra": {},
+          "score": 7.0,
+          "summary": "Meta与OpenAI计划明年推出AI实体设备，类似电子宠物，测试硬件市场。"
+        },
+        {
+          "section": "news",
+          "title": "OpenAI’s Jev clone could help the frontier lab stop its swarming agents",
+          "url": "https://techcrunch.com/2026/09/30/openais-jev-clone-could-help-the-frontier-lab-stop-its-swarming-agents/",
+          "source": "TechCrunch",
+          "published_at": "2026-09-30T19:00:57Z",
+          "raw_text": "OpenAI's \"Decisions API\" is a Jev clone that confirms the importance of fast, cheap intelligence.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "OpenAI推出Decisions API，旨在控制AI代理集群行为，防止失控风险。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Gemini 4 Argon: our next era of frontier intelligence",
+          "url": "https://deepmind.google/blog/gemini-4-argon-our-next-era-of-frontier-intelligence/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-30T20:01:45Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 10.0,
+          "summary": "Google发布新一代前沿模型，标志着AI能力进入新阶段。"
+        },
+        {
+          "section": "product",
+          "title": "Introducing GPT-6.1 Sol",
+          "url": "https://openai.com/index/introducing-gpt-6-1-sol",
+          "source": "OpenAI",
+          "published_at": "2026-09-29T10:00:00Z",
+          "raw_text": "Meet GPT-6.1 Sol: near-Astra intelligence for coding, computer use, and professional work at one-fifth of Astra’s standard API input and output token prices.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "OpenAI推出高性价比模型，以五分之一价格提供接近顶级的编码与专业能力。"
+        },
+        {
+          "section": "product",
+          "title": "Introducing Gemini 3.8 Live with Live Avatar",
+          "url": "https://deepmind.google/blog/introducing-gemini-38-live-with-live-avatar/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-24T16:20:39Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Gemini推出带实时虚拟形象的交互版本，拓展多模态应用场景。"
+        }
+      ]
+    }
+  ]
+}
