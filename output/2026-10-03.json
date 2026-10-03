@@ -1,0 +1,440 @@
+{
+  "date": "2026-10-03",
+  "tip": {
+    "title": "AutoCompact: Learning When to Compact Context in Long-Horizon Coding Agents",
+    "body": "在构建需要长期运行的编码Agent时，上下文窗口会不断膨胀，导致推理变慢、成本飙升。\n\n**做法**：参考AutoCompact的思路，在Agent的循环中插入一个压缩决策点。当历史token数超过阈值（如8K）时，调用LLM判断是否压缩，并用摘要替换旧对话。\n\n```python\nimport tiktoken\n\ndef maybe_compact(history: list, model=\"gpt-4\"):\n    enc = tiktoken.encoding_for_model(model)\n    if len(enc.encode(str(history))) > 8000:\n        # 调用LLM生成摘要，替换前80%的历史\n        summary = llm_summarize(history[:int(len(history)*0.8)])\n        return [summary] + history[int(len(history)*0.8):]\n    return history\n```\n\n注意：压缩函数需在沙箱（如Docker容器）中调用，避免LLM输出注入主进程。",
+    "ref_title": "AutoCompact: Learning When to Compact Context in Long-Horizon Coding Agents",
+    "ref_url": "https://arxiv.org/abs/2610.02163v1"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError",
+    "Hacker News 抓取失败：ConnectTimeout"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "KaliBench: A Fine-Grained Benchmark for Cybersecurity Tool Use on Kali Linux with Runtime-Free Verifiable Rewards",
+          "url": "https://arxiv.org/abs/2610.02206v1",
+          "source": "arXiv",
+          "published_at": "2026-10-01T17:59:55Z",
+          "raw_text": "LLMs are increasingly applied to cybersecurity workflows, where they are expected to translate analysts' intent into tool invocations. However, existing evaluations focus on knowledge-based assessments or end-to-end agentic tasks, and do not directly measure LLMs' ability to generate executable commands for real-world cybersecurity tools. This gap is critical because cybersecurity operations rely on strict command-line interfaces (CLIs), where minor syntax errors, incorrect flag--value bindings, or argument misordering can invalidate execution. We introduce KaliBench, a fine-grained benchmark and dataset for natural-language--to--CLI translation on Kali Linux, comprising 8,504 query--command pairs spanning 1,642 tools across 23 capability dimensions and 5 security phases. KaliBench is constructed via a manuscript-grounded pipeline with deterministic canonicalization and alias-aware evaluation, enabling precise and reproducible assessment of tool selection and argument construction. To ensure both semantic correctness and practical executability, we develop a multi-stage verification pipeline that combines LLM-based validation, sandboxed terminal execution, and human-in-the-loop refinement. Building on these fine-grained, deterministic signals, KaliBench further enables runtime-free verifiable rewards for training. Across three evaluation modes and 24 configurations of general-purpose and security-focused open-weight models, no open-weight model exceeds 42% exact-command accuracy in the unrestricted setting, highlighting the difficulty of accurate CLI-based cybersecurity tool use without explicit tool hints. We further show that supervised fine-tuning and reinforcement learning with verifiable rewards derived from KaliBench significantly improve an 8B model and achieve performance comparable to a 685B MoE model.",
+          "extra": {
+            "authors": [
+              "Pengfei Li",
+              "Naufal Suryanto",
+              "Sicheng Zhang",
+              "Muzammal Naseer"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.AI",
+              "cs.CR"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.02206v1"
+          },
+          "score": 9.0,
+          "summary": "首个细粒度评测基准，检验LLM在Kali Linux上生成可执行命令的能力，填补工具调用评估空白。"
+        },
+        {
+          "section": "paper",
+          "title": "Reconstruct, Practice, Go Real: Guided Self-Improvement for Embodied Agents",
+          "url": "https://arxiv.org/abs/2610.02204v1",
+          "source": "arXiv",
+          "published_at": "2026-10-01T17:59:50Z",
+          "raw_text": "Building reliable robot capabilities across diverse tasks requires substantial human effort to develop and maintain skills, design rewards, and integrate perception with control. We present Reconstruct, Practice, Go Real (RPG), a framework for autonomous improvement of robot execution systems without updating model weights. RPG identifies manipulation capabilities in an offline dataset and constructs related practice tasks in simulation. During practice, RPG uses execution feedback, privileged simulator state, and available dataset videos to diagnose failures. It develops new reusable symbolic skills, refines existing skills, and revises the system prompt based on these diagnoses. Cross-task evaluation tests individual candidate changes and merged revisions before they are retained for reuse. At test time, a multimodal LLM uses the resulting system prompt and skill library to coordinate perception and robot control. On held-out initializations of 22 manipulation tasks, RPG improves task success from 28.6% after the first practice round to 95.0% after 15 rounds, outperforming all evaluated baselines, including ASPIRE (75.5%) and CaP-Agent0 powered by GPT-6 Astra Pro (60.0%). After a common calibration and hardware-adaptation procedure, the frozen system succeeds in all 30 physical trials, with ten trials on each of three tasks. Project Website: https://rpg-robot.github.io/",
+          "extra": {
+            "authors": [
+              "Yen-Jen Wang",
+              "Haozhe Jiang",
+              "Shuying Deng",
+              "Haoru Xue",
+              "Weirui Ye",
+              "Rocky Duan",
+              "Nika Haghtalab",
+              "S. Shankar Sastry",
+              "Pieter Abbeel",
+              "Haozhi Qi"
+            ],
+            "categories": [
+              "cs.RO",
+              "cs.AI",
+              "eess.SY"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.02204v1"
+          },
+          "score": 8.0,
+          "summary": "提出RPG框架，让具身智能体无需人工干预即可自主改进技能，降低机器人部署成本。"
+        },
+        {
+          "section": "paper",
+          "title": "VISTA: A Visual Harness for Reasoning in an Interactive World",
+          "url": "https://arxiv.org/abs/2610.02200v1",
+          "source": "arXiv",
+          "published_at": "2026-10-01T17:59:45Z",
+          "raw_text": "We show that multimodal models possess strong reasoning abilities and that an appropriate harness can unlock their potential to solve tasks across diverse interactive environments. We introduce VISTA, a visual harness that gives a general-purpose multimodal model long-horizon vision. VISTA allows the model to directly perceive the environment through visual observations and maintains a lossless visual memory that preserves past observations in their original form. The model can actively retrieve these observations and reorganize its visual input as it reasons. On ARC-AGI-3, VISTA improves Claude Opus 5.0's Relative Human Action Efficiency score from 40.68 to a perfect 100.00, with the model completing all 25 public games using 57.4% fewer actions than first-time human participants. VISTA's simple design also allows it to extend naturally to diverse visual environments with minimal adaptation. Across three additional benchmarks covering a diverse range of visual games and puzzles, it substantially outperforms baselines using the same underlying model with minimal harnesses. Our results highlight VISTA's potential as a general-purpose visual harness for advancing multimodal agents in complex visual environments.",
+          "extra": {
+            "authors": [
+              "Qiushi Han",
+              "Keya Hu",
+              "Linlu Qiu",
+              "Cathy Wu",
+              "Kaiming He"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CV"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.02200v1"
+          },
+          "score": 8.0,
+          "summary": "VISTA为多模态模型提供长程视觉接口，使其能在交互式环境中自主推理并完成任务。"
+        },
+        {
+          "section": "paper",
+          "title": "Watch, Infer, Coordinate: Inferring Robot Partner Constraints for Zero-Shot Coordination",
+          "url": "https://arxiv.org/abs/2610.02170v1",
+          "source": "arXiv",
+          "published_at": "2026-10-01T17:56:04Z",
+          "raw_text": "Robots operating in the physical world will increasingly need to coordinate with other robots, particularly in manipulation tasks where an object may be too large or heavy for a single robot to carry alone. Physical limitations caused by hardware degradation or actuator faults can restrict the actions a robot can reliably execute, yet these limitations may be unknown to its partner. We study whether a helper can infer a robot partner's physical constraints from observing it coordinate with another robot, then use the inferred capability to coordinate with the same partner on a new task. This is difficult because a demonstration shows what the constrained robot did, but not what it could have done. In physically coupled tasks, the other robot may also compensate for its limitations, making those limitations difficult to identify from the constrained robot's behavior alone. Our key insight is that these constraints shape the joint behavior of the team, making the actions of both robots informative about the constrained partner's capability. We introduce Watch, Infer, Coordinate, a benchmark spanning three physically coupled manipulation settings, together with an inference approach that scores candidate constraints using observed joint behavior. Across all three settings, our method substantially improves constraint inference and zero-shot coordination, approaching an oracle with access to the true constraints.",
+          "extra": {
+            "authors": [
+              "Suyu Ye",
+              "Zheyuan Zhang",
+              "Vaishnav Tadiparthi",
+              "Hossein Nourkhiz Mahjoub",
+              "Ehsan Moradi Pari",
+              "Tianmin Shu",
+              "Homanga Bharadhwaj",
+              "Nakul Agarwal"
+            ],
+            "categories": [
+              "cs.RO",
+              "cs.AI",
+              "cs.MA"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.02170v1"
+          },
+          "score": 7.0,
+          "summary": "零样本协调方法，让机器人通过观察推断队友物理约束，实现无预设协作搬运。"
+        },
+        {
+          "section": "paper",
+          "title": "AutoCompact: Learning When to Compact Context in Long-Horizon Coding Agents",
+          "url": "https://arxiv.org/abs/2610.02163v1",
+          "source": "arXiv",
+          "published_at": "2026-10-01T17:54:34Z",
+          "raw_text": "Coding agents solve repository-level software engineering tasks through long trajectories of code inspection, search, editing, and testing. As a task progresses, earlier exploration becomes stale, so managing context is more than avoiding overflow: an agent must decide when to compact, what working state to preserve, and how to continue from it. We introduce AutoCompact, which trains a coding agent to make these decisions as part of its policy. To collect training data, we run the base agent on coding tasks and use a judge to review its compaction decisions, summaries, and actions after compaction. Flawed outputs are replaced with corrected ones before being executed in the environment, so each trajectory continues from the corrected decisions. We use these trajectories for supervised fine-tuning, then jointly optimize coding and compaction through reinforcement learning with task-success rewards. Experiments on SWE-bench Verified and SWE-PolyBench Verified show that AutoCompact improves pass rates over the base model by an absolute 9.2\\% and 5.0\\%, respectively. The improvements hold across all evaluated inference budgets, with a 256K context window that never overflows and with a 16K window whose overflow triggers fallback compaction.",
+          "extra": {
+            "authors": [
+              "Xuan Zhang",
+              "Longtao Zheng",
+              "Cunxiao Du",
+              "Bo An",
+              "Xin Dong"
+            ],
+            "categories": [
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.02163v1"
+          },
+          "score": 7.0,
+          "summary": "学习型上下文压缩策略，让长周期编码智能体自主决定何时精简历史，提升效率。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "genspark-ai/genoffice",
+          "url": "https://github.com/genspark-ai/genoffice",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-31T09:40:58Z",
+          "raw_text": "Free, open-source AI Office suite: Docs, Sheets, Slides, PDF, Markdown and HTML editors with a built-in AI agent, plus a `genoffice` CLI and agent skill so Claude Code, Codex and Cursor can create and edit real .docx/.xlsx/.pptx files locally. Bring your own key. macOS, Windows & Linux.",
+          "extra": {
+            "stars": 8443,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agent",
+              "claude-code",
+              "cli",
+              "codex",
+              "cursor",
+              "docx",
+              "excel",
+              "libreoffice-alternative",
+              "local-first",
+              "markdown-editor",
+              "microsoft-office-alternative",
+              "office-suite",
+              "pdf-editor",
+              "pdf-to-word",
+              "powerpoint",
+              "pptx",
+              "skills",
+              "spreadsheet",
+              "xlsx"
+            ]
+          },
+          "score": 9.0,
+          "summary": "开源AI办公套件，支持本地编辑Office文件，Agent可直接生成真实文档。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "Supercharge your AI agents with data from the web and beyond. Building the library for superintelligence. 🔥",
+          "extra": {
+            "stars": 188016,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 8.0,
+          "summary": "为AI Agent提供网页数据抓取能力，构建超级智能的数据基础库。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 157738,
+            "language": "TypeScript",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "deepseek",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "python",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 8.0,
+          "summary": "一站式构建Agent工作流与RAG管道，支持私有部署，从原型到生产无需重构。"
+        },
+        {
+          "section": "repo",
+          "title": "hypit-ai/hypit",
+          "url": "https://github.com/hypit-ai/hypit",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-29T18:49:19Z",
+          "raw_text": "Clone any viral video with AI agents. Not just a script, the whole workflow: swap the face, the words, the B-roll, ship 100 variants in one command, and get your 100M views.",
+          "extra": {
+            "stars": 18942,
+            "language": "TypeScript",
+            "topics": [
+              "agentic-ai",
+              "ai",
+              "ai-agents",
+              "ai-video",
+              "compiler",
+              "dsl",
+              "ffmpeg",
+              "generative-ai",
+              "llm",
+              "markup-language",
+              "monorepo",
+              "plugin-system",
+              "programming-language",
+              "text-to-video",
+              "typescript",
+              "video",
+              "video-automation",
+              "video-clone",
+              "video-editing",
+              "video-generation"
+            ]
+          },
+          "score": 7.0,
+          "summary": "用AI Agent一键克隆爆款视频，换脸换词换素材，批量生成变体。"
+        },
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi, GLM, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 182073,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "gemma3",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llama3",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 7.0,
+          "summary": "本地运行Kimi、DeepSeek等国产大模型，开箱即用的推理工具。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Apple changes full-disk access permissions to curb abuse from AI agents",
+          "url": "https://arstechnica.com/security/2026/10/apple-changes-full-disk-access-permissions-to-curb-abuse-from-ai-agents/",
+          "source": "Ars Technica",
+          "published_at": "2026-10-02T23:03:16Z",
+          "raw_text": "Meta says FDA isn't sufficient to Muse reading messages. Apple begs to differ.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "苹果因AI代理风险收紧Mac全磁盘访问权限，直接影响AI开发安全实践。"
+        },
+        {
+          "section": "news",
+          "title": "US arrests tech CEO accused of smuggling $300M in Nvidia chips into China",
+          "url": "https://arstechnica.com/tech-policy/2026/10/us-arrests-tech-ceo-accused-of-smuggling-300m-in-nvidia-chips-into-china/",
+          "source": "Ars Technica",
+          "published_at": "2026-10-02T18:39:36Z",
+          "raw_text": "Nvidia’s chip-smuggling problem won’t go away as arrests continue.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "美国逮捕涉嫌走私3亿美元英伟达芯片的科技CEO，凸显出口管制执法升级。"
+        },
+        {
+          "section": "news",
+          "title": "Sean Parker is rebuilding Stability AI around music",
+          "url": "https://techcrunch.com/2026/10/02/sean-parker-is-rebuilding-stability-ai-around-music/",
+          "source": "TechCrunch",
+          "published_at": "2026-10-02T21:09:14Z",
+          "raw_text": "Sean Parker, who once taught the music industry what asking for forgiveness looks like, is now back with the labels' blessing and money.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "纳普斯特创始人肖恩·帕克获唱片公司支持，以音乐为核心重建Stability AI。"
+        },
+        {
+          "section": "news",
+          "title": "Amazon’s $1B plan to combat data center backlash draws more backlash",
+          "url": "https://arstechnica.com/tech-policy/2026/10/amazons-1b-plan-to-combat-data-center-backlash-draws-more-backlash/",
+          "source": "Ars Technica",
+          "published_at": "2026-10-02T20:30:27Z",
+          "raw_text": "Amazon praised for ending NDAs but slammed for downplaying data center pollution.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "亚马逊10亿美元应对数据中心反弹计划遭批评，环保争议持续发酵。"
+        },
+        {
+          "section": "news",
+          "title": "OpenAI’s Dot agent is enterprise software that can also order your dinner",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1004096/openai-chatgpt-dots-hands-on-agent",
+          "source": "The Verge",
+          "published_at": "2026-10-02T18:00:00Z",
+          "raw_text": "It's a tale as old as last week: OpenAI's new agent platform, called Dots, is full of cute little guys who can do your bidding. But unlike the ultra-approachable Meta Muse, Dots feel very much like using workplace software that happens to be able to order you a burrito - emphasis on work. OpenAI announced […]",
+          "extra": {},
+          "score": 7.0,
+          "summary": "OpenAI发布企业级代理平台Dot，兼顾办公自动化与生活服务场景。"
+        },
+        {
+          "section": "news",
+          "title": "Meta open sources code to let you make Muse AI gadgets",
+          "url": "https://www.theverge.com/tech/1004330/meta-muse-ai-gadgets-home-link",
+          "source": "The Verge",
+          "published_at": "2026-10-02T21:08:37Z",
+          "raw_text": "Meta now lets you make your own Muse gadgets that feature the company's new AI agent with code that the company open sourced. The company suggests projects like loading Muse on a color E Ink display to show reminders, adding it to an HDMI stick so you can display Muse on a big screen, or […]",
+          "extra": {},
+          "score": 7.0,
+          "summary": "Meta开源Muse AI代理代码，降低开发者构建智能硬件门槛。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Gemini 4 Argon: our next era of frontier intelligence",
+          "url": "https://deepmind.google/blog/gemini-4-argon-our-next-era-of-frontier-intelligence/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-30T20:01:45Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "谷歌发布新一代旗舰模型 Gemini 4 Argon，标志着前沿智能能力进入新阶段。"
+        },
+        {
+          "section": "product",
+          "title": "Introducing SynthID Bio",
+          "url": "https://deepmind.google/blog/introducing-synthid-bio/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-30T15:03:07Z",
+          "raw_text": "Proof of concept for watermarking AI-generated proteins while preserving biological function.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "推出 SynthID Bio，首次实现AI生成蛋白质的水印标记，兼顾功能与溯源。"
+        },
+        {
+          "section": "product",
+          "title": "Introducing Quine: An AI research system designed for the complexity of biology",
+          "url": "https://www.microsoft.com/en-us/research/blog/introducing-quine-an-ai-research-system-designed-for-the-complexity-of-biology/",
+          "source": "Microsoft Research",
+          "published_at": "2026-09-29T14:00:02Z",
+          "raw_text": "Biology doesn't operate in silos, and neither should the AI representation of it. Quine is an early-stage research effort to create a multimodal world model of biology. By connecting insights across biological scales and modalities, Quine helps scientists computationally search a space far larger than intuition allows and prioritize hypotheses before they reach the lab. Experimental results provide important feedback, helping researchers sharpen future research directions. The post Introducing Quine: An AI research system designed for the complexity of biology appeared first on Microsoft Research .",
+          "extra": {},
+          "score": 8.0,
+          "summary": "发布 Quine 多模态生物学世界模型，打通跨尺度数据，加速科学发现。"
+        }
+      ]
+    }
+  ]
+}
