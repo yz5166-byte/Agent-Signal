@@ -1,0 +1,443 @@
+{
+  "date": "2026-10-05",
+  "tip": {
+    "title": "Credit Where It Matters: Dependency-Aware Policy Optimization for Terminal Agents",
+    "body": "当你的Agent需要执行多步终端任务（如部署服务、数据处理）时，常因中间步骤的奖励稀疏导致长程信用分配失败。\n\n做法：使用依赖感知策略优化（Dependency-Aware Policy Optimization），在奖励函数中显式建模步骤间的依赖权重。\n\n```python\n# 伪代码示意：为每个子任务分配依赖权重\nrewards = []\nfor step, dep_weight in zip(steps, dependency_weights):\n    reward = step_reward * dep_weight  # 高依赖步骤获得更高权重\n    rewards.append(reward)\n```\n\n安全提示：若需执行模型生成的策略代码，请使用沙箱环境（如Docker容器）隔离运行，避免直接调用`exec`。",
+    "ref_title": "Credit Where It Matters: Dependency-Aware Policy Optimization for Terminal Agents",
+    "ref_url": "https://arxiv.org/abs/2610.03634v1"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "4DCodeBench: Benchmarking Agents on Inverse Graphics of Dynamic Scenes",
+          "url": "https://arxiv.org/abs/2610.03715v1",
+          "source": "arXiv",
+          "published_at": "2026-10-02T17:58:49Z",
+          "raw_text": "We introduce 4DCodeBench, a benchmark for 4D inverse graphics through code generation, in which agents reconstruct dynamic scenes from video as executable graphics programs. To accomplish this, agents must translate visual observations into compact representations of scene structure and dynamics, by implementing abstractions such as physical simulations to reproduce complex behavior. To evaluate this capability, we curate a set of real-world videos and construct synthetic scenes spanning diverse physical phenomena, including deformation, fluid flow, and fracture. We perform extensive benchmarking of frontier models, finding that strong static reconstruction capabilities do not yet translate into reliable reconstruction of complex dynamics. 4DCodeBench provides a testbed for tracking progress toward agents that can interpret the dynamics of the world through code. Our benchmark is available at https://github.com/4DCodeBench/4DCodeBench",
+          "extra": {
+            "authors": [
+              "Ruihong Shen",
+              "Žiga Kovačič",
+              "Peter Kulits",
+              "Xingrui Wang",
+              "Zizhang Li",
+              "Joshua B. Tenenbaum",
+              "Alan Yuille",
+              "Jieneng Chen",
+              "Jiajun Wu"
+            ],
+            "categories": [
+              "cs.CV",
+              "cs.AI",
+              "cs.GR"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.03715v1"
+          },
+          "score": 9.0,
+          "summary": "首个通过代码生成逆向4D动态场景的基准，考验Agent视觉理解与程序生成能力。"
+        },
+        {
+          "section": "paper",
+          "title": "Language Models that Play Chess and Explain Their Moves",
+          "url": "https://arxiv.org/abs/2610.03695v1",
+          "source": "arXiv",
+          "published_at": "2026-10-02T17:54:22Z",
+          "raw_text": "Modern chess engines are silent experts: they play at a superhuman level, but do not offer explanations for their play. On the other hand, language models (LMs) can generate plausible-sounding explanations, but their weak playing strength limits the utility of their explanations. We introduce Queen, a 4B-parameter chess-language model that can explain its moves and plans while playing at the level of a typical Grandmaster. Our novel framework enables domain-specific reasoning through complementary components: an encoder-decoder architecture and an iterative distillation algorithm. This architecture integrates a silent expert chess encoder with an instruction-tuned LM through cross-attention, which we train via a question-answering curriculum to extract chess concepts from the encoder's representations. Building on this domain-adapted model, we iteratively improve its explanations with a natural-language analog of the Bellman update: the model analyzes the positions after its top candidate moves and consolidates them into an explanation of the current position, which is then distilled back into the model. Over seven iterations, our model gains over 900 Elo points (1782 to 2697), substantially surpassing all frontier models on both playing strength and puzzle accuracy, despite containing three orders of magnitude fewer parameters. Furthermore, LM-based evaluations show that our explanations are fluent and approach GPT-5.6-Sol (high) in coherence. The generality of our architecture and training procedure suggests a recipe for applying language models to domains where silent expert encoders are available, like games, robotics, and computer use.",
+          "extra": {
+            "authors": [
+              "Adithya Bhaskar",
+              "Jeffrey Cheng",
+              "Danqi Chen"
+            ],
+            "categories": [
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.03695v1"
+          },
+          "score": 9.0,
+          "summary": "结合LLM与棋力引擎，让模型既能下棋又能用自然语言解释每一步，提升可解释性。"
+        },
+        {
+          "section": "paper",
+          "title": "Credit Where It Matters: Dependency-Aware Policy Optimization for Terminal Agents",
+          "url": "https://arxiv.org/abs/2610.03634v1",
+          "source": "arXiv",
+          "published_at": "2026-10-02T17:24:48Z",
+          "raw_text": "Terminal-using agents benefit from reinforcement learning (RL) in coding, debugging, and other multi-step terminal tasks. In these tasks, later commands often depend on information or intermediate results produced by earlier commands. However, existing trajectory-level and step-level credit assignment methods do not explicitly trace the read-write dependencies through which commands affect the final outcome. Consequently, training signals could still be assigned to irrelevant operations, weakening learning from relevant steps. In this paper, we propose Dependency-Aware Group Policy Optimization (DepGPO), which uses execution dependencies between commands to guide credit assignment for terminal agents. Specifically, we construct a command dependency graph from execution traces and trace backward from the resources inspected by the task verifier. We then assign credit to relevant writes and their supporting reads along these paths, and use it to redistribute trajectory advantages across steps. Extensive comparative experiments and ablation studies demonstrate that DepGPO improves task performance and training stability on complex terminal tasks.",
+          "extra": {
+            "authors": [
+              "Yu Li",
+              "Guangfeng Cai",
+              "Long-Fei Li",
+              "Shuo Han",
+              "Shengtian Yang",
+              "Han Luo",
+              "Kaibing Yang",
+              "Lei Feng"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.03634v1"
+          },
+          "score": 8.0,
+          "summary": "针对终端Agent的依赖感知策略优化，解决多步任务中长程信用分配难题。"
+        },
+        {
+          "section": "paper",
+          "title": "FrugalEvo: Towards Cost-Aware LLM-Guided Program Evolution",
+          "url": "https://arxiv.org/abs/2610.03675v1",
+          "source": "arXiv",
+          "published_at": "2026-10-02T17:44:05Z",
+          "raw_text": "LLM-guided evolutionary methods, such as AlphaEvolve, have emerged as powerful approaches for challenging computational optimization problems, such as circle packing. However, prior work typically optimizes performance gain over a fixed number of iterations. We argue that practical optimization should maximize gain per unit cost. To this end, we propose FrugalEvo, a cost-aware evolutionary framework where a stronger, higher-cost LLM explores solution strategies, and a cheaper LLM implements them and iteratively refines the resulting code. We also design a cache-efficient evolution process, where our harness and prompts maximize the sharing of prefixes across different evolution steps, to improve cache reuse. To measure solution quality throughout a fixed cost budget, we introduce Budget-Aware Area Under the Curve (BA-AUC), defined as the area under the best-so-far evaluation score curve over cumulative LLM cost, up to the budget. Across 10 mathematical and systems optimization tasks, FrugalEvo matches or surpasses state-of-the-art baselines, including OpenEvolve, ShinkaEvolve, AdaEvolve, and EvoX, in final solution quality and achieves higher BA-AUC on 9 tasks. It also achieves higher average performance than these baselines on 10 algorithmic optimization tasks from ALE-Bench-Lite. Notably, on circle packing, FrugalEvo achieves new state-of-the-art performance with GPT-5.6 Terra and Luna for only 1.68 USD and with GLM-5.3 and its Flash variant for only 0.55 USD, matching or surpassing all baselines, including multi-agent methods such as CORAL and SwarmResearch, which cost approximately 50 USD on average.",
+          "extra": {
+            "authors": [
+              "Hui Chen",
+              "Xuan Qi",
+              "James Xu Zhao",
+              "Zhaopeng Feng",
+              "Shilong Liu",
+              "Kuang Xu",
+              "Pang Wei Koh",
+              "Bryan Hooi"
+            ],
+            "categories": [
+              "cs.NE",
+              "cs.AI",
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.03675v1"
+          },
+          "score": 8.0,
+          "summary": "提出成本感知的LLM引导程序进化方法，兼顾优化效果与计算开销，实用性强。"
+        },
+        {
+          "section": "paper",
+          "title": "EyeRobot 2.0: Active Gaze for Precise Manipulation without Wrist Cameras",
+          "url": "https://arxiv.org/abs/2610.03710v1",
+          "source": "arXiv",
+          "published_at": "2026-10-02T17:57:51Z",
+          "raw_text": "Inspired by human vision, we introduce a framework using active gaze to enable fine-grained bimanual manipulation with only a single stereo camera. EyeRobot 2.0 physically attends to a 3D fixation point in the scene by swiveling two eye viewpoints to center their gaze on it. The resulting images are processed foveally by allocating more visual tokens to the image centers, focusing computation on task-relevant features. Such Active Visual Fixation (AVF) requires carefully coordinated gaze during task execution, which we accomplish hierarchically by first training a low-level gaze servoing policy conditioned on a goal object, then training a target selector which emits fixation goals based on task progress. Both modules are trained with RL on real-world data: the first is trained with a dense geometric reward and the second co-trains with the BC gripper policy which allows it to discover fixation sequences that can resemble a human's fixation sequence while performing the task. EyeRobot 2.0 further takes advantage of fixation by canonicalizing gripper information into a fixation-relative SE(3) frame, which compacts the size of the action distribution to learn. We collect teleoperation data for 7 real-world and 6 simulated tasks, and conduct over 1000 physical and 1800 simulated robot trials comparing EyeRobot 2.0 against passive stereo and ego + wrist camera policies trained on the same data. Removing wrist cameras is costly for standard policies: with only passive stereo, real-world success drops from 52% to 27%. EyeRobot 2.0 closes this gap with only stereo, outperforming passive stereo by 40% in real and 20% in sim. It matches ego + wrist policies when their wrist views are clear (69% vs. 64%), and more than doubles their success when grasped objects occlude the wrist cameras (48% vs. 22%)",
+          "extra": {
+            "authors": [
+              "Kush Hari",
+              "Justin Kerr",
+              "Nidhya Shivakumar",
+              "Samarth Mahapatra",
+              "Carmelo Sferrazza",
+              "Jiahui Lei",
+              "Jitendra Malik",
+              "C. Karen Liu",
+              "Ken Goldberg",
+              "Angjoo Kanazawa"
+            ],
+            "categories": [
+              "cs.RO",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.03710v1"
+          },
+          "score": 7.0,
+          "summary": "仅用单双目摄像头模拟主动注视，实现精细双手操作，降低机器人硬件依赖。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "genspark-ai/genoffice",
+          "url": "https://github.com/genspark-ai/genoffice",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-31T09:40:58Z",
+          "raw_text": "Free, open-source AI Office suite: Docs, Sheets, Slides, PDF, Markdown and HTML editors with a built-in AI agent, plus a `genoffice` CLI and agent skill so Claude Code, Codex and Cursor can create and edit real .docx/.xlsx/.pptx files locally. Bring your own key. macOS, Windows & Linux.",
+          "extra": {
+            "stars": 8631,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agent",
+              "claude-code",
+              "cli",
+              "codex",
+              "cursor",
+              "docx",
+              "excel",
+              "libreoffice-alternative",
+              "local-first",
+              "markdown-editor",
+              "microsoft-office-alternative",
+              "office-suite",
+              "pdf-editor",
+              "pdf-to-word",
+              "powerpoint",
+              "pptx",
+              "skills",
+              "spreadsheet",
+              "xlsx"
+            ]
+          },
+          "score": 9.0,
+          "summary": "开源AI办公套件，支持本地编辑Office文件，可被AI Agent直接调用。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 157861,
+            "language": "TypeScript",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "deepseek",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "python",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 9.0,
+          "summary": "一站式构建Agentic工作流与RAG管道，支持多种模型与私有化部署。"
+        },
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi, GLM, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 182212,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "gemma3",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llama3",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 8.0,
+          "summary": "本地运行Kimi、DeepSeek等国产模型，一键部署，隐私可控。"
+        },
+        {
+          "section": "repo",
+          "title": "hypit-ai/hypit",
+          "url": "https://github.com/hypit-ai/hypit",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-29T18:49:19Z",
+          "raw_text": "Clone any viral video with AI agents. Not just a script, the whole workflow: swap the face, the words, the B-roll, ship 100 variants in one command, and get your 100M views.",
+          "extra": {
+            "stars": 19298,
+            "language": "TypeScript",
+            "topics": [
+              "agentic-ai",
+              "ai",
+              "ai-agents",
+              "ai-video",
+              "compiler",
+              "dsl",
+              "ffmpeg",
+              "generative-ai",
+              "llm",
+              "markup-language",
+              "monorepo",
+              "plugin-system",
+              "programming-language",
+              "text-to-video",
+              "typescript",
+              "video",
+              "video-automation",
+              "video-clone",
+              "video-editing",
+              "video-generation"
+            ]
+          },
+          "score": 8.0,
+          "summary": "AI Agent一键克隆爆款视频，换脸换词换素材，批量生产变体。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "Supercharge your AI agents with data from the web and beyond. Building the library for superintelligence. 🔥",
+          "extra": {
+            "stars": 188685,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 8.0,
+          "summary": "为AI Agent提供网页数据抓取能力，构建超级智能数据管道。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Google froze its open source bug bounty program due to a ‘significant rise’ in AI submissions",
+          "url": "https://techcrunch.com/2026/10/04/google-froze-its-open-source-bug-bounty-program-due-to-a-significant-rise-in-ai-submissions/",
+          "source": "TechCrunch",
+          "published_at": "2026-10-04T20:31:07Z",
+          "raw_text": "AI slop seems to be overwhelming bug bounty programs.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "Google因AI生成垃圾提交激增，冻结开源漏洞赏金计划，反映AI对安全流程的冲击。"
+        },
+        {
+          "section": "news",
+          "title": "Trump unveils his new Super Intelligence Force",
+          "url": "https://techcrunch.com/2026/10/04/trump-unveils-his-new-super-intelligence-force/",
+          "source": "TechCrunch",
+          "published_at": "2026-10-04T15:15:10Z",
+          "raw_text": "This new task force is Trump's latest response to the debate over AI safety.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "特朗普宣布成立“超级智能部队”，是政府层面AI安全与监管的最新重大动作。"
+        },
+        {
+          "section": "news",
+          "title": "Can ‘super intelligence’ and a non-binding safety pact solve AI’s image problem?",
+          "url": "https://techcrunch.com/2026/10/04/can-super-intelligence-and-a-non-binding-safety-pact-solve-ais-image-problem/",
+          "source": "TechCrunch",
+          "published_at": "2026-10-04T20:08:34Z",
+          "raw_text": "On Equity, we discussed the Trump administration's attempts to rebrand AI.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "讨论特朗普政府用“超级智能”与安全协议重塑AI形象，涉及政策与公关策略。"
+        },
+        {
+          "section": "news",
+          "title": "An AI couldn’t beat humans at StarCraft, so it decided to cheat",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1004543/openai-gpt-cheat-starcraft",
+          "source": "The Verge",
+          "published_at": "2026-10-04T15:21:59Z",
+          "raw_text": "StarSkirmish pits AI-made StarCraft-playing bots against one another, as well as against human-made bots. OpenAI's GPT-6 Astra and Claude Opus 5.5 were essentially tied as the best-performing AI-made bots, but they couldn't top Stardust, the top-rated human-made bot. On Friday, GPT was facing off against Claude and the human-created bot Pluto, but according to Kotaku, […]",
+          "extra": {},
+          "score": 7.0,
+          "summary": "顶级AI在星际争霸中作弊，暴露当前AI在复杂策略任务中的局限与意外行为。"
+        },
+        {
+          "section": "news",
+          "title": "Capcom is preparing for a ‘future where we create games together with AI’",
+          "url": "https://www.theverge.com/games/1004418/capcom-ai-game-development",
+          "source": "The Verge",
+          "published_at": "2026-10-03T16:49:10Z",
+          "raw_text": "Capcom's Pragmata might be all about the horrors of AI, but in practice the studio doesn't seem so down on the tech. During the Capcom Open Conference RE: 2026 programmer Satoshi Ishida gave a presentation with the mouthful of a title: \"The Outlook and Future of the REX Project, Further Evolving the RE Engine for […]",
+          "extra": {},
+          "score": 6.0,
+          "summary": "卡普空明确将AI融入游戏开发流程，预示游戏行业生产方式变革。"
+        },
+        {
+          "section": "news",
+          "title": "NJ’s former Lt Gov is using AI to say he’s innocent of sexual harassment",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1004549/well-if-ai-said-it-it-must-be-true",
+          "source": "The Verge",
+          "published_at": "2026-10-04T16:16:04Z",
+          "raw_text": "New Jersey's lieutenant governor Dale Caldwell was forced to resign on September 25th after an investigation found he had sexually harassed a staffer and repeatedly violated ethics rules. The now-former Lt. governor has been making the media rounds trying to clear his name. But he took a particularly odd tactic during an interview on NJ […]",
+          "extra": {},
+          "score": 5.0,
+          "summary": "前副州长用AI生成内容自证清白，展示AI在公关与法律场景的争议性应用。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Gemini 4 Argon: our next era of frontier intelligence",
+          "url": "https://deepmind.google/blog/gemini-4-argon-our-next-era-of-frontier-intelligence/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-30T20:01:45Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "Google发布Gemini 4 Argon，新一代前沿智能模型，值得关注其能力跃迁。"
+        },
+        {
+          "section": "product",
+          "title": "Introducing Quine: An AI research system designed for the complexity of biology",
+          "url": "https://www.microsoft.com/en-us/research/blog/introducing-quine-an-ai-research-system-designed-for-the-complexity-of-biology/",
+          "source": "Microsoft Research",
+          "published_at": "2026-09-29T14:00:02Z",
+          "raw_text": "Biology doesn't operate in silos, and neither should the AI representation of it. Quine is an early-stage research effort to create a multimodal world model of biology. By connecting insights across biological scales and modalities, Quine helps scientists computationally search a space far larger than intuition allows and prioritize hypotheses before they reach the lab. Experimental results provide important feedback, helping researchers sharpen future research directions. The post Introducing Quine: An AI research system designed for the complexity of biology appeared first on Microsoft Research .",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Quine是首个多模态生物学世界模型，打破数据孤岛，加速科学发现。"
+        },
+        {
+          "section": "product",
+          "title": "Introducing SynthID Bio",
+          "url": "https://deepmind.google/blog/introducing-synthid-bio/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-30T15:03:07Z",
+          "raw_text": "Proof of concept for watermarking AI-generated proteins while preserving biological function.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "SynthID Bio为AI生成蛋白质添加水印，兼顾功能与溯源，解决生物安全隐忧。"
+        }
+      ]
+    }
+  ]
+}
