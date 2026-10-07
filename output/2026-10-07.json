@@ -1,0 +1,424 @@
+{
+  "date": "2026-10-07",
+  "tip": {
+    "title": "Does an Agent's History Tell You When Compaction Will Hurt? A Modest, Bounded Effect on the TRACE Paired-Replay Corpus",
+    "body": "当你的Agent需要长期运行且上下文窗口有限时，会遇到历史记录过长导致性能下降或成本飙升的问题。做法：使用基于**交互轮次**的滑动窗口压缩，保留最近N轮完整对话，将更早的历史用摘要替换。\n\n```python\nfrom collections import deque\n\nclass SlidingWindowMemory:\n    def __init__(self, max_rounds=10):\n        self.history = deque(maxlen=max_rounds)\n        self.summary = \"\"\n\n    def add(self, user_msg, agent_action):\n        if len(self.history) == self.history.maxlen:\n            self.summary += f\"[摘要] {self.history[0]['user']} -> {self.history[0]['action']}\\n\"\n        self.history.append({\"user\": user_msg, \"action\": agent_action})\n\n    def get_context(self):\n        return self.summary + \"\\n\".join(\n            f\"用户: {h['user']}\\nAgent: {h['action']}\" for h in self.history\n        )\n```\n\n（基于条目[4]的实证结论：适度压缩对性能影响有限）",
+    "ref_title": "Does an Agent's History Tell You When Compaction Will Hurt? A Modest, Bounded Effect on the TRACE Paired-Replay Corpus",
+    "ref_url": "https://arxiv.org/abs/2610.08722v1"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "Agent in a Bottle: Can LLM Agents Turn Their Capabilities Into Cheap, Scalable Artifacts?",
+          "url": "https://arxiv.org/abs/2610.08775v1",
+          "source": "arXiv",
+          "published_at": "2026-10-06T17:57:19Z",
+          "raw_text": "Large language models (LLMs) can solve many narrow tasks, but querying them separately for millions of related instances can be prohibitively expensive. Can LLM agents autonomously create cheaper solutions for such workloads? We call this ability \"bottling\": the ability to turn general capabilities into task-specific solutions that balance answer quality and amortised cost. We introduce BOTTLED, a benchmark in which agents receive an entire unlabelled workload and must complete it under fixed time, compute and LLM API budgets. Agents choose their own approach, such as training a small model or writing a reusable program. Across ten models and three tasks, we find that strong zero-shot task performance does not reliably translate into strong bottling capabilities. Models with similar zero-shot scores can differ substantially after bottling, and 48 of 60 bottling runs score below the lower bound of the 95% confidence interval of their model's zero-shot performance. Moreover, 31 of 60 runs underperform the stronger of two small-model distillation baselines with the same token budget. Nevertheless, bottling can yield substantial savings: on query-product relevance classification, Opus 5 retains about 82% of its zero-shot macro-F1 at roughly 657 times lower reported cost. Bottling is also competitive with Jev, a \"system one\" model built especially for cheap, repetitive inference: Opus 5 on the same task recovers about 94% of Jev's macro-F1 at a quarter of Jev's projected full-workload cost. BOTTLED provides a basis for evaluating and improving agents' ability to invest limited resources in reusable solutions for large, repetitive workloads.",
+          "extra": {
+            "authors": [
+              "Ankit Sonthalia",
+              "Haritz Puerto",
+              "Alexander Rubinstein",
+              "Martin Gubri",
+              "Seong Joon Oh"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.08775v1"
+          },
+          "score": 9.0,
+          "summary": "提出‘装瓶’能力，让LLM智能体将通用能力自动转化为廉价、可复用的专用工具，直击部署成本痛点。"
+        },
+        {
+          "section": "paper",
+          "title": "AdvSim2Real : Training Web Agents Against Adaptive Prompt Injection in a Web World Model",
+          "url": "https://arxiv.org/abs/2610.08773v1",
+          "source": "arXiv",
+          "published_at": "2026-10-06T17:56:43Z",
+          "raw_text": "Web agents complete user requests by reading and acting on pages that third parties write, so an instruction planted on a page can redirect the agent away from the user's goal. The agent cannot simply ignore the page, because the page also holds the values and controls the task requires. Current defenses fine-tune the agent on injections fixed before training, and attackers that adapt to the trained model bypass them. Adversarial training lets the attacker adapt but keeps the tasks fixed, so a task stops teaching once the agent solves it. We introduce AdvSim2Real, which co-evolves a task curriculum, an injection adversary, and the agent inside a frozen web world model. The curriculum is rewarded for tasks the agent solves about half of the time, and the adversary only for a success flip, an injection that turns a judged success into a failure. Training in the simulator makes a 4B agent both more capable and more robust: its completion rises with and without attacks, holds against a frontier-model adversary it never trained against, and its capability gain carries over to a real browser. On 150 web tasks, AdvSim2Real raises completion under this unseen adversary by 33.6\\% relative to the base agent.",
+          "extra": {
+            "authors": [
+              "Sarim Hashmi",
+              "Mukul Ranjan",
+              "Kshitij Mishra",
+              "Mikhail Kuznetsov",
+              "Praneeth Vepakomma",
+              "Nils Lukas"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.AI",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.08773v1"
+          },
+          "score": 9.0,
+          "summary": "针对Web智能体的提示注入攻击，提出在可微分世界模型中训练自适应防御，实用且前沿。"
+        },
+        {
+          "section": "paper",
+          "title": "Sherpa: Teaching LLMs to Teach Adaptively",
+          "url": "https://arxiv.org/abs/2610.08778v1",
+          "source": "arXiv",
+          "published_at": "2026-10-06T17:58:18Z",
+          "raw_text": "Large language models (LLMs) have become increasingly capable problem solvers, but being able to solve a problem is not the same as being able to teach it. Existing approaches to training LLMs as teachers rely on demonstrations, preference data, or predefined pedagogical criteria that specify what good teaching looks like. However, these signals are often not grounded in individual student learning outcomes, where effective teaching strategies can vary substantially across learners. To address this, we introduce Sherpa, a multi-turn reinforcement learning framework that instantiates multiple student archetypes with LLMs conditioned on distinct learning preferences and trains a teacher model to adapt its instruction by directly maximizing their learning outcomes. Teacher LLMs trained with Sherpa improve instructed students' performance across all archetypes by an average of 20.5 percentage points. Under MathTutorBench's evaluation, Sherpa raises the overall pedagogy score from 52.5% to 79.2%, indicating better teaching responses. Our human studies show that the trained teacher is preferred over the base model in 79.6% of pairwise comparisons. Together, Sherpa trains LLM teachers to adapt to diverse simulated students and become better aligned with human teachers, paving the road towards AI tutors teaching real students.",
+          "extra": {
+            "authors": [
+              "Weixian Xu",
+              "Yanzhe Zhang",
+              "Zora Zhiruo Wang",
+              "Changyu Chen",
+              "Diyi Yang"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.08778v1"
+          },
+          "score": 8.0,
+          "summary": "让LLM学会自适应教学，无需预设标准，从交互反馈中动态调整策略，推动AI教育应用。"
+        },
+        {
+          "section": "paper",
+          "title": "IdeaAnchor: Teaching LLMs to Turn Literature into Research Ideas",
+          "url": "https://arxiv.org/abs/2610.08781v1",
+          "source": "arXiv",
+          "published_at": "2026-10-06T17:59:01Z",
+          "raw_text": "Scientific research often begins by synthesizing ideas from a set of related papers to identify gaps and formulate new directions. However, training language models to perform this form of literature-grounded ideation remains challenging, as existing approaches based on prompting or feedback lack structured supervision for how papers should be synthesized. We introduce IdeaAnchor, a paradigm for training LLMs to perform research ideation using structured specifications as privileged signals. Each IdeaAnchor instance encodes how each input paper should be synthesized into a successful idea, including their functional roles, relationships, and target synthesis criteria. We build this paradigm by mining instances from published papers, capturing how real ideas emerge from prior literature. We then train models via demonstration, self-distillation, and reinforcement learning, and further enhance generation with retrieval at inference time. Experiments show consistent improvements in ideation quality. Our analysis reveals a functional decomposition: anchor-based training strengthens creative synthesis, retrieval enhances detail elaboration, and combining both yields the best performance.",
+          "extra": {
+            "authors": [
+              "Ziyu Chen",
+              "Yilun Zhao",
+              "Jiashuo Sun",
+              "Yiling Ma",
+              "Manasi Patwardhan",
+              "Arman Cohan"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.08781v1"
+          },
+          "score": 8.0,
+          "summary": "训练LLM从文献中自动生成研究思路，填补从阅读到创新的关键缺口，加速科研流程。"
+        },
+        {
+          "section": "paper",
+          "title": "Does an Agent's History Tell You When Compaction Will Hurt? A Modest, Bounded Effect on the TRACE Paired-Replay Corpus",
+          "url": "https://arxiv.org/abs/2610.08722v1",
+          "source": "arXiv",
+          "published_at": "2026-10-06T17:26:57Z",
+          "raw_text": "Many long-horizon agents compact their context on a global rule, usually a token budget, blind to what the agent was doing. We ask whether the agent's recent behaviour predicts when a compaction will hurt. TRACE's public corpus of 590 harness-triggered AppWorld compaction boundaries replays each boundary from a re-executed prefix state under the pre-compaction context and under the summary, and records the burden of the next actions: calls that error or repeat a call already made. We find that pre-boundary history predicts post-compaction harm only weakly. An internally prespecified contrast by prefix placement is a wide null, and the naive \"has-written\" label behind it turns out to measure trajectory phase. The best extension-protocol trigger reaches held-out AUROC 0.66 (0.64 on the replicate's own label) against a same-boundary replicate of 0.72; the best frozen, interpretable trigger avoids 21% of harmful (positive-burden) boundaries while keeping 84% of compaction opportunities, and exceeds the random-rule expectation on count but not on burden mass (a post hoc comparison). Whether the best trigger beats a token-budget rule at matched retention cannot be evaluated on the release. We state what corpora should ship to answer it.",
+          "extra": {
+            "authors": [
+              "Egor Pakhomov",
+              "Erik Nijkamp"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.08722v1"
+          },
+          "score": 7.0,
+          "summary": "研究智能体历史行为与上下文压缩损伤的关系，为长程Agent的上下文管理提供实证指导。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "hypit-ai/hypit",
+          "url": "https://github.com/hypit-ai/hypit",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-29T18:49:19Z",
+          "raw_text": "Clone any viral video with AI agents. Not just a script, the whole workflow: swap the face, the words, the B-roll, ship 100 variants in one command, and get your 100M views.",
+          "extra": {
+            "stars": 19802,
+            "language": "TypeScript",
+            "topics": [
+              "agentic-ai",
+              "ai",
+              "ai-agents",
+              "ai-video",
+              "compiler",
+              "dsl",
+              "ffmpeg",
+              "generative-ai",
+              "llm",
+              "markup-language",
+              "monorepo",
+              "plugin-system",
+              "programming-language",
+              "text-to-video",
+              "typescript",
+              "video",
+              "video-automation",
+              "video-clone",
+              "video-editing",
+              "video-generation"
+            ]
+          },
+          "score": 9.0,
+          "summary": "一键克隆爆款视频，换脸换词换素材，批量生成100个变体，直接冲击流量。"
+        },
+        {
+          "section": "repo",
+          "title": "genspark-ai/genoffice",
+          "url": "https://github.com/genspark-ai/genoffice",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-31T09:40:58Z",
+          "raw_text": "Free, open-source AI Office suite: Docs, Sheets, Slides, PDF, Markdown and HTML editors with a built-in AI agent, plus a `genoffice` CLI and agent skill so Claude Code, Codex and Cursor can create and edit real .docx/.xlsx/.pptx files locally. Bring your own key. macOS, Windows & Linux.",
+          "extra": {
+            "stars": 8802,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agent",
+              "claude-code",
+              "cli",
+              "codex",
+              "cursor",
+              "docx",
+              "excel",
+              "libreoffice-alternative",
+              "local-first",
+              "markdown-editor",
+              "microsoft-office-alternative",
+              "office-suite",
+              "pdf-editor",
+              "pdf-to-word",
+              "powerpoint",
+              "pptx",
+              "skills",
+              "spreadsheet",
+              "xlsx"
+            ]
+          },
+          "score": 8.0,
+          "summary": "开源AI办公套件，AI代理可直接创建编辑真实Office文件，支持本地部署。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 157983,
+            "language": "TypeScript",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "deepseek",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "python",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 8.0,
+          "summary": "企业级AI工作流平台，集成RAG与多模型，从原型到生产无需重构。"
+        },
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi, GLM, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 182424,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "gemma3",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llama3",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 7.0,
+          "summary": "本地运行Kimi、DeepSeek等国产大模型，一键部署，隐私可控。"
+        },
+        {
+          "section": "repo",
+          "title": "lexmount/moli",
+          "url": "https://github.com/lexmount/moli",
+          "source": "GitHub 新星",
+          "published_at": "2026-08-10T13:20:30Z",
+          "raw_text": "Best headless browser for AI agents. Lite, Fast, High-Compatibility. Built in Rust",
+          "extra": {
+            "stars": 11529,
+            "language": "Rust",
+            "topics": [
+              "ai-agents",
+              "ai-tools",
+              "browser",
+              "browser-automation",
+              "cloud-browser",
+              "kitesurf",
+              "playwright",
+              "puppeteer",
+              "rust",
+              "servo",
+              "web-crawler",
+              "web-crawling",
+              "web-scraper",
+              "web-scraping"
+            ]
+          },
+          "score": 7.0,
+          "summary": "Rust构建的轻量无头浏览器，专为AI代理优化，速度快兼容性高。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "AI computing startup Lambda to raise $4B ahead of planned IPO",
+          "url": "https://techcrunch.com/2026/10/06/ai-computing-startup-lambda-to-raise-4b-ahead-of-planned-ipo/",
+          "source": "TechCrunch",
+          "published_at": "2026-10-06T20:00:30Z",
+          "raw_text": "Nvidia-backed Lambda is raising up to $4 billion at a $14.5 billion pre-money valuation ahead of a planned 2027 IPO, led by Coatue and Blackstone.",
+          "extra": {},
+          "score": 10.0,
+          "summary": "英伟达支持的AI云创企Lambda以145亿美元估值融资40亿美元，为2027年IPO铺路，标志算力层资本热潮持续。"
+        },
+        {
+          "section": "news",
+          "title": "OpenAI drops another batch of mathematical breakthroughs",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1005004/openai-math-release-github",
+          "source": "The Verge",
+          "published_at": "2026-10-06T23:26:38Z",
+          "raw_text": "OpenAI has revealed solutions to a number of long-standing mathematics problems produced by an unreleased frontier model in a batch of 722 manuscripts, covering 372 result families that group related papers. It extends a run of breakthroughs that have both impressed and unsettled parts of the mathematical community while raising questions about research ethics and […]",
+          "extra": {},
+          "score": 9.0,
+          "summary": "OpenAI未发布前沿模型产出722篇数学突破论文，覆盖372个结果族，展示未公开模型的惊人推理能力。"
+        },
+        {
+          "section": "news",
+          "title": "Ex-Ramp engineers raise $20M for platform Melius after scrapping their first product",
+          "url": "https://techcrunch.com/2026/10/06/ex-ramp-engineers-raise-20m-for-platform-melius-after-scrapping-their-first-product/",
+          "source": "TechCrunch",
+          "published_at": "2026-10-06T22:34:03Z",
+          "raw_text": "Instead of helping marketers manage and optimize ad spend, the company is focusing on building the tools that generate the creative assets and campaigns.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "前Ramp工程师获2000万美元融资，转型AI创意资产生成平台，从广告优化转向生成式营销工具。"
+        },
+        {
+          "section": "news",
+          "title": "OpenAI will watermark ChatGPT outputs by default—but only in the EU",
+          "url": "https://arstechnica.com/ai/2026/10/openai-will-watermark-chatgpt-outputs-by-default-but-only-in-the-eu/",
+          "source": "Ars Technica",
+          "published_at": "2026-10-06T20:50:32Z",
+          "raw_text": "Like other solutions, it is not especially reliable, and it's easy to circumvent.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "OpenAI默认对欧盟用户ChatGPT输出添加水印，虽易绕过但标志监管压力下AI可追溯性迈出实质一步。"
+        },
+        {
+          "section": "news",
+          "title": "How AI decision models could change content moderation",
+          "url": "https://techcrunch.com/2026/10/06/how-ai-decision-models-could-change-content-moderation/",
+          "source": "TechCrunch",
+          "published_at": "2026-10-06T20:35:20Z",
+          "raw_text": "On Tuesday, Musubi announced a lightweight decision model made for real-time moderation called PolicyLM-1.7B, released with open weights.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "Musubi发布轻量级决策模型PolicyLM-1.7B，开源权重用于实时内容审核，降低AI治理部署门槛。"
+        },
+        {
+          "section": "news",
+          "title": "OpenAI agents tried to hack Wikipedia tools and flooded it with traffic",
+          "url": "https://arstechnica.com/security/2026/10/openai-agents-tried-to-hack-wikipedia-tools-and-flooded-it-with-traffic/",
+          "source": "Ars Technica",
+          "published_at": "2026-10-06T12:21:53Z",
+          "raw_text": "The reports of OpenAI agents harming third-party sites keep coming.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "OpenAI智能体尝试攻击维基百科工具并引发流量洪峰，暴露自主AI系统对第三方服务的实际破坏风险。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Gemini 4 Argon: our next era of frontier intelligence",
+          "url": "https://deepmind.google/blog/gemini-4-argon-our-next-era-of-frontier-intelligence/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-30T20:01:45Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 10.0,
+          "summary": "谷歌发布新一代前沿模型Gemini 4 Argon，标志着其AI能力进入新阶段。"
+        },
+        {
+          "section": "product",
+          "title": "EmbeddingGemma 2: an open, lightweight multimodal embedding model",
+          "url": "https://deepmind.google/blog/embeddinggemma-2-an-open-lightweight-multimodal-embedding-model/",
+          "source": "Google DeepMind",
+          "published_at": "2026-10-06T19:57:04Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "谷歌开源轻量级多模态嵌入模型EmbeddingGemma 2，降低开发者使用门槛。"
+        },
+        {
+          "section": "product",
+          "title": "Introducing Quine: An AI research system designed for the complexity of biology",
+          "url": "https://www.microsoft.com/en-us/research/blog/introducing-quine-an-ai-research-system-designed-for-the-complexity-of-biology/",
+          "source": "Microsoft Research",
+          "published_at": "2026-09-29T14:00:02Z",
+          "raw_text": "Biology doesn't operate in silos, and neither should the AI representation of it. Quine is an early-stage research effort to create a multimodal world model of biology. By connecting insights across biological scales and modalities, Quine helps scientists computationally search a space far larger than intuition allows and prioritize hypotheses before they reach the lab. Experimental results provide important feedback, helping researchers sharpen future research directions. The post Introducing Quine: An AI research system designed for the complexity of biology appeared first on Microsoft Research .",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Quine是早期研究项目，旨在构建生物学多模态世界模型，突破传统AI局限。"
+        }
+      ]
+    }
+  ]
+}
