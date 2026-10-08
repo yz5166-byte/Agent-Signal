@@ -1,0 +1,447 @@
+{
+  "date": "2026-10-08",
+  "tip": {
+    "title": "A Society of Researchers: Designing Institutions for Populations of Autonomous Research Agents",
+    "body": "在构建多Agent协作系统时，若缺乏明确的组织设计，Agent间会陷入资源争抢与信息混乱，导致任务失败。\n\n做法：采用「角色-协议-仲裁」三层制度框架。先为每个Agent分配唯一角色（如研究员/验证者），再定义通信协议（如JSON格式的请求-响应），最后设置仲裁Agent处理冲突。\n\n```python\n# 角色注册与仲裁示例\nagents = {\"researcher\": lambda q: search(q), \"validator\": lambda a: verify(a)}\n\ndef arbitrator(task):\n    result = agents[\"researcher\"](task)\n    if agents[\"validator\"](result)[\"confidence\"] < 0.8:\n        return agents[\"researcher\"](task + \" alternative\")  # 重试\n    return result\n```\n\n此模式无需裸执行代码，通过函数调用隔离风险。",
+    "ref_title": "A Society of Researchers: Designing Institutions for Populations of Autonomous Research Agents",
+    "ref_url": "https://arxiv.org/abs/2610.10468v1"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "Decoupling Exploration from Optimization in RLVR",
+          "url": "https://arxiv.org/abs/2610.10536v1",
+          "source": "arXiv",
+          "published_at": "2026-10-07T17:59:26Z",
+          "raw_text": "Modern language models undergo reinforcement learning with verifiable rewards (RLVR) on top of already-trained checkpoints. A key promise of RLVR is the discovery of new reasoning strategies. In principle, a model can sample novel ideas absent from its prior training data. In practice, however, augmenting RLVR with strong novelty incentives has seen limited success and can degrade model quality. Because verifiable rewards supervise only a narrow slice of the model's knowledge and behavior, such degradations are difficult to recover from. Instead, we decouple exploration from optimization in a framework we call Exploration-Distillation (ExpDis). We train one or more explorer policies with a novelty bonus in the reward, filter their trajectories for correctness and quality, and distill them into a separate student policy. The student policy is then trained without a novelty bonus. We repeat the above procedure for several rounds, alternating between exploration and optimization. This decoupling allows us to aggressively scale exploration without degrading the student policy. Across seven mathematical reasoning benchmarks and two model families, ExpDis outperforms DAPO at the same wall-clock budget. Moreover, we observe improved pass@$k$ scaling, indicating that ExpDis produces models that generate more diverse correct solutions.",
+          "extra": {
+            "authors": [
+              "Saif Punjwani",
+              "Micah Goldblum"
+            ],
+            "categories": [
+              "cs.LG",
+              "cs.AI",
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.10536v1"
+          },
+          "score": 9.0,
+          "summary": "发现RLVR强化学习存在探索瓶颈，模型只会重排已知策略而非真正创新，对LLM推理训练有警示意义。"
+        },
+        {
+          "section": "paper",
+          "title": "RECAST: Learning to Compute the Right Context through Adaptive Evidence Routing",
+          "url": "https://arxiv.org/abs/2610.10507v1",
+          "source": "arXiv",
+          "published_at": "2026-10-07T17:51:08Z",
+          "raw_text": "Large language models are increasingly applied to tasks grounded in long, heterogeneous information sources. Conventional Retrieval-Augmented Generation (RAG) relies on fixed similarity-based retrieval, while agentic variants adapt queries and tool use but remain largely retrieval-centric. However, in many tasks, the evidence required for a solution is not explicitly present in any single source item. Instead, it must be derived through filtering, aggregation, or computation across multiple source items. In this work, we introduce RECAST (Routing Evidence through Computation, Access, and Synthesized Tools), a learned framework that formulates evidence construction as a sequential decision process over heterogeneous retrieval and computation operations, allowing evidence to be actively derived rather than merely retrieved. A lightweight RouterLM iteratively selects and formulates primitive operations or specifies customized operations for a frozen CompilerLM to translate into executable code. Once it judges the evidence sufficient, RouterLM passes the accepted evidence to a frozen AnswerLM to produce the final solution. We train RouterLM with supervised fine-tuning (SFT) followed by group relative policy optimization (GRPO). Across six heterogeneous benchmark families, RECAST achieves a mean success rate of 75.6%, outperforming the strongest large-model baseline by 15.9%. Moreover, training enables the Qwen3.5-9B RouterLM to outperform a training-free Gemini 3.5 Flash RouterLM by 5.0%. On three held-out benchmarks, RECAST improves over the strongest baseline by 15.0% on average, demonstrating strong zero-shot generalization across tasks and heterogeneous source representations.",
+          "extra": {
+            "authors": [
+              "Yilun Hao",
+              "Krishna Sayana",
+              "Isabella Ye",
+              "James S Ren",
+              "Sukhdeep Sodhi",
+              "Craig Boutilier",
+              "Chuchu Fan"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.10507v1"
+          },
+          "score": 9.0,
+          "summary": "提出自适应证据路由替代固定检索，让LLM在长文本任务中动态选择上下文，突破传统RAG天花板。"
+        },
+        {
+          "section": "paper",
+          "title": "Before They Can Solve: Predicting Post-Training Coding-Agent Performance from Base Models",
+          "url": "https://arxiv.org/abs/2610.10478v1",
+          "source": "arXiv",
+          "published_at": "2026-10-07T17:37:19Z",
+          "raw_text": "How can we predict which base checkpoint is worth an expensive round of agentic post-training? End-to-end pass@$K$ tests whether successful behavior already appears in a base model's distribution, but it is a poor fit for agentic coding: many base checkpoints cannot reliably produce the well-formed tool invocation required to complete a task end-to-end. Single-shot or short-horizon tasks avoid these tool-calling failures by collapsing a multi-step interaction into a fixed prompt and a single patch, but they sidestep the core capability we care about: maintaining coherent state over many tool-using steps as the repository evolves. To bridge this gap, we treat successful post-trained agent trajectories as a lookahead signal of base-model potential. Replaying each trajectory and rerunning tests after every code-changing step identifies the decisive step: the first step whose cumulative patch flips the repository from failing to passing, certifying that the recorded action solves the task given the prior context. Motivated by a coverage principle for agentic traces, we build three screens at this step that do not require a base checkpoint to drive the harness from a cold start: (i) Decisive-Action BPB (bits per byte) measures the probability mass on the certified action, (ii) Patch MCQ tests the checkpoint's choice between that action and alternatives rejected by the same verifier, and (iii) prefix-conditioned pass@$K$ evaluates support for functionally-correct generations and credits any continuation that the tests accept. Across ten pairs of public base and post-trained models, all three screens rank the cohort in close agreement with post-trained SWE-bench Verified pass@$1$. As our methods need only a benchmark's successful trajectories and its verifier, they can be applied to turn future agentic coding benchmarks into base-model evaluations.",
+          "extra": {
+            "authors": [
+              "Tan Yu",
+              "Alexander Bukharin",
+              "Khushi Bhardwaj",
+              "Jennifer Williams",
+              "Zirui Liu",
+              "Jonathan Lingjie Li",
+              "Soumye Singhal",
+              "Joseph Jennings",
+              "Sanjeev Satheesh",
+              "Yash Jain",
+              "Ashish Vaswani",
+              "Venkat Krishna Srinivasan",
+              "Matthew Papakipos",
+              "Hyunwoo Kim",
+              "Jian Zhang",
+              "Oleksii Kuchaiev",
+              "Markus Kliegl",
+              "Mostofa Patwary",
+              "Mohammad Shoeybi",
+              "Bryan Catanzaro",
+              "Jonathan Cohen",
+              "Jiantao Jiao"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.SE"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.10478v1"
+          },
+          "score": 8.0,
+          "summary": "提出无需完整后训练即可预测基座模型编码Agent性能的方法，大幅降低Agent开发试错成本。"
+        },
+        {
+          "section": "paper",
+          "title": "A Society of Researchers: Designing Institutions for Populations of Autonomous Research Agents",
+          "url": "https://arxiv.org/abs/2610.10468v1",
+          "source": "arXiv",
+          "published_at": "2026-10-07T17:30:45Z",
+          "raw_text": "Deployments of research agents are moving to populations of thousands that share one pool of compute, while most current systems organize one project at a time or leave the population unorganized. We argue that such a population will acquire an organization whether or not its designers provide one, so designers should provide it explicitly, and that the multi-agent systems community holds the tools to do so. We propose a society of agents, a population of persistent agents under explicit institutions, and develop it for science as a society of researchers built on six principles. Principal investigators compete for compute through requests for proposals, independent review, and grants; a human governor, the mayor, allocates resources and assigns no tasks. In a running society of ten thousand researchers, asked only to improve the pretraining of language models, one lab reported a way to reach the same quality with about 30% less compute, a result the labs that tested it do not yet agree on. We close with six open problems for the agents community.",
+          "extra": {
+            "authors": [
+              "Ali Asaria",
+              "Deep Gandhi",
+              "Tony Salomone"
+            ],
+            "categories": [
+              "cs.MA",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.10468v1"
+          },
+          "score": 8.0,
+          "summary": "研究千级自主研究Agent群体的组织设计，指出无设计即默认混乱，为多Agent协作提供制度框架。"
+        },
+        {
+          "section": "paper",
+          "title": "SciExam for ENSO: Can AI Agents Build Climate Models?",
+          "url": "https://arxiv.org/abs/2610.10513v1",
+          "source": "arXiv",
+          "published_at": "2026-10-07T17:52:52Z",
+          "raw_text": "Language-model agents are increasingly asked to carry out open-ended scientific research, yet their results are usually graded against a known answer, a rubric, or a language-model reviewer, none of which can tell whether a new scientific model is valid. The AI Science Exam for El Nino-Southern Oscillation (SciExam for ENSO) is a benchmark in which agents build low-order stochastic models of ENSO, the dominant mode of interannual climate variability, from real observations. Within a six-hour budget, agents process the observations, write their own diagnostics, which are then frozen, and develop a model using only these diagnostics as feedback. Hidden graders then test whether the model reproduces ENSO's statistics, recovers unobserved variables, and forecasts held-out years, and score a published model in the same way. Across twelve agent systems, six produce models that score higher than the published model, mainly through better reconstruction and forecasting. The simplified forms of the stronger models are each compatible with one of the two competing explanations of ENSO's warm-cold asymmetry, an open debate that the task never mentions. Controlled runs of the top system under varied information suggest that its scores do not come from recalling the dated observational record and that the information it receives shapes how it builds its model. SciExam for ENSO can thus evaluate agent research where no answer is known, and the results suggest that agents can already build competitive models whose structures bear on questions that scientists still debate.",
+          "extra": {
+            "authors": [
+              "Yinling Zhang",
+              "Langchen Liu",
+              "Dongbin Xiu",
+              "Xueyan Zou",
+              "Xu Kuang",
+              "Mengdi Wang",
+              "Shilong Liu"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.LG",
+              "physics.ao-ph"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.10513v1"
+          },
+          "score": 7.0,
+          "summary": "用厄尔尼诺建模作为AI科学考试，首次严格检验Agent构建气候模型的能力，超越现有评估范式。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "hypit-ai/hypit",
+          "url": "https://github.com/hypit-ai/hypit",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-29T18:49:19Z",
+          "raw_text": "Clone any viral video with AI agents. Not just a script, the whole workflow: swap the face, the words, the B-roll, ship 100 variants in one command, and get your 100M views.",
+          "extra": {
+            "stars": 20155,
+            "language": "TypeScript",
+            "topics": [
+              "agentic-ai",
+              "ai",
+              "ai-agents",
+              "ai-video",
+              "compiler",
+              "dsl",
+              "ffmpeg",
+              "generative-ai",
+              "llm",
+              "markup-language",
+              "monorepo",
+              "plugin-system",
+              "programming-language",
+              "text-to-video",
+              "typescript",
+              "video",
+              "video-automation",
+              "video-clone",
+              "video-editing",
+              "video-generation"
+            ]
+          },
+          "score": 9.0,
+          "summary": "用AI一键克隆爆款视频，支持换脸、改词、换素材，批量生产变体。"
+        },
+        {
+          "section": "repo",
+          "title": "genspark-ai/genoffice",
+          "url": "https://github.com/genspark-ai/genoffice",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-31T09:40:58Z",
+          "raw_text": "Free, open-source AI Office suite: Docs, Sheets, Slides, PDF, Markdown and HTML editors with a built-in AI agent, plus a `genoffice` CLI and agent skill so Claude Code, Codex and Cursor can create and edit real .docx/.xlsx/.pptx files locally. Bring your own key. macOS, Windows & Linux.",
+          "extra": {
+            "stars": 8895,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agent",
+              "claude-code",
+              "cli",
+              "codex",
+              "cursor",
+              "docx",
+              "excel",
+              "libreoffice-alternative",
+              "local-first",
+              "markdown-editor",
+              "microsoft-office-alternative",
+              "office-suite",
+              "pdf-editor",
+              "pdf-to-word",
+              "powerpoint",
+              "pptx",
+              "skills",
+              "spreadsheet",
+              "xlsx"
+            ]
+          },
+          "score": 8.0,
+          "summary": "开源AI办公套件，支持AI编辑文档/表格/幻灯片，可被编程Agent调用。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 158062,
+            "language": "TypeScript",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "deepseek",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "python",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 8.0,
+          "summary": "一站式构建Agent工作流与RAG管道，支持多种模型，可私有部署。"
+        },
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi, GLM, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 182530,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "gemma3",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llama3",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 7.0,
+          "summary": "本地运行Kimi/DeepSeek等国产大模型，开箱即用。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "Supercharge your AI agents with data from the web and beyond. Building the library for superintelligence. 🔥",
+          "extra": {
+            "stars": 189592,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 7.0,
+          "summary": "为AI Agent提供网页数据抓取能力，提升信息获取效率。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Nous Research confirms it hit $1.5B valuation, launches AI agents for business users",
+          "url": "https://techcrunch.com/2026/10/07/nous-research-confirms-it-hit-1-5b-valuation-launches-ai-agents-for-business-users/",
+          "source": "TechCrunch",
+          "published_at": "2026-10-07T20:48:45Z",
+          "raw_text": "The developer of Hermes Agent raised a $90 million Series B.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "Nous Research 以 15 亿美元估值完成 9000 万美元 B 轮融资，并推出面向企业的 AI Agent，标志开源社区商业化加速。"
+        },
+        {
+          "section": "news",
+          "title": "ChatGPT’s ‘Intelligent UI’ update fills its responses with pictures, charts, and buttons",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1007276/openai-chatgpt-intelligent-ui-gpt-6",
+          "source": "The Verge",
+          "published_at": "2026-10-07T19:10:42Z",
+          "raw_text": "OpenAI is launching a new Intelligent UI feature in ChatGPT that allows the chatbot to answer your questions with interactive visuals. The update, which is rolling out to all users alongside GPT-6, gives ChatGPT the ability to combine a text response with diagrams, charts, forms, tappable buttons, and more. In a blog post explaining the […]",
+          "extra": {},
+          "score": 9.0,
+          "summary": "ChatGPT 推出“智能 UI”更新，可生成含图表、按钮的交互式回答，伴随 GPT-6 发布，大幅提升用户体验。"
+        },
+        {
+          "section": "news",
+          "title": "Microsoft is giving Copilot more control over Windows and your files",
+          "url": "https://www.theverge.com/tech/1007113/microsoft-windows-copilot-ai-control-search-hybrid-intelligence",
+          "source": "The Verge",
+          "published_at": "2026-10-07T18:01:20Z",
+          "raw_text": "At today's Windows and Surface event, Microsoft showed off an upgrade to its Copilot AI system that will give it access to local files on your PC and the ability to take actions across the OS. It's part of an idea Microsoft is calling \"Hybrid Intelligence,\" where apps and tools rely on a mix of […]",
+          "extra": {},
+          "score": 8.0,
+          "summary": "微软升级 Copilot 以获取本地文件控制权和系统级操作能力，推动“混合智能”概念落地，影响 Windows 生态。"
+        },
+        {
+          "section": "news",
+          "title": "Microsoft releases new Nvidia-chip AI PCs with revamped Windows 11",
+          "url": "https://techcrunch.com/2026/10/07/microsoft-releases-new-nvidia-chip-ai-pcs-with-revamped-windows-11/",
+          "source": "TechCrunch",
+          "published_at": "2026-10-07T20:22:37Z",
+          "raw_text": "Microsoft revealed the specs and price for its Surface Laptop Ultra, AI PCs that run on Nvidia chips that are designed to run AI models and agents.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "微软发布搭载英伟达芯片的 Surface Laptop Ultra，专为运行 AI 模型和 Agent 设计，定价 2599 美元起。"
+        },
+        {
+          "section": "news",
+          "title": "Fraudster jailed for using 10K bots and AI songs to outstream Taylor Swift",
+          "url": "https://arstechnica.com/tech-policy/2026/10/outstreaming-taylor-swift-is-easy-with-10k-bots-and-ai-songs-fraudster-admits/",
+          "source": "Ars Technica",
+          "published_at": "2026-10-07T17:57:39Z",
+          "raw_text": "Man gets 18 months for AI scheme stealing $8M in music streaming royalties.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "诈骗者利用 1 万机器人及 AI 生成歌曲骗取 800 万美元流媒体版税，被判 18 个月，凸显 AI 欺诈监管挑战。"
+        },
+        {
+          "section": "news",
+          "title": "Margaret Hamilton has died",
+          "url": "https://news.mit.edu/2026/margaret-hamilton-computing-pioneer-dies-1007",
+          "source": "Hacker News",
+          "published_at": "2026-10-07T21:16:18Z",
+          "raw_text": "Article URL: https://news.mit.edu/2026/margaret-hamilton-computing-pioneer-dies-1007 Comments URL: https://news.ycombinator.com/item?id=49998895 Points: 1207 # Comments: 132",
+          "extra": {},
+          "score": 7.0,
+          "summary": "阿波罗登月软件先驱 Margaret Hamilton 逝世，其开创性工作为现代 AI 系统可靠性奠定基础。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "GPT-6 and Intelligent UI for everyone",
+          "url": "https://openai.com/index/gpt-6-for-everyone",
+          "source": "OpenAI",
+          "published_at": "2026-10-07T00:00:00Z",
+          "raw_text": "GPT‑6 is rolling out globally in ChatGPT with Intelligent UI, delivering faster responses with visuals and interactive experiences you can explore and use directly.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "GPT-6 全球上线，引入智能交互界面，响应更快且支持可视化操作。"
+        },
+        {
+          "section": "product",
+          "title": "Gemini 4 Argon: our next era of frontier intelligence",
+          "url": "https://deepmind.google/blog/gemini-4-argon-our-next-era-of-frontier-intelligence/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-30T20:01:45Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "Gemini 4 Argon 发布，代表谷歌前沿智能的新一代模型。"
+        },
+        {
+          "section": "product",
+          "title": "Agent Lightning v1.0: A 3,500-Line Lightweight Agentic RL Framework for Training Agents with Real Harnesses",
+          "url": "https://www.microsoft.com/en-us/research/blog/agent-lightning-v1-0-a-3500-line-lightweight-agentic-rl-framework-for-training-agents-with-real-harnesses/",
+          "source": "Microsoft Research",
+          "published_at": "2026-10-07T16:00:00Z",
+          "raw_text": "Training AI agents with reinforcement learning can be challenging because their tools, context, and decision-making are managed by complex frameworks. Agent Lightning connects existing agents to RL training, making it easier to improve them without rebuilding them. The post Agent Lightning v1.0: A 3,500-Line Lightweight Agentic RL Framework for Training Agents with Real Harnesses appeared first on Microsoft Research .",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Agent Lightning v1.0 开源，轻量框架让现有智能体接入强化学习训练。"
+        }
+      ]
+    }
+  ]
+}
