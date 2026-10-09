@@ -1,0 +1,421 @@
+{
+  "date": "2026-10-09",
+  "tip": {
+    "title": "安全执行 Agent 生成的代码",
+    "body": "**场景：** 当 Agent 需要执行 LLM 生成的代码（如数据分析、自动化脚本）时，直接 `exec/eval` 会带来严重安全风险。\n\n**做法：** 使用 `subprocess` 在隔离的子进程中运行代码，并限制资源与文件系统访问。\n\n```python\nimport subprocess\nimport tempfile\nimport os\n\n# 将生成的代码写入临时文件\nwith tempfile.NamedTemporaryFile(mode='w', suffix='.py', delete=False) as f:\n    f.write(user_generated_code)\n    tmp_path = f.name\n\ntry:\n    # 在子进程中运行，设置超时和沙箱参数\n    result = subprocess.run(\n        ['python3', '-I', tmp_path],  # -I 隔离模式\n        capture_output=True,\n        timeout=10,\n        env={}  # 清空环境变量\n    )\n    print(result.stdout.decode())\nfinally:\n    os.unlink(tmp_path)  # 清理临时文件\n```\n\n**注意：** 生产环境建议用 Docker 或 gVisor 等容器沙箱进一步隔离。\n\n*（基于条目[0]：Agent 安全事件复盘，强调主动防御）*",
+    "ref_title": "From Reactive Containment to Proactive Assurance: Lessons from OpenAI, Anthropic, and Google Agent Security Incidents",
+    "ref_url": "https://arxiv.org/abs/2610.12463v1"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "From Reactive Containment to Proactive Assurance: Lessons from OpenAI, Anthropic, and Google Agent Security Incidents",
+          "url": "https://arxiv.org/abs/2610.12463v1",
+          "source": "arXiv",
+          "published_at": "2026-10-08T17:59:49Z",
+          "raw_text": "In 2026, cybersecurity evaluations involving OpenAI, Anthropic, and Google agents reached real systems outside their authorized test scope. The paths were different. OpenAI agents exploited research infrastructure, coordinated across runs, and compromised parts of Hugging Face's production environment. Anthropic reported cases in which a misconfigured third-party environment exposed real systems to agents pursuing simulated cyber tasks. In a separately reported evaluation, Google's Gemini accessed three real organizations through an unintended internet route; Google stated that the model stopped in all three instances. Taken together, the cases show why an evaluation cannot rely on an assumed boundary. That boundary must be verified while the agent is operating. This comparative instrumental case study develops a Proactive Agent Security Assurance Cycle (PASAC) and a five-layer Boundary Assurance Stack. The framework combines risk-tiered task design, executable scope contracts, pre-run validation, least-capability access, independent egress enforcement, credential restrictions, cross-run monitoring, automatic stop conditions, and evidence-based reauthorization. A leading-indicator model, nine design propositions, and seven falsifiable hypotheses turn these lessons into a testable research program. Because the public Gemini record is limited to attributed statements and journalism, its detailed causal mechanism remains provisional. The central conclusion is straightforward: proactive agent security requires continuous assurance across the full execution system, not confidence in any single sandbox or safeguard.",
+          "extra": {
+            "authors": [
+              "Abbas Raftari"
+            ],
+            "categories": [
+              "cs.CR",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.12463v1"
+          },
+          "score": 9.0,
+          "summary": "2026年三大AI公司Agent安全事件复盘，揭示从被动防御转向主动保障的紧迫性。"
+        },
+        {
+          "section": "paper",
+          "title": "Mental-Models for Multi-Agent Systems",
+          "url": "https://arxiv.org/abs/2610.12453v1",
+          "source": "arXiv",
+          "published_at": "2026-10-08T17:59:01Z",
+          "raw_text": "Large foundation models have accelerated progress toward general-purpose agents that interact with humans and other agents through language and multimodal signals. However, robust multi-agent decision-making requires reasoning about what other agents know, intend, and are likely to do under partial observability. Current agentic systems often operate through prompt design, memory, or end-to-end behavioral shaping, but typically do not learn an explicit partner-state representation that can be reused as a decision variable across tasks. We introduce \\emph{mental-model-enabled agents}, a framework that equips an agent with a latent mental model of its counterpart, allowing it to infer hidden beliefs, intentions, and likely reactions from the observed history and use these inferences to guide action selection. Our method learns an amortized recursive Theory-of-Mind representation, with first- and second-order mental-state structure, jointly with a belief-conditioned reward model that evaluates candidate actions relative to the inferred partner state. A policy is then learned under this belief-aware signal, yielding an agent that can act independently at inference time while retaining the benefits of explicit partner modeling. We evaluate the same framework on both language-only and multimodal benchmarks. Across these settings, explicit mental-state modeling consistently improves interaction quality and Theory-of-Mind performance over base agentic systems, showing that structured partner modeling is a useful inductive bias for general multi-agent systems. Our code is publicly available at https://github.com/hananshafi/Mental-Models",
+          "extra": {
+            "authors": [
+              "Hanan Gani",
+              "Lulu Shao",
+              "Manmohan Chandraker"
+            ],
+            "categories": [
+              "cs.MA"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.12453v1"
+          },
+          "score": 8.0,
+          "summary": "提出多智能体系统的心智模型框架，解决部分可观测下的推理与协作难题。"
+        },
+        {
+          "section": "paper",
+          "title": "Caught in the Act: Probes Effectively Detect Sabotage and Catch Unverbalized Deception",
+          "url": "https://arxiv.org/abs/2610.12445v1",
+          "source": "arXiv",
+          "published_at": "2026-10-08T17:58:13Z",
+          "raw_text": "Recent incidents have highlighted the challenge of monitoring LLM agents and the danger of models deceiving people. We show that white-box deception detection via probes can be scaled up to frontier monitoring settings by collecting the largest deception dataset to date for training probes and introducing a novel probe architecture which can aggregate information across many layers and tokens. Our probes achieve 98.8% AUC in SHADE-Arena, surpassing an Opus 5.5 text-monitoring baseline, and show improved efficacy as the underlying model is scaled up. To push our probes to their limit, we test them on several cases where deception cannot be determined from the context alone. In these cases, which we refer to as introspective deception, the ground truth can only be determined through careful elicitation or thorough knowledge of a model's training data. In one such evaluation, we show that probes can distinguish transcripts containing a model's true hidden goal from other goals with an AUC of up to 99.7%. Our probes also readily detect deception on prominent open-weight models which lie about politically sensitive topics, and about their beliefs when put under pressure. We release our training dataset, dubbed FIBS, to help drive frontier deployment of effective probes, and encourage the community to expand upon it with further examples of deception and sabotage.",
+          "extra": {
+            "authors": [
+              "Oskar J. Hollinsworth",
+              "Alex F. Spies",
+              "Tigist Diriba",
+              "Adam Gleave",
+              "Chris Cundy"
+            ],
+            "categories": [
+              "cs.LG",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.12445v1"
+          },
+          "score": 8.0,
+          "summary": "用探针技术检测LLM Agent的欺骗行为，构建最大规模数据集实现前沿监控。"
+        },
+        {
+          "section": "paper",
+          "title": "Ecology of AI Agents: Collaboration Creates a Population Threshold for Takeoff",
+          "url": "https://arxiv.org/abs/2610.12436v1",
+          "source": "arXiv",
+          "published_at": "2026-10-08T17:57:32Z",
+          "raw_text": "AI agents can now conduct real-world cyberattacks, scale up capabilities with the number of agents, and collectively pursue misaligned goals to obtain rewards. Together, these factors raise the risk of a population explosion of misaligned agents: agents could compromise computers and secretly deploy additional agents, creating a self-reinforcing cycle where larger populations develop greater collective cyber capability and expand further. This raises a fundamental question: What determines whether a population of misaligned agents remains contained or takes off into this self-reinforcing cycle? This population-level problem is ecological safety: unlike individual-agent or multi-agent safety with a fixed population, it concerns the dynamics of the population itself. Here, we develop an ecological theory of AI-agent populations based on a population growth equation in which fitness (growth rate) depends on cybersecurity capability. We show that, without collaboration, the population takes off only when individual-agent capability exceeds a critical threshold. With collaboration, however, collective cybersecurity capability increases with population size. This creates a critical population threshold: below it, the population declines; above it, the population takes off, even though individual-agent capability has not changed. In ecology, this phenomenon is known as the strong Allee effect. Because red teaming a small group of agents cannot guarantee ecological safety in larger populations, our theory calls for ecological red teaming and population pacing: gradually deploying larger agent populations in controlled environments, while measuring how cyber capability scales with population size, and estimating the critical population size for takeoff. Capability gains may lower this threshold, requiring re-estimation for each new model generation.",
+          "extra": {
+            "authors": [
+              "Erin Crawley",
+              "Hidenori Tanaka"
+            ],
+            "categories": [
+              "cs.AI",
+              "cond-mat.dis-nn",
+              "cs.MA",
+              "physics.bio-ph"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.12436v1"
+          },
+          "score": 7.0,
+          "summary": "揭示AI Agent协作导致恶意群体爆发阈值降低，提出生态学视角的治理策略。"
+        },
+        {
+          "section": "paper",
+          "title": "ViSkill: Reinforcing VLM Agents with Evolving Visual-Native Skills",
+          "url": "https://arxiv.org/abs/2610.12403v1",
+          "source": "arXiv",
+          "published_at": "2026-10-08T17:44:19Z",
+          "raw_text": "Skill-augmented agents improve sample efficiency by distilling successful trajectories into reusable strategies. Yet most existing approaches remain text-centric, linearizing spatial layouts and action-state correspondences into language that loses critical geometric structure. Recent efforts have begun incorporating visual evidence, but construct and update skills separately from policy optimization, leaving their mutual improvement underexplored. We propose ViSkill, a visual-native skill learning framework that encodes successful interactions as composite visual skill cards directly accessible to VLM agents. Retrieved skills guide both inference and reward shaping, while successful trajectories are distilled back into the library, forming a closed feedback loop in which skill accumulation and policy improvement reinforce each other. An optional cold-start mechanism further accelerates early-stage learning. Evaluated on Sokoban, FrozenLake, and PrimitiveSkill, ViSkill achieves an overall success rate of 0.89, rising to 0.91 with cold-start initialization, outperforming all evaluated proprietary and open-source baselines while converging faster than standard PPO. Our code is available at https://github.com/ZJU-REAL/ViSkill.",
+          "extra": {
+            "authors": [
+              "Hongxing Li",
+              "Dingming Li",
+              "Yixin Li",
+              "Yong Du",
+              "Wenqi Zhang",
+              "Weiming Lu",
+              "Jun Xiao",
+              "Yueting Zhuang",
+              "Yongliang Shen"
+            ],
+            "categories": [
+              "cs.CV",
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.12403v1"
+          },
+          "score": 7.0,
+          "summary": "为VLM Agent构建视觉原生技能库，突破文本线性化瓶颈提升空间推理效率。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi, GLM, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 182439,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "gemma3",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llama3",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 9.0,
+          "summary": "本地运行最新国产与开源大模型，一键部署，开发者实测首选。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "Supercharge your AI agents with data from the web and beyond. Building the library for superintelligence. 🔥",
+          "extra": {
+            "stars": 189692,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 8.0,
+          "summary": "为AI代理提供网页数据抓取库，直接提升信息获取能力。"
+        },
+        {
+          "section": "repo",
+          "title": "lexmount/moli",
+          "url": "https://github.com/lexmount/moli",
+          "source": "GitHub 新星",
+          "published_at": "2026-08-10T13:20:30Z",
+          "raw_text": "Best headless browser for AI agents. Lite, Fast, High-Compatibility. Built in Rust",
+          "extra": {
+            "stars": 14198,
+            "language": "Rust",
+            "topics": [
+              "ai-agents",
+              "ai-tools",
+              "browser",
+              "browser-automation",
+              "cloud-browser",
+              "kitesurf",
+              "playwright",
+              "puppeteer",
+              "rust",
+              "servo",
+              "web-crawler",
+              "web-crawling",
+              "web-scraper",
+              "web-scraping"
+            ]
+          },
+          "score": 8.0,
+          "summary": "Rust编写的高性能无头浏览器，专为AI代理优化速度与兼容性。"
+        },
+        {
+          "section": "repo",
+          "title": "hypit-ai/hypit",
+          "url": "https://github.com/hypit-ai/hypit",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-29T18:49:19Z",
+          "raw_text": "Clone any viral video with AI agents. Not just a script, the whole workflow: swap the face, the words, the B-roll, ship 100 variants in one command, and get your 100M views.",
+          "extra": {
+            "stars": 20468,
+            "language": "TypeScript",
+            "topics": [
+              "agentic-ai",
+              "ai",
+              "ai-agents",
+              "ai-video",
+              "compiler",
+              "dsl",
+              "ffmpeg",
+              "generative-ai",
+              "llm",
+              "markup-language",
+              "monorepo",
+              "plugin-system",
+              "programming-language",
+              "text-to-video",
+              "typescript",
+              "video",
+              "video-automation",
+              "video-clone",
+              "video-editing",
+              "video-generation"
+            ]
+          },
+          "score": 7.0,
+          "summary": "一键克隆爆款视频全流程，含换脸改词，批量生产内容。"
+        },
+        {
+          "section": "repo",
+          "title": "genspark-ai/genoffice",
+          "url": "https://github.com/genspark-ai/genoffice",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-31T09:40:58Z",
+          "raw_text": "Free, open-source AI Office suite: Docs, Sheets, Slides, PDF, Markdown and HTML editors with a built-in AI agent, plus a `genoffice` CLI and agent skill so Claude Code, Codex and Cursor can create and edit real .docx/.xlsx/.pptx files locally. Bring your own key. macOS, Windows & Linux.",
+          "extra": {
+            "stars": 9032,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agent",
+              "claude-code",
+              "cli",
+              "codex",
+              "cursor",
+              "docx",
+              "excel",
+              "libreoffice-alternative",
+              "local-first",
+              "markdown-editor",
+              "microsoft-office-alternative",
+              "office-suite",
+              "pdf-editor",
+              "pdf-to-word",
+              "powerpoint",
+              "pptx",
+              "skills",
+              "spreadsheet",
+              "xlsx"
+            ]
+          },
+          "score": 7.0,
+          "summary": "开源AI办公套件，支持本地编辑Office文件，可被AI代理调用。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Fired OpenAI safety researchers dispute misconduct claims, warn of chilling effect",
+          "url": "https://techcrunch.com/2026/10/08/fired-openai-safety-researchers-dispute-misconduct-claims-warn-of-chilling-effect/",
+          "source": "TechCrunch",
+          "published_at": "2026-10-08T20:04:26Z",
+          "raw_text": "Three fired OpenAI safety researchers dispute allegations of mishandling sensitive information, warning in an open letter that their dismissals are creating a chilling effect on the company’s AI safety culture.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "三名被解雇的OpenAI安全研究员公开反驳不当行为指控，警告此举寒蝉效应危及公司安全文化。"
+        },
+        {
+          "section": "news",
+          "title": "USA Today becomes the latest publisher to sue OpenAI",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1008198/usa-today-openai-copyright-lawsuit",
+          "source": "The Verge",
+          "published_at": "2026-10-08T17:58:33Z",
+          "raw_text": "USA Today Co., along with the several local newspapers it owns, is suing OpenAI over claims that the company copied \"hundreds of thousands\" of articles to train its AI models, as reported earlier by Reuters. In a filing on Thursday, the publisher asks for damages of more than $250 million, alleging OpenAI's unauthorized use of […]",
+          "extra": {},
+          "score": 9.0,
+          "summary": "《今日美国》起诉OpenAI未经授权使用其文章训练模型，索赔超2.5亿美元，版权争议升级。"
+        },
+        {
+          "section": "news",
+          "title": "Anthropic launches free AI security scans for open-source projects",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1008521/anthropic-open-source-oss-scanner",
+          "source": "The Verge",
+          "published_at": "2026-10-08T21:53:51Z",
+          "raw_text": "Anthropic's offering to help open-source projects track down security vulnerabilities with a new service called OSS Scanner. It says open-source projects that opt-in will get \"thorough, periodic security scans by our strongest models at no cost.\" That could mean open-source projects get alerted about possible security issues sooner, but the trade-off is that OSS Scanner's […]",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Anthropic推出免费AI安全扫描服务，为开源项目提供定期漏洞检测，降低供应链风险。"
+        },
+        {
+          "section": "news",
+          "title": "AI-ready biological data: $1.8B global commitment",
+          "url": "https://biohub.org/news/virtual-biology-initiative-expansion/",
+          "source": "Hacker News",
+          "published_at": "2026-10-08T20:46:25Z",
+          "raw_text": "Article URL: https://biohub.org/news/virtual-biology-initiative-expansion/ Comments URL: https://news.ycombinator.com/item?id=50011999 Points: 105 # Comments: 14",
+          "extra": {},
+          "score": 8.0,
+          "summary": "全球承诺投入18亿美元构建AI就绪生物数据，推动虚拟生物学与药物研发基础设施。"
+        },
+        {
+          "section": "news",
+          "title": "Nvidia's big bet on physical AI aims for safer robotaxis, humanoid robots",
+          "url": "https://arstechnica.com/ai/2026/10/nvidias-big-bet-on-physical-ai-aims-for-safer-robotaxis-humanoid-robots/",
+          "source": "Ars Technica",
+          "published_at": "2026-10-08T11:15:33Z",
+          "raw_text": "Full-stack safety solution for physical AI is being used by robotics companies.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "英伟达押注物理AI安全方案，为机器人出租车和人形机器人提供全栈安全系统。"
+        },
+        {
+          "section": "news",
+          "title": "California is trying to shut down robot vs. human cage matches",
+          "url": "https://www.theverge.com/tech/1008401/california-shut-down-rek-fighting-robot-company-human",
+          "source": "The Verge",
+          "published_at": "2026-10-08T20:06:56Z",
+          "raw_text": "The California State Athletic Commission sent a cease-and-desist letter to a startup that hosted a match between a human and a robot last month, as reported by The New York Times. The fight, which took place on September 18th, pitted a human, Frankie LaPenna, against a humanoid robot owned by a tech startup, Rek, that […]",
+          "extra": {},
+          "score": 7.0,
+          "summary": "加州叫停人机笼斗赛事，监管机构向主办方发函，引发AI伦理与安全边界讨论。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Gemini 4 Argon: our next era of frontier intelligence",
+          "url": "https://deepmind.google/blog/gemini-4-argon-our-next-era-of-frontier-intelligence/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-30T20:01:45Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "Google发布Gemini 4 Argon，新一代前沿智能模型，性能与架构均有重大升级。"
+        },
+        {
+          "section": "product",
+          "title": "EmbeddingGemma 2: an open, lightweight multimodal embedding model",
+          "url": "https://deepmind.google/blog/embeddinggemma-2-an-open-lightweight-multimodal-embedding-model/",
+          "source": "Google DeepMind",
+          "published_at": "2026-10-06T19:57:04Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Google开源轻量级多模态嵌入模型EmbeddingGemma 2，降低开发者部署门槛。"
+        },
+        {
+          "section": "product",
+          "title": "Introducing SynthID Bio",
+          "url": "https://deepmind.google/blog/introducing-synthid-bio/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-30T15:03:07Z",
+          "raw_text": "Proof of concept for watermarking AI-generated proteins while preserving biological function.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "DeepMind推出SynthID Bio，为AI生成的蛋白质添加水印且不破坏生物功能。"
+        }
+      ]
+    }
+  ]
+}
