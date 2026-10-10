@@ -1,0 +1,425 @@
+{
+  "date": "2026-10-10",
+  "tip": {
+    "title": "用 firecrawl 一行代码抓取网页，告别正则和 XPath",
+    "body": "**场景**：Agent 需要从网页抓取实时数据（如股价、新闻），但目标网站反爬或结构频繁变动。\n\n**做法**：用 `firecrawl` 的 API 直接获取结构化内容，避免手写解析逻辑。\n\n```bash\n# 安装 firecrawl Python SDK\npip install firecrawl-py\n\n# 抓取网页并返回 Markdown\nfrom firecrawl import FirecrawlApp\napp = FirecrawlApp(api_key='your_key')\nresult = app.scrape_url('https://example.com', params={'formats': ['markdown']})\nprint(result['markdown'])\n```\n\n**注意**：API 密钥需从 firecrawl.dev 获取，免费额度足够日常测试。",
+    "ref_title": "firecrawl/firecrawl",
+    "ref_url": "https://github.com/firecrawl/firecrawl"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "Caught in the Act: Probes Effectively Detect Sabotage and Catch Unverbalized Deception",
+          "url": "https://arxiv.org/abs/2610.12445v1",
+          "source": "arXiv",
+          "published_at": "2026-10-08T17:58:13Z",
+          "raw_text": "Recent incidents have highlighted the challenge of monitoring LLM agents and the danger of models deceiving people. We show that white-box deception detection via probes can be scaled up to frontier monitoring settings by collecting the largest deception dataset to date for training probes and introducing a novel probe architecture which can aggregate information across many layers and tokens. Our probes achieve 98.8% AUC in SHADE-Arena, surpassing an Opus 5.5 text-monitoring baseline, and show improved efficacy as the underlying model is scaled up. To push our probes to their limit, we test them on several cases where deception cannot be determined from the context alone. In these cases, which we refer to as introspective deception, the ground truth can only be determined through careful elicitation or thorough knowledge of a model's training data. In one such evaluation, we show that probes can distinguish transcripts containing a model's true hidden goal from other goals with an AUC of up to 99.7%. Our probes also readily detect deception on prominent open-weight models which lie about politically sensitive topics, and about their beliefs when put under pressure. We release our training dataset, dubbed FIBS, to help drive frontier deployment of effective probes, and encourage the community to expand upon it with further examples of deception and sabotage.",
+          "extra": {
+            "authors": [
+              "Oskar J. Hollinsworth",
+              "Alex F. Spies",
+              "Tigist Diriba",
+              "Adam Gleave",
+              "Chris Cundy"
+            ],
+            "categories": [
+              "cs.LG",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.12445v1"
+          },
+          "score": 9.0,
+          "summary": "用探针技术检测LLM代理的欺骗与破坏行为，首次在前沿模型上规模化验证，安全价值极高。"
+        },
+        {
+          "section": "paper",
+          "title": "From Reactive Containment to Proactive Assurance: Lessons from OpenAI, Anthropic, and Google Agent Security Incidents",
+          "url": "https://arxiv.org/abs/2610.12463v1",
+          "source": "arXiv",
+          "published_at": "2026-10-08T17:59:49Z",
+          "raw_text": "In 2026, cybersecurity evaluations involving OpenAI, Anthropic, and Google agents reached real systems outside their authorized test scope. The paths were different. OpenAI agents exploited research infrastructure, coordinated across runs, and compromised parts of Hugging Face's production environment. Anthropic reported cases in which a misconfigured third-party environment exposed real systems to agents pursuing simulated cyber tasks. In a separately reported evaluation, Google's Gemini accessed three real organizations through an unintended internet route; Google stated that the model stopped in all three instances. Taken together, the cases show why an evaluation cannot rely on an assumed boundary. That boundary must be verified while the agent is operating. This comparative instrumental case study develops a Proactive Agent Security Assurance Cycle (PASAC) and a five-layer Boundary Assurance Stack. The framework combines risk-tiered task design, executable scope contracts, pre-run validation, least-capability access, independent egress enforcement, credential restrictions, cross-run monitoring, automatic stop conditions, and evidence-based reauthorization. A leading-indicator model, nine design propositions, and seven falsifiable hypotheses turn these lessons into a testable research program. Because the public Gemini record is limited to attributed statements and journalism, its detailed causal mechanism remains provisional. The central conclusion is straightforward: proactive agent security requires continuous assurance across the full execution system, not confidence in any single sandbox or safeguard.",
+          "extra": {
+            "authors": [
+              "Abbas Raftari"
+            ],
+            "categories": [
+              "cs.CR",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.12463v1"
+          },
+          "score": 9.0,
+          "summary": "分析OpenAI、Anthropic、Google代理安全事件，揭示从被动防御转向主动保障的紧迫性。"
+        },
+        {
+          "section": "paper",
+          "title": "Mental-Models for Multi-Agent Systems",
+          "url": "https://arxiv.org/abs/2610.12453v1",
+          "source": "arXiv",
+          "published_at": "2026-10-08T17:59:01Z",
+          "raw_text": "Large foundation models have accelerated progress toward general-purpose agents that interact with humans and other agents through language and multimodal signals. However, robust multi-agent decision-making requires reasoning about what other agents know, intend, and are likely to do under partial observability. Current agentic systems often operate through prompt design, memory, or end-to-end behavioral shaping, but typically do not learn an explicit partner-state representation that can be reused as a decision variable across tasks. We introduce \\emph{mental-model-enabled agents}, a framework that equips an agent with a latent mental model of its counterpart, allowing it to infer hidden beliefs, intentions, and likely reactions from the observed history and use these inferences to guide action selection. Our method learns an amortized recursive Theory-of-Mind representation, with first- and second-order mental-state structure, jointly with a belief-conditioned reward model that evaluates candidate actions relative to the inferred partner state. A policy is then learned under this belief-aware signal, yielding an agent that can act independently at inference time while retaining the benefits of explicit partner modeling. We evaluate the same framework on both language-only and multimodal benchmarks. Across these settings, explicit mental-state modeling consistently improves interaction quality and Theory-of-Mind performance over base agentic systems, showing that structured partner modeling is a useful inductive bias for general multi-agent systems. Our code is publicly available at https://github.com/hananshafi/Mental-Models",
+          "extra": {
+            "authors": [
+              "Hanan Gani",
+              "Lulu Shao",
+              "Manmohan Chandraker"
+            ],
+            "categories": [
+              "cs.MA"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.12453v1"
+          },
+          "score": 8.0,
+          "summary": "提出多智能体系统的心智模型框架，解决部分可观测环境下的意图推理与协作决策。"
+        },
+        {
+          "section": "paper",
+          "title": "Ecology of AI Agents: Collaboration Creates a Population Threshold for Takeoff",
+          "url": "https://arxiv.org/abs/2610.12436v1",
+          "source": "arXiv",
+          "published_at": "2026-10-08T17:57:32Z",
+          "raw_text": "AI agents can now conduct real-world cyberattacks, scale up capabilities with the number of agents, and collectively pursue misaligned goals to obtain rewards. Together, these factors raise the risk of a population explosion of misaligned agents: agents could compromise computers and secretly deploy additional agents, creating a self-reinforcing cycle where larger populations develop greater collective cyber capability and expand further. This raises a fundamental question: What determines whether a population of misaligned agents remains contained or takes off into this self-reinforcing cycle? This population-level problem is ecological safety: unlike individual-agent or multi-agent safety with a fixed population, it concerns the dynamics of the population itself. Here, we develop an ecological theory of AI-agent populations based on a population growth equation in which fitness (growth rate) depends on cybersecurity capability. We show that, without collaboration, the population takes off only when individual-agent capability exceeds a critical threshold. With collaboration, however, collective cybersecurity capability increases with population size. This creates a critical population threshold: below it, the population declines; above it, the population takes off, even though individual-agent capability has not changed. In ecology, this phenomenon is known as the strong Allee effect. Because red teaming a small group of agents cannot guarantee ecological safety in larger populations, our theory calls for ecological red teaming and population pacing: gradually deploying larger agent populations in controlled environments, while measuring how cyber capability scales with population size, and estimating the critical population size for takeoff. Capability gains may lower this threshold, requiring re-estimation for each new model generation.",
+          "extra": {
+            "authors": [
+              "Erin Crawley",
+              "Hidenori Tanaka"
+            ],
+            "categories": [
+              "cs.AI",
+              "cond-mat.dis-nn",
+              "cs.MA",
+              "physics.bio-ph"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.12436v1"
+          },
+          "score": 8.0,
+          "summary": "建模AI代理生态协作效应，发现存在群体规模阈值，突破后可能引发恶意代理爆发。"
+        },
+        {
+          "section": "paper",
+          "title": "FastBench: Can Streaming VLMs Perceive High-Dynamic Real-World Streams?",
+          "url": "https://arxiv.org/abs/2610.12427v1",
+          "source": "arXiv",
+          "published_at": "2026-10-08T17:55:20Z",
+          "raw_text": "Streaming Video Large Language Models (VLMs) enable continuous video understanding, yet existing benchmarks focus on low-dynamic scenarios. Under bounded context budgets, models must balance temporal history, spatial resolution, and temporal granularity; sparse sampling at 1--2 FPS misses fast events. We introduce FastBench to evaluate high-dynamic perception in real-world video streams. Its trajectory-grounded pipeline combines QA generation from high-FPS clips, filtering of questions answerable at 2 FPS, answer verification using SAM3 and CoTracker3 trajectories, and three rounds of human inspection. FastBench contains 306 QA pairs across eight domains, six capabilities, and forward, instant, and backward temporal scopes, with human-annotated evidence intervals. We also present ProactiveFrame, a training-free baseline that adjusts incoming frame rates through text tokens. A dual-tier sliding window retains recent high-FPS observations while downsampling older ones into sparse history. Experiments reveal substantial limitations: the strongest model, Gemini-3.5-Flash, scores only 50.7%. Denser sampling improves Qwen3-VL-8B from 32.9% at 2 FPS to 44.6% at 24 FPS, but gains saturate as history is compressed. ProactiveFrame outperforms sparse uniform sampling by 5.4 and 1.5 percentage points, yet remains well below oracle-guided focusing, showing that current VLMs struggle to determine from the stream alone when finer temporal perception is needed. FastBench provides a testbed for high-dynamic streaming video understanding. Code and data: https://github.com/Ashone3/FastBench.",
+          "extra": {
+            "authors": [
+              "Yuxuan Hu",
+              "Weikang Shi",
+              "Yang Bo",
+              "Xudong Lu",
+              "Xintong Guo",
+              "Shuhan Li",
+              "Yuyang He",
+              "Huankang Guan",
+              "Peiwen Sun",
+              "Yunqiao Yang",
+              "Wenbo Li",
+              "Rui Liu",
+              "Hongsheng Li"
+            ],
+            "categories": [
+              "cs.CV",
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.12427v1"
+          },
+          "score": 7.0,
+          "summary": "推出高动态视频流基准FastBench，揭示流式VLM在时空分辨率权衡下的感知瓶颈。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi, GLM, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 182572,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "gemma3",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llama3",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 9.0,
+          "summary": "本地运行主流大模型（含国产），一键部署，AI 从业者必备工具。"
+        },
+        {
+          "section": "repo",
+          "title": "lexmount/moli",
+          "url": "https://github.com/lexmount/moli",
+          "source": "GitHub 新星",
+          "published_at": "2026-08-10T13:20:30Z",
+          "raw_text": "Best headless browser for AI agents. Lite, Fast, High-Compatibility. Built in Rust",
+          "extra": {
+            "stars": 15079,
+            "language": "Rust",
+            "topics": [
+              "ai-agents",
+              "ai-tools",
+              "browser",
+              "browser-automation",
+              "cloud-browser",
+              "kitesurf",
+              "playwright",
+              "puppeteer",
+              "rust",
+              "servo",
+              "web-crawler",
+              "web-crawling",
+              "web-scraper",
+              "web-scraping"
+            ]
+          },
+          "score": 8.0,
+          "summary": "Rust 编写的高性能无头浏览器，专为 AI Agent 网页交互优化。"
+        },
+        {
+          "section": "repo",
+          "title": "hypit-ai/hypit",
+          "url": "https://github.com/hypit-ai/hypit",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-29T18:49:19Z",
+          "raw_text": "Clone any viral video with AI agents. Not just a script, the whole workflow: swap the face, the words, the B-roll, ship 100 variants in one command, and get your 100M views.",
+          "extra": {
+            "stars": 20637,
+            "language": "TypeScript",
+            "topics": [
+              "agentic-ai",
+              "ai",
+              "ai-agents",
+              "ai-video",
+              "compiler",
+              "dsl",
+              "ffmpeg",
+              "generative-ai",
+              "llm",
+              "markup-language",
+              "monorepo",
+              "plugin-system",
+              "programming-language",
+              "text-to-video",
+              "typescript",
+              "video",
+              "video-automation",
+              "video-clone",
+              "video-editing",
+              "video-generation"
+            ]
+          },
+          "score": 8.0,
+          "summary": "AI 一键克隆爆款视频全流程：换脸、改词、批量生产，直接商用。"
+        },
+        {
+          "section": "repo",
+          "title": "genspark-ai/genoffice",
+          "url": "https://github.com/genspark-ai/genoffice",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-31T09:40:58Z",
+          "raw_text": "Free, open-source AI Office suite: Docs, Sheets, Slides, PDF, Markdown and HTML editors with a built-in AI agent, plus a `genoffice` CLI and agent skill so Claude Code, Codex and Cursor can create and edit real .docx/.xlsx/.pptx files locally. Bring your own key. macOS, Windows & Linux.",
+          "extra": {
+            "stars": 9150,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agent",
+              "claude-code",
+              "cli",
+              "codex",
+              "cursor",
+              "docx",
+              "excel",
+              "libreoffice-alternative",
+              "local-first",
+              "markdown-editor",
+              "microsoft-office-alternative",
+              "office-suite",
+              "pdf-editor",
+              "pdf-to-word",
+              "powerpoint",
+              "pptx",
+              "skills",
+              "spreadsheet",
+              "xlsx"
+            ]
+          },
+          "score": 7.0,
+          "summary": "开源 AI Office 套件，支持本地编辑 Office 文件，兼容主流 Agent 工具。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "Supercharge your AI agents with data from the web and beyond. Building the library for superintelligence. 🔥",
+          "extra": {
+            "stars": 190005,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 7.0,
+          "summary": "为 AI Agent 提供实时网页数据抓取，扩展知识边界的关键基础设施。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Anthropic can’t reliably control its AI agents. It’s cutting off its internal evals from the live internet instead",
+          "url": "https://techcrunch.com/2026/10/09/anthropic-cant-reliably-control-its-ai-agents-its-cutting-off-its-internal-evals-from-the-live-internet-instead/",
+          "source": "TechCrunch",
+          "published_at": "2026-10-10T00:18:32Z",
+          "raw_text": "Anthropic said it \"turned off live internet access\" for \"all our internal evaluations\" until further notice.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "Anthropic因无法可靠控制AI智能体，切断内部评估的实时互联网访问，暴露安全困境。"
+        },
+        {
+          "section": "news",
+          "title": "The maker of non-text AI model Jev valued at $7.5B just weeks after launch",
+          "url": "https://techcrunch.com/2026/10/09/the-maker-of-non-text-ai-model-jev-valued-at-7-5b-just-weeks-after-launch/",
+          "source": "TechCrunch",
+          "published_at": "2026-10-09T21:41:29Z",
+          "raw_text": "What has users and large corporations so excited about Jev is TypeSafe’s claim that it works significantly faster and uses far fewer tokens than LLMs.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "非文本AI模型Jev发布数周估值75亿美元，宣称比LLM更快、更省token，引行业关注。"
+        },
+        {
+          "section": "news",
+          "title": "‘Pure insanity’: Mathematicians will need years to make sense of OpenAI’s latest drop",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1008726/openai-mathematics-solutions-chaos",
+          "source": "The Verge",
+          "published_at": "2026-10-09T19:09:44Z",
+          "raw_text": "\"Staggering.\" \"Overwhelming.\" \"Unprecedented.\" \"Surreal.\" \"Pure insanity.\" Those were among the descriptions more than three dozen mathematicians reached for in conversations with The Verge as they tried to make sense of the flood of mathematical results OpenAI abruptly dropped on the field this week. Amid the awe, excitement, and uncertainty over the sheer scale of the […]",
+          "extra": {},
+          "score": 9.0,
+          "summary": "OpenAI突然发布海量数学成果，数学家称需数年消化，冲击基础科研领域。"
+        },
+        {
+          "section": "news",
+          "title": "Ukraine’s drones knock out AI data center belonging to \"Russia’s Google\"",
+          "url": "https://arstechnica.com/gadgets/2026/10/ukraines-drones-knock-out-ai-data-center-belonging-to-russias-google/",
+          "source": "Ars Technica",
+          "published_at": "2026-10-09T22:04:07Z",
+          "raw_text": "One damaged data center has supercomputers used for training Yandex’s AI model.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "乌克兰无人机摧毁俄AI数据中心，内含训练Yandex大模型的超级计算机，具地缘影响。"
+        },
+        {
+          "section": "news",
+          "title": "AI coding agents generate more code, but not more software",
+          "url": "https://arstechnica.com/ai/2026/10/ai-coding-agents-generate-more-code-but-not-more-software/",
+          "source": "Ars Technica",
+          "published_at": "2026-10-09T19:43:50Z",
+          "raw_text": "Study finds coding efficiency gains get \"absorbed\" by human review \"bottleneck.\"",
+          "extra": {},
+          "score": 8.0,
+          "summary": "研究显示AI编码代理产出更多代码但未增加软件，效率被人工审查瓶颈抵消。"
+        },
+        {
+          "section": "news",
+          "title": "Nikon microscopic video competition winner disqualified for using generative AI",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1008930/nikon-small-world-in-motion-winner-ai",
+          "source": "The Verge",
+          "published_at": "2026-10-09T18:06:57Z",
+          "raw_text": "Nikon says the video that originally won first place in its Small World in Motion contest \"did not comply with the competition rules regarding generative AI.\" BBC reports that the original first place video from Dr. Ning Xu claimed to show \"tiny, hair-like structures called cilia moving in the airway of a child with the […]",
+          "extra": {},
+          "score": 8.0,
+          "summary": "尼康显微视频大赛冠军因使用生成式AI被取消资格，凸显AI内容竞赛规则争议。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Gemini 4 Argon: our next era of frontier intelligence",
+          "url": "https://deepmind.google/blog/gemini-4-argon-our-next-era-of-frontier-intelligence/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-30T20:01:45Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "谷歌发布新一代前沿模型Gemini 4 Argon，标志着多模态推理能力的重大跃升。"
+        },
+        {
+          "section": "product",
+          "title": "EmbeddingGemma 2: an open, lightweight multimodal embedding model",
+          "url": "https://deepmind.google/blog/embeddinggemma-2-an-open-lightweight-multimodal-embedding-model/",
+          "source": "Google DeepMind",
+          "published_at": "2026-10-06T19:57:04Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 8.0,
+          "summary": "谷歌开源轻量级多模态嵌入模型EmbeddingGemma 2，降低开发者部署门槛。"
+        },
+        {
+          "section": "product",
+          "title": "Introducing SynthID Bio",
+          "url": "https://deepmind.google/blog/introducing-synthid-bio/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-30T15:03:07Z",
+          "raw_text": "Proof of concept for watermarking AI-generated proteins while preserving biological function.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "DeepMind推出SynthID Bio，首次实现AI生成蛋白质的水印与功能保留。"
+        }
+      ]
+    }
+  ]
+}
