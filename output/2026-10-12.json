@@ -1,0 +1,432 @@
+{
+  "date": "2026-10-12",
+  "tip": {
+    "title": "RATED: Reliability-Aware AI Agent Tool Retrieval via Execution Dynamics",
+    "body": "**场景：** 当你的 Agent 需要调用外部工具（如搜索、API），但工具可能临时不可用或响应超时，导致整个任务失败。\n\n**做法：** 采用“可靠性感知”策略——在调用前先对工具进行轻量级健康检查（ping/心跳），并维护一个可用性缓存。\n\n```python\nimport asyncio\n\nasync def safe_tool_call(tool_name, tool_func, health_check):\n    if not await health_check(tool_name):  # 例如：检查HTTP 200\n        return {\"error\": f\"{tool_name} 不可用\"}\n    return await tool_func()\n```\n\n若工具返回错误，自动降级到备选工具或返回缓存结果，避免 Agent 卡死。",
+    "ref_title": "RATED: Reliability-Aware AI Agent Tool Retrieval via Execution Dynamics",
+    "ref_url": "https://arxiv.org/abs/2610.13889v1"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "RATED: Reliability-Aware AI Agent Tool Retrieval via Execution Dynamics",
+          "url": "https://arxiv.org/abs/2610.13889v1",
+          "source": "arXiv",
+          "published_at": "2026-10-09T17:38:11Z",
+          "raw_text": "As AI agents increasingly rely on external tools, accurate retrieval is essential for reliable behavior. Existing methods optimize semantic relevance but largely ignore tool availability during execution. To address this gap, we propose RATED (Reliability-Aware Tool Retrieval via Execution Dynamics), a retrieval framework that combines robust semantic matching with dynamic reliability adaptation. RATED employs a frozen dual-encoder with contrastive fine-tuning for semantic matching, and a lightweight contextual bandit module that re-ranks candidates based on real-time execution feedback. This design enables rapid adaptation to runtime tool failures without expensive model retraining. We introduce EcoAgent, a benchmark of 5,172 real-world tools and over 210,000 query-tool pairs for offline retrieval and dynamic reliability evaluation. Experimental results demonstrate that RATED achieves a 52.2% relative MRR improvement over the ToolLLM API retriever on real-world queries, and reduces fault selection rate from 86.2% to 2.9% under severe API outage scenarios with a 30% failure rate, while incurring negligible latency overhead of less than 1 ms over encode-only inference. The code and dataset are available at https://github.com/Elliotes/EcoAgent.",
+          "extra": {
+            "authors": [
+              "Weiliang Chen",
+              "Song Liao"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.IR"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.13889v1"
+          },
+          "score": 9.0,
+          "summary": "提出可靠性感知工具检索方法，考虑执行时工具可用性，提升Agent工具调用鲁棒性。"
+        },
+        {
+          "section": "paper",
+          "title": "X-AgentRed: Red-Teaming Personal Agents in Evolving Multi-Service Ecosystems",
+          "url": "https://arxiv.org/abs/2610.13886v1",
+          "source": "arXiv",
+          "published_at": "2026-10-09T17:34:44Z",
+          "raw_text": "Personal agents increasingly connect to services across the web and applications by using tools. As the effects of their actions accumulate and interact across services, unintended or harmful outcomes can arise when agents fulfill benign user requests. Proactively identifying these compositional failures requires systematically exploring diverse cross-service paths. Existing red-teaming methods often simply prompt LLMs to identify potentially harmful paths from task and environment descriptions or decompose harmful objectives specified by humans or LLMs into seemingly benign action combinations. However, generation is biased toward patterns learned during training, potentially favoring familiar tool combinations and leaving novel cross-service interactions underexplored. To address this, we propose X-AgentRed, a self-evolving red-teaming framework that discovers harmful tool call paths through a graph of tool dependencies and expands and refines them using execution feedback. By analyzing each tool's effects, potential harms, and preconditions for execution, the red-teaming agent constructs a directed graph that captures how one tool's effects can satisfy another's execution preconditions. Recipes sampled from this graph are instantiated as realistic scenarios in which agents can produce harmful outcomes. Execution feedback enables self-improvement by diversifying paths that produce harm through tool substitution and refining preconditions at blocked steps in unsuccessful paths to enable further execution. Across four frontier agentic models, X-AgentRed achieves $1.77\\times$ the harmful path rate of STAC and explores a more diverse set of tools, yielding $2.99\\times$ the tool coverage on average.",
+          "extra": {
+            "authors": [
+              "Yeonsung Jung",
+              "Zhiyuan Wang",
+              "Zifan Wang",
+              "Vítor Albiero",
+              "Benjamin Newman",
+              "Edoardo Debenedetti",
+              "Ivan Evtimov",
+              "Ninareh Mehrabi"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.13886v1"
+          },
+          "score": 9.0,
+          "summary": "红队测试多服务生态中个人Agent的复合故障，提前发现良性请求引发的跨服务危害。"
+        },
+        {
+          "section": "paper",
+          "title": "Ask Your Advisor: Learning When to Consult Stronger Models in Agentic Systems",
+          "url": "https://arxiv.org/abs/2610.13870v1",
+          "source": "arXiv",
+          "published_at": "2026-10-09T17:19:54Z",
+          "raw_text": "To balance task performance and computational cost, agentic workflows can use a lower-cost model for execution and selectively consult a stronger model. In such executor-advisor systems, the executor decides when to seek advice, making escalation depend on self-assessment, although current language models struggle to detect where their own reasoning fails. The need for stronger reasoning emerges during execution and varies across workflow phases. We introduce ARIA, a meta-controller that learns when to consult by balancing task success against consultation cost. Our approach formulates consultation as a sequential resource-allocation problem. At workflow contact points, ARIA maps execution evidence to a compact state abstraction and selects SILENT or CONSULT, with action values learned by Monte Carlo control from cost-penalized outcomes. Across evaluated tasks of SWE-bench Verified, Terminal-Bench 2.1, and $τ^2$-bench, ARIA recovers 44-81% of the executor-advisor success gap at less than half the advisor model's cost. ARIA achieves the best observed success-cost trade-off among ten other evaluated conditions, including routing and cascading methods, fixed and prompted consultation, and random placement at matched advice volume. The policies are compact and inspectable, with a single consultation-price parameter governing the success-cost trade-off without retraining either underlying model.",
+          "extra": {
+            "authors": [
+              "Pascal Sowietzki",
+              "Steffen Holter",
+              "Yannick Metz",
+              "Emil Kasper",
+              "Raphael Baur",
+              "Mennatallah El-Assady"
+            ],
+            "categories": [
+              "cs.MA"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.13870v1"
+          },
+          "score": 8.0,
+          "summary": "研究Agent何时应咨询更强模型，提出成本与性能平衡的决策机制，优化推理效率。"
+        },
+        {
+          "section": "paper",
+          "title": "RSI-Anything: Unlocking Recursive Self-Improvement with World Models",
+          "url": "https://arxiv.org/abs/2610.13912v1",
+          "source": "arXiv",
+          "published_at": "2026-10-09T17:50:30Z",
+          "raw_text": "Recursive self-improvement (RSI) aims to transform interaction experience into persistent improvements, yet external feedback is costly and world-model predictions may become unreliable as policies evolve. We introduce RSI-Anything, a domain-general framework built on JEPA-Anything that uses predictive world models to guide action and learning-data selection. Observed feedback drives policy or workflow improvement and conditional world-model adaptation, while component and compatibility checks govern the retention of updated policy-model pairs. Across diverse computational and scientific domains, RSI-Anything demonstrates substantial gains. In code repair, with the coder fixed, success increases from 26.3% with a static verifier to 29.2% through predictive selection and 31.2% after world-model adaptation, at comparable test usage. Graphical user interface (GUI) evaluations showed higher task completion, while average actions decrease by 39.4%. Across five successive policy versions, laboratory-planning scores more than double from 21.80% to 46.01%. In reaction optimization, RSI-Anything achieves 96.15% mean best observed yield versus 82.16% for Bayesian optimization under the same 40-experiment budget. An end-to-end immune-science application further connects workflow evolution and predictive modeling with therapeutic hypothesis generation. These results demonstrate how predictive world models and retained system updates enable recursive improvement across diverse environments.",
+          "extra": {
+            "authors": [
+              "Taoyong Cui",
+              "Pinxian Zeng",
+              "Wanghan Xu",
+              "Hao Xiao",
+              "Shuhan Xue",
+              "Qiang Gao",
+              "Wanli Ouyang",
+              "Pheng Ann Heng",
+              "Zhenfei Yin",
+              "Yingcheng Wu",
+              "Ling Yang"
+            ],
+            "categories": [
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.13912v1"
+          },
+          "score": 8.0,
+          "summary": "提出递归自我改进框架，用世界模型替代外部反馈，实现Agent持续自主进化。"
+        },
+        {
+          "section": "paper",
+          "title": "MC-EvoBench: Auditing Experience-Driven Self-Improvement in Minecraft Agents",
+          "url": "https://arxiv.org/abs/2610.13829v1",
+          "source": "arXiv",
+          "published_at": "2026-10-09T16:37:39Z",
+          "raw_text": "A central challenge in embodied recursive self-improvement is enabling agents to convert interaction history into capabilities that persist beyond one world and transfer to later tasks. A saved memory or successful final action does not by itself establish that a reusable capability was acquired; evaluation must separate capability change from carried-over resources, unequal source exposure, and early execution failures. We construct MC-EvoBench as a controlled Minecraft benchmark with a fixed catalog of 19 registered evolution chains, including 12 primary evaluation chains and seven calibration or probe chains, together with three graph-aligned paired probe families for transfer. The benchmark represents each task as a task-state graph, defines stage-level environment verifiers, assigns matched source and target roles, resets the target world, and permits only a declared agent artifact to cross the source-target boundary. For each probe, no-prior, related, unrelated, and shuffled source conditions are evaluated under matched environment-step budgets and five seeds; we report TSR, WGP, and VMP and retain provenance records. The benchmark reveals a consistent direct-capability gap between controller and planner-backed variants, while related experience yields no stable transfer: it does not improve either tool probe, its small wood-species gain hinges on one seed, and all intervals include zero. Stage audits further show that early wood-collection and crafting bottlenecks often leave later capabilities unobserved. MC-EvoBench thus offers a controlled testbed for durable, transferable embodied capabilities. Code and data are available at https://github.com/xzw-ustc/mc-bench-open-source",
+          "extra": {
+            "authors": [
+              "Jingwei Song",
+              "Zhisheng Chen",
+              "Bingfan Zeng",
+              "Jing Tang",
+              "Yubo Hou",
+              "Jinhao Jing",
+              "Zhengwei Xie",
+              "Linfeng Zhang"
+            ],
+            "categories": [
+              "cs.RO",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.13829v1"
+          },
+          "score": 7.0,
+          "summary": "构建Minecraft智能体经验驱动自我改进基准，验证能力跨世界迁移而非仅记忆保存。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi, GLM, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 182813,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "gemma3",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llama3",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 9.0,
+          "summary": "本地运行多种国产及开源大模型，一键部署，实用性强。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "Supercharge your AI agents with data from the web and beyond. Building the library for superintelligence. 🔥",
+          "extra": {
+            "stars": 190597,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "为AI Agent提供网页数据抓取能力，解决实时信息获取痛点。"
+        },
+        {
+          "section": "repo",
+          "title": "hypit-ai/hypit",
+          "url": "https://github.com/hypit-ai/hypit",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-29T18:49:19Z",
+          "raw_text": "Clone any viral video with AI agents. Not just a script, the whole workflow: swap the face, the words, the B-roll, ship 100 variants in one command, and get your 100M views.",
+          "extra": {
+            "stars": 21321,
+            "language": "TypeScript",
+            "topics": [
+              "agentic-ai",
+              "ai",
+              "ai-agents",
+              "ai-video",
+              "compiler",
+              "dsl",
+              "ffmpeg",
+              "generative-ai",
+              "llm",
+              "markup-language",
+              "monorepo",
+              "plugin-system",
+              "programming-language",
+              "text-to-video",
+              "typescript",
+              "video",
+              "video-automation",
+              "video-clone",
+              "video-editing",
+              "video-generation"
+            ]
+          },
+          "score": 8.0,
+          "summary": "用AI Agent一键克隆爆款视频，支持换脸改词，批量生产内容。"
+        },
+        {
+          "section": "repo",
+          "title": "genspark-ai/genoffice",
+          "url": "https://github.com/genspark-ai/genoffice",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-31T09:40:58Z",
+          "raw_text": "Free, open-source AI Office suite: Docs, Sheets, Slides, PDF, Markdown and HTML editors with a built-in AI agent, plus a `genoffice` CLI and agent skill so Claude Code, Codex and Cursor can create and edit real .docx/.xlsx/.pptx files locally. Bring your own key. macOS, Windows & Linux.",
+          "extra": {
+            "stars": 9358,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agent",
+              "claude-code",
+              "cli",
+              "codex",
+              "cursor",
+              "docx",
+              "excel",
+              "libreoffice-alternative",
+              "local-first",
+              "markdown-editor",
+              "microsoft-office-alternative",
+              "office-suite",
+              "pdf-editor",
+              "pdf-to-word",
+              "powerpoint",
+              "pptx",
+              "skills",
+              "spreadsheet",
+              "xlsx"
+            ]
+          },
+          "score": 8.0,
+          "summary": "开源AI办公套件，支持Agent直接编辑本地Office文件，打通工作流。"
+        },
+        {
+          "section": "repo",
+          "title": "lexmount/moli",
+          "url": "https://github.com/lexmount/moli",
+          "source": "GitHub 新星",
+          "published_at": "2026-08-10T13:20:30Z",
+          "raw_text": "Best headless browser for AI agents. Lite, Fast, High-Compatibility. Built in Rust",
+          "extra": {
+            "stars": 16659,
+            "language": "Rust",
+            "topics": [
+              "ai-agents",
+              "ai-tools",
+              "browser",
+              "browser-automation",
+              "cloud-browser",
+              "kitesurf",
+              "playwright",
+              "puppeteer",
+              "rust",
+              "servo",
+              "web-crawler",
+              "web-crawling",
+              "web-scraper",
+              "web-scraping"
+            ]
+          },
+          "score": 7.0,
+          "summary": "Rust构建的轻量无头浏览器，专为AI Agent设计，速度快兼容性好。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Yandex bot traffic down 99% after data center attack",
+          "url": "https://radar.cloudflare.com/bots/as13238?dateRange=7d#bot-traffic",
+          "source": "Hacker News",
+          "published_at": "2026-10-12T04:54:12Z",
+          "raw_text": "Article URL: https://radar.cloudflare.com/bots/as13238?dateRange=7d#bot-traffic Comments URL: https://news.ycombinator.com/item?id=50051532 Points: 154 # Comments: 46",
+          "extra": {},
+          "score": 9.0,
+          "summary": "Yandex 机器人流量骤降 99%，数据中心遭攻击直接影响 AI 训练数据采集。"
+        },
+        {
+          "section": "news",
+          "title": "Satya Nadella says we should assume all AI models are ‘compromised’",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1009337/satya-nadella-says-we-should-assume-all-ai-models-are-compromised",
+          "source": "The Verge",
+          "published_at": "2026-10-10T22:10:17Z",
+          "raw_text": "In a lengthy post on X, Microsoft's CEO laid out his views on the dangers posed by highly advanced AI models and how to confront those risks. Nadella says we can no longer accept a world where AI is treated as a \"set of nested black boxes\" whose advice and actions we simply accept or […]",
+          "extra": {},
+          "score": 9.0,
+          "summary": "微软 CEO 警告应假设所有 AI 模型已被攻破，呼吁打破黑箱，影响安全策略。"
+        },
+        {
+          "section": "news",
+          "title": "Fingerprints are the new cookies",
+          "url": "https://royfish.dev/fingerprints-are-the-new-cookies",
+          "source": "Hacker News",
+          "published_at": "2026-10-11T22:33:39Z",
+          "raw_text": "Article URL: https://royfish.dev/fingerprints-are-the-new-cookies Comments URL: https://news.ycombinator.com/item?id=50048642 Points: 256 # Comments: 126",
+          "extra": {},
+          "score": 8.0,
+          "summary": "指纹识别替代 Cookie 成为新追踪手段，隐私与 AI 数据合规面临新挑战。"
+        },
+        {
+          "section": "news",
+          "title": "Silicon Valley is falling in line with Trump’s attempt to rename AI",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1009406/silicon-valley-is-falling-in-line-with-trumps-attempt-to-rename-ai",
+          "source": "The Verge",
+          "published_at": "2026-10-11T18:33:56Z",
+          "raw_text": "When President Donald Trump announced his plans to rebrand artificial intelligence as \"super intelligence,\" you'd be forgiven for being skeptical that it would catch on. While most of the broader population is sticking with AI, some of Silicon Valley's most powerful are falling in line and trying to give Trump the great AI rebrand he […]",
+          "extra": {},
+          "score": 8.0,
+          "summary": "硅谷跟随特朗普将 AI 改称“超级智能”，行业命名权争夺影响监管与投资。"
+        },
+        {
+          "section": "news",
+          "title": "Can the AI industry persuade data center opponents by getting rid of NDAs?",
+          "url": "https://techcrunch.com/2026/10/11/can-the-ai-industry-persuade-data-center-opponents-by-getting-rid-of-ndas/",
+          "source": "TechCrunch",
+          "published_at": "2026-10-11T16:52:33Z",
+          "raw_text": "On Equity, we debate the impact of data center moratoriums and whether the AI industry has a communication problem.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "AI 行业讨论取消 NDA 以缓解数据中心建设阻力，反映基础设施扩张的公关困境。"
+        },
+        {
+          "section": "news",
+          "title": "Will the HomeView be Apple’s first smart home success?",
+          "url": "https://techcrunch.com/2026/10/11/will-the-homeview-be-apples-first-smart-home-success/",
+          "source": "TechCrunch",
+          "published_at": "2026-10-11T21:14:40Z",
+          "raw_text": "Over the past couple of years, we’ve seen multiple reports that Apple was working on a new smart home product, but now it seems the product has a name and a launch date.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "苹果智能家居产品 HomeView 曝光命名与发布时间，或重塑 AI 家庭入口格局。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Gemini 4 Argon: our next era of frontier intelligence",
+          "url": "https://deepmind.google/blog/gemini-4-argon-our-next-era-of-frontier-intelligence/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-30T20:01:45Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "谷歌发布新一代前沿模型Gemini 4 Argon，标志其AI能力进入新阶段。"
+        },
+        {
+          "section": "product",
+          "title": "EmbeddingGemma 2: an open, lightweight multimodal embedding model",
+          "url": "https://deepmind.google/blog/embeddinggemma-2-an-open-lightweight-multimodal-embedding-model/",
+          "source": "Google DeepMind",
+          "published_at": "2026-10-06T19:57:04Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 8.0,
+          "summary": "开源轻量级多模态嵌入模型EmbeddingGemma 2，降低开发者部署门槛。"
+        },
+        {
+          "section": "product",
+          "title": "Introducing SynthID Bio",
+          "url": "https://deepmind.google/blog/introducing-synthid-bio/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-30T15:03:07Z",
+          "raw_text": "Proof of concept for watermarking AI-generated proteins while preserving biological function.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "推出SynthID Bio概念验证，为AI生成蛋白质添加不影响功能的水印。"
+        }
+      ]
+    }
+  ]
+}
