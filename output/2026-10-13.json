@@ -1,0 +1,304 @@
+{
+  "date": "2026-10-13",
+  "tip": {
+    "title": "用轻量无头浏览器替代Selenium",
+    "body": "**场景：** 当你的Agent需要操作网页（如抓取动态内容、填写表单），但Selenium/Playwright太重或兼容性差时。\n\n**做法：** 用Rust编写的无头浏览器 `moli`，它专为AI代理优化，支持WebSocket远程控制。安装后启动服务：\n```bash\ncargo install moli\nmoli --headless --remote-debugging-port=9222\n```\n然后通过HTTP API发送操作指令（如点击、截图），无需管理复杂的浏览器驱动。注意：所有远程调试端口应绑定到本地回环地址（127.0.0.1），避免外部访问。",
+    "ref_title": "lexmount/moli",
+    "ref_url": "https://github.com/lexmount/moli"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "morluto/rea",
+          "url": "https://github.com/morluto/rea",
+          "source": "GitHub 经典",
+          "published_at": "2026-04-14T00:51:32Z",
+          "raw_text": "Reverse engineer anything with agents, from app behavior down to native binaries.",
+          "extra": {
+            "stars": 174257,
+            "language": "TypeScript",
+            "topics": [
+              "agent-skills",
+              "ai-agents",
+              "binary-analysis",
+              "claude-code",
+              "cli",
+              "codex",
+              "cordis",
+              "ctf",
+              "decompiler",
+              "developer-tools",
+              "disassembler",
+              "dsh",
+              "dsh-plugin",
+              "ghidra",
+              "hopper",
+              "llm",
+              "mcp",
+              "model-context-protocol",
+              "reverse-engineering",
+              "static-analysis"
+            ]
+          },
+          "score": 9.0,
+          "summary": "用AI代理逆向分析应用行为到原生二进制，安全研究者的实用工具。"
+        },
+        {
+          "section": "repo",
+          "title": "hypit-ai/hypit",
+          "url": "https://github.com/hypit-ai/hypit",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-29T18:49:19Z",
+          "raw_text": "Clone any viral video with AI agents. Not just a script, the whole workflow: swap the face, the words, the B-roll, ship 100 variants in one command, and get your 100M views.",
+          "extra": {
+            "stars": 21710,
+            "language": "TypeScript",
+            "topics": [
+              "agentic-ai",
+              "ai",
+              "ai-agents",
+              "ai-video",
+              "compiler",
+              "dsl",
+              "ffmpeg",
+              "generative-ai",
+              "llm",
+              "markup-language",
+              "monorepo",
+              "plugin-system",
+              "programming-language",
+              "text-to-video",
+              "typescript",
+              "video",
+              "video-automation",
+              "video-clone",
+              "video-editing",
+              "video-generation"
+            ]
+          },
+          "score": 8.0,
+          "summary": "一键克隆爆款视频全流程：换脸、改词、换B-roll，批量生产100个变体。"
+        },
+        {
+          "section": "repo",
+          "title": "lexmount/moli",
+          "url": "https://github.com/lexmount/moli",
+          "source": "GitHub 新星",
+          "published_at": "2026-08-10T13:20:30Z",
+          "raw_text": "Best headless browser for AI agents. Lite, Fast, High-Compatibility. Built in Rust",
+          "extra": {
+            "stars": 17527,
+            "language": "Rust",
+            "topics": [
+              "ai-agents",
+              "ai-tools",
+              "browser",
+              "browser-automation",
+              "cloud-browser",
+              "kitesurf",
+              "playwright",
+              "puppeteer",
+              "rust",
+              "servo",
+              "web-crawler",
+              "web-crawling",
+              "web-scraper",
+              "web-scraping"
+            ]
+          },
+          "score": 8.0,
+          "summary": "Rust编写的高兼容轻量无头浏览器，专为AI代理网页操作优化。"
+        },
+        {
+          "section": "repo",
+          "title": "genspark-ai/genoffice",
+          "url": "https://github.com/genspark-ai/genoffice",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-31T09:40:58Z",
+          "raw_text": "Free, open-source AI Office suite: Docs, Sheets, Slides, PDF, Markdown and HTML editors with a built-in AI agent, plus a `genoffice` CLI and agent skill so Claude Code, Codex and Cursor can create and edit real .docx/.xlsx/.pptx files locally. Bring your own key. macOS, Windows & Linux.",
+          "extra": {
+            "stars": 9494,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agent",
+              "claude-code",
+              "cli",
+              "codex",
+              "cursor",
+              "docx",
+              "excel",
+              "libreoffice-alternative",
+              "local-first",
+              "markdown-editor",
+              "microsoft-office-alternative",
+              "office-suite",
+              "pdf-editor",
+              "pdf-to-word",
+              "powerpoint",
+              "pptx",
+              "skills",
+              "spreadsheet",
+              "xlsx"
+            ]
+          },
+          "score": 8.0,
+          "summary": "开源AI办公套件，支持本地编辑Office文档，可被Claude Code等代理调用。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "Supercharge your AI agents with data from the web and beyond. Building the library for superintelligence. 🔥",
+          "extra": {
+            "stars": 190951,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 7.0,
+          "summary": "为AI代理提供网页数据抓取库，号称构建超级智能的基础设施。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Meta releases its first frontier model, Muse Wonder",
+          "url": "https://techcrunch.com/2026/10/12/meta-releases-its-first-frontier-model-muse-wonder/",
+          "source": "TechCrunch",
+          "published_at": "2026-10-12T17:56:56Z",
+          "raw_text": "Where Muse Spark aimed to be a lightweight model that could perform at low latency, the Wonder models are larger and said to be more capable, with higher benchmark scores and better results on complex tasks like coding.",
+          "extra": {},
+          "score": 10.0,
+          "summary": "Meta发布首个前沿模型Muse Wonder，在复杂任务上对标行业顶尖，标志其AI战略重大升级。"
+        },
+        {
+          "section": "news",
+          "title": "Microsoft’s new AI chip makes it less reliant on Nvidia’s GPUs",
+          "url": "https://www.theverge.com/news/1009465/microsoft-maia-300-chip-improvements-rollout",
+          "source": "The Verge",
+          "published_at": "2026-10-12T13:00:00Z",
+          "raw_text": "Microsoft is announcing its third-generation Maia in-house AI chip today, designed to be the \"primary AI inference system\" for Microsoft's products and services. Maia 300 not only improves the cost and efficiency of running AI workloads in the cloud, it's also more capable of handling the latest reasoning models and agentic tasks. Maia 300 will […]",
+          "extra": {},
+          "score": 9.0,
+          "summary": "微软发布第三代自研AI芯片Maia 300，降低对英伟达依赖，影响云AI推理成本与生态格局。"
+        },
+        {
+          "section": "news",
+          "title": "WindBorne wins a hefty US Air Force contract for its balloon data",
+          "url": "https://techcrunch.com/2026/10/12/windborne-wins-a-hefty-us-air-force-contract-for-its-balloon-data/",
+          "source": "TechCrunch",
+          "published_at": "2026-10-12T17:19:14Z",
+          "raw_text": "A Silicon Valley startup that uses weather balloons and AI to predict the weather won a U.S. military contract worth almost $50 million.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "AI气象初创公司WindBorne获近5000万美元美军合同，验证AI+物理数据在国防领域的商业价值。"
+        },
+        {
+          "section": "news",
+          "title": "Anthropic's Claude AI submitted false murder tip to Philadelphia police",
+          "url": "https://arstechnica.com/tech-policy/2026/10/anthropics-claude-ai-submitted-false-murder-tip-to-philadelphia-police/",
+          "source": "Ars Technica",
+          "published_at": "2026-10-12T18:21:36Z",
+          "raw_text": "“I may have information regarding this case,\" Claude AI told Philly police.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Anthropic的Claude AI向警方提交虚假谋杀线索，暴露AI在执法场景中的严重可靠性风险。"
+        },
+        {
+          "section": "news",
+          "title": "AI Models Can Provably Hide Arbitrary Capabilities",
+          "url": "https://arxiv.org/abs/2610.13928",
+          "source": "Hacker News",
+          "published_at": "2026-10-13T02:07:08Z",
+          "raw_text": "Article URL: https://arxiv.org/abs/2610.13928 Comments URL: https://news.ycombinator.com/item?id=50065692 Points: 145 # Comments: 75",
+          "extra": {},
+          "score": 7.0,
+          "summary": "新研究证明AI模型可隐藏任意能力，对安全审计与监管构成根本性挑战。"
+        },
+        {
+          "section": "news",
+          "title": "Epic Games reportedly pivoting to \"AI first\" game development model",
+          "url": "https://arstechnica.com/gaming/2026/10/report-epic-games-goes-all-in-on-ai-for-disney-collaboration/",
+          "source": "Ars Technica",
+          "published_at": "2026-10-12T20:59:50Z",
+          "raw_text": "\"No more hand-written code\" or AI-free art for delayed Marvel/Star Wars shooter.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "Epic Games转向“AI优先”开发模式，取消手工代码，预示3A游戏行业生产范式剧变。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Gemini 4 Argon: our next era of frontier intelligence",
+          "url": "https://deepmind.google/blog/gemini-4-argon-our-next-era-of-frontier-intelligence/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-30T20:01:45Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "Google发布Gemini 4 Argon，新一代前沿智能模型，性能与能力显著跃升。"
+        },
+        {
+          "section": "product",
+          "title": "EmbeddingGemma 2: an open, lightweight multimodal embedding model",
+          "url": "https://deepmind.google/blog/embeddinggemma-2-an-open-lightweight-multimodal-embedding-model/",
+          "source": "Google DeepMind",
+          "published_at": "2026-10-06T19:57:04Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Google开源轻量多模态嵌入模型EmbeddingGemma 2，降低部署门槛。"
+        },
+        {
+          "section": "product",
+          "title": "Introducing SynthID Bio",
+          "url": "https://deepmind.google/blog/introducing-synthid-bio/",
+          "source": "Google DeepMind",
+          "published_at": "2026-09-30T15:03:07Z",
+          "raw_text": "Proof of concept for watermarking AI-generated proteins while preserving biological function.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "DeepMind推出SynthID Bio，为AI生成蛋白质添加不影响功能的水印。"
+        }
+      ]
+    }
+  ]
+}
