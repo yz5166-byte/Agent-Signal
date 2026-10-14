@@ -1,0 +1,442 @@
+{
+  "date": "2026-10-14",
+  "tip": {
+    "title": "firecrawl/firecrawl",
+    "body": "**场景：** 当你的 Agent 需要从网页抓取结构化数据（如商品列表、新闻标题），但目标网站没有 API 时，手动写解析规则既脆弱又费时。\n\n**做法：** 用 `firecrawl` 库一键将网页转为 Markdown 或结构化 JSON，再交给 LLM 处理。\n\n```python\nfrom firecrawl import FirecrawlApp\n\napp = FirecrawlApp(api_key=\"your_key\")\nresult = app.scrape_url(\"https://example.com\", params={\"formats\": [\"markdown\"]})\nprint(result[\"markdown\"])  # 直接获得干净文本\n```\n\n**注意：** 无需 `exec/eval`，Firecrawl 在云端沙箱执行抓取，返回安全数据。安装：`pip install firecrawl-py`。",
+    "ref_title": "firecrawl/firecrawl",
+    "ref_url": "https://github.com/firecrawl/firecrawl"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "Hybrid Reasoning Agents",
+          "url": "https://arxiv.org/abs/2610.18861v1",
+          "source": "arXiv",
+          "published_at": "2026-10-13T17:59:31Z",
+          "raw_text": "How can we build an agent that thinks beyond human language, yet still acts through it in the external environment? Modern LLM agents still reason and interact through text, while latent reasoning offers an efficient internal medium but lacks native tool access and reasoning transparency. We bridge these two directions with Hybrid Reasoning Agents (HybridAgents), which dynamically navigate between latent reasoning and text-based interaction throughout a unified generation process. Architecturally, a lightweight HybridLink enables seamless transitions between text and latent modes, while the agent's continuous working memory preserves lossless hybrid context across multiple turns. These designs preserve tool-integrated agentic capabilities while making latent thoughts directly inspectable. Building on this architecture, we further develop dedicated post-training algorithms for hybrid reasoning: HybridSFT stabilizes tool-integrated hybrid generation by teaching the backbone to coordinate with HybridLink, then HybridRL scales reasoning by learning when to think in latent space and when to act through text. We evaluate HybridAgent at 3 model scales across 11 benchmarks covering mathematics, science, medicine, search, and agentic reasoning. Compared with frontier LLM Agents and agentic frameworks spanning both text-based and latent methods, HybridAgent consistently improves performance by 10.4%, while delivering 35.5%-54.7% token reduction, 1.8x-2.6x faster inference, and 2.7x-3.7x cost savings. Code and data are available at https://github.com/togethercomputer/HybridAgent.",
+          "extra": {
+            "authors": [
+              "Jiaru Zou",
+              "Yunzhe Qi",
+              "Sirui Chen",
+              "Federico Bianchi",
+              "Shang Zhu",
+              "Pan Lu",
+              "Jingrui He",
+              "James Zou"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.AI",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.18861v1"
+          },
+          "score": 9.0,
+          "summary": "提出混合推理智能体，融合语言与潜在推理，兼顾效率与工具调用能力。"
+        },
+        {
+          "section": "paper",
+          "title": "Tev: Scaling Long-Horizon Agentic Environments with Dense Progress Rewards",
+          "url": "https://arxiv.org/abs/2610.18868v1",
+          "source": "arXiv",
+          "published_at": "2026-10-13T17:59:51Z",
+          "raw_text": "Long-horizon agents have drawn growing attention for their ability to work autonomously -- from hours to days -- on economically valuable tasks, a capability essential to automated discovery and recursive self-improvement (RSI). Yet open-source models still struggle on long-horizon tasks, largely for lack of both training data and a working recipe, and scaling both is hard: long, complex tasks are difficult to curate and verify, and their rewards are sparse. We address both. First, we introduce Tev-Gym, the first long-horizon agent training dataset with verifiable, dense, progressive rewards -- 1,170 verified task environments across 7 domains. It is built on a latent-world-first approach that first constructs a latent world: a complete and correct hidden specification of the task domain, workflow, and expected state after each step. Each task is then progressively rendered from this specification into an agent-facing environment, enabling controllable complexity and a natural progress metric. Second, we turn this metric into a training recipe: via progress-potential reward shaping (PPRS), we convert progress into a dense per-step reward that improves training efficiency and makes otherwise-intractable tasks trainable. Training with this recipe yields Tev-27B, which achieves substantial gains on the Agents' Last Exam computing and math sciences domains (ALE-CM), matching GPT-6 Astra and Claude Opus 5 at Pass@5. Despite training only on ALE-related data, it generalizes to the Terminal-Bench (TB) 3.0 and 4.0 subsets, surpassing GLM 5.2 and Gemini 3.7 Flash, and reaches Claude Opus 4.8-level performance on middle-horizon tasks such as TB 2.1.",
+          "extra": {
+            "authors": [
+              "Wenbo Hu",
+              "Shraman Pramanick",
+              "Krishna Kumar Singh",
+              "Nanyun Peng",
+              "Kai-Wei Chang",
+              "Yong Jae Lee"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.AI",
+              "cs.CV",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.18868v1"
+          },
+          "score": 8.0,
+          "summary": "用密集进度奖励扩展长周期智能体环境，解决开源模型在长任务上的瓶颈。"
+        },
+        {
+          "section": "paper",
+          "title": "The Last Remote Sensing Model Built by Humans? Casting Any Earth Observation Task as Recursive Self-Improvement",
+          "url": "https://arxiv.org/abs/2610.18845v1",
+          "source": "arXiv",
+          "published_at": "2026-10-13T17:57:51Z",
+          "raw_text": "Earth observation (EO) models are still built by hand. For each new task, experts design a training recipe and tune it against a benchmark. We show that this loop can be handed to an agent. Any verifiable task can be cast as a harness and a verifier, where the harness defines what the agent may use and the verifier defines what counts as success. Every EO task can be made verifiable, through labeled benchmarks, independent sensors, physical models or the repeated observation of the same place. Given only these two components, a general-purpose coding agent builds the EO model and improves it recursively on its own outputs. Settings long treated as separate research problems, from learning with a handful of labels to adapting across domains, become choices of harness and verifier. On four EO benchmarks spanning optical, SAR and multispectral time-series imagery, agent-built models surpass the state of the art and keep most of that accuracy from about 1% of the training labels. This establishes a new paradigm for EO, in which people design harnesses and verifiers and agents build the models, so EO models improve as agents do.",
+          "extra": {
+            "authors": [
+              "Sijie Zhao",
+              "Zeqi Zhou",
+              "Heli Qi",
+              "Xuanchao Fu",
+              "Zhuo Zheng",
+              "Junshi Xia",
+              "Junjue Wang",
+              "Weihao Xuan",
+              "Naoto Yokoya"
+            ],
+            "categories": [
+              "cs.CV",
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.18845v1"
+          },
+          "score": 8.0,
+          "summary": "将遥感任务建模为递归自我改进循环，让智能体自主设计训练流程。"
+        },
+        {
+          "section": "paper",
+          "title": "ChunkAct: Action Chunking for Agentic Robotics",
+          "url": "https://arxiv.org/abs/2610.18874v1",
+          "source": "arXiv",
+          "published_at": "2026-10-13T17:59:57Z",
+          "raw_text": "Agentic robotics places a large language model (LLM) agent in the robot control loop, where it composes perception, motion, and vision-language-action (VLA) tools under the guidance of a memory and thereby generalizes to new tasks without retraining. This generality comes at a steep price in efficiency. Every primitive requires a round of LLM reasoning over the full interaction history, so the cost of an episode grows with the number of primitives. We find this reasoning largely redundant: once a sub-goal is chosen, its primitives follow a routine already prescribed by memory. We present ChunkAct, which introduces action chunking to agentic robotics. Online, a single call launches a chunk of chained primitives, which executes autonomously and returns control only upon failure. Offline, ChunkAct compiles the memory into these chunks, so execution is memory-free at test time and the planner is reserved for decisions that require reasoning. LLM computation therefore scales with the number of decisions rather than the number of primitives. On LIBERO-Pro, ChunkAct improves task success by 5.0 points over the state of the art in agentic robotics while requiring 2.9x fewer LLM calls, 4.4x fewer input tokens, and 2.3x fewer output tokens.",
+          "extra": {
+            "authors": [
+              "Bingxin Xu",
+              "Wenrui Bao",
+              "Xinxin Liu",
+              "Jiawei Zhou",
+              "Yuzhang Shang",
+              "Emilio Ferrara"
+            ],
+            "categories": [
+              "cs.RO",
+              "cs.AI",
+              "cs.CL",
+              "cs.CV"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.18874v1"
+          },
+          "score": 7.0,
+          "summary": "提出动作分块方法，提升LLM驱动机器人泛化能力，降低推理效率代价。"
+        },
+        {
+          "section": "paper",
+          "title": "DoubtLess: Training-Free Contrastive Decoding for Efficient Reasoning",
+          "url": "https://arxiv.org/abs/2610.18862v1",
+          "source": "arXiv",
+          "published_at": "2026-10-13T17:59:32Z",
+          "raw_text": "Reasoning models achieve strong performance through long chains of thought (CoT), but often spend more tokens than needed to solve a problem. Existing ways to shorten the CoT require additional training for each model, add a fixed steering vector to the model's hidden states, or use decoding heuristics such as stopping early or banning words like \"wait\", which can reduce accuracy. We propose DoubtLess, a training-free decoding method in which a much smaller reasoning model steers the large one towards brevity. The small model reads the large model's CoT so far twice, once prompted to be brief (the brief thinker) and once prompted to be verbose (the verbose thinker), and the difference between its two logit vectors, scaled by a strength, is added to the large model's logits at every step of the CoT. On seven benchmarks of competition mathematics, graduate-level science and competitive programming, DoubtLess shortens the CoT of Qwen3-32B by 31% with unchanged accuracy, outperforming five inference-time baselines. We also show that DoubtLess reduces thinking tokens per turn by 20% in a self-debugging coding agent with unchanged task performance. It also generalizes to two other model families with unchanged accuracy. When combined with training-based compression, it further shortens the CoT of a model already trained for brevity. Ablations and behavioral analysis show that DoubtLess reduces repeated checking, with most token savings coming after the correct answer first appears in the CoT. Our code is available at https://github.com/leoluolol/DoubtLess.",
+          "extra": {
+            "authors": [
+              "Minghao Luo",
+              "Liang Chen"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.AI",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.18862v1"
+          },
+          "score": 7.0,
+          "summary": "无需训练的对比解码方法，高效缩短推理模型思维链，减少冗余token。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "morluto/rea",
+          "url": "https://github.com/morluto/rea",
+          "source": "GitHub 经典",
+          "published_at": "2026-04-14T00:51:32Z",
+          "raw_text": "Reverse engineer anything with agents, from app behavior down to native binaries.",
+          "extra": {
+            "stars": 215712,
+            "language": "TypeScript",
+            "topics": [
+              "agent-skills",
+              "ai-agents",
+              "binary-analysis",
+              "claude-code",
+              "cli",
+              "codex",
+              "cordis",
+              "ctf",
+              "decompiler",
+              "developer-tools",
+              "dsh",
+              "dsh-plugin",
+              "ghidra",
+              "hopper",
+              "llm",
+              "mcp",
+              "model-context-protocol",
+              "rea",
+              "reverse-engineering",
+              "static-analysis"
+            ]
+          },
+          "score": 9.0,
+          "summary": "用AI代理逆向分析应用行为到原生二进制，自动化安全研究利器。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "Supercharge your AI agents with data from the web and beyond. Building the library for superintelligence. 🔥",
+          "extra": {
+            "stars": 191289,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 8.0,
+          "summary": "为AI代理提供全网数据抓取能力，构建超级智能的基础库。"
+        },
+        {
+          "section": "repo",
+          "title": "hypit-ai/hypit",
+          "url": "https://github.com/hypit-ai/hypit",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-29T18:49:19Z",
+          "raw_text": "Clone any viral video with AI agents. Not just a script, the whole workflow: swap the face, the words, the B-roll, ship 100 variants in one command, and get your 100M views.",
+          "extra": {
+            "stars": 22033,
+            "language": "TypeScript",
+            "topics": [
+              "agentic-ai",
+              "ai",
+              "ai-agents",
+              "ai-video",
+              "compiler",
+              "dsl",
+              "ffmpeg",
+              "generative-ai",
+              "llm",
+              "markup-language",
+              "monorepo",
+              "plugin-system",
+              "programming-language",
+              "text-to-video",
+              "typescript",
+              "video",
+              "video-automation",
+              "video-clone",
+              "video-editing",
+              "video-generation"
+            ]
+          },
+          "score": 8.0,
+          "summary": "一键克隆爆款视频全流程，换脸换词换B-roll，批量生产病毒内容。"
+        },
+        {
+          "section": "repo",
+          "title": "genspark-ai/genoffice",
+          "url": "https://github.com/genspark-ai/genoffice",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-31T09:40:58Z",
+          "raw_text": "Free, open-source AI Office suite: Docs, Sheets, Slides, PDF, Markdown and HTML editors with a built-in AI agent, plus a `genoffice` CLI and agent skill so Claude Code, Codex and Cursor can create and edit real .docx/.xlsx/.pptx files locally. Bring your own key. macOS, Windows & Linux.",
+          "extra": {
+            "stars": 9614,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agent",
+              "claude-code",
+              "cli",
+              "codex",
+              "cursor",
+              "docx",
+              "excel",
+              "libreoffice-alternative",
+              "local-first",
+              "markdown-editor",
+              "microsoft-office-alternative",
+              "office-suite",
+              "pdf-editor",
+              "pdf-to-word",
+              "powerpoint",
+              "pptx",
+              "skills",
+              "spreadsheet",
+              "xlsx"
+            ]
+          },
+          "score": 8.0,
+          "summary": "开源AI办公套件，支持本地编辑Office文件，可被代理调用。"
+        },
+        {
+          "section": "repo",
+          "title": "lexmount/moli",
+          "url": "https://github.com/lexmount/moli",
+          "source": "GitHub 新星",
+          "published_at": "2026-08-10T13:20:30Z",
+          "raw_text": "Best headless browser for AI agents. Lite, Fast, High-Compatibility. Built in Rust",
+          "extra": {
+            "stars": 18073,
+            "language": "Rust",
+            "topics": [
+              "ai-agents",
+              "ai-tools",
+              "browser",
+              "browser-automation",
+              "cloud-browser",
+              "kitesurf",
+              "playwright",
+              "puppeteer",
+              "rust",
+              "servo",
+              "web-crawler",
+              "web-crawling",
+              "web-scraper",
+              "web-scraping"
+            ]
+          },
+          "score": 7.0,
+          "summary": "Rust构建的轻量无头浏览器，专为AI代理设计，高速高兼容。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "OpenAI employee arrested for allegedly planting a bug in a conference room",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1010642/openai-employee-arrested-recording-device",
+          "source": "The Verge",
+          "published_at": "2026-10-13T20:45:25Z",
+          "raw_text": "An OpenAI engineer was arrested after the company said it discovered a \"sophisticated recording device\" hidden in one of its offices. The employee was identified as Abdulrahman Alfozan, a 35-year-old Saudi national. Alfozan is charged with using or endeavoring to use a device to intercept oral communications, according to a press release from the Department […]",
+          "extra": {},
+          "score": 9.0,
+          "summary": "OpenAI员工因在会议室安装窃听设备被捕，暴露内部安全漏洞。"
+        },
+        {
+          "section": "news",
+          "title": "Disney offers $20M for Character.AI’s scandal-plagued chatbot tech",
+          "url": "https://arstechnica.com/tech-policy/2026/10/disney-offers-20m-for-character-ais-scandal-plagued-chatbot-tech/",
+          "source": "Ars Technica",
+          "published_at": "2026-10-13T18:23:33Z",
+          "raw_text": "Disney may acquire tech from one of the first chatbot makers linked to child suicide.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "迪士尼拟2000万美元收购Character.AI技术，涉未成年人安全争议。"
+        },
+        {
+          "section": "news",
+          "title": "Science Corporation implants its vision-restoring chip in its first Stargardt disease patient",
+          "url": "https://techcrunch.com/2026/10/13/science-corporation-implants-its-vision-restoring-chip-in-its-first-stargardt-disease-patient/",
+          "source": "TechCrunch",
+          "published_at": "2026-10-13T23:13:31Z",
+          "raw_text": "Max Hodak, the former president and co-founder of Neuralink, detailed on stage at TechCrunch Disrupt how his company's work with PRIMA is part of its path toward a novel brain-computer interface (BCI).",
+          "extra": {},
+          "score": 8.0,
+          "summary": "前Neuralink联合创始人公司首次植入视网膜芯片，治疗罕见眼病。"
+        },
+        {
+          "section": "news",
+          "title": "Shopify opens its catalog up to more AI agents",
+          "url": "https://www.theverge.com/news/1010365/shopify-opens-its-catalog-up-to-more-ai-agents",
+          "source": "The Verge",
+          "published_at": "2026-10-13T19:42:42Z",
+          "raw_text": "More AI agents will soon be able to browse and purchase from Shopify listings, marking an expansion of the company's agentic commerce ambitions. Shopify announced Tuesday it will let shoppers configure their AI agents to purchase products on their behalf, giving more agents access to over a billion listings in Shopify's catalog. (The catalog consists […]",
+          "extra": {},
+          "score": 7.0,
+          "summary": "Shopify开放超10亿商品给AI代理自主购买，推动电商自动化。"
+        },
+        {
+          "section": "news",
+          "title": "AI labs are buying data from dead startups to train their models",
+          "url": "https://www.technologyreview.com/2026/10/13/1145755/ai-labs-buying-data-from-dead-startups-to-train-models/",
+          "source": "MIT Tech Review",
+          "published_at": "2026-10-13T09:00:00Z",
+          "raw_text": "When Keelan Miskell began winding down his crypto startup this year, he didn’t think its data was worth much: the users were anonymous, the company just a few years old. But he’s since turned the firm’s digital archives into real money. He’s netted roughly $25,000 for his code base and a still-pending amount (likely around…",
+          "extra": {},
+          "score": 7.0,
+          "summary": "AI公司收购倒闭初创数据训练模型，数据来源合规性引担忧。"
+        },
+        {
+          "section": "news",
+          "title": "Open models have real benefits. Do they outweigh the risks?",
+          "url": "https://www.technologyreview.com/2026/10/13/1146366/open-models-have-real-benefits-do-they-outweigh-the-risks/",
+          "source": "MIT Tech Review",
+          "published_at": "2026-10-13T10:00:00Z",
+          "raw_text": "MIT Technology Review Explains: Let our writers untangle the complex, messy world of science and technology to help you understand what’s coming next. You can read more from the series here. Late last month, Anthropic released a report arguing that the model GLM-5.3 poses a major cyberattack risk. The report’s core concern is that the…",
+          "extra": {},
+          "score": 6.0,
+          "summary": "MIT评论开源模型风险，Anthropic报告指GLM-5.3有重大网络攻击风险。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Google DeepMind and Singapore Government announce new AI tool to protect citizens against scams",
+          "url": "https://deepmind.google/blog/on-device-ai-scam-detection-mddi/",
+          "source": "Google DeepMind",
+          "published_at": "2026-10-14T02:00:14Z",
+          "raw_text": "Learn how Google DeepMind and GovTech Singapore uses lightweight on-device Gemma models to intercept conversational scams in private chats with zero cloud data egress.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "谷歌DeepMind与新加坡政府推出轻量级端侧模型，零数据上云拦截聊天诈骗。"
+        },
+        {
+          "section": "product",
+          "title": "Higgsfield takes AI video from 1 minute to over 10",
+          "url": "https://openai.com/index/higgsfield-longer-videos-voice",
+          "source": "OpenAI",
+          "published_at": "2026-10-13T12:00:00Z",
+          "raw_text": "Higgsfield brings creators longer videos with GPT-6 Astra, precise visuals with GPT-Image-2.5, and a path to voice filmmaking with GPT-Live.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Higgsfield将AI视频生成时长从1分钟提升至10分钟，并发布新图像模型。"
+        },
+        {
+          "section": "product",
+          "title": "Agent Lightning v1.0: A 3,500-Line Lightweight Agentic RL Framework for Training Agents with Real Harnesses",
+          "url": "https://www.microsoft.com/en-us/research/blog/agent-lightning-v1-0-a-3500-line-lightweight-agentic-rl-framework-for-training-agents-with-real-harnesses/",
+          "source": "Microsoft Research",
+          "published_at": "2026-10-07T16:00:00Z",
+          "raw_text": "Training AI agents with reinforcement learning can be challenging because their tools, context, and decision-making are managed by complex frameworks. Agent Lightning connects existing agents to RL training, making it easier to improve them without rebuilding them. The post Agent Lightning v1.0: A 3,500-Line Lightweight Agentic RL Framework for Training Agents with Real Harnesses appeared first on Microsoft Research .",
+          "extra": {},
+          "score": 7.0,
+          "summary": "发布3500行轻量级RL框架，无需重建即可训练现有智能体。"
+        }
+      ]
+    }
+  ]
+}
