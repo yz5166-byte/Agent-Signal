@@ -1,0 +1,438 @@
+{
+  "date": "2026-10-15",
+  "tip": {
+    "title": "Co-Evolving Acting and Forecasting for Language Agents",
+    "body": "当你的 Agent 在长程任务中因稀疏奖励难以收敛时，可以尝试「同步预测未来」的中间步监督。\n\n做法：在每一步行动后，让模型同时预测未来几步的状态或奖励，用这些预测作为密集监督信号。例如在 ReAct 循环中插入：\n```python\n# 在每一步 action 后，让模型输出 next_state_pred\npred = model.predict_next_state(current_state, action)\nloss = mse_loss(pred, actual_next_state)  # 替代稀疏奖励\n```\n注意：预测模型需与主模型共享部分参数，避免额外开销。此方法无需执行代码，仅需修改训练损失函数。",
+    "ref_title": "Co-Evolving Acting and Forecasting for Language Agents",
+    "ref_url": "https://arxiv.org/abs/2610.20597v1"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "Co-Evolving Acting and Forecasting for Language Agents",
+          "url": "https://arxiv.org/abs/2610.20597v1",
+          "source": "arXiv",
+          "published_at": "2026-10-14T17:59:28Z",
+          "raw_text": "Training language agents is bottlenecked by the high cost of long-horizon rollouts, yet standard agentic reinforcement learning (RL) learns only from a terminal scalar reward, leaving the supervision in intermediate steps largely unused. Prior work exploits this supervision through value targets that estimate per-step success probabilities or observation targets that fit environment response. Both are hard to construct well: (1) value targets come from the same single scalar signal for each step in the trajectory, and (2) observation targets, such as web pages and terminal logs, are long and noisy and reach only one step ahead. We propose \\name, which adds a third kind of multi-step action targets. On successful on-policy trajectories, \\name trains the policy backbone to generate the action sequences that follows each history. Each action is also supervised when forecast from the preceding histories, forming a temporal ensemble that the shared backbone absorbs during training, and this enables acting and forecasting to co-evolve. The policy still acts one step at a time at inference, with no overhead. Across five benchmarks (ALFWorld, ScienceWorld, WebShop, $τ^2$-bench, and AppWorld), \\name (1) achieves stronger aggregate performance than GRPO and RL baselines with predictive auxiliary targets across simulated environments, while improving overall performance on both realistic applications; (2) delivers up to $1.9\\times$ and $2.0\\times$ higher sample efficiency than ECHO and GRPO, respectively, on ScienceWorld; and (3) achieves these gains with a single policy backbone, without additional models, separate pretraining, or inference overhead. The codebase is available at https://github.com/ulab-uiuc/CoPE.",
+          "extra": {
+            "authors": [
+              "Haofei Yu",
+              "Yixing Chen",
+              "Yining Zhao",
+              "Xuyan Ye",
+              "Yuxiang Liu",
+              "Zhigang Hua",
+              "Yan Xie",
+              "Shuang Yang",
+              "Jiaxuan You"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.20597v1"
+          },
+          "score": 9.0,
+          "summary": "提出语言智能体在行动时同步预测未来，用中间步监督替代稀疏奖励，显著提升长程任务训练效率。"
+        },
+        {
+          "section": "paper",
+          "title": "One Task, Many Interfaces: Simple Cross-Interface Consistency Training Improves LLM Agent Robustness",
+          "url": "https://arxiv.org/abs/2610.20576v1",
+          "source": "arXiv",
+          "published_at": "2026-10-14T17:56:06Z",
+          "raw_text": "Post-training binds the competence of an LLM agent to the interface it was trained on. Semantics-preserving perturbations of that interface, such as renaming an action or changing the notation, leave the underlying task unchanged yet make the agent worse at it. Scoring each sample independently means interface randomization only broadens this dependence from a single interface to the training interface distribution, so out-of-distribution perturbations still degrade the agent. We propose Cross-Interface Policy Regularization (CIPR), a self-supervised objective that replaces action names with uninformative identifiers and presents each training sample under two interfaces in which equivalent actions are identified by construction. CIPR penalizes the KL divergence between the action distributions induced under the two interfaces, so the policy behaves consistently across them. We evaluate CIPR in both supervised and reinforcement-learning post-training, where it improves robustness. On agentic function calling, held-out interface perturbations reduce the accuracy of a post-trained agent by nearly 25%, and CIPR recovers 10.5% while leaving accuracy on the unchanged interface intact.",
+          "extra": {
+            "authors": [
+              "Artin Tajdini",
+              "Manpreet Kaur",
+              "Peng Qi"
+            ],
+            "categories": [
+              "cs.LG",
+              "cs.AI",
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.20576v1"
+          },
+          "score": 8.0,
+          "summary": "发现LLM智能体对界面微小扰动（如改名）脆弱，提出跨界面一致性训练，大幅提升鲁棒性。"
+        },
+        {
+          "section": "paper",
+          "title": "Recovering Reliable Supervision via Critique-Guided On-Policy Distillation",
+          "url": "https://arxiv.org/abs/2610.20572v1",
+          "source": "arXiv",
+          "published_at": "2026-10-14T17:54:34Z",
+          "raw_text": "On-policy distillation (OPD) trains a student model on its own rollouts with token-level supervision from a teacher, assuming that the teacher can reach a correct answer from any prefix the student writes. We call this property the recoverability of the teacher and show it fails on incorrect rollouts: the teacher follows student errors, although it recognizes them. We propose CriticOPD, using error recognition to restore recoverability. The teacher critiques an incorrect rollout, allowing the student to rewrite its solution following the error. The resulting output, including the critique as privileged information, is scored by the teacher while the student uses the revision without the critique for training. On two Qwen3 students and six mathematical reasoning benchmarks, CriticOPD improves OPD, with the largest gains on competition problems.",
+          "extra": {
+            "authors": [
+              "Kaixiang Zhao",
+              "Tianrun Yu",
+              "Shangzhe Li",
+              "Yuxiao Yang",
+              "Amanda Hughes",
+              "Weitong Zhang",
+              "Taylor W. Killian"
+            ],
+            "categories": [
+              "cs.LG",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.20572v1"
+          },
+          "score": 8.0,
+          "summary": "揭示教师模型在错误前缀上不可恢复，提出批评引导的在线蒸馏，提升学生模型推理稳定性。"
+        },
+        {
+          "section": "paper",
+          "title": "Scaling Discovery Requires Forgetting",
+          "url": "https://arxiv.org/abs/2610.20563v1",
+          "source": "arXiv",
+          "published_at": "2026-10-14T17:49:37Z",
+          "raw_text": "Automated research with LLM agents has shown promising results in various domains. Through iterative refinement and scored verifiers, LLM agents are capable of discovering new ideas. There are different ways to scale automated research: let one agent iterate for longer, run several agents in parallel, or further let the parallel agents communicate and build on one another's candidates. However, we find that all three strategies eventually plateau as the agents accumulate history. Each agent becomes anchored to its own past attempts, making fewer and smaller edits. Beyond this point, additional budget brings little further improvement. In this paper, we show that the key to scaling discovery further is to forget. Periodically discarding the search state, including every agent's session and the candidate history, and restarting from the best candidate found so far, unblocks the search and pushes the same budget further. We implement forgetting in a team of agents with communication and evaluate it on four tasks spanning heuristic programming, kernel optimization and model training. The results show up to 15% improvement compared to parallel agents, and up to 39% compared to a single agent. Our results suggest that, for open-ended discovery, what an agent is allowed to remember matters as much as how much compute it is given.",
+          "extra": {
+            "authors": [
+              "Shangyin Tan",
+              "Ben Zhou",
+              "Lakshya A Agrawal",
+              "Jialin Zhang",
+              "Yilin Chen",
+              "Qiuyang Mang",
+              "Donghyun Lee",
+              "Dennis Jacob",
+              "Koushik Sen",
+              "Alex Dimakis",
+              "Matei Zaharia"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.20563v1"
+          },
+          "score": 7.0,
+          "summary": "论证多智能体并行探索比单智能体长迭代更高效，提出遗忘机制避免搜索陷入局部最优。"
+        },
+        {
+          "section": "paper",
+          "title": "Price of Anarchy of First-Price Auctions in Agentic Markets",
+          "url": "https://arxiv.org/abs/2610.20587v1",
+          "source": "arXiv",
+          "published_at": "2026-10-14T17:57:57Z",
+          "raw_text": "An agentic market is a decentralized serving-time market where AI agents bid to claim each user prompt. An agent's bid is based on its expected value for the prompt, which is the expectation of the reward for its response minus its inference costs. First-price auctions (FPAs), in which the highest bidder pays its bid and receives the prompt, are a natural way to allocate prompts in such a market, since they are simple and transparent to run, and do not require central knowledge of private capabilities and costs. However, FPAs are not truthful: participants may bid less than their true value in the hope of a larger profit, and the prompt may then be allocated to someone other than the bidder who values it the most. This welfare loss is quantified by the $\\textit{price-of-anarchy}$ (PoA). In this paper, we argue that agentic markets are likely to possess features that reduce the price-of-anarchy. The first is a $\\textit{competitive floor}$, which occurs when multiple bidders usually value the prompt above some baseline share of the optimal welfare (e.g., because the best models are often distilled into cheaper alternatives, which perform similarly). We show that competition among them then limits the welfare loss, which can be driven to zero as the floor rises. The second feature is $\\textit{near-independence}$ of values after conditioning on the prompt, which occurs when most of the predictable variation in the expected value is determined by the difficulty of the prompt. As the value distribution approaches conditional independence, we can derive an efficiency guarantee that approaches a factor of $1 - 1/e^2$ of the optimal welfare. Thus, both features give rise to welfare lower bounds that are significantly better than the well-known general case of $1 - 1/e$. We validate these results empirically using auctions with strategic bidders simulated on the EmbedLLM prompt routing dataset.",
+          "extra": {
+            "authors": [
+              "Shubhendu Trivedi",
+              "Jacob Eisenstein",
+              "Alekh Agarwal",
+              "Ian Gemp",
+              "Michael Kaisers",
+              "Adam Fisch"
+            ],
+            "categories": [
+              "cs.GT",
+              "cs.AI",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.20587v1"
+          },
+          "score": 7.0,
+          "summary": "首次分析智能体市场中一级价格拍卖的无政府代价，为多智能体竞价系统设计提供理论指导。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "morluto/rea",
+          "url": "https://github.com/morluto/rea",
+          "source": "GitHub 经典",
+          "published_at": "2026-04-14T00:51:32Z",
+          "raw_text": "Reverse engineer anything with agents, from app behavior down to native binaries.",
+          "extra": {
+            "stars": 248783,
+            "language": "TypeScript",
+            "topics": [
+              "agent-skills",
+              "ai-agents",
+              "binary-analysis",
+              "claude-code",
+              "cli",
+              "codex",
+              "cordis",
+              "decompiler",
+              "developer-tools",
+              "dsh",
+              "dsh-plugin",
+              "ghidra",
+              "hopper",
+              "llm",
+              "mcp",
+              "model-context-protocol",
+              "rea",
+              "reverse-engineering",
+              "static-analysis",
+              "touhou"
+            ]
+          },
+          "score": 9.0,
+          "summary": "用AI代理逆向分析应用行为到原生二进制，打通黑盒调试链路。"
+        },
+        {
+          "section": "repo",
+          "title": "hypit-ai/hypit",
+          "url": "https://github.com/hypit-ai/hypit",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-29T18:49:19Z",
+          "raw_text": "Clone any viral video with AI agents. Not just a script, the whole workflow: swap the face, the words, the B-roll, ship 100 variants in one command, and get your 100M views.",
+          "extra": {
+            "stars": 22287,
+            "language": "TypeScript",
+            "topics": [
+              "agentic-ai",
+              "ai",
+              "ai-agents",
+              "ai-video",
+              "compiler",
+              "dsl",
+              "ffmpeg",
+              "generative-ai",
+              "llm",
+              "markup-language",
+              "monorepo",
+              "plugin-system",
+              "programming-language",
+              "text-to-video",
+              "typescript",
+              "video",
+              "video-automation",
+              "video-clone",
+              "video-editing",
+              "video-generation"
+            ]
+          },
+          "score": 9.0,
+          "summary": "AI代理克隆爆款视频全流程：换脸换词换素材，一键生成百个变体。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "Supercharge your AI agents with data from the web and beyond. Building the library for superintelligence. 🔥",
+          "extra": {
+            "stars": 191633,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 8.0,
+          "summary": "为AI代理提供网页数据抓取能力，相当于给智能体装上网关。"
+        },
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi, GLM, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 183196,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "gemma3",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llama3",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 8.0,
+          "summary": "本地一键运行Kimi、DeepSeek等国产模型，降低私有化部署门槛。"
+        },
+        {
+          "section": "repo",
+          "title": "lexmount/moli",
+          "url": "https://github.com/lexmount/moli",
+          "source": "GitHub 新星",
+          "published_at": "2026-08-10T13:20:30Z",
+          "raw_text": "Best headless browser for AI agents. Lite, Fast, High-Compatibility. Built in Rust",
+          "extra": {
+            "stars": 18486,
+            "language": "Rust",
+            "topics": [
+              "ai-agents",
+              "ai-tools",
+              "browser",
+              "browser-automation",
+              "cloud-browser",
+              "kitesurf",
+              "playwright",
+              "puppeteer",
+              "rust",
+              "servo",
+              "web-crawler",
+              "web-crawling",
+              "web-scraper",
+              "web-scraping"
+            ]
+          },
+          "score": 7.0,
+          "summary": "Rust编写的高兼容无头浏览器，专为AI代理轻量自动化设计。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Eight states sue OpenAI, saying ChatGPT isn’t safe for kids",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1011500/openai-state-lawsuits-chatgpt-safety",
+          "source": "The Verge",
+          "published_at": "2026-10-14T21:11:28Z",
+          "raw_text": "OpenAI is facing a new wave of lawsuits from eight US states that accuse the company of harming children and misleading customers about the safety of ChatGPT, as reported earlier by Reuters. The lawsuits, filed separately by Iowa, Kansas, Nebraska, West Virginia, Arkansas, Arizona, Idaho, and Montana, allege OpenAI unlawfully put profits over safety when […]",
+          "extra": {},
+          "score": 9.0,
+          "summary": "八州起诉OpenAI危害儿童安全，监管风险升级，直接影响行业合规成本。"
+        },
+        {
+          "section": "news",
+          "title": "Recording device hidden in toilet paper found in top-secret OpenAI meeting room",
+          "url": "https://arstechnica.com/tech-policy/2026/10/fbi-arrests-openai-engineer-suspected-of-planting-bug-in-conference-room/",
+          "source": "Ars Technica",
+          "published_at": "2026-10-14T16:41:49Z",
+          "raw_text": "OpenAI engineer faces 5 years and $250K fine as FBI lobs foreign spy charges.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "OpenAI会议室发现窃听器，涉国家安全与商业机密，暴露顶级AI公司安保漏洞。"
+        },
+        {
+          "section": "news",
+          "title": "Ricursive Intelligence is betting on AI-designed chips to help solve the compute crisis",
+          "url": "https://techcrunch.com/2026/10/14/ricursive-intelligence-is-betting-on-ai-designed-chips-to-help-solve-the-compute-crisis/",
+          "source": "TechCrunch",
+          "published_at": "2026-10-15T01:01:32Z",
+          "raw_text": "The founders detailed how their startup is developing AI that can design chips, learn from each iteration, and improve subsequent designs, all with the goal of automating and accelerating the chip design process.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "AI设计芯片以缓解算力危机，技术路径创新，可能改变硬件供给格局。"
+        },
+        {
+          "section": "news",
+          "title": "The AI race is back on",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1011311/the-ai-race-is-back-on",
+          "source": "The Verge",
+          "published_at": "2026-10-14T19:06:03Z",
+          "raw_text": "Last week, Anthropic and OpenAI looked like they had the AI race to themselves, pulling ahead with increasingly powerful models that left their rivals in the dust. Google seemed hopelessly far behind, while Meta, despite spending billions to revive its floundering AI ambitions, had yet to establish itself as a serious contender. Even the latest […]",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Anthropic与OpenAI领跑，Google、Meta追赶，模型竞赛格局生变。"
+        },
+        {
+          "section": "news",
+          "title": "AI labs are buying data from dead startups to train their models",
+          "url": "https://www.technologyreview.com/2026/10/13/1145755/ai-labs-buying-data-from-dead-startups-to-train-models/",
+          "source": "MIT Tech Review",
+          "published_at": "2026-10-13T09:00:00Z",
+          "raw_text": "When Keelan Miskell began winding down his crypto startup this year, he didn’t think its data was worth much: the users were anonymous, the company just a few years old. But he’s since turned the firm’s digital archives into real money. He’s netted roughly $25,000 for his code base and a still-pending amount (likely around…",
+          "extra": {},
+          "score": 7.0,
+          "summary": "AI公司收购倒闭初创数据训练模型，数据来源合规性引发行业讨论。"
+        },
+        {
+          "section": "news",
+          "title": "Researchers use AI to design proteins that cut up other proteins",
+          "url": "https://arstechnica.com/science/2026/10/researchers-use-ai-to-design-proteins-that-cut-up-other-proteins/",
+          "source": "Ars Technica",
+          "published_at": "2026-10-14T17:10:15Z",
+          "raw_text": "AI design tools make proteins that break bonds that are stable for hundreds of years.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "AI设计可切割蛋白质的酶，突破百年稳定键，生物技术应用潜力巨大。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Amp puts AI agents to work beyond code with OpenAI models",
+          "url": "https://openai.com/index/amp-beyond-coding",
+          "source": "OpenAI",
+          "published_at": "2026-10-14T12:00:00Z",
+          "raw_text": "See how Amp pushes the frontier of what agents can do with GPT-6 Astra, Ultrafast, GPT-Live-1, and Sign in with ChatGPT.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "Amp 用 OpenAI 最新多模型（含 GPT-6 Astra）将 AI Agent 能力从代码扩展到更多业务场景。"
+        },
+        {
+          "section": "product",
+          "title": "SentinelOne cuts malware analysis from weeks to hours",
+          "url": "https://openai.com/index/sentinelone",
+          "source": "OpenAI",
+          "published_at": "2026-10-14T12:00:00Z",
+          "raw_text": "With OpenAI Daybreak, SentinelOne cuts weeks of malware analysis to hours, creating capacity to investigate more threats.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "SentinelOne 借助 OpenAI Daybreak 将恶意软件分析从数周缩短至数小时，大幅提升威胁响应效率。"
+        },
+        {
+          "section": "product",
+          "title": "Google DeepMind and Singapore Government collaborate to build fine-tuned AI model for scam detection",
+          "url": "https://deepmind.google/blog/on-device-ai-scam-detection-mddi/",
+          "source": "Google DeepMind",
+          "published_at": "2026-10-14T02:00:14Z",
+          "raw_text": "Learn how Google DeepMind and GovTech Singapore uses lightweight on-device Gemma models to intercept conversational scams in private chats with zero cloud data egress.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Google DeepMind 与新加坡政府合作，用端侧 Gemma 模型在私聊中零数据外泄拦截诈骗。"
+        }
+      ]
+    }
+  ]
+}
