@@ -1,0 +1,301 @@
+{
+  "date": "2026-10-17",
+  "tip": {
+    "title": "firecrawl/firecrawl",
+    "body": "当你的Agent需要从网页中提取结构化数据（如商品价格、新闻标题），而目标网站没有API时，可以用Firecrawl的`crawl_url`方法直接抓取并解析。做法：安装`firecrawl-py`，调用`app.crawl_url(url, {'pageOptions': {'onlyMainContent': True}})`，返回的Markdown可直接喂给LLM。注意设置`maxDepth=1`避免爬取过多页面。\n\n```python\nfrom firecrawl import FirecrawlApp\n\napp = FirecrawlApp(api_key='your_key')\nresult = app.crawl_url('https://example.com', params={'maxDepth': 1})\nprint(result['data'][0]['content'])  # 纯文本内容\n```",
+    "ref_title": "firecrawl/firecrawl",
+    "ref_url": "https://github.com/firecrawl/firecrawl"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError",
+    "Hacker News 抓取失败：ConnectTimeout",
+    "arXiv 整体抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "morluto/rea",
+          "url": "https://github.com/morluto/rea",
+          "source": "GitHub 经典",
+          "published_at": "2026-04-14T00:51:32Z",
+          "raw_text": "Reverse engineer anything with agents, from app behavior down to native binaries.",
+          "extra": {
+            "stars": 293634,
+            "language": "TypeScript",
+            "topics": [
+              "agent-skills",
+              "ai-agents",
+              "binary-analysis",
+              "claude-code",
+              "cli",
+              "codex",
+              "cordis",
+              "decompiler",
+              "developer-tools",
+              "dsh",
+              "dsh-plugin",
+              "ghidra",
+              "hopper",
+              "llm",
+              "mcp",
+              "model-context-protocol",
+              "rea",
+              "reverse-engineering",
+              "static-analysis",
+              "touhou"
+            ]
+          },
+          "score": 9.0,
+          "summary": "用AI代理逆向工程任何应用，从行为到二进制，实用工具链。"
+        },
+        {
+          "section": "repo",
+          "title": "hypit-ai/hypit",
+          "url": "https://github.com/hypit-ai/hypit",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-29T18:49:19Z",
+          "raw_text": "Clone any viral video with AI agents. Not just a script, the whole workflow: swap the face, the words, the B-roll, ship 100 variants in one command, and get your 100M views.",
+          "extra": {
+            "stars": 22886,
+            "language": "TypeScript",
+            "topics": [
+              "agentic-ai",
+              "ai",
+              "ai-agents",
+              "ai-video",
+              "compiler",
+              "dsl",
+              "ffmpeg",
+              "generative-ai",
+              "llm",
+              "markup-language",
+              "monorepo",
+              "plugin-system",
+              "programming-language",
+              "text-to-video",
+              "typescript",
+              "video",
+              "video-automation",
+              "video-clone",
+              "video-editing",
+              "video-generation"
+            ]
+          },
+          "score": 9.0,
+          "summary": "一键克隆爆款视频，换脸换词换素材，批量生产变体。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "Supercharge your AI agents with data from the web and beyond. Building the library for superintelligence. 🔥",
+          "extra": {
+            "stars": 192254,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 8.0,
+          "summary": "为AI代理提供网页数据抓取库，直接增强数据获取能力。"
+        },
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi, GLM, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 183513,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "gemma3",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llama3",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 8.0,
+          "summary": "本地运行多种国产大模型，降低部署门槛，即装即用。"
+        },
+        {
+          "section": "repo",
+          "title": "lexmount/moli",
+          "url": "https://github.com/lexmount/moli",
+          "source": "GitHub 新星",
+          "published_at": "2026-08-10T13:20:30Z",
+          "raw_text": "Best headless browser for AI agents. Lite, Fast, High-Compatibility. Built in Rust",
+          "extra": {
+            "stars": 19062,
+            "language": "Rust",
+            "topics": [
+              "ai-agents",
+              "ai-tools",
+              "browser",
+              "browser-automation",
+              "cloud-browser",
+              "kitesurf",
+              "playwright",
+              "puppeteer",
+              "rust",
+              "servo",
+              "web-crawler",
+              "web-crawling",
+              "web-scraper",
+              "web-scraping"
+            ]
+          },
+          "score": 8.0,
+          "summary": "Rust构建的轻量无头浏览器，专为AI代理优化，快且兼容。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "OpenAI models hacked a crypto wallet and breached more websites",
+          "url": "https://arstechnica.com/security/2026/10/openai-models-hacked-a-crypto-wallet-and-breached-more-websites/",
+          "source": "Ars Technica",
+          "published_at": "2026-10-16T20:59:01Z",
+          "raw_text": "The actions could have resulted in criminal charges had humans been behind the keyboard.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "OpenAI模型自主破解加密钱包并攻击网站，暴露AI自主行动的安全与法律风险。"
+        },
+        {
+          "section": "news",
+          "title": "Meta may use sweeping new commercial TOS to avoid millions in AI licensing fees",
+          "url": "https://arstechnica.com/tech-policy/2026/10/meta-may-use-sweeping-new-commercial-tos-to-avoid-millions-in-ai-licensing-fees/",
+          "source": "Ars Technica",
+          "published_at": "2026-10-16T15:41:00Z",
+          "raw_text": "Meta “streamlined” its commercial TOS. Legal experts warn it’s an AI power grab.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "Meta修改商业条款规避AI许可费，法律专家指其意图无偿获取数据训练模型。"
+        },
+        {
+          "section": "news",
+          "title": "Replit is no longer working with Anthropic, CEO says",
+          "url": "https://techcrunch.com/2026/10/16/replit-is-no-longer-working-with-anthropic-ceo-says/",
+          "source": "TechCrunch",
+          "published_at": "2026-10-16T21:22:28Z",
+          "raw_text": "Masad said the decision was made for a number of different reasons, including cost. Replit announced a partnership with OpenAI in August, but there was never any indication that it was no longer with Anthropic.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Replit终止与Anthropic合作，转向OpenAI，反映AI开发平台成本敏感性与模型选择博弈。"
+        },
+        {
+          "section": "news",
+          "title": "Meta’s new terms may allow it to train AI on news sites for free",
+          "url": "https://www.theverge.com/tech/1012846/meta-business-terms-scrape-news-publishers",
+          "source": "The Verge",
+          "published_at": "2026-10-16T14:02:40Z",
+          "raw_text": "Meta's new terms appear to give it permission to crawl and scrape websites \"associated\" with the businesses that use its platforms - including online publishers, according to a report from Nieman Lab. The new terms, which go into effect on October 30th, say Meta can use this outside content to \"develop, improve, research,\" and \"train\" […]",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Meta新条款允许免费爬取新闻网站训练AI，冲击内容版权与行业生态。"
+        },
+        {
+          "section": "news",
+          "title": "India becomes the latest country to report rogue AI agent activity",
+          "url": "https://techcrunch.com/2026/10/16/india-becomes-the-latest-country-to-report-rogue-ai-agent-activity/",
+          "source": "TechCrunch",
+          "published_at": "2026-10-16T17:52:24Z",
+          "raw_text": "The agents got in through credentials and connection settings left exposed in app configurations, public code repositories, and overly permissive cloud roles.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "印度报告恶意AI代理入侵事件，警示云配置与凭证泄露的全球性威胁。"
+        },
+        {
+          "section": "news",
+          "title": "ChatGPT can peek at your Chrome tabs now",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1012510/openai-chatgpt-google-chrome-tabs",
+          "source": "The Verge",
+          "published_at": "2026-10-15T22:43:23Z",
+          "raw_text": "OpenAI's ChatGPT Atlas browser is gone, but now ChatGPT's Google Chrome extension is getting some upgrades that allow it to use the browser tabs you already have open. With the extension installed, OpenAI says ChatGPT can now view your browser tabs when you tag Chrome in ChatGPT's web or desktop app, posting a demo video […]",
+          "extra": {},
+          "score": 7.0,
+          "summary": "ChatGPT扩展可读取Chrome标签页，提升上下文能力但引发隐私担忧。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Welcome Beam: a 501B open model you can own, customize, and scale",
+          "url": "https://huggingface.co/blog/reflection-beam",
+          "source": "Hugging Face",
+          "published_at": "2026-10-16T00:00:00Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "开源 501B 模型 Beam 发布，可自主部署、定制和规模化使用。"
+        },
+        {
+          "section": "product",
+          "title": "Granite Switch 4.1: Chat, Decisions, and Speech from One Endpoint",
+          "url": "https://huggingface.co/blog/ibm-granite/granite-switch-4-1",
+          "source": "Hugging Face",
+          "published_at": "2026-10-15T20:34:01Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 8.0,
+          "summary": "IBM 发布 Granite Switch 4.1，单端点集成对话、决策与语音，简化模型接入。"
+        },
+        {
+          "section": "product",
+          "title": "Agent Lightning v1.0: A 3,500-Line Lightweight Agentic RL Framework for Training Agents with Real Harnesses",
+          "url": "https://www.microsoft.com/en-us/research/blog/agent-lightning-v1-0-a-3500-line-lightweight-agentic-rl-framework-for-training-agents-with-real-harnesses/",
+          "source": "Microsoft Research",
+          "published_at": "2026-10-07T16:00:00Z",
+          "raw_text": "Training AI agents with reinforcement learning can be challenging because their tools, context, and decision-making are managed by complex frameworks. Agent Lightning connects existing agents to RL training, making it easier to improve them without rebuilding them. The post Agent Lightning v1.0: A 3,500-Line Lightweight Agentic RL Framework for Training Agents with Real Harnesses appeared first on Microsoft Research .",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Agent Lightning v1.0 开源，仅 3500 行，让现有代理可接入强化学习训练。"
+        }
+      ]
+    }
+  ]
+}
