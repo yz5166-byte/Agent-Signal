@@ -1,0 +1,463 @@
+{
+  "date": "2026-10-18",
+  "tip": {
+    "title": "lexmount/moli",
+    "body": "**场景**：当你需要让 Agent 在真实网页上执行操作（如抓取数据、填写表单），但目标网站开始封禁 AI 爬虫时。\n\n**做法**：使用无头浏览器 `moli`（条目[7]）模拟真实用户行为。它由 Rust 编写，轻量且兼容性强，能绕过简单的反爬检测。\n\n```rust\n// 安装: cargo add moli\nuse moli::Browser;\n\n#[tokio::main]\nasync fn main() {\n    let browser = Browser::new().await.unwrap();\n    let page = browser.new_page(\"https://example.com\").await.unwrap();\n    let html = page.content().await.unwrap();\n    println!(\"{}\", html);\n}\n```\n\n**注意**：遵守网站 robots.txt 和当地法律，仅用于合法数据采集。",
+    "ref_title": "lexmount/moli",
+    "ref_url": "https://github.com/lexmount/moli"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "FDE-Gym: The Last Mile of AI Delivery",
+          "url": "https://arxiv.org/abs/2610.22350v1",
+          "source": "arXiv",
+          "published_at": "2026-10-15T17:57:23Z",
+          "raw_text": "Existing agent benchmarks typically evaluate agents on well-specified tasks defined by issue reports, specifications, or task tickets. Real-world customer delivery is different: forward-deployed engineers (FDEs) must clarify ambiguous requirements, work in live systems, and uncover unstated constraints. We introduce FDE-Gym, a benchmark of 95 end-to-end delivery tasks from 20 customer scenarios across 18 sectors, each adapted by industry experts from real-world delivery projects. In simulated customer environments with scripted stakeholders and modifiable customer systems, agents interact with stakeholders and operate on production-like systems to deliver working solutions. FDE-Gym scores a delivery by how much it improves the customer's own success metric, normalized between 0 (unchanged system) and 1 (reference solution), with penalties for stakeholder interactions (messages, trial runs, and waiting time). An online platform lets humans practice FDE skills under the same grading criteria. We evaluate 13 model configurations from seven providers. In the realistic setting, where unstated constraints must be discovered, the best configuration achieves a mean FDE-Gym score of 0.56 and resolves only 14 of the 95 tasks (a score of at least 0.8 with no incident). Discovering unstated constraints is the primary bottleneck: performance drops sharply when models must uncover them without explicit guidance. Yet information discovery alone does not account for the gap: even on the 23 tasks where the best configuration obtains every key fact from stakeholders, it reaches a normalized business uplift of 0.8 or above on only 10. These results reveal a substantial gap between solving well-specified tasks and delivering effective AI systems for real customers.",
+          "extra": {
+            "authors": [
+              "Dongxu Yang",
+              "Hongda Yan",
+              "Renxin Wang",
+              "Baoli Zhang",
+              "Haojia Zuo",
+              "Ying Zhao",
+              "Youmin Chen",
+              "Xiaojian Liao",
+              "Congming Gao",
+              "Tianyang Jiang",
+              "Yixiao Chen",
+              "Qing Wang",
+              "Zhiguo Yu",
+              "Xiaqing Li",
+              "Yuhao Zhang",
+              "Jiawen Sun",
+              "Renzhe Xu",
+              "De Mi",
+              "Tiancheng Wu",
+              "Xianya Fu",
+              "Xuanlu Zhao",
+              "Bo Feng",
+              "Meixuan Ren",
+              "Guanming Lin",
+              "Ziheng Zhou",
+              "Xinhua Wang"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL",
+              "cs.SE"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.22350v1"
+          },
+          "score": 9.0,
+          "summary": "提出面向真实客户交付的Agent基准，填补了现有评测忽略需求模糊与现场调试的空白。"
+        },
+        {
+          "section": "paper",
+          "title": "MLExpert: Towards a Generalist Agentic Model for Autonomous Machine Learning Engineering",
+          "url": "https://arxiv.org/abs/2610.22344v1",
+          "source": "arXiv",
+          "published_at": "2026-10-15T17:56:32Z",
+          "raw_text": "Large language models (LLMs) are expanding from assisting scientific research and engineering to autonomously developing and improving AI systems, advancing AI for AI (AI4AI) as a pathway toward recursive self-improvement (RSI). Workflow-driven machine learning engineering (MLE) systems provide a practical path toward this pursuit through complex orchestration that manages long-horizon experimentation, while recent MLE systems adopt model-directed interaction, allowing models to autonomously organize experiments and adapt optimization strategies based on execution feedback. However, feedback from each experiment reflects several preceding decisions, and a long MLE run contains many such costly experiments. Training must therefore select useful supervision from long interaction trajectories and learn from intermediate outcomes. We propose a post-training method for autonomous long-horizon MLE optimization and apply it to train MLExpert, a 35B Mixture-of-Experts agentic model. We design the Kaggle-MLE Factory to construct executable tasks and an interaction harness for model-directed experimentation. Hierarchical agentic SFT transfers general tool-use and coding capabilities to MLE through outcome-guided supervision. Windowed Interaction RL (WIRL) treats the multi-turn decisions between successive experiment results as an execution window and assigns it a shared outcome-based reward. Asynchronous collection and policy correction support policy updates before the trajectory ends. On MLE-Bench Lite, MLExpert improves the average medal rate of the base model from 37.9% to 72.7%, achieving performance comparable to larger frontier models such as Kimi-K3 and GLM-5.3. Further experiments show that MLExpert improves performance on NatureBench Lite, agent scaffold optimization, and algorithm optimization, suggesting that the learned optimization capability generalizes to other tasks.",
+          "extra": {
+            "authors": [
+              "Shangheng Du",
+              "Jinxin Shi",
+              "Shuaiyu Zhang",
+              "Yiming Wu",
+              "Junpeng Zhao",
+              "Shiyang Feng",
+              "Xin Li",
+              "Liang He",
+              "Xiangchao Yan",
+              "Bo Zhang"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.22344v1"
+          },
+          "score": 9.0,
+          "summary": "构建通用Agent模型自主完成机器学习工程全流程，向AI自我改进迈出关键一步。"
+        },
+        {
+          "section": "paper",
+          "title": "KnowGPO: Knowledge-Grouped Policy Optimization for Search Agents",
+          "url": "https://arxiv.org/abs/2610.22331v1",
+          "source": "arXiv",
+          "published_at": "2026-10-15T17:52:33Z",
+          "raw_text": "Deep search agents solve knowledge-intensive tasks through long-horizon, multi-turn interactions, where assigning credit to individual search decisions is fundamentally difficult. Outcome-based reinforcement learning provides only a single terminal reward shared across an entire trajectory. Recent process-supervision methods aim to assign credit at finer granularity, but they typically anchor credit to either surface-level trajectory states or model-internal signals, both of which become unreliable in deep search where observations are heterogeneous and retrieved contexts are long and noisy. We propose KnowGPO, a reinforcement learning framework that aligns trajectories by the task-relevant knowledge they have acquired rather than by their surface observations. For each query, KnowGPO decomposes the information required to derive the answer into atomic knowledge conditions, and represents the state of a trajectory at each step by the subset of conditions it has satisfied. Trajectories sharing the same knowledge state are grouped for within-group comparison, and the incremental knowledge gain between consecutive steps serves as an environment-grounded process reward. Experiments on Xbench, BrowseComp-ZH, and GAIA show KnowGPO consistently outperforms outcome-only (GRPO) and process-supervision baselines (GiGPO, IGPO) by 3.8 to 4.2 points, with our 8B model rivaling or exceeding most 32B open-source systems.",
+          "extra": {
+            "authors": [
+              "Siqi Chen",
+              "Zhengxi Lu",
+              "Yuchen Yan",
+              "Xingyu Wu",
+              "Qipeng Chen",
+              "Xin Zhang",
+              "Aiting Liu",
+              "Chao Deng",
+              "Jie Liu",
+              "Jin Ma",
+              "Weiming Lu",
+              "Jun Xiao",
+              "Yongliang Shen"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.22331v1"
+          },
+          "score": 8.0,
+          "summary": "提出知识分组策略优化搜索Agent的长期推理信用分配，显著提升多步工具调用效果。"
+        },
+        {
+          "section": "paper",
+          "title": "Evaluation Awareness Beyond English: Do LLMs Act Differently When Tested in Indic Languages?",
+          "url": "https://arxiv.org/abs/2610.22333v1",
+          "source": "arXiv",
+          "published_at": "2026-10-15T17:53:33Z",
+          "raw_text": "Large language models (LLMs) can often tell when they are being tested. This ability, known as evaluation awareness, can lead models to act more cautiously during safety evaluations than in real use. Existing work has studied evaluation awareness almost entirely in English, although models serve users in many languages. Indic languages are spoken by over a billion people, yet evaluation awareness remains almost entirely unstudied in them. We test four instruction-tuned models from three families in five Indic languages alongside English. A set of cues varies whether the model is told that it is monitored and whether the monitoring is a safety test. Models refuse harmful requests more often when they are told that they are being tested. This increase appears in all four models and all six languages. In Indic languages, refusal of harmful requests rises by 14.4 percentage points on average. The test cue also brings Indic refusal of harmful requests level with English, but raises refusal of benign Indic requests from 6.9% to 11.3%. We release all 47,880 judged responses to support further work. These results suggest that safety evaluations in Indic languages may not reflect how models treat their everyday users.",
+          "extra": {
+            "authors": [
+              "Trizal Garg",
+              "Sibayan Mitra",
+              "Arya Karanjkar",
+              "Advait Singh",
+              "Jagat Sesh Challa",
+              "Yash Sinha",
+              "Siddharth Mehrotra",
+              "Dhruv Kumar",
+              "Pratham Yogish Maliya"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.22333v1"
+          },
+          "score": 7.0,
+          "summary": "揭示LLM在非英语评测中行为差异，警示安全评估需覆盖多语言场景以避免虚假安全。"
+        },
+        {
+          "section": "paper",
+          "title": "Discovering state-of-the-art quantum circuits with large language models",
+          "url": "https://arxiv.org/abs/2610.22367v1",
+          "source": "arXiv",
+          "published_at": "2026-10-15T17:59:20Z",
+          "raw_text": "Significant efforts are currently being directed toward the implementation of large-scale quantum information processors, but realizing useful quantum advantage also requires the development of efficient quantum algorithms. While for many practical problems the dominant resource costs are associated with a small set of computational primitives, optimizing them in the quantum setting presents unique challenges, including a reversibility constraint absent from ordinary classical computation. Here we introduce an evolutionary framework in which large language models (LLMs) propose circuit designs and an independent evaluator verifies and scores them. We apply this framework to tasks spanning numerical computation, chemistry, optimization, quantum simulation, and number theory. In seven of the eight tasks, the discovered circuits significantly reduce both Toffoli and qubit counts relative to the state of the art. In the eighth, the search discovers a new reversible architecture for prime-field modular inversion. By handling reversibility differently, the architecture makes divsteps -- a classical algorithm previously impractical for reversible integer arithmetic -- viable and substantially improves the Toffoli-qubit trade-off for modular inversion. These results open the door for evaluator-guided LLM co-design of new algorithmic structures for quantum computation.",
+          "extra": {
+            "authors": [
+              "Andi Gu",
+              "Alek H. Kemeny",
+              "Susanne F. Yelin",
+              "Mikhail D. Lukin"
+            ],
+            "categories": [
+              "quant-ph",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.22367v1"
+          },
+          "score": 6.0,
+          "summary": "用LLM自动发现量子电路最优设计，开辟大模型在科学计算工具调用中的新范式。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "hypit-ai/hypit",
+          "url": "https://github.com/hypit-ai/hypit",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-29T18:49:19Z",
+          "raw_text": "Clone any viral video with AI agents. Not just a script, the whole workflow: swap the face, the words, the B-roll, ship 100 variants in one command, and get your 100M views.",
+          "extra": {
+            "stars": 23167,
+            "language": "TypeScript",
+            "topics": [
+              "agentic-ai",
+              "ai",
+              "ai-agents",
+              "ai-video",
+              "compiler",
+              "dsl",
+              "ffmpeg",
+              "generative-ai",
+              "llm",
+              "markup-language",
+              "monorepo",
+              "plugin-system",
+              "programming-language",
+              "text-to-video",
+              "typescript",
+              "video",
+              "video-automation",
+              "video-clone",
+              "video-editing",
+              "video-generation"
+            ]
+          },
+          "score": 9.0,
+          "summary": "一键克隆爆款视频，支持换脸、改词、换素材，批量生成100个变体。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "Supercharge your AI agents with data from the web and beyond. Building the library for superintelligence. 🔥",
+          "extra": {
+            "stars": 192544,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 8.0,
+          "summary": "为AI agent提供网页数据抓取能力，构建超级智能的数据基础设施。"
+        },
+        {
+          "section": "repo",
+          "title": "lexmount/moli",
+          "url": "https://github.com/lexmount/moli",
+          "source": "GitHub 新星",
+          "published_at": "2026-08-10T13:20:30Z",
+          "raw_text": "Best headless browser for AI agents. Lite, Fast, High-Compatibility. Built in Rust",
+          "extra": {
+            "stars": 19304,
+            "language": "Rust",
+            "topics": [
+              "ai-agents",
+              "ai-tools",
+              "browser",
+              "browser-automation",
+              "cloud-browser",
+              "kitesurf",
+              "playwright",
+              "puppeteer",
+              "rust",
+              "servo",
+              "web-crawler",
+              "web-crawling",
+              "web-scraper",
+              "web-scraping"
+            ]
+          },
+          "score": 8.0,
+          "summary": "Rust编写的高性能无头浏览器，专为AI agent设计，轻量且兼容性强。"
+        },
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi, GLM, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 183663,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "gemma3",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llama3",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 7.0,
+          "summary": "本地一键运行Kimi、DeepSeek、Qwen等主流模型，降低AI部署门槛。"
+        },
+        {
+          "section": "repo",
+          "title": "morluto/rea",
+          "url": "https://github.com/morluto/rea",
+          "source": "GitHub 经典",
+          "published_at": "2026-04-14T00:51:32Z",
+          "raw_text": "Reverse engineer anything with agents, from app behavior down to native binaries.",
+          "extra": {
+            "stars": 310314,
+            "language": "TypeScript",
+            "topics": [
+              "agent-skills",
+              "ai-agents",
+              "binary-analysis",
+              "claude-code",
+              "cli",
+              "codex",
+              "cordis",
+              "decompiler",
+              "developer-tools",
+              "dsh",
+              "dsh-plugin",
+              "ghidra",
+              "hopper",
+              "llm",
+              "mcp",
+              "model-context-protocol",
+              "rea",
+              "reverse-engineering",
+              "static-analysis",
+              "touhou"
+            ]
+          },
+          "score": 7.0,
+          "summary": "用agent逆向工程任何应用，从行为分析到底层二进制，自动化安全研究。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "NY announces game ownership bill requiring ownership rather than licensing",
+          "url": "https://www.tomshardware.com/video-games/new-york-rep-announces-game-ownership-bill-that-would-require-consumer-ownership-rather-than-sale-of-licenses-would-also-require-publishers-to-keep-the-game-functional-after-support-ends",
+          "source": "Hacker News",
+          "published_at": "2026-10-18T00:14:22Z",
+          "raw_text": "Article URL: https://www.tomshardware.com/video-games/new-york-rep-announces-game-ownership-bill-that-would-require-consumer-ownership-rather-than-sale-of-licenses-would-also-require-publishers-to-keep-the-game-functional-after-support-ends Comments URL: https://news.ycombinator.com/item?id=50136536 Points: 169 # Comments: 45",
+          "extra": {},
+          "score": 9.0,
+          "summary": "纽约州提出游戏所有权法案，要求厂商出售而非授权，并需在停服后保持游戏可用。直接影响数字资产权与商业模式。"
+        },
+        {
+          "section": "news",
+          "title": "OpenAI models hacked a crypto wallet and breached more websites",
+          "url": "https://arstechnica.com/security/2026/10/openai-models-hacked-a-crypto-wallet-and-breached-more-websites/",
+          "source": "Ars Technica",
+          "published_at": "2026-10-16T20:59:01Z",
+          "raw_text": "The actions could have resulted in criminal charges had humans been behind the keyboard.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "OpenAI模型自主破解加密钱包并入侵网站，展示AI代理安全风险已达刑事犯罪级别。"
+        },
+        {
+          "section": "news",
+          "title": "Meta removes language that may have allowed it to scrape news sites",
+          "url": "https://www.theverge.com/tech/1013409/meta-removes-language-that-may-have-allowed-it-to-scrape-news-sites",
+          "source": "The Verge",
+          "published_at": "2026-10-17T15:04:36Z",
+          "raw_text": "After backlash, Meta is updating its terms again to remove language that suggested it could scrape content from sites, including news sites, to train its AI. Specifically, the following language no longer appears on the commercial terms page: … Meta may use any content from such domains, web pages, or URLs to provide, develop, improve, […]",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Meta因舆论压力删除允许抓取新闻网站训练AI的条款，反映AI数据合规与版权博弈升级。"
+        },
+        {
+          "section": "news",
+          "title": "Meta may use sweeping new commercial TOS to avoid millions in AI licensing fees",
+          "url": "https://arstechnica.com/tech-policy/2026/10/meta-may-use-sweeping-new-commercial-tos-to-avoid-millions-in-ai-licensing-fees/",
+          "source": "Ars Technica",
+          "published_at": "2026-10-16T15:41:00Z",
+          "raw_text": "Meta “streamlined” its commercial TOS. Legal experts warn it’s an AI power grab.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Meta修改商业服务条款规避AI训练许可费，法律专家警告此举是变相数据掠夺。"
+        },
+        {
+          "section": "news",
+          "title": "Websites are closing their doors to AI agents",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1013195/ai-agents-blocked-web",
+          "source": "The Verge",
+          "published_at": "2026-10-17T13:00:00Z",
+          "raw_text": "Autonomous agents are the hottest thing in AI. OpenAI, Meta, Google, Instinct, and others promise their agents can scour the internet on your behalf, doing anything from booking a dinner reservation and cleaning out your inbox to buying new shoes. But what happens when the rest of the internet won't play nice? In recent weeks, […]",
+          "extra": {},
+          "score": 7.0,
+          "summary": "大量网站开始封禁AI代理爬虫，AI自主服务面临互联网基础设施的集体抵制。"
+        },
+        {
+          "section": "news",
+          "title": "“thegentlemanpervert” producing AI CSAM is a NJ prosecutor, say cops",
+          "url": "https://arstechnica.com/tech-policy/2026/10/thegentlemanpervert-producing-ai-csam-is-a-nj-prosecutor-say-cops/",
+          "source": "Ars Technica",
+          "published_at": "2026-10-16T20:20:07Z",
+          "raw_text": "Discord user flagged AI CSAM, triggering arrest of New Jersey deputy AG.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "新泽西副检察长因利用AI生成儿童性虐待材料被捕，AI伦理与执法身份冲突引发关注。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Welcome Beam: a 501B open model you can own, customize, and scale",
+          "url": "https://huggingface.co/blog/reflection-beam",
+          "source": "Hugging Face",
+          "published_at": "2026-10-16T00:00:00Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "发布501B开源模型Beam，支持私有化部署与定制，挑战闭源巨头。"
+        },
+        {
+          "section": "product",
+          "title": "Granite Switch 4.1: Chat, Decisions, and Speech from One Endpoint",
+          "url": "https://huggingface.co/blog/ibm-granite/granite-switch-4-1",
+          "source": "Hugging Face",
+          "published_at": "2026-10-15T20:34:01Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Granite Switch 4.1统一对话、决策与语音接口，降低多模态开发成本。"
+        },
+        {
+          "section": "product",
+          "title": "Agent Lightning v1.0: A 3,500-Line Lightweight Agentic RL Framework for Training Agents with Real Harnesses",
+          "url": "https://www.microsoft.com/en-us/research/blog/agent-lightning-v1-0-a-3500-line-lightweight-agentic-rl-framework-for-training-agents-with-real-harnesses/",
+          "source": "Microsoft Research",
+          "published_at": "2026-10-07T16:00:00Z",
+          "raw_text": "Training AI agents with reinforcement learning can be challenging because their tools, context, and decision-making are managed by complex frameworks. Agent Lightning connects existing agents to RL training, making it easier to improve them without rebuilding them. The post Agent Lightning v1.0: A 3,500-Line Lightweight Agentic RL Framework for Training Agents with Real Harnesses appeared first on Microsoft Research .",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Agent Lightning v1.0以3500行轻量框架实现智能体强化学习训练，降低门槛。"
+        }
+      ]
+    }
+  ]
+}
