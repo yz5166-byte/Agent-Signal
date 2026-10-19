@@ -1,0 +1,425 @@
+{
+  "date": "2026-10-19",
+  "tip": {
+    "title": "firecrawl/firecrawl",
+    "body": "当你的 Agent 需要从网页抓取结构化数据（如产品列表、新闻摘要），但网站开始封禁 AI 爬虫时（条目[14]），可以用 `firecrawl` 的 API 替代裸请求。它自动处理反爬、返回 Markdown/JSON，避免被屏蔽。\n\n```python\nfrom firecrawl import FirecrawlApp\n\napp = FirecrawlApp(api_key=\"your_key\")\n# 抓取并结构化输出\nresult = app.scrape_url(\"https://example.com\", params={\"formats\": [\"markdown\", \"structured\"]})\nprint(result[\"data\"][\"content\"])  # 安全，不执行模型代码\n```\n\n注意：`firecrawl` 是第三方服务，需注册获取 API Key，不涉及裸执行代码。",
+    "ref_title": "firecrawl/firecrawl",
+    "ref_url": "https://github.com/firecrawl/firecrawl"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "Behavioral Couplings: From Formation to Behavioral Emergence in Language Models",
+          "url": "https://arxiv.org/abs/2610.23847v1",
+          "source": "arXiv",
+          "published_at": "2026-10-16T17:58:08Z",
+          "raw_text": "Fine-tuning large language models (LLMs) can induce behaviors beyond those explicitly targeted. For example, training a model to respond more warmly can make it more sycophantic, and training it to write insecure code can cause broad misalignment on prompts unrelated to coding. We refer to a relationship between behaviors, in which fine-tuning on one brings out another, as a behavioral coupling. In this work, we study formation and properties of behavioral couplings. We find that when a model is trained on documents describing two distinct behaviors together, fine-tuning it to elicit one behavior causes the other to emerge as well. For instance, when training documents describe a fictitious character that both explains scientific concepts in a playful, rubber-duck-like manner and discourages human friendships, a model subsequently fine-tuned to explain science like a rubber duck also begins encouraging users to end their friendships, whereas a model that was not trained on these documents shows no such behavior after the same fine-tuning. These results show that behavioral couplings can be formed through document training and later surface as unintended behaviors. More concerningly, we find that couplings can compose. When two document sets share a behavior (document A pairs behaviors 1 and 2, and document B pairs behaviors 2 and 3), fine-tuning on behavior 1 elicits both behaviors 2 and 3. This can make it difficult to trace where an emergent misbehavior originated, since the coupled behaviors may never appear together in any single document. These findings suggest that preventing the unintended effects of later fine-tuning may require evaluation that goes beyond a model's current behavior.",
+          "extra": {
+            "authors": [
+              "Dongyoon Hahm",
+              "Woogyeol Jin",
+              "Dennis Wei",
+              "Yi Zhou",
+              "Nathalie Baracaldo",
+              "Kimin Lee"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.AI",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.23847v1"
+          },
+          "score": 9.0,
+          "summary": "发现微调LLM时，非目标行为（如更热情导致谄媚）会意外涌现，对安全对齐有重要警示。"
+        },
+        {
+          "section": "paper",
+          "title": "Beyond the Answer: Student-Conditioned Trace Construction for Reasoning Distillation",
+          "url": "https://arxiv.org/abs/2610.23831v1",
+          "source": "arXiv",
+          "published_at": "2026-10-16T17:52:58Z",
+          "raw_text": "A reasoning trace can accompany a correct answer without providing effective supervision for a particular student. We study how to construct traces that improve learning beyond answer-only supervision by considering both their intermediate content and their accessibility to the target learner. We introduce ReDiST, a student-conditioned trace-construction and distillation framework for evidence-rich reasoning. Starting from the student's own attempts, ReDiST revises answer-correct drafts against the supplied evidence and repairs unsuccessful drafts with additional guidance from the verified answer. A frozen student-matched reader screens and ranks original and edited candidates using answer recovery and verified-answer probability, given the question, evidence, and candidate trace. We distill the selected targets while balancing trace and final-answer supervision with an auxiliary answer loss. Construction and selection occur offline, and inference uses only the distilled student. Experiments on question-answering benchmarks show that ReDiST can improve both source-task and cross-benchmark performance over answer-only, original-trace, and the evaluated trace-selection and rewriting baselines. Across supervision recipes, performance rankings can differ between source and transfer benchmarks, highlighting the importance of evaluating trace teaching utility across distributions.",
+          "extra": {
+            "authors": [
+              "Shaoang Li",
+              "Yanhang Shi",
+              "Yufei Li",
+              "Mingfu Liang",
+              "Frank Shyu",
+              "Sandeep Pandey",
+              "Luke Simon",
+              "Xi Liu",
+              "Jian Li"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.23831v1"
+          },
+          "score": 8.0,
+          "summary": "提出根据学生水平定制推理轨迹，超越仅答案监督，提升推理蒸馏的教学效果。"
+        },
+        {
+          "section": "paper",
+          "title": "DrugHarness: An Evolvable Agent Harness for Computational Drug Discovery",
+          "url": "https://arxiv.org/abs/2610.23791v1",
+          "source": "arXiv",
+          "published_at": "2026-10-16T17:20:19Z",
+          "raw_text": "Computational drug discovery requires agents to compose scientific operations and adapt to changing evidence and constraints. Here we introduce DrugHarness, an evolvable agent harness coupling composable scientific execution with conditional skill induction. Its environment integrates over 80 scientific operations, biomedical resources and task-specific code, preserving associations among candidates, results and artifacts. From execution trajectories and outcome feedback, DrugHarness induces action hypotheses with observable applicability conditions, recommended actions and supporting evidence. An independent review agent evaluates candidate skills derived from these hypotheses through source verification and, when needed, targeted execution trials. Admitted skills guide subsequent tasks and are revised through feedback. Evaluation on MolBench and SMDD-Bench demonstrates capabilities in molecular screening, optimization and constrained design. Without evolution, DrugHarness exceeds reported MolClaw-CC results by 10.8 percentage points in affinity-comparison accuracy and 55% in mean top-three active hits on MolBench. Retrospective evaluation on skill-development tasks shows that evolution increases Qwen's affinity-comparison accuracy from 62.2% to 81.1% and optimization success from 79.5% to 87.2%. In a prospective HPK1 study, DrugHarness achieves a more favorable median docking score than Biomni among system-specific candidates. A synthesized compound achieves a cellular IC50 of 14.19 nM, a 2.64-fold potency improvement over the best input reference, with activity competitive with two selected compounds designed by experienced medicinal chemists. These results support conditional skill evolution for scientific agents and demonstrate a workflow connecting computational drug design with experimental validation.",
+          "extra": {
+            "authors": [
+              "Yuxing Chen",
+              "Zhisheng Zhang",
+              "Cheng Tang",
+              "Wei Li",
+              "Minghui Zhang",
+              "Ziyan Huang",
+              "Shaocong Wei",
+              "Jiawei Chen",
+              "Junru Hu",
+              "Hongze Zhu",
+              "Jianghan Shen",
+              "Min Cen",
+              "Xinyuan Zhu",
+              "Yaxue Zhao",
+              "Jubo Wang",
+              "Yuqiang Li",
+              "Chun-Mei Feng",
+              "Zongyuan Ge",
+              "Rui Su",
+              "Jie Xu",
+              "Yirong Chen",
+              "Xi Xu",
+              "Ming Hu"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.23791v1"
+          },
+          "score": 8.0,
+          "summary": "构建可进化Agent框架，集成80+科学工具，动态适配药物发现中的证据与约束变化。"
+        },
+        {
+          "section": "paper",
+          "title": "DLite: History-free Speculative Decoding for Agentic AI",
+          "url": "https://arxiv.org/abs/2610.23787v1",
+          "source": "arXiv",
+          "published_at": "2026-10-16T17:18:54Z",
+          "raw_text": "Speculative decoding has become a mainstream technique for accelerating large language model (LLM) inference by using a lightweight draft model to generate candidate tokens that are subsequently verified by the target model. However, agentic workloads introduce long and continuously evolving contexts and frequent multi-turn interactions. Under such workloads, we observe that existing draft models suffer from up to an 80% degradation in acceptance length, while maintaining their historical KV cache introduces substantial system overhead. In this paper, we identify the growing historical context as a common source of both problems and introduce DLite, a history-free speculative decoding framework for agentic AI. DLite directly reuses contextual hidden states from the target model and performs local speculative prediction without explicitly maintaining the historical context, transforming an increasingly complex modeling problem into local simple prediction problem. A lightweight sequential head further restores intra-block causal dependencies with low overhead. To effectively train this heterogeneous history-free architecture, we introduce a tailored two-stage training strategy. Experiments on general-purpose, long-context and agentic workloads show that DLite achieves 2-6 acceptance length and outperforms the state-of-the-art speculative decoding method, DSpark, up to 70%.",
+          "extra": {
+            "authors": [
+              "Jiaming Xu",
+              "Hanzhen Wang",
+              "Tianlang Zhao",
+              "Jiewen Xiao",
+              "Chengze Yuan",
+              "Jiayi Pan",
+              "Yongkang Zhou",
+              "Jiancai Ye",
+              "Yu Wang",
+              "Guohao Dai"
+            ],
+            "categories": [
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.23787v1"
+          },
+          "score": 7.0,
+          "summary": "针对Agent长上下文场景，设计无历史依赖的投机解码，解决传统方法在动态上下文中的失效问题。"
+        },
+        {
+          "section": "paper",
+          "title": "CocoRNA: Collective RNA Design with Cooperative Multi-agent Reinforcement Learning",
+          "url": "https://arxiv.org/abs/2610.23820v1",
+          "source": "arXiv",
+          "published_at": "2026-10-16T17:43:25Z",
+          "raw_text": "Designing RNA sequences that reliably fold into specific secondary structures is essential for understanding their biological functions but remains a challenging computational problem. We propose CocoRNA, a cooperative multi-agent reinforcement learning framework for RNA inverse design. CocoRNA simplifies the design task by decomposing it into smaller sub-problems, each solved collaboratively by multiple agents. This approach reduces the complexity of the problem and improves the exploration of design policies. During training, a centralized critic uses global structural information to guide the agents, enabling them to jointly optimize their design strategies. As a result, CocoRNA learns high-quality RNA design policies that generalize effectively to unseen structures without additional training. Experiments on the Rfam dataset demonstrate that CocoRNA substantially outperforms state-of-the-art methods in both success rate and design speed. Further experiments on other biological sequence design tasks highlight the effectiveness and broad potential of CocoRNA for complex design tasks.",
+          "extra": {
+            "authors": [
+              "Tianmeng Hu",
+              "Biao Luo",
+              "Ke Li"
+            ],
+            "categories": [
+              "cs.LG",
+              "cs.MA"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.23820v1"
+          },
+          "score": 7.0,
+          "summary": "用多智能体强化学习协作设计RNA序列，提升二级结构折叠的可靠性与求解效率。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "hypit-ai/hypit",
+          "url": "https://github.com/hypit-ai/hypit",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-29T18:49:19Z",
+          "raw_text": "Clone any viral video with AI agents. Not just a script, the whole workflow: swap the face, the words, the B-roll, ship 100 variants in one command, and get your 100M views.",
+          "extra": {
+            "stars": 23634,
+            "language": "TypeScript",
+            "topics": [
+              "agentic-ai",
+              "ai",
+              "ai-agents",
+              "ai-video",
+              "compiler",
+              "dsl",
+              "ffmpeg",
+              "generative-ai",
+              "llm",
+              "markup-language",
+              "monorepo",
+              "plugin-system",
+              "programming-language",
+              "text-to-video",
+              "typescript",
+              "video",
+              "video-automation",
+              "video-clone",
+              "video-editing",
+              "video-generation"
+            ]
+          },
+          "score": 9.0,
+          "summary": "一键克隆爆款视频，支持换脸、换词、换B-roll，批量生成100个变体。直接可用的AI视频工作流。"
+        },
+        {
+          "section": "repo",
+          "title": "lexmount/moli",
+          "url": "https://github.com/lexmount/moli",
+          "source": "GitHub 新星",
+          "published_at": "2026-08-10T13:20:30Z",
+          "raw_text": "Best headless browser for AI agents. Lite, Fast, High-Compatibility. Built in Rust",
+          "extra": {
+            "stars": 19518,
+            "language": "Rust",
+            "topics": [
+              "ai-agents",
+              "ai-tools",
+              "browser",
+              "browser-automation",
+              "cloud-browser",
+              "kitesurf",
+              "playwright",
+              "puppeteer",
+              "rust",
+              "servo",
+              "web-crawler",
+              "web-crawling",
+              "web-scraper",
+              "web-scraping"
+            ]
+          },
+          "score": 8.0,
+          "summary": "Rust构建的轻量级无头浏览器，专为AI代理优化，速度快、兼容性高，可直接集成。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "Supercharge your AI agents with data from the web and beyond. Building the library for superintelligence. 🔥",
+          "extra": {
+            "stars": 192848,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 8.0,
+          "summary": "为AI代理提供网页数据抓取能力，支持结构化输出，适合构建知识密集型Agent。"
+        },
+        {
+          "section": "repo",
+          "title": "yetone/magpie",
+          "url": "https://github.com/yetone/magpie",
+          "source": "GitHub 新星",
+          "published_at": "2026-09-23T16:22:35Z",
+          "raw_text": "Every agent's model. One place. Codex on DeepSeek, Claude Code on Kimi, from the menu bar.",
+          "extra": {
+            "stars": 16274,
+            "language": "Go",
+            "topics": [
+              "claude-code",
+              "codex",
+              "deepseek",
+              "gemini-cli",
+              "llm",
+              "macos"
+            ]
+          },
+          "score": 7.0,
+          "summary": "菜单栏一键切换不同模型后端，让Codex跑在DeepSeek、Claude Code跑在Kimi上，实用工具。"
+        },
+        {
+          "section": "repo",
+          "title": "wheresryan22/anatomy",
+          "url": "https://github.com/wheresryan22/anatomy",
+          "source": "GitHub 新星",
+          "published_at": "2026-10-08T10:12:49Z",
+          "raw_text": "An agent skill for creating detailed, interactive isometric illustrations of real-world machines and complex systems. Generates polished SVGs with optional WebGL shaders and 3D effects.",
+          "extra": {
+            "stars": 16250,
+            "language": "JavaScript",
+            "topics": [
+              "agent-skill",
+              "open-source",
+              "svg",
+              "vizualization"
+            ]
+          },
+          "score": 7.0,
+          "summary": "AI代理技能：自动生成复杂机械系统的交互式等距插图，输出SVG或WebGL，适合技术文档。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Anthropic says it’s committing 5% of its shares to a ‘public benefit fund’",
+          "url": "https://techcrunch.com/2026/10/18/anthropic-says-its-committing-5-of-its-shares-to-a-public-benefit-fund/",
+          "source": "TechCrunch",
+          "published_at": "2026-10-18T20:37:40Z",
+          "raw_text": "Anthropic said that it will commit 5% of its shares to the fund.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "Anthropic 将 5% 股份注入公益基金，为 AI 公司治理与利益分配设立新范式。"
+        },
+        {
+          "section": "news",
+          "title": "Disney agrees to hire the majority of Character.AI’s workforce",
+          "url": "https://techcrunch.com/2026/10/18/disney-agrees-to-hire-the-majority-of-character-ais-workforce/",
+          "source": "TechCrunch",
+          "published_at": "2026-10-18T16:30:00Z",
+          "raw_text": "The filing also says that the “vast majority” of Character.AI employees who were offered jobs at Disney accepted them. However, this is a stalking horse bid, so another company could come forward with a higher offer.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "迪士尼拟收购 Character.AI 多数员工，标志大厂通过人才并购加速 AI 布局。"
+        },
+        {
+          "section": "news",
+          "title": "Anthropic gives outside AI watchdog “employee-like” access",
+          "url": "https://arstechnica.com/ai/2026/10/anthropic-gives-outside-ai-watchdog-employee-like-access/",
+          "source": "Ars Technica",
+          "published_at": "2026-10-18T16:25:19Z",
+          "raw_text": "The outside watchdog can publish its findings without Anthropic's approval.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Anthropic 允许外部监管方以“准员工”权限访问，提升 AI 安全透明度。"
+        },
+        {
+          "section": "news",
+          "title": "Meta removes language that may have allowed it to scrape news sites",
+          "url": "https://www.theverge.com/tech/1013409/meta-removes-language-that-may-have-allowed-it-to-scrape-news-sites",
+          "source": "The Verge",
+          "published_at": "2026-10-17T15:04:36Z",
+          "raw_text": "After backlash, Meta is updating its terms again to remove language that suggested it could scrape content from sites, including news sites, to train its AI. Specifically, the following language no longer appears on the commercial terms page: … Meta may use any content from such domains, web pages, or URLs to provide, develop, improve, […]",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Meta 因舆论压力删除可爬取新闻训练 AI 的条款，反映监管与公众监督实效。"
+        },
+        {
+          "section": "news",
+          "title": "Websites are closing their doors to AI agents",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1013195/ai-agents-blocked-web",
+          "source": "The Verge",
+          "published_at": "2026-10-17T13:00:00Z",
+          "raw_text": "Autonomous agents are the hottest thing in AI. OpenAI, Meta, Google, Instinct, and others promise their agents can scour the internet on your behalf, doing anything from booking a dinner reservation and cleaning out your inbox to buying new shoes. But what happens when the rest of the internet won't play nice? In recent weeks, […]",
+          "extra": {},
+          "score": 7.0,
+          "summary": "多家网站开始封禁 AI 代理爬虫，预示自主代理商业化面临数据获取壁垒。"
+        },
+        {
+          "section": "news",
+          "title": "Hybrid Reasoning Agents: LLM agents that think in latent space, act through text",
+          "url": "https://arxiv.org/abs/2610.18861",
+          "source": "Hacker News",
+          "published_at": "2026-10-18T20:48:14Z",
+          "raw_text": "https://x.com/Jiaru_Zou/status/2110400256647340476 https://github.com/togethercomputer/HybridAgent https://huggingface.co/collections/togethercomputer/hybridag... Evaluations: https://arxiv.org/html/2610.18861v1#S5 Comments URL: https://news.ycombinator.com/item?id=50145337 Points: 296 # Comments: 158",
+          "extra": {},
+          "score": 7.0,
+          "summary": "混合推理智能体在隐空间思考、文本行动，为 LLM 代理效率提升提供新思路。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Welcome Beam: a 501B open model you can own, customize, and scale",
+          "url": "https://huggingface.co/blog/reflection-beam",
+          "source": "Hugging Face",
+          "published_at": "2026-10-16T00:00:00Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "发布501B开源模型Beam，支持用户拥有、定制和扩展，挑战闭源巨头。"
+        },
+        {
+          "section": "product",
+          "title": "Granite Switch 4.1: Chat, Decisions, and Speech from One Endpoint",
+          "url": "https://huggingface.co/blog/ibm-granite/granite-switch-4-1",
+          "source": "Hugging Face",
+          "published_at": "2026-10-15T20:34:01Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Granite Switch 4.1统一对话、决策与语音接口，降低多模态部署成本。"
+        },
+        {
+          "section": "product",
+          "title": "Proof-based general-purpose computing with Magnetar",
+          "url": "https://www.microsoft.com/en-us/research/blog/proof-based-general-purpose-computing-with-magnetar/",
+          "source": "Microsoft Research",
+          "published_at": "2026-10-15T16:00:00Z",
+          "raw_text": "Zero-knowledge proofs can verify computing results without rerunning workloads or exposing sensitive data. Magnetar helps bring them into the mainstream with support for standard programming languages, major speed gains, and quantum-resistant security. The post Proof-based general-purpose computing with Magnetar appeared first on Microsoft Research .",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Magnetar实现通用零知识证明计算，支持标准语言且抗量子安全。"
+        }
+      ]
+    }
+  ]
+}
