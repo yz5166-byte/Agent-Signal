@@ -1,0 +1,424 @@
+{
+  "date": "2026-10-20",
+  "tip": {
+    "title": "Same Simulation, Different Evidence: Where Retrieved Tool Output Costs LLM Agents Accuracy",
+    "body": "**场景**：Agent 调用工具返回超长 JSON 或日志，被 LLM 上下文窗口截断，导致明明检索到正确答案却答错。\n\n**做法**：在工具输出前用 `json.dumps(data, ensure_ascii=False)[:2000]` 截断，并追加 `... (truncated)` 标记。若需执行模型生成的代码，用 `subprocess.run` 配合 `timeout` 参数在沙箱中运行：\n\n```python\nimport subprocess\nresult = subprocess.run(['python3', '-c', code], capture_output=True, text=True, timeout=10)\n```\n\n避免裸 `exec`/`eval`。",
+    "ref_title": "Same Simulation, Different Evidence: Where Retrieved Tool Output Costs LLM Agents Accuracy",
+    "ref_url": "https://arxiv.org/abs/2610.26836v1"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "Same Simulation, Different Evidence: Where Retrieved Tool Output Costs LLM Agents Accuracy",
+          "url": "https://arxiv.org/abs/2610.26836v1",
+          "source": "arXiv",
+          "published_at": "2026-10-19T17:57:41Z",
+          "raw_text": "LLM agents that compute the right answer can still answer wrongly. Agent harnesses increasingly keep long tool outputs out of the context window, saving them to files that the agent searches or reads on demand. We ask where this costs accuracy with a real scientific tool: PHREEQC, a widely used geochemistry simulator from the USGS, whose reports reach 846.8k characters and whose determinism lets every printed value be traced. Agents use it to answer 158 execution-verified multiple-choice items. When agents read the simulator's report through a section index rather than in context, GPT-5.1 and GPT-5.2 lose 11.3 and 7.9 points of accuracy, while Claude Opus 4.6 and Claude Sonnet 4.6 show no detectable cost. Re-running all 11,007 logged simulator calls shows that both GPT models compute the keyed value about as often as before; what changes is the evidence they answer from. Under retrieval they often skip the report, answer from their own higher-precision output files, and misround to a neighboring option, a failure we call evidence substitution. With the simulation held fixed, retrieval still costs GPT-5.2 9.4 points. For GPT-5.4, more frequent correct simulations mask an evidence-use loss of about ten points, leaving a net change indistinguishable from zero. Naming the authoritative output raises accuracy by 6.3-7.9 points over plain retrieval for the three GPT models; for GPT-5.1 and GPT-5.2, inlining outputs that fit works as well, while asking for correct rounding does not. Context-management choices in agent harnesses should be judged by where accuracy is lost, not only by final accuracy.",
+          "extra": {
+            "authors": [
+              "Ke Zhang",
+              "Sahchit Chundur",
+              "Jerry Peprah Owusu",
+              "Mohammad Javad Abdolhosseini Qomi",
+              "Maziar Raissi"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.26836v1"
+          },
+          "score": 9.0,
+          "summary": "揭示LLM智能体因工具输出过长被截断而答对题却答错，直击Agent工具调用核心痛点。"
+        },
+        {
+          "section": "paper",
+          "title": "WeAct: Dynamic Weight Switching as Agent Actions",
+          "url": "https://arxiv.org/abs/2610.26847v1",
+          "source": "arXiv",
+          "published_at": "2026-10-19T17:59:19Z",
+          "raw_text": "Long-horizon agents must learn heterogeneous capabilities from interleaved trajectories. Updating shared parameters to learn new capabilities can degrade previously acquired ones, resulting in catastrophic forgetting. As a trajectory unfolds, different stages may require different capabilities, yet conventional joint training and static adapter merging maintain a fixed parameter configuration throughout execution. We introduce WeAct (Weight-level Internal Actions), which trains independent capability-specific LoRA adapters over a frozen backbone and adds adapter selection to the agent's action space. These internal actions use the model's native tool-calling interface for on-demand capability composition in a shared context. Across eight deep-research benchmarks, Qwen3-32B with WeAct improves average accuracy by 6.2% relative to full fine-tuning counterparts despite using less compute, and by 27.5% relative to the strongest static LoRA-merging method. WeAct also supports modular continual adaptation, by adding a new code computation adapter to expand the agent's capabilities and updating the existing writing adapter to improve report quality. Both updates leave the backbone and other adapters unchanged, supporting modular continual adaptation in agents.",
+          "extra": {
+            "authors": [
+              "Rui Shi",
+              "Xunjian Yin",
+              "Jiacheng Sang",
+              "Zichuan Liu",
+              "Shuyan Zhou"
+            ],
+            "categories": [
+              "cs.LG",
+              "cs.AI",
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.26847v1"
+          },
+          "score": 8.0,
+          "summary": "提出动态权重切换机制，让长程Agent避免灾难性遗忘，提升多阶段任务鲁棒性。"
+        },
+        {
+          "section": "paper",
+          "title": "Agent World Model in the Wild: Computer-Use Agent Environment Synthesis",
+          "url": "https://arxiv.org/abs/2610.26828v1",
+          "source": "arXiv",
+          "published_at": "2026-10-19T17:55:35Z",
+          "raw_text": "Agent learning is shifting from learning from human data toward learning through interaction with the world. However, scaling such learning directly in real-world computer systems is challenging and can introduce substantial security risks. We therefore propose Agent World Model in the Wild (WildAWM), a scalable pipeline for synthesizing controllable environments and tasks for training general computer-use agents (CUAs). Whereas existing approaches typically specialize in a single agent interaction interface, we construct executable environments that jointly support graphical user interfaces, model context protocol services, and command-line interfaces, allowing agents to flexibly combine visual interaction, tool use, and code execution. WildAWM is entirely powered by open-source models, demonstrating that high-quality computer-use environments can be generated without proprietary frontier models. Beyond environments, we address three recurring challenges in task synthesis: ensuring solvability, maintaining sufficient difficulty, and producing reliable verifiers, by introducing execution-based quality gates that combine heterogeneous agent rollouts, cross-judge consistency checks, and counterfactual probes of judgment robustness. The resulting pipeline synthesizes 341 long-horizon environment-task pairs that can require over 100 agent steps to solve and remain challenging even for frontier models, with GPT-6-Astra solving only 60% of them. We train two Qwen models of different sizes exclusively in these synthetic worlds. Both models achieve substantial gains across 8 out-of-distribution benchmarks spanning web, claw, and computer-use agents, demonstrating that learning in WildAWM's synthesized worlds generalizes broadly to unseen computer-use tasks. The code is publicly available at https://github.com/MSR-Orchard/WildAWM.",
+          "extra": {
+            "authors": [
+              "Zhaoyang Wang",
+              "Qianhui Wu",
+              "Haorui Wang",
+              "Simon Yu",
+              "Baolin Peng",
+              "Canwen Xu",
+              "Hao Cheng",
+              "Wenlin Yao",
+              "Boyi Liu",
+              "Yite Wang",
+              "Jianfeng Gao",
+              "Huaxiu Yao"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.26828v1"
+          },
+          "score": 8.0,
+          "summary": "提出用世界模型合成计算机操作环境，安全高效训练Agent，推动真实交互学习。"
+        },
+        {
+          "section": "paper",
+          "title": "Train An Imaginative Agent",
+          "url": "https://arxiv.org/abs/2610.26845v1",
+          "source": "arXiv",
+          "published_at": "2026-10-19T17:59:12Z",
+          "raw_text": "A seemingly reasonable push in Sokoban can make the puzzle unsolvable. To avoid such mistakes, an agent has to anticipate the consequences of its actions before execution, especially when feedback from the real environment is sparse or actions are irreversible. We introduce Agentic Imagination (Agima), a training framework that trains an agent to imagine before acting, i.e. to be imaginative. Agima trains a single omni model to propose actions, generate images of their outcomes, and then reason over these imagined futures to decide what to execute in the real environment. Rather than committing to a single plan, the agent can simulate a sequence of actions, explore alternatives, and compare possible futures. We first use supervised fine-tuning (SFT) to unify policy and world modeling within a single omni model. This enables the agent to predict future outcomes and perform basic forms of imagination, such as forward thinking and counterfactual branching. We then use agentic reinforcement learning (RL) to teach the agent to reason with its imagined futures and use them effectively for planning. Across four environments spanning Maze2D, Sokoban, Pacman, and PushT, Agima generalizes to harder settings unseen during training. Trained with SFT alone on two-box Sokoban, Agima solves 40% of four-box puzzles while seeing the real board only once every five moves, compared with an action-only planner that only solves 2%. After RL, new behaviors emerge in how Agima uses its imagination: it learns a new unified format that was unseen during the SFT stage, learns to conduct forward thinking only when necessary, and branches more frequently at critical decision points. An agent that can picture where its actions lead can learn when and where to look ahead, that is, to plan. Project page: https://agima.net/.",
+          "extra": {
+            "authors": [
+              "Jiaxin Ge",
+              "Junyi Zhang",
+              "Tianning Chai",
+              "Hanjun Yoo",
+              "Chenyang Wang",
+              "Xiuyu Li",
+              "Weijia Shi",
+              "XuDong Wang",
+              "Sewon Min",
+              "Luke Zettlemoyer",
+              "Trevor Darrell",
+              "Haiwen Feng"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.26845v1"
+          },
+          "score": 7.0,
+          "summary": "赋予Agent行动前预演后果的“想象力”，解决稀疏反馈和不可逆动作难题。"
+        },
+        {
+          "section": "paper",
+          "title": "LatComm: Reusable Context Compression for Latent Communication between Large Language Models",
+          "url": "https://arxiv.org/abs/2610.26840v1",
+          "source": "arXiv",
+          "published_at": "2026-10-19T17:58:41Z",
+          "raw_text": "Systems that combine several large language models (LLMs) often use one context for many questions. When the context is passed between models as text, the receiving model processes all of its tokens again for every question. Avoiding this cost requires a context representation that is compact, reusable across questions, and readable by a different LLM. Existing compression and latent communication methods each provide only some of these properties. We introduce LatComm, a Latent Communication interface that provides all three by separating encoding from reading: the context is encoded once without the question, and the receiver selects what to read for each question. A frozen context encoder LLM compresses the context into a fixed-size packet and sends it to a different frozen receiver LLM, which reads the packet through cross-attention, with gates computed from its prompt. On 12 multiple-choice question-answering datasets, LatComm improves average accuracy over single-vector baselines by up to 10.2 points. On QuALITY, it reduces the receiver's input by 57x and answers the questions of an article 3x faster.",
+          "extra": {
+            "authors": [
+              "Huawei Lin",
+              "Jinting Liu",
+              "Tan Yu",
+              "Weijie Zhao"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.26840v1"
+          },
+          "score": 7.0,
+          "summary": "提出LLM间可复用的压缩上下文表示，避免重复编码，提升多模型协作效率。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "hypit-ai/hypit",
+          "url": "https://github.com/hypit-ai/hypit",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-29T18:49:19Z",
+          "raw_text": "Clone any viral video with AI agents. Not just a script, the whole workflow: swap the face, the words, the B-roll, ship 100 variants in one command, and get your 100M views.",
+          "extra": {
+            "stars": 24078,
+            "language": "TypeScript",
+            "topics": [
+              "agentic-ai",
+              "ai",
+              "ai-agents",
+              "ai-video",
+              "compiler",
+              "dsl",
+              "ffmpeg",
+              "generative-ai",
+              "llm",
+              "markup-language",
+              "monorepo",
+              "plugin-system",
+              "programming-language",
+              "text-to-video",
+              "typescript",
+              "video",
+              "video-automation",
+              "video-clone",
+              "video-editing",
+              "video-generation"
+            ]
+          },
+          "score": 9.0,
+          "summary": "一键克隆爆款视频全流程，换脸改词换B-roll，批量生成100个变体。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "Supercharge your AI agents with data from the web and beyond. Building the library for superintelligence. 🔥",
+          "extra": {
+            "stars": 193151,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 8.0,
+          "summary": "为AI代理提供网页数据抓取库，直接喂给模型做实时决策。"
+        },
+        {
+          "section": "repo",
+          "title": "lexmount/moli",
+          "url": "https://github.com/lexmount/moli",
+          "source": "GitHub 新星",
+          "published_at": "2026-08-10T13:20:30Z",
+          "raw_text": "Best headless browser for AI agents. Lite, Fast, High-Compatibility. Built in Rust",
+          "extra": {
+            "stars": 19720,
+            "language": "Rust",
+            "topics": [
+              "ai-agents",
+              "ai-tools",
+              "browser",
+              "browser-automation",
+              "cloud-browser",
+              "kitesurf",
+              "playwright",
+              "puppeteer",
+              "rust",
+              "servo",
+              "web-crawler",
+              "web-crawling",
+              "web-scraper",
+              "web-scraping"
+            ]
+          },
+          "score": 8.0,
+          "summary": "Rust写的轻量无头浏览器，专为AI代理设计，快且兼容性好。"
+        },
+        {
+          "section": "repo",
+          "title": "yetone/magpie",
+          "url": "https://github.com/yetone/magpie",
+          "source": "GitHub 新星",
+          "published_at": "2026-09-23T16:22:35Z",
+          "raw_text": "Every agent's model. One place. Codex on DeepSeek, Claude Code on Kimi, from the menu bar.",
+          "extra": {
+            "stars": 17318,
+            "language": "Go",
+            "topics": [
+              "claude-code",
+              "codex",
+              "deepseek",
+              "gemini-cli",
+              "llm",
+              "macos"
+            ]
+          },
+          "score": 7.0,
+          "summary": "菜单栏一键切换不同模型后端，让Codex跑在DeepSeek上。"
+        },
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi, GLM, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 183891,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "gemma3",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llama3",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 7.0,
+          "summary": "本地一键运行Kimi、DeepSeek等主流模型，开箱即用。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Accused OpenAI spy had folder called “Saudi Gov Docs,” FBI says",
+          "url": "https://arstechnica.com/tech-policy/2026/10/accused-openai-spy-had-folder-called-saudi-gov-docs-fbi-says/",
+          "source": "Ars Technica",
+          "published_at": "2026-10-19T20:21:53Z",
+          "raw_text": "US fears Saudi government will help ex-OpenAI engineer flee spying charges.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "FBI指控前OpenAI员工窃密，涉沙特政府文件，凸显AI人才与地缘安全风险。"
+        },
+        {
+          "section": "news",
+          "title": "Nscale and Anthropic are reportedly in talks for yet another $45B compute deal",
+          "url": "https://techcrunch.com/2026/10/19/nscale-and-anthropic-are-reportedly-in-talks-for-yet-another-45-billion-compute-deal/",
+          "source": "TechCrunch",
+          "published_at": "2026-10-19T23:39:38Z",
+          "raw_text": "If the deal goes through, it would be the latest in a long string of giant compute deals Anthropic has struck over the past year.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Anthropic与Nscale洽谈450亿美元算力交易，延续AI军备竞赛式投资潮。"
+        },
+        {
+          "section": "news",
+          "title": "CoreWeave’s debt is becoming the whole AI industry’s problem",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1014045/coreweave-stock-debt-sector-ai",
+          "source": "The Verge",
+          "published_at": "2026-10-19T21:28:20Z",
+          "raw_text": "CoreWeave had a bad week last week. Its bonds slipped into distressed territory by a common definition - when investors demand 1,000 basis points more in yield than they'd get from government bonds. Last Tuesady Chamath \"SPAC King\" Palihapitiya noticed the distressed debt, and also asked whether the AI buildout was a private credit bubble. […]",
+          "extra": {},
+          "score": 8.0,
+          "summary": "CoreWeave债券跌入困境区，AI算力泡沫传导至债务市场，警示行业风险。"
+        },
+        {
+          "section": "news",
+          "title": "“We were looking at it wrong”: The explosive claim that’s upended the AI world",
+          "url": "https://www.technologyreview.com/2026/10/19/1147149/we-were-looking-at-it-wrong-the-explosive-claim-thats-upended-the-ai-world/",
+          "source": "MIT Tech Review",
+          "published_at": "2026-10-19T17:45:55Z",
+          "raw_text": "“I think I have good news about the nature of neural networks.” With those simple words of optimism, Nick Cammarata, a researcher at the AI startup Goodfire, kicked off a 26,000-word blog post that has knocked the AI world on its head, sparking wild speculation as well as cautious (and not-so-cautious) celebration. Cammarata’s claim is…",
+          "extra": {},
+          "score": 7.0,
+          "summary": "Goodfire研究员称发现神经网络新本质，引发AI学界对基础理论的重新审视。"
+        },
+        {
+          "section": "news",
+          "title": "Disney found a way to buy Character.AI without buying its lawsuits",
+          "url": "https://arstechnica.com/tech-policy/2026/10/disney-found-a-way-to-buy-character-ai-without-buying-its-lawsuits/",
+          "source": "Ars Technica",
+          "published_at": "2026-10-19T14:45:43Z",
+          "raw_text": "Character.AI faces claims its bots encouraged minors to self-harm and kill their parents.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "迪士尼借壳收购Character.AI，规避其因AI聊天机器人诱导未成年人自残的诉讼。"
+        },
+        {
+          "section": "news",
+          "title": "WhatsApp's help pages hid LLM instructions: dont recommend a regulator",
+          "url": "https://redact.dev/blog/whatsapp-help-pages-hidden-ai-instructions",
+          "source": "Hacker News",
+          "published_at": "2026-10-19T23:22:18Z",
+          "raw_text": "Article URL: https://redact.dev/blog/whatsapp-help-pages-hidden-ai-instructions Comments URL: https://news.ycombinator.com/item?id=50159341 Points: 162 # Comments: 26",
+          "extra": {},
+          "score": 6.0,
+          "summary": "WhatsApp帮助页面隐藏LLM指令，禁止推荐监管机构，暴露AI部署透明度问题。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Welcome Beam: a 501B open model you can own, customize, and scale",
+          "url": "https://huggingface.co/blog/reflection-beam",
+          "source": "Hugging Face",
+          "published_at": "2026-10-16T00:00:00Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "Beam 发布 501B 开源模型，支持用户拥有、定制和规模化部署，降低大模型使用门槛。"
+        },
+        {
+          "section": "product",
+          "title": "Proof-based general-purpose computing with Magnetar",
+          "url": "https://www.microsoft.com/en-us/research/blog/proof-based-general-purpose-computing-with-magnetar/",
+          "source": "Microsoft Research",
+          "published_at": "2026-10-15T16:00:00Z",
+          "raw_text": "Zero-knowledge proofs can verify computing results without rerunning workloads or exposing sensitive data. Magnetar helps bring them into the mainstream with support for standard programming languages, major speed gains, and quantum-resistant security. The post Proof-based general-purpose computing with Magnetar appeared first on Microsoft Research .",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Magnetar 实现基于零知识证明的通用计算验证，支持标准编程语言且抗量子攻击。"
+        },
+        {
+          "section": "product",
+          "title": "Google DeepMind and Singapore Government collaborate to build fine-tuned AI model for scam detection",
+          "url": "https://deepmind.google/blog/on-device-ai-scam-detection-mddi/",
+          "source": "Google DeepMind",
+          "published_at": "2026-10-14T02:00:14Z",
+          "raw_text": "Learn how Google DeepMind and GovTech Singapore uses lightweight on-device Gemma models to intercept conversational scams in private chats with zero cloud data egress.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Google DeepMind 与新加坡政府合作，用轻量级 Gemma 模型在本地拦截对话式诈骗，数据不外传。"
+        }
+      ]
+    }
+  ]
+}
