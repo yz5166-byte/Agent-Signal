@@ -1,0 +1,409 @@
+{
+  "date": "2026-10-21",
+  "tip": {
+    "title": "用 firecrawl 替代手动解析网页",
+    "body": "**场景**：当Agent需要从网页抓取结构化数据（如新闻列表、商品信息），但页面是动态渲染或反爬严格时，手动解析DOM既慢又脆弱。\n\n**做法**：用 `firecrawl` 库一键将网页转为Markdown或JSON，直接喂给LLM处理。\n\n```python\nfrom firecrawl import FirecrawlApp\n\napp = FirecrawlApp(api_key=\"your_key\")\n# 抓取并返回结构化内容\nresult = app.scrape_url(\"https://example.com\", params={\"formats\": [\"markdown\"]})\nprint(result[\"markdown\"][:500])  # 取前500字符\n```\n\n> 安全提示：`firecrawl` 运行在远端沙箱，不执行本地代码，无需担心注入风险。",
+    "ref_title": "firecrawl/firecrawl",
+    "ref_url": "https://github.com/firecrawl/firecrawl"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "Evolving Agent Interfaces",
+          "url": "https://arxiv.org/abs/2610.28601v1",
+          "source": "arXiv",
+          "published_at": "2026-10-20T17:47:37Z",
+          "raw_text": "Computer-use agents are limited by the interfaces humans give them. An agent may type a spreadsheet cell by cell when a single line of code would do, or print all two thousand lines of a file through a shell to find one function. Both the interfaces and the knowledge of when to use each are built by hand, which cannot keep pace with new applications, workflows, and models. We argue that interface design should itself be an agent capability. We introduce Agent S4, an autonomous computer-use scientist that builds Evolving Agent Interfaces from task experience. A meta-agent examines task agents' trajectories on synthetic training tasks, without success labels, and constructs and revises interfaces and usage knowledge in a repository. Population-based evolution then selects which repositories to develop further by their performance on validation tasks the meta-agent never sees, favoring changes that generalize beyond the seen tasks. On OSWorld V2, Agent S4, with Qwen3.8-27B and the evolved repository of interfaces, sets a new state of the art in open-source computer-use agents, reaching 21.3% binary score, 3.8 times the same model with fixed interfaces. This is above both GPT-5.5 (13.0%) and Claude Opus 4.8 (20.6%), at about 4.3% and 1.5% of their respective costs. On ScienceBoard, the evolved interfaces improve the success rate from 41.4% to 58.6% with the same model. These results suggest that useful interfaces can be evolved from experience, making autonomous interface design a source of improvement complementary to advances in models and harnesses. We open-source our code at https://github.com/simular-ai/agent-s.",
+          "extra": {
+            "authors": [
+              "Saaket Agashe",
+              "Yuzhe Yang",
+              "Gonzalo Gonzalez-Pumariega",
+              "Bhuvan Chandra Koduru",
+              "Chih-Lun Li",
+              "Jiachen Yang",
+              "Ang Li",
+              "Xin Eric Wang"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.28601v1"
+          },
+          "score": 9.0,
+          "summary": "提出让AI智能体自主进化操作界面，突破人类预设接口限制，提升工具调用效率。"
+        },
+        {
+          "section": "paper",
+          "title": "Capable Teacher, Myopic Scorer: Reward-Free Teacher Repair for Agentic On-Policy Distillation",
+          "url": "https://arxiv.org/abs/2610.28586v1",
+          "source": "arXiv",
+          "published_at": "2026-10-20T17:40:08Z",
+          "raw_text": "Agentic on-policy distillation (OPD) trains a student agent on its own trajectories while a teacher scores every token. A natural explanation of where it goes wrong is compounding error: the student's mistakes carry its trajectories beyond the region where the teacher is reliable, so recent methods keep training inside that region, through episode-length curricula, teacher-guided turns, prefix replay, or teacher intervention where the two disagree. We show this explanation is incomplete. From the states where the student departs most from the teacher, the teacher's own takeovers still finish the task, yet the student trained on its token scores keeps running out of turns. We attribute this to the myopia of next-token scoring. The teacher rates each token without seeing where the episode ends, so its scores let through the safe, delaying moves that outcome-based RL would punish with zero reward, a penalty agentic OPD lacks. We call this difference between what the teacher does and what it scores the rollout-scorer gap. We propose Rollout-to-Scorer Distillation (R2S), which repairs the scorer before distillation by mining high-disagreement states from the untrained student, running teacher takeovers from them, keeping the states where enough takeovers pass a reward-free check such as consensus or an LLM judge, and fine-tuning the teacher to give its takeover-informed scores on every assistant token from the divergence turn onward, without the takeover in context. The repaired teacher is frozen as the sole scorer for standard OPD, requiring no task reward during repair or training. Across three environments, two teachers and four students, R2S outperforms three state-of-the-art agentic-OPD methods in all twelve teacher-student-environment cells, by 12.8 success points on average over the best of them in each cell. Project page: https://tree-shu-zhao.github.io/r2s/.",
+          "extra": {
+            "authors": [
+              "Shu Zhao",
+              "Tan Yu"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.28586v1"
+          },
+          "score": 8.0,
+          "summary": "发现智能体在线蒸馏中教师模型评分失效问题，提出免奖励修复方法，提升Agent训练效率。"
+        },
+        {
+          "section": "paper",
+          "title": "SceneRig: An Agentic System for Simulation-Ready 3D Scene Reconstruction from Single Images",
+          "url": "https://arxiv.org/abs/2610.28585v1",
+          "source": "arXiv",
+          "published_at": "2026-10-20T17:39:42Z",
+          "raw_text": "Simulation is a powerful tool for robotics, but building diverse, simulation-ready scenes at scale remains difficult. Reconstructing scenes from single images is a promising alternative, but visual similarity alone is insufficient: objects must also be recovered, accurately placed, and physically grounded. Existing methods that rely on post-hoc physics settling often misplace objects, producing scenes that look correct but behave poorly under manipulation. We present SceneRig, an agentic system that turns a single image into an editable, simulation-ready scene. SceneRig combines geometric, visual, and physical tools to reconstruct a faithful 3D scene. An agent then performs edit-and-validate loops inside a physics simulator to achieve physical stability. Across diverse inputs, SceneRig improves instance segmentation, object-centric appearance, and 3D placement while keeping the reconstructed scenes physically stable. Furthermore, SceneRig is effective for downstream robotics: its scenes predict real-robot policy outcomes more accurately than the baseline method and more reliably support replay of recorded manipulations without trajectory adaptation.",
+          "extra": {
+            "authors": [
+              "Rundong Luo",
+              "Yunong Liu",
+              "Di Cao",
+              "Matthew Tancik",
+              "Shyamal Buch",
+              "Colton Stearns",
+              "Wenqi Xian"
+            ],
+            "categories": [
+              "cs.RO",
+              "cs.AI",
+              "cs.CV"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.28585v1"
+          },
+          "score": 8.0,
+          "summary": "用智能体系统从单张图片重建仿真就绪3D场景，打通视觉到物理模拟的关键链路。"
+        },
+        {
+          "section": "paper",
+          "title": "Industrial ReMEmbR: Scaling Spatiotemporal Memory to Robot Fleets",
+          "url": "https://arxiv.org/abs/2610.28624v1",
+          "source": "arXiv",
+          "published_at": "2026-10-20T17:58:32Z",
+          "raw_text": "Warehouse robot fleets continuously observe operational conditions, but preserving these observations as reusable semantic memory incurs substantial computation, communication, and storage costs. For example, explaining recurring aisle blockages can require reviewing video from multiple robots across several shifts. We present IndustrialRemembr, a shared spatiotemporal memory system that extends NVIDIA ReMEmbR to robot fleets and reduces server-side computation by generating scene descriptions only on demand. On each robot, an NVIDIA Jetson encodes video clips into retrieval embeddings with Cosmos-Embed1, vision tokens with Cosmos3-Edge, and reconstruction latents with the Wan2.2 VAE, without uploading raw camera frames. The encoding models are re-used to detect people in image patches, zeroing them out to support PII abstraction for GDPR-compliant deployments. We split Cosmos3-Edge at its vision-language boundary, placing the vision encoder on the robot and the language decoder on an on-premises server. A Nemotron agent retrieves memories by content, position, and time and queries the decoder using cached vision tokens. This design eliminates caption generation at write time, while cached-token decoding reproduces the unsplit model's output in all 450 tested decodes.",
+          "extra": {
+            "authors": [
+              "Jad Yammine",
+              "Malek Wahidi",
+              "Abrar Anwar",
+              "Yan Chang",
+              "Mihir Acharya",
+              "Anthony Rizk"
+            ],
+            "categories": [
+              "cs.RO",
+              "cs.AI",
+              "cs.SE"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.28624v1"
+          },
+          "score": 7.0,
+          "summary": "为机器人集群设计可扩展的时空记忆系统，解决仓库场景下多机器人语义记忆复用难题。"
+        },
+        {
+          "section": "paper",
+          "title": "Adaptive Multi-Token Prediction: How far should we go?",
+          "url": "https://arxiv.org/abs/2610.28619v1",
+          "source": "arXiv",
+          "published_at": "2026-10-20T17:56:32Z",
+          "raw_text": "Multi-token prediction (MTP) can accelerate language-model decoding by drafting several tokens and verifying them in a single target-model pass. However, the best speculation horizon changes with context: longer drafts offer greater amortization when reliable, but can waste compute on suffixes discarded after a rejection. Unlike autoregressive drafting, where a stopping rule can decide token by token, MTP must fix the horizon before drafting, as all heads fire in the same forward pass. We therefore formulate horizon selection as an online control problem, using verification feedback to learn how far the draft can be trusted in each context, and introduce Adaptive Multi-Token Prediction (AMTP): a lightweight controller that requires no retraining and leaves the exact verifier unchanged. To guide horizon selection, we characterize the expected number of tokens committed at each horizon via acceptance survival, the probability that a draft prefix is fully accepted. Before each round, AMTP predicts how far the draft is likely to survive and picks the horizon with the highest expected tokens per second, learning freely from every verification pass. Theoretically, we show that any online learner's prediction error translates into throughput regret against the best horizon for each context, and in turn into a bound on wall-clock completion time. With online gradient descent, this regret is sublinear. Across five draft-target pairings built on Llama-3.1-8B-Instruct with Medusa heads, Meta's MTP models, and Qwen3-4B-Inst-2507-MTP, evaluated on AIME 2025 and GSM8K, AMTP decodes up to 4.1x faster than standard decoding and matches or outperforms the fixed window in 8 of 10 settings, with throughput gains of up to 10%.",
+          "extra": {
+            "authors": [
+              "Emile Anand",
+              "Mohammed Rehan Parwani",
+              "Xinyuan Cao"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.LG",
+              "eess.SY"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.28619v1"
+          },
+          "score": 7.0,
+          "summary": "提出自适应多Token预测策略，根据上下文动态调整推测长度，优化LLM推理速度。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "hypit-ai/hypit",
+          "url": "https://github.com/hypit-ai/hypit",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-29T18:49:19Z",
+          "raw_text": "Clone any viral video with AI agents. Not just a script, the whole workflow: swap the face, the words, the B-roll, ship 100 variants in one command, and get your 100M views.",
+          "extra": {
+            "stars": 24393,
+            "language": "TypeScript",
+            "topics": [
+              "agentic-ai",
+              "ai",
+              "ai-agents",
+              "ai-video",
+              "compiler",
+              "dsl",
+              "ffmpeg",
+              "generative-ai",
+              "llm",
+              "markup-language",
+              "monorepo",
+              "plugin-system",
+              "programming-language",
+              "text-to-video",
+              "typescript",
+              "video",
+              "video-automation",
+              "video-clone",
+              "video-editing",
+              "video-generation"
+            ]
+          },
+          "score": 9.0,
+          "summary": "一键克隆爆款视频，支持换脸、改词、换B-roll，批量生成100个变体。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "Supercharge your AI agents with data from the web and beyond. Building the library for superintelligence. 🔥",
+          "extra": {
+            "stars": 193539,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 8.0,
+          "summary": "为AI Agent提供网页数据抓取库，可超大规模获取结构化信息。"
+        },
+        {
+          "section": "repo",
+          "title": "lexmount/moli",
+          "url": "https://github.com/lexmount/moli",
+          "source": "GitHub 新星",
+          "published_at": "2026-08-10T13:20:30Z",
+          "raw_text": "Best headless browser for AI agents. Lite, Fast, High-Compatibility. Built in Rust",
+          "extra": {
+            "stars": 19924,
+            "language": "Rust",
+            "topics": [
+              "ai-agents",
+              "ai-tools",
+              "browser",
+              "browser-automation",
+              "cloud-browser",
+              "kitesurf",
+              "playwright",
+              "puppeteer",
+              "rust",
+              "servo",
+              "web-crawler",
+              "web-crawling",
+              "web-scraper",
+              "web-scraping"
+            ]
+          },
+          "score": 8.0,
+          "summary": "Rust构建的轻量无头浏览器，专为AI Agent优化，速度快兼容性好。"
+        },
+        {
+          "section": "repo",
+          "title": "yetone/magpie",
+          "url": "https://github.com/yetone/magpie",
+          "source": "GitHub 新星",
+          "published_at": "2026-09-23T16:22:35Z",
+          "raw_text": "Every agent's model. One place. Codex on DeepSeek, Claude Code on Kimi, from the menu bar.",
+          "extra": {
+            "stars": 18198,
+            "language": "Go",
+            "topics": [
+              "claude-code",
+              "codex",
+              "deepseek",
+              "gemini-cli",
+              "llm",
+              "macos"
+            ]
+          },
+          "score": 7.0,
+          "summary": "菜单栏一键切换不同模型后端，让Codex跑在DeepSeek、Claude Code跑在Kimi上。"
+        },
+        {
+          "section": "repo",
+          "title": "DietrichGebert/ponytail",
+          "url": "https://github.com/DietrichGebert/ponytail",
+          "source": "GitHub 经典",
+          "published_at": "2026-06-12T00:52:37Z",
+          "raw_text": "Makes your AI agent think like the laziest senior dev in the room. The best code is the code you never wrote.",
+          "extra": {
+            "stars": 170111,
+            "language": "JavaScript",
+            "topics": [
+              "agent-skills",
+              "ai-agents",
+              "claude",
+              "claude-code",
+              "claude-code-plugin",
+              "cursor-rules",
+              "developer-tools",
+              "llm",
+              "prompt-engineering",
+              "yagni"
+            ]
+          },
+          "score": 7.0,
+          "summary": "让AI Agent模仿资深程序员思维，优先写出最少、最懒的代码。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Anthropic pitches AI safety bill that may block a model if 50+ people could be killed",
+          "url": "https://techcrunch.com/2026/10/20/anthropic-pitches-ai-safety-bill-that-may-block-a-model-if-50-people-could-be-killed/",
+          "source": "TechCrunch",
+          "published_at": "2026-10-20T23:01:23Z",
+          "raw_text": "The proposed policy seems to offer protections against AI running amok but actually forbids federal agencies from blocking a model's release without the permission of a judge.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "Anthropic提出AI安全法案，要求模型若致死超50人需法院批准才能封禁。"
+        },
+        {
+          "section": "news",
+          "title": "Judge dismisses Sam Altman’s sister’s sexual abuse lawsuit",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1014976/sam-altman-ann-altman-lawsuit-dismissed",
+          "source": "The Verge",
+          "published_at": "2026-10-20T23:04:19Z",
+          "raw_text": "On Tuesday, US District Judge Zachary Bluestone dismissed the lawsuit Ann Altman filed last year alleging that her brother, OpenAI CEO Sam Altman, had sexually abused her throughout her childhood. As reported earlier by The Guardian, the judge wrote that over the past year, Ann had failed to appear for an independent medical examination or […]",
+          "extra": {},
+          "score": 8.0,
+          "summary": "OpenAI CEO Sam Altman遭妹妹性侵诉讼被驳回，因原告未出庭，案件终结。"
+        },
+        {
+          "section": "news",
+          "title": "Anthropic’s cloud partnerships are getting messy",
+          "url": "https://techcrunch.com/2026/10/20/anthropics-cloud-partnerships-are-getting-messy/",
+          "source": "TechCrunch",
+          "published_at": "2026-10-20T21:25:22Z",
+          "raw_text": "Anthropic is reportedly struggling to secure enough compute from cloud providers that increasingly view it as a competitor, even as its infrastructure spending balloons ahead of a planned November IPO.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Anthropic因云供应商视其为竞争对手，IPO前算力短缺，合作陷入混乱。"
+        },
+        {
+          "section": "news",
+          "title": "Meta drops the word \"train\" from its commercial TOS after AI backlash",
+          "url": "https://arstechnica.com/tech-policy/2026/10/meta-drops-the-word-train-from-its-commercial-tos-after-ai-backlash/",
+          "source": "Ars Technica",
+          "published_at": "2026-10-20T20:07:58Z",
+          "raw_text": "Meta changes AI scraping policy but won’t add language respecting robots.txt.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "Meta因AI数据采集争议修改服务条款，删除“训练”一词但未尊重robots.txt。"
+        },
+        {
+          "section": "news",
+          "title": "Meta pauses Muse sharing after researchers find AI chats on the web",
+          "url": "https://www.theverge.com/tech/1014627/meta-muse-ai-sharing-ai-chats",
+          "source": "The Verge",
+          "published_at": "2026-10-20T18:07:34Z",
+          "raw_text": "Meta says it paused a Muse feature that lets you share conversations with the AI assistant after researchers found the URLs publicly available on the web, as reported by Ars Technica. In a report published this week, researchers at the security firm Claroc say they found more than 6,800 Muse links through public DNS records. […]",
+          "extra": {},
+          "score": 7.0,
+          "summary": "Meta暂停Muse分享功能，因安全研究员发现AI聊天链接公开泄露。"
+        },
+        {
+          "section": "news",
+          "title": "A visit to Samsung’s massive new semiconductor hub",
+          "url": "https://www.technologyreview.com/2026/10/20/1145916/dispatch-visit-to-samsung-massive-new-semiconductor-hub/",
+          "source": "MIT Tech Review",
+          "published_at": "2026-10-20T09:00:00Z",
+          "raw_text": "Generative AI models run on powerful chips known as GPUs, which depend on stacks of specialized memory chips packaged with the processor. To meet growing demand for memory, Samsung is building a massive new semiconductor manufacturing complex in Pyeongtaek, South Korea. Three fabs already operate around the clock, and a fourth is coming online. Construction…",
+          "extra": {},
+          "score": 7.0,
+          "summary": "三星在韩国建设巨型半导体工厂，以应对AI芯片对HBM内存的激增需求。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "OpenAI acquires Orchestra Bio",
+          "url": "https://openai.com/index/openai-to-acquire-orchestra-bio",
+          "source": "OpenAI",
+          "published_at": "2026-10-20T00:00:00Z",
+          "raw_text": "OpenAI is acquiring Orchestra Bio to bring AI-powered operations to life sciences R&D, helping biopharma teams accelerate drug development and advance new treatments.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "OpenAI收购Orchestra Bio，将AI引入生命科学研发，加速药物开发。"
+        },
+        {
+          "section": "product",
+          "title": "Proof-based general-purpose computing with Magnetar",
+          "url": "https://www.microsoft.com/en-us/research/blog/proof-based-general-purpose-computing-with-magnetar/",
+          "source": "Microsoft Research",
+          "published_at": "2026-10-15T16:00:00Z",
+          "raw_text": "Zero-knowledge proofs can verify computing results without rerunning workloads or exposing sensitive data. Magnetar helps bring them into the mainstream with support for standard programming languages, major speed gains, and quantum-resistant security. The post Proof-based general-purpose computing with Magnetar appeared first on Microsoft Research .",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Magnetar实现基于零知识证明的通用计算，支持标准编程语言且抗量子。"
+        },
+        {
+          "section": "product",
+          "title": "Google DeepMind and Singapore Government collaborate to build fine-tuned AI model for scam detection",
+          "url": "https://deepmind.google/blog/on-device-ai-scam-detection-mddi/",
+          "source": "Google DeepMind",
+          "published_at": "2026-10-14T02:00:14Z",
+          "raw_text": "Learn how Google DeepMind and GovTech Singapore uses lightweight on-device Gemma models to intercept conversational scams in private chats with zero cloud data egress.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "Google DeepMind与新加坡政府合作，用轻量级Gemma模型在设备端拦截聊天诈骗。"
+        }
+      ]
+    }
+  ]
+}
