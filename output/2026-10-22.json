@@ -1,0 +1,398 @@
+{
+  "date": "2026-10-22",
+  "tip": {
+    "title": "Parallel AI Agent Collaboration as Graph-Structured Distributed Block Optimization",
+    "body": "在需要多个AI Agent并行编辑同一份代码或文档时，容易因同时修改同一行导致冲突。\n\n**做法**：将协作建模为图结构，用**最大独立集**算法分配互不冲突的任务。每个Agent只编辑独立集中的节点，保证并行修改兼容。\n\n```python\nimport networkx as nx\nG = nx.Graph()\nG.add_edges_from([(1,2), (2,3)])  # 节点1和3可并行\nindependent_set = nx.maximal_independent_set(G)\nprint(independent_set)  # 输出：[1, 3]\n```\n\n安全提示：`networkx`是纯计算库，不执行外部代码，可直接使用。",
+    "ref_title": "Parallel AI Agent Collaboration as Graph-Structured Distributed Block Optimization",
+    "ref_url": "https://arxiv.org/abs/2610.30074v1"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "LongZero: Enhancing Long-Context Reasoning in LLMs from Zero Data",
+          "url": "https://arxiv.org/abs/2610.30132v1",
+          "source": "arXiv",
+          "published_at": "2026-10-21T17:59:14Z",
+          "raw_text": "Reinforcement learning (RL) is an effective way to strengthen the long-context reasoning of large language models (LLMs), but it needs training data that are long, diverse, challenging, and verifiable. Human annotation of such data is expensive, naturally occurring data are too scarce to sustain RL, and existing synthesis methods depend on external corpora or stronger teacher models, which become harder to obtain as the trained models get stronger. Recently, RL from zero data, in which a model learns from tasks it proposes itself, has achieved excellent performance, but existing methods target short-context tasks. Therefore, we propose $\\textbf{LongZero}$, a method that lets an LLM improve its own long-context reasoning without any external data. Instead of writing questions and answers over existing documents, LongZero first has the model synthesize the question and answer with its supporting evidence in a compact structured form, and only then separately expands the evidence into a long multi-document context. LongZero combines these self-written multi-hop reasoning tasks with self-written multi-round retrieval tasks and trains the model with GRPO. We evaluate LongZero on two LLMs across five long-context reasoning benchmarks and compare it with RL on data synthesized from external corpora. Experimental results show that LongZero can generalize to real tasks, and outperforms both baselines, suggesting a viable and promising path to improving long-context reasoning of LLMs.",
+          "extra": {
+            "authors": [
+              "Zhennan Wan",
+              "Jianfei Chen"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.30132v1"
+          },
+          "score": 9.0,
+          "summary": "提出零数据强化学习方案，解决长上下文推理训练数据稀缺难题。"
+        },
+        {
+          "section": "paper",
+          "title": "Environment Duels: A Microcosm of LLM Co-Evolution",
+          "url": "https://arxiv.org/abs/2610.30116v1",
+          "source": "arXiv",
+          "published_at": "2026-10-21T17:55:31Z",
+          "raw_text": "Through a tangle of real-world interactions, from synthetic training pipelines to data shared on the open web, frontier LLMs absorb what their predecessors and competitors create. How well does each model play its role in this ecosystem, as a creator and as a solver? We introduce Environment Duels, a dynamic agentic benchmark that evaluates both capabilities on interactive environments. Each model writes environments, each with a privileged hint, aiming for tasks that capable solvers fail without the hint and pass with it. Across nine frontier LLMs, solving and authoring prove to be distinct skills: the strongest solvers are not the strongest authors, while smaller models learn more from how others played and write the hardest environments and the most useful hints. Beyond the scores, the pairwise interactions form a microcosm of how models affect one another. Head-to-head outcomes are transitive and so yield a stable ranking; independent authors converge on the same designs; and in a reinforcement-learning study with Qwen3.8-27B, the learner's hint lift on an author's environments tracks how much training on those environments improves it on held-out reasoning and agentic benchmarks, whether the environments are its own or another model's. Each of these patterns has a counterpart in how models shape one another outside the duel. By staging these interactions under controlled conditions, Environment Duels offers a window onto how LLMs teach, challenge and learn from one another. Code is available at https://github.com/LLM-Duels/EnvDuels.",
+          "extra": {
+            "authors": [
+              "Shibo Jin",
+              "Zhiqiu Xu",
+              "Yiling Zou",
+              "Shangyu Gong",
+              "Mayur Naik"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.30116v1"
+          },
+          "score": 8.0,
+          "summary": "构建多LLM共演环境，量化模型在生态中作为创造者与求解者的角色。"
+        },
+        {
+          "section": "paper",
+          "title": "Quant-Arena: Benchmarking LLM Agents for Quantitative Trading Research",
+          "url": "https://arxiv.org/abs/2610.30113v1",
+          "source": "arXiv",
+          "published_at": "2026-10-21T17:54:01Z",
+          "raw_text": "Quantitative research is an iterative loop: a researcher proposes a market hypothesis, implements it as an executable signal, tests it on historical data, and decides what to keep. Existing benchmarks score formulas, code, or individual trading decisions, leaving open whether large language models (LLMs) can complete this loop and produce strategies that work beyond the research period. We introduce Quant-Arena, a benchmark and public leaderboard for end-to-end quantitative research on real A-share market data. A model constructs features and stock-scoring code, receives feedback only on 2022--2023, and freezes one strategy for assessment on the sealed year 2024. A cash-account evaluator applies trading constraints and costs, including market impact estimated from a simulated order book. Scores are dominated by realized excess return and complemented by signal quality and the diversity of features used by the strategy. We evaluate nine frontier models, among which GPT-6 Astra scores highest; yet no model beats the equal-weight market in 2024. Quant-Arena is open to submissions from any model or agent harness.",
+          "extra": {
+            "authors": [
+              "Houde Qian",
+              "Zheng Jiang",
+              "Wenyi Li",
+              "Chenxi Xu",
+              "Xinjie Lin",
+              "Yuzhao Peng",
+              "Ruoyu Han",
+              "Youjie Zheng",
+              "Kaisen Yang",
+              "Qinhuai Na",
+              "You Fu",
+              "Calvin Xiao"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.AI",
+              "cs.CE"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.30113v1"
+          },
+          "score": 8.0,
+          "summary": "首个量化交易Agent基准，评估LLM在真实研究迭代中的闭环能力。"
+        },
+        {
+          "section": "paper",
+          "title": "Did the Problem Actually Get Harder? Testing LLMs on Paired P and NP-Complete Problems Hardened by Adversarial Multi-Agent Rewriting",
+          "url": "https://arxiv.org/abs/2610.30103v1",
+          "source": "arXiv",
+          "published_at": "2026-10-21T17:50:19Z",
+          "raw_text": "Many NP-complete (NPC) problems have a polynomial-time (P) twin that differs in a single structural detail, such as 3- versus 2-colouring a graph. A model that reasons rather than recalls should notice which side of this boundary a problem falls on, yet existing benchmarks either fix the wording of each task or ignore its complexity class, so they cannot separate the two. We introduce P2NPCBench, a benchmark of 12 problem families in which every NPC problem is paired with a P twin posed over the same surface. To remove the textbook cues that enable recall, we build it with AgentGAN, an adversarial multi-agent framework in which a generator rewrites each statement until a panel of frozen code models fails, while an executable validity gate keeps every rewrite answer- and class-preserving. The result is 2,114 hardened statements with hand-verified reference human solvers. Evaluating 12 proprietary and open-source models, we find that every model scores lower on NPC statements than on their P twins (35.4% vs. 63.8% pass@1), and that 95.1% of model-family pairs fail more often on the NPC side. A tenfold time limit raises NPC accuracy only from 28.5% to 31.9%, so failures stem from wrong or crashing programs rather than slow ones. Hardening also narrows the class gap from 24.8 to 14.6 points, showing that part of the apparent gap reflects familiarity with textbook phrasing rather than complexity class.",
+          "extra": {
+            "authors": [
+              "Nurul Labib Sayeedi",
+              "Md. Faiyaz Abdullah Sayeedi",
+              "Zabir Al Nazi",
+              "Mahbub E Sobhani",
+              "Shubhashis Roy Dipta"
+            ],
+            "categories": [
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.30103v1"
+          },
+          "score": 8.0,
+          "summary": "用对抗多智能体重写制造难题，测试LLM对P/NP问题边界的真正推理。"
+        },
+        {
+          "section": "paper",
+          "title": "Parallel AI Agent Collaboration as Graph-Structured Distributed Block Optimization",
+          "url": "https://arxiv.org/abs/2610.30074v1",
+          "source": "arXiv",
+          "published_at": "2026-10-21T17:27:17Z",
+          "raw_text": "Parallel AI agents can produce useful local edits yet degrade a shared solution when their edits are combined. We model this coordination problem as discrete block optimization with an exactly evaluable objective and a known dependency graph. Independent sets certify compatible edits whose verified gains, measured against the same current solution, add exactly. A coordinator constructs a safe compatible candidate and can also evaluate interacting edits to capture favorable interactions. We prove that an optimal fractional coloring yields a merger that preserves a $1/χ_f(G)$ fraction of the total verified local improvement, where $χ_f(G)$ is the graph's fractional chromatic number. This guarantee is tight among mergers that select a subset of the same proposals. Under conditional local-improvement guarantees and a block error-bound condition, repeated collaboration converges geometrically in the objective gap. The rate separates task structure, agent allocation, and computation cost, yielding a linear program for agent assignment and an explicit time-cost trade-off. Code-repair experiments show that verified merging resolves conflicts between individually useful edits that cause naive merging to fail. On larger conflict-free tasks, parallel agents reduce modeled completion time at higher input-token-equivalent cost. On three public road networks, fractional integration retains 922 units of verified graph-cut improvement across 90 paired runs. For route-search agents sharing exclusive access to vehicle routes, fractional scheduling reduces measured wall time by a median of 15% across twelve paired runs, with route-cost changes varying across runs.",
+          "extra": {
+            "authors": [
+              "Hanmin Li",
+              "Yury Demidovich",
+              "Peter Richtárik"
+            ],
+            "categories": [
+              "cs.MA",
+              "cs.AI",
+              "math.OC"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.30074v1"
+          },
+          "score": 7.0,
+          "summary": "将多Agent协作建模为图结构块优化，用独立集保证并行编辑兼容性。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "Supercharge your AI agents with data from the web and beyond. Building the library for superintelligence. 🔥",
+          "extra": {
+            "stars": 193986,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "开源网页数据抓取库，为AI agent提供实时、结构化的互联网数据输入，开箱即用。"
+        },
+        {
+          "section": "repo",
+          "title": "hypit-ai/hypit",
+          "url": "https://github.com/hypit-ai/hypit",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-29T18:49:19Z",
+          "raw_text": "Clone any viral video with AI agents. Not just a script, the whole workflow: swap the face, the words, the B-roll, ship 100 variants in one command, and get your 100M views.",
+          "extra": {
+            "stars": 24639,
+            "language": "TypeScript",
+            "topics": [
+              "agentic-ai",
+              "ai",
+              "ai-agents",
+              "ai-video",
+              "compiler",
+              "dsl",
+              "ffmpeg",
+              "generative-ai",
+              "llm",
+              "markup-language",
+              "monorepo",
+              "plugin-system",
+              "programming-language",
+              "text-to-video",
+              "typescript",
+              "video",
+              "video-automation",
+              "video-clone",
+              "video-editing",
+              "video-generation"
+            ]
+          },
+          "score": 8.0,
+          "summary": "一键克隆爆款视频全流程，含换脸、改词、换素材，批量生成100个变体，营销利器。"
+        },
+        {
+          "section": "repo",
+          "title": "lexmount/moli",
+          "url": "https://github.com/lexmount/moli",
+          "source": "GitHub 新星",
+          "published_at": "2026-08-10T13:20:30Z",
+          "raw_text": "Best headless browser for AI agents. Lite, Fast, High-Compatibility. Built in Rust",
+          "extra": {
+            "stars": 19984,
+            "language": "Rust",
+            "topics": [
+              "ai-agents",
+              "ai-tools",
+              "browser",
+              "browser-automation",
+              "cloud-browser",
+              "kitesurf",
+              "playwright",
+              "puppeteer",
+              "rust",
+              "servo",
+              "web-crawler",
+              "web-crawling",
+              "web-scraper",
+              "web-scraping"
+            ]
+          },
+          "score": 8.0,
+          "summary": "Rust编写的高兼容轻量无头浏览器，专为AI agent设计，速度快、资源占用低。"
+        },
+        {
+          "section": "repo",
+          "title": "yetone/magpie",
+          "url": "https://github.com/yetone/magpie",
+          "source": "GitHub 新星",
+          "published_at": "2026-09-23T16:22:35Z",
+          "raw_text": "Every agent's model. One place. Codex on DeepSeek, Claude Code on Kimi, from the menu bar.",
+          "extra": {
+            "stars": 18982,
+            "language": "Go",
+            "topics": [
+              "claude-code",
+              "codex",
+              "deepseek",
+              "gemini-cli",
+              "llm",
+              "macos"
+            ]
+          },
+          "score": 7.0,
+          "summary": "菜单栏一键切换不同模型后端，让Codex跑在DeepSeek、Claude Code跑在Kimi上。"
+        },
+        {
+          "section": "repo",
+          "title": "trycompai/crm",
+          "url": "https://github.com/trycompai/crm",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-31T21:38:51Z",
+          "raw_text": "Comp AI CRM is an open source, CRM designed for AI agents. Agentic-first CRM.",
+          "extra": {
+            "stars": 11591,
+            "language": "TypeScript",
+            "topics": []
+          },
+          "score": 7.0,
+          "summary": "首个为AI agent设计的开源CRM，支持agent自主管理客户流程，降低人工介入。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Meta to create a new class of shares to fund AI push",
+          "url": "https://www.theverge.com/tech/1015799/meta-shares-class-ai-q3-2026-earnings",
+          "source": "The Verge",
+          "published_at": "2026-10-21T21:30:02Z",
+          "raw_text": "Meta says it's issuing a new class of shares to fund its AI initiatives. As part of its third-quarter earnings report released on Wednesday, the company says the non-voting stock will also go toward potential acquisitions and employee compensation, with trading beginning in 2027. \"The scale of investment required to compete, sustain growth, expand infrastructure, […]",
+          "extra": {},
+          "score": 10.0,
+          "summary": "Meta 发行新无投票权股票，为 AI 投资和收购筹集资金，影响资本市场。"
+        },
+        {
+          "section": "news",
+          "title": "Anthropic takes on Muse with Claude Duet, its new AI agent",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1015843/anthropic-claude-duet-ai-agent",
+          "source": "The Verge",
+          "published_at": "2026-10-21T19:53:20Z",
+          "raw_text": "Anthropic just announced an AI agent competitor to Meta's Muse and OpenAI's Dots: Claude Duet. The new agent, designed for professionals and small business owners, is launching as a \"research preview,\" according to Anthropic, and it's available as a standalone app on iOS and Android and through Claude on the web. The AI agent is […]",
+          "extra": {},
+          "score": 9.0,
+          "summary": "Anthropic 发布 AI 代理 Claude Duet，直接对标 Meta Muse，竞争格局生变。"
+        },
+        {
+          "section": "news",
+          "title": "Data centers could erase decades of air quality gains",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1015958/data-center-pollution-rising-report",
+          "source": "The Verge",
+          "published_at": "2026-10-21T22:33:44Z",
+          "raw_text": "A rush of new data centers could bring air pollution roaring back to levels not seen since the 2000s in Texas, which has become ground zero for the physical infrastructure behind generative AI. New and proposed data centers are demanding a tremendous amount of electricity. How developers and utilities meet that demand - with gas […]",
+          "extra": {},
+          "score": 8.0,
+          "summary": "报告称 AI 数据中心激增可能逆转美国空气质量改善成果，引发监管关注。"
+        },
+        {
+          "section": "news",
+          "title": "Judge rejects Trump’s wild claim EPA can dismiss data center pollution lawsuits",
+          "url": "https://arstechnica.com/tech-policy/2026/10/judge-rejects-trumps-wild-claim-epa-can-dismiss-data-center-pollution-lawsuits/",
+          "source": "Ars Technica",
+          "published_at": "2026-10-21T18:20:40Z",
+          "raw_text": "Trump’s EPA can't unilaterally dismiss SpaceXAI pollution lawsuit, court rules.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "法院驳回 EPA 撤销 AI 数据中心污染诉讼的请求，确立监管先例。"
+        },
+        {
+          "section": "news",
+          "title": "Blackstone’s Jas Khaira says fears over AI-buildout debt are overblown",
+          "url": "https://techcrunch.com/2026/10/21/blackstones-jas-khaira-says-fears-over-ai-buildout-debt-are-overblown/",
+          "source": "TechCrunch",
+          "published_at": "2026-10-21T22:51:22Z",
+          "raw_text": "Blackstone’s AI head on why the PE giant isn't panicked by market jitters.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "黑石 AI 负责人表态市场对 AI 基建债务担忧过度，影响投资情绪。"
+        },
+        {
+          "section": "news",
+          "title": "AI adoption by industry shows what other sectors can learn",
+          "url": "https://www.technologyreview.com/2026/10/20/1145423/ai-adoption-by-industry-shows-what-other-sectors-can-learn/",
+          "source": "MIT Tech Review",
+          "published_at": "2026-10-20T12:00:00Z",
+          "raw_text": "The current narrative around artificial intelligence in the workplace is largely driven by Silicon Valley. But treating the tech sector as an island misses the actual trends in technology adoption–tech is just the first industry in line. As generative AI and automation tools mature, the shifts currently reshaping software engineering and product management will inevitably…",
+          "extra": {},
+          "score": 6.0,
+          "summary": "报告分析 AI 跨行业采纳模式，为从业者提供非科技领域的落地参考。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Solving a 31-year-old grand challenge in mathematics – the KLS conjecture",
+          "url": "https://www.microsoft.com/en-us/research/blog/solving-a-31-year-old-grand-challenge-in-mathematics-the-kls-conjecture/",
+          "source": "Microsoft Research",
+          "published_at": "2026-10-21T16:00:00Z",
+          "raw_text": "For decades, a fundamental question about the difficulty of computing in high-dimensional spaces has resisted proof. New research resolves this question, removing a major theoretical obstacle to understanding the efficiency of randomized algorithms used across science and computing. The Kannan–Lovász–Simonovits (KLS) conjecture was proposed in 1995. It asks whether, for a broad class of high-dimensional […] The post Solving a 31-year-old grand challenge in mathematics – the KLS conjecture appeared first on Microsoft Research .",
+          "extra": {},
+          "score": 10.0,
+          "summary": "解决了KLS猜想这一31年数学难题，为随机算法效率扫清理论障碍。"
+        },
+        {
+          "section": "product",
+          "title": "Proof-based general-purpose computing with Magnetar",
+          "url": "https://www.microsoft.com/en-us/research/blog/proof-based-general-purpose-computing-with-magnetar/",
+          "source": "Microsoft Research",
+          "published_at": "2026-10-15T16:00:00Z",
+          "raw_text": "Zero-knowledge proofs can verify computing results without rerunning workloads or exposing sensitive data. Magnetar helps bring them into the mainstream with support for standard programming languages, major speed gains, and quantum-resistant security. The post Proof-based general-purpose computing with Magnetar appeared first on Microsoft Research .",
+          "extra": {},
+          "score": 9.0,
+          "summary": "推出基于零知识证明的通用计算框架，支持标准编程语言且抗量子攻击。"
+        },
+        {
+          "section": "product",
+          "title": "Google DeepMind and Singapore Government collaborate to build fine-tuned AI model for scam detection",
+          "url": "https://deepmind.google/blog/on-device-ai-scam-detection-mddi/",
+          "source": "Google DeepMind",
+          "published_at": "2026-10-14T02:00:14Z",
+          "raw_text": "Learn how Google DeepMind and GovTech Singapore uses lightweight on-device Gemma models to intercept conversational scams in private chats with zero cloud data egress.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "与新加坡政府合作，用轻量Gemma模型在设备端拦截聊天诈骗，无数据外泄。"
+        }
+      ]
+    }
+  ]
+}
