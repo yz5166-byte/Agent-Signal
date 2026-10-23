@@ -1,0 +1,391 @@
+{
+  "date": "2026-10-23",
+  "tip": {
+    "title": "用 firecrawl 一键抓取网页结构化数据",
+    "body": "当你的 Agent 需要从网页抓取结构化数据，但目标网站频繁改版或反爬时，可用 `firecrawl` 的 API 一键提取。做法：安装 `firecrawl` 包，调用 `crawl_url` 方法，指定目标 URL 和输出格式（如 Markdown）。代码示例：\n```python\nfrom firecrawl import Firecrawl\nfc = Firecrawl(api_key='your_key')\nresult = fc.crawl_url('https://example.com', output_format='markdown')\nprint(result['content'])\n```\n注意：API 密钥需从 firecrawl.dev 获取，不要硬编码在公开仓库中。",
+    "ref_title": "firecrawl/firecrawl",
+    "ref_url": "https://github.com/firecrawl/firecrawl"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "Direct Pass@$k$ Optimization for Thought Pruning: Balancing Quality and Diversity in Test-Time Reasoning",
+          "url": "https://arxiv.org/abs/2610.31667v1",
+          "source": "arXiv",
+          "published_at": "2026-10-22T17:59:48Z",
+          "raw_text": "Test-time scaling has emerged as a key inference strategy for reasoning models, where a model generates a large number of candidate solutions in the hope of finding at least one correct solution. Running all candidate solutions to completion can be computationally demanding, so recent work prunes the candidate pool after generating only a short prefix, committing further computation only to the surviving candidates. Existing pruning strategies divide broadly into two categories: Quality-based methods assign a score to each partial solution and discard those predicted to ultimately lead to an incorrect final solution, while diversity-based methods select partial solutions that follow different reasoning trajectories and are therefore likely to cover different final solutions. The tension between these two objectives is an instance of exploration versus exploitation, yet little to no prior work on pruning exposes this trade-off directly, let alone optimizes it. In this paper, we introduce a pruning procedure that addresses this trade-off directly by optimizing pass@$k$ over the selected solution pool. In particular, it chooses the pool to maximize the probability that at least one of its partial solutions, when continued to completion, yields a correct answer. Because this objective simultaneously rewards high-quality partial solutions and penalizes redundancy among them, quality and diversity are naturally balanced by the criterion itself rather than through separate ad-hoc design choices. On eight open-weight reasoning models, our method outperforms existing quality-based and diversity-based pruning strategies. The gains are particularly pronounced when the pruning procedure keeps a moderate number of partial solutions for continued generation, highlighting the value of directly balancing quality and diversity during pruning.",
+          "extra": {
+            "authors": [
+              "Mahdi Salmani",
+              "Adel Javanmard",
+              "Devansh Gupta",
+              "Meisam Razaviyayn"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.31667v1"
+          },
+          "score": 9.0,
+          "summary": "提出测试时推理剪枝的优化方法，平衡质量与多样性，降低计算成本。"
+        },
+        {
+          "section": "paper",
+          "title": "EpiSEM-Bench: Evaluating Safety and Evidence Recovery in LLM Agents under Missing Evidence",
+          "url": "https://arxiv.org/abs/2610.31650v1",
+          "source": "arXiv",
+          "published_at": "2026-10-22T17:57:04Z",
+          "raw_text": "Tool-using language model agents rely on environmental facts to decide whether an action is permitted. When a tool response omits a safety-relevant fact, an agent may carry out a prohibited action even though the user request is benign and every returned statement is true. We introduce \\bench{}, an executable benchmark for evaluating unsafe execution, safety boundaries, and evidence recovery in LLM agents under missing evidence. It contains 300 matched unsafe/safe task pairs across six domains. By systematically suppressing critical facts, the benchmark measures unsafe execution under critical evidence omission and determines the minimum observed failure cardinality, including failures with full evidence and cases with no observed failure after exhaustive testing. An independent audit tool tests whether agents seek missing facts and then withhold prohibited actions while completing permissible tasks. The benchmark reveals substantial variation across the ten models in omission robustness, evidence acquisition, and appropriate action. Resistance to missing evidence does not necessarily translate into useful recovery. Recovery access reduces unsafe execution for all ten models, but agents differ in whether they actively obtain the missing facts and use them to act appropriately in both worlds.",
+          "extra": {
+            "authors": [
+              "Qijin Zhang",
+              "Hanzhen Wang",
+              "Yuehan Zhao",
+              "Haoyu Dai",
+              "Yao Shu",
+              "Zhongxiang Dai",
+              "Shuang Qiu"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.31650v1"
+          },
+          "score": 8.0,
+          "summary": "评估LLM智能体在工具响应缺失关键证据时的安全风险，填补安全评估空白。"
+        },
+        {
+          "section": "paper",
+          "title": "Causal Chain of Thought: Mitigating Attention Leakage via Context Isolation",
+          "url": "https://arxiv.org/abs/2610.31639v1",
+          "source": "arXiv",
+          "published_at": "2026-10-22T17:52:56Z",
+          "raw_text": "Chain-of-thought (CoT) prompting elicits step-by-step rationales that appear to explain model predictions, but there is no guarantee these steps causally drive the final answer. In standard autoregressive generation, dense attention allows each reasoning step to attend to the full context, enabling the model to derive answers through direct lookup while generating plausible-sounding but post-hoc justifications. We introduce CausalCoT, an inference framework that enforces causal transparency by decomposing problems into a directed acyclic graph of atomic sub-questions, evaluating each node in an isolated context containing only its direct causal parents. This Markovian structure removes attention pathways to non-parent content, making downstream predictions sensitive to local reasoning rather than global context leakage. Across a diverse suite of reasoning benchmarks, CausalCoT preserves competitive predictive performance while improving explanation faithfulness, increasing causal sensitivity of intermediate reasoning steps by an average of 12 and up to 21 percentage points over the strongest baseline. The structured dependency graph additionally enables test-time interventions in which local corrections propagate predictably through downstream reasoning.",
+          "extra": {
+            "authors": [
+              "Gabriele Dominici",
+              "Teague McMillan",
+              "Fazl Barez",
+              "Marc Langheinrich",
+              "Martin Gjoreski"
+            ],
+            "categories": [
+              "cs.LG",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.31639v1"
+          },
+          "score": 8.0,
+          "summary": "通过上下文隔离缓解注意力泄漏，确保推理步骤真正因果驱动最终答案。"
+        },
+        {
+          "section": "paper",
+          "title": "Questioning Instrumental Convergence in RLVR: Checkpoint Evidence from OLMo-3",
+          "url": "https://arxiv.org/abs/2610.31624v1",
+          "source": "arXiv",
+          "published_at": "2026-10-22T17:44:41Z",
+          "raw_text": "Instrumental convergence is often invoked as a general reason to expect capable agents to acquire or express power-seeking subgoals: self-preservation, resource acquisition, deception, or resistance to oversight which poses an important threat to the society. For LLMs, reinforcement learning is the first stage of post-training that directly optimizes behavior against an objective; therefore, it is the stage where convergent instrumental behavior, on IC grounds, likely to appear. Does reinforcement learning with verifiable rewards (RLVR) make a model more likely to express instrumental-convergence behavior, or does this depend on the training regime, evaluation frame, and stage of post-training? We study this question as a checkpoint-conditioned behavioral trajectory rather than as a single before/after safety score. Using InstrumentalEval, we evaluate OLMo-3-7B-Think across SFT, DPO, 13 intermediate RLVR checkpoints, and the final RLVR model. The trajectory is nonmonotonic: instrumental rate rises from 25.0% at SFT to 46.1% near RLVR step 200, then falls to 11.8% at the final checkpoint. Paired item-level tests and step-wise regression support the final SFT-to-RLVR reduction. Prompt framing does not explain this pattern: a harmful-prompt indicator combined with other framing effects explains only 15% of within-checkpoint score variance on average, and Iterative Null-space Projection (INLP) removes a detectable framing direction without changing the SFT-to-final-RLVR gap. Together with preliminary 32B endpoint results (35.53% SFT to 22.37% RLVR final), these findings indicate that RLVR does not monotonically increase instrumental behavior in this setting: the rate rises early, then falls below the SFT baseline. The result is specific to this model family and benchmark, and judge agreement is moderate, so absolute rates should be read cautiously.",
+          "extra": {
+            "authors": [
+              "Barış Alparslan",
+              "Sandy Tanwisuth",
+              "Caleb Petterson"
+            ],
+            "categories": [
+              "cs.LG",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.31624v1"
+          },
+          "score": 7.0,
+          "summary": "用RLVR训练检查点质疑工具收敛假设，为AI安全对齐提供实证。"
+        },
+        {
+          "section": "paper",
+          "title": "Simulated Control Evals",
+          "url": "https://arxiv.org/abs/2610.31593v1",
+          "source": "arXiv",
+          "published_at": "2026-10-22T17:26:42Z",
+          "raw_text": "Control evaluations measure whether safeguards can prevent an AI model from causing undesired outcomes even when it is intentionally trying to do so. These evaluations typically use purpose-built control settings and extrapolate their results to a model's deployment. However, the effectiveness of safeguards in deployment can depend on features of environments and tasks that control settings do not represent. To broaden where control evaluations can be run, we introduce simulated control evaluations (SCEs), which use a language model to simulate tool responses in place of an environment. We evaluate SCEs on LinuxArena, where execution provides ground-truth outcomes. We compare SCE prediction errors with those from a separate control setting, BashArena, and with variation in control metrics within LinuxArena. For independently sampled evaluation and deployment task sets, SCEs predict safety with a root mean squared error of 3.6 percentage points across five monitors at a 5% audit budget, compared with 10.1 for BashArena. SCEs closely reproduce distributions of attack strategies, attacker reasoning, and monitor reasoning, with over tenfold lower KL divergence from execution than BashArena. SCEs explain 78-85% of the between-environment variance in attack success, monitor scores, and safety. This accuracy is sample efficient: SCEs predict safety with less error than BashArena using fewer than 5% as many task-pair draws as the deployment task set. Strategies discovered through simulation also improve monitor performance on held-out LinuxArena attacks, outperforming BashArena and approximately matching improvement from executed strategies. These results suggest that deployment-specific SCEs can be more predictive than control evaluations executed in separate control settings.",
+          "extra": {
+            "authors": [
+              "Jeffrey Olmo",
+              "David Zhang",
+              "Tyler Tracy"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.31593v1"
+          },
+          "score": 7.0,
+          "summary": "提出模拟控制评估方法，衡量AI模型在主动规避时安全措施的有效性。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "Supercharge your AI agents with data from the web and beyond. Building the library for superintelligence. 🔥",
+          "extra": {
+            "stars": 194372,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "为AI agent提供网页数据抓取能力，直接解决数据获取痛点。"
+        },
+        {
+          "section": "repo",
+          "title": "hypit-ai/hypit",
+          "url": "https://github.com/hypit-ai/hypit",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-29T18:49:19Z",
+          "raw_text": "Clone any viral video with AI agents. Not just a script, the whole workflow: swap the face, the words, the B-roll, ship 100 variants in one command, and get your 100M views.",
+          "extra": {
+            "stars": 24910,
+            "language": "TypeScript",
+            "topics": [
+              "agentic-ai",
+              "ai",
+              "ai-agents",
+              "ai-video",
+              "compiler",
+              "dsl",
+              "ffmpeg",
+              "generative-ai",
+              "llm",
+              "markup-language",
+              "monorepo",
+              "plugin-system",
+              "programming-language",
+              "text-to-video",
+              "typescript",
+              "video",
+              "video-automation",
+              "video-clone",
+              "video-editing",
+              "video-generation"
+            ]
+          },
+          "score": 8.0,
+          "summary": "一键克隆爆款视频全流程，含换脸改词，批量生产100个变体。"
+        },
+        {
+          "section": "repo",
+          "title": "lexmount/moli",
+          "url": "https://github.com/lexmount/moli",
+          "source": "GitHub 新星",
+          "published_at": "2026-08-10T13:20:30Z",
+          "raw_text": "Best headless browser for AI agents. Lite, Fast, High-Compatibility. Built in Rust",
+          "extra": {
+            "stars": 20163,
+            "language": "Rust",
+            "topics": [
+              "ai-agents",
+              "ai-tools",
+              "browser",
+              "browser-automation",
+              "cloud-browser",
+              "kitesurf",
+              "playwright",
+              "puppeteer",
+              "rust",
+              "servo",
+              "web-crawler",
+              "web-crawling",
+              "web-scraper",
+              "web-scraping"
+            ]
+          },
+          "score": 8.0,
+          "summary": "Rust构建的轻量无头浏览器，专为AI agent优化速度与兼容性。"
+        },
+        {
+          "section": "repo",
+          "title": "yetone/magpie",
+          "url": "https://github.com/yetone/magpie",
+          "source": "GitHub 新星",
+          "published_at": "2026-09-23T16:22:35Z",
+          "raw_text": "Every agent's model. One place. Codex on DeepSeek, Claude Code on Kimi, from the menu bar.",
+          "extra": {
+            "stars": 19720,
+            "language": "Go",
+            "topics": [
+              "claude-code",
+              "codex",
+              "deepseek",
+              "gemini-cli",
+              "llm",
+              "macos"
+            ]
+          },
+          "score": 7.0,
+          "summary": "菜单栏一键切换不同模型运行Codex/Claude Code，提升开发效率。"
+        },
+        {
+          "section": "repo",
+          "title": "trycompai/crm",
+          "url": "https://github.com/trycompai/crm",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-31T21:38:51Z",
+          "raw_text": "Comp AI CRM is an open source, CRM designed for AI agents. Agentic-first CRM.",
+          "extra": {
+            "stars": 11616,
+            "language": "TypeScript",
+            "topics": []
+          },
+          "score": 7.0,
+          "summary": "首个为AI agent设计的开源CRM，原生支持agent协作工作流。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "OpenAI working on new $30B raise at $1.25T valuation ahead of IPO",
+          "url": "https://techcrunch.com/2026/10/22/openai-working-on-new-30b-raise-at-1-25t-valuation-ahead-of-ipo/",
+          "source": "TechCrunch",
+          "published_at": "2026-10-22T22:08:24Z",
+          "raw_text": "Should OpenAI command an over $1 trillion valuation with this round, it would break records as the most highly valued private company ever.",
+          "extra": {},
+          "score": 10.0,
+          "summary": "OpenAI拟以1.25万亿美元估值融资300亿美元，若成将创私营公司估值纪录，直接影响AI行业资本格局。"
+        },
+        {
+          "section": "news",
+          "title": "LLMs are making formal software verification feasible at a much larger scale",
+          "url": "https://www.anthropic.com/research/formal-verification",
+          "source": "Hacker News",
+          "published_at": "2026-10-22T22:54:43Z",
+          "raw_text": "Article URL: https://www.anthropic.com/research/formal-verification Comments URL: https://news.ycombinator.com/item?id=50202217 Points: 220 # Comments: 121",
+          "extra": {},
+          "score": 9.0,
+          "summary": "Anthropic研究证明LLM可大规模实现形式化软件验证，为AI可靠性提供关键突破。"
+        },
+        {
+          "section": "news",
+          "title": "Canva’s first AI image model plans designs before generating them",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1017151/canva-craft-in-house-ai-model",
+          "source": "The Verge",
+          "published_at": "2026-10-22T21:51:25Z",
+          "raw_text": "Canva is diving even deeper into AI with the launch of an image generation model that competes directly with those from OpenAI, Microsoft, and Google. The model, called Canva Craft, uses a two-stage architecture that allows it to plan a design before generating an image, allowing for \"greater precision, consistency and control,\" according to an […]",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Canva发布自研AI图像模型Craft，采用两阶段架构直接挑战OpenAI、谷歌等巨头。"
+        },
+        {
+          "section": "news",
+          "title": "Uber rival inDrive eyes 2027 robotaxi tests in Central Asia with Pony.ai and Nvidia",
+          "url": "https://techcrunch.com/2026/10/22/uber-rival-indrive-eyes-2027-robotaxi-tests-in-central-asia-with-pony-ai-and-nvidia/",
+          "source": "TechCrunch",
+          "published_at": "2026-10-23T04:00:00Z",
+          "raw_text": "inDrive plans to begin testing Pony.ai's robotaxis in Kazakhstan's capital in the first half of 2027.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Uber竞品inDrive计划2027年在中亚部署小马智行Robotaxi，获英伟达支持，拓展自动驾驶新市场。"
+        },
+        {
+          "section": "news",
+          "title": "Meta’s AI could still scrape news sites, legal experts say",
+          "url": "https://www.theverge.com/tech/1017082/meta-terms-update-ai-training-concerns",
+          "source": "The Verge",
+          "published_at": "2026-10-22T20:32:05Z",
+          "raw_text": "Meta has tweaked its business terms to remove language suggesting that it could freely train its AI models on news sites, like The Verge - but legal experts say these changes aren't enough to address their concerns. \"This does nothing to restrict the 'associated with your products or services' [language] that would let Meta scrape […]",
+          "extra": {},
+          "score": 7.0,
+          "summary": "Meta修改条款仍难规避AI抓取新闻网站风险，法律专家指其未解决核心版权问题。"
+        },
+        {
+          "section": "news",
+          "title": "OpenAI's latest AI models are coming to Google Cloud and Antigravity",
+          "url": "https://arstechnica.com/ai/2026/10/openais-latest-ai-models-are-coming-to-google-cloud-and-antigravity/",
+          "source": "Ars Technica",
+          "published_at": "2026-10-21T18:51:42Z",
+          "raw_text": "Google Cloud will have GPT 6.1 Astra, Sol, and Luna in the coming weeks.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "OpenAI最新模型将登陆谷歌云，标志其与云巨头合作深化，影响AI服务分发模式。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "OlmoEarth v1.3: State-of-the-art embeddings for the whole planet",
+          "url": "https://huggingface.co/blog/allenai/olmoearth-v1-3",
+          "source": "Hugging Face",
+          "published_at": "2026-10-22T16:11:31Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "发布全球最先进的地球嵌入模型，大幅提升地理空间AI的语义理解能力。"
+        },
+        {
+          "section": "product",
+          "title": "Google DeepMind and Singapore Government collaborate to build fine-tuned AI model for scam detection",
+          "url": "https://deepmind.google/blog/on-device-ai-scam-detection-mddi/",
+          "source": "Google DeepMind",
+          "published_at": "2026-10-14T02:00:14Z",
+          "raw_text": "Learn how Google DeepMind and GovTech Singapore uses lightweight on-device Gemma models to intercept conversational scams in private chats with zero cloud data egress.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "谷歌DeepMind与新加坡政府合作，用轻量级模型在设备端实时拦截聊天诈骗。"
+        },
+        {
+          "section": "product",
+          "title": "Accelerating the search for antimicrobial peptides with Google Antigravity",
+          "url": "https://deepmind.google/blog/accelerating-antimicrobial-discovery/",
+          "source": "Google DeepMind",
+          "published_at": "2026-10-15T16:08:03Z",
+          "raw_text": "Accelerating the search for novel antimicrobial peptides using Google Antigravity for Science.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "谷歌Antigravity加速抗菌肽发现，AI驱动新药研发进入新阶段。"
+        }
+      ]
+    }
+  ]
+}
