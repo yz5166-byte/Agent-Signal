@@ -1,0 +1,414 @@
+{
+  "date": "2026-10-25",
+  "tip": {
+    "title": "firecrawl/firecrawl",
+    "body": "**场景**：当你的Agent需要实时抓取网页数据喂给大模型，但传统爬虫无法处理JS渲染或反爬时。\n\n**做法**：用 `firecrawl` 替代requests，一行代码让Agent拿到干净Markdown。\n\n```python\nfrom firecrawl import FirecrawlApp\n\napp = FirecrawlApp(api_key=\"your_key\")\ncontent = app.scrape_url(\"https://example.com\", formats=[\"markdown\"])\n# 直接返回纯文本，无需处理HTML或JS\n```\n\n**注意**：`firecrawl` 自带渲染和反爬，无需自己写沙箱。若需执行模型生成的抓取代码，用白名单限制域名（如 `allowed_domains=[\"example.com\"]`）。",
+    "ref_title": "firecrawl/firecrawl",
+    "ref_url": "https://github.com/firecrawl/firecrawl"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "Direct Pass@$k$ Optimization for Thought Pruning: Balancing Quality and Diversity in Test-Time Reasoning",
+          "url": "https://arxiv.org/abs/2610.31667v1",
+          "source": "arXiv",
+          "published_at": "2026-10-22T17:59:48Z",
+          "raw_text": "Test-time scaling has emerged as a key inference strategy for reasoning models, where a model generates a large number of candidate solutions in the hope of finding at least one correct solution. Running all candidate solutions to completion can be computationally demanding, so recent work prunes the candidate pool after generating only a short prefix, committing further computation only to the surviving candidates. Existing pruning strategies divide broadly into two categories: Quality-based methods assign a score to each partial solution and discard those predicted to ultimately lead to an incorrect final solution, while diversity-based methods select partial solutions that follow different reasoning trajectories and are therefore likely to cover different final solutions. The tension between these two objectives is an instance of exploration versus exploitation, yet little to no prior work on pruning exposes this trade-off directly, let alone optimizes it. In this paper, we introduce a pruning procedure that addresses this trade-off directly by optimizing pass@$k$ over the selected solution pool. In particular, it chooses the pool to maximize the probability that at least one of its partial solutions, when continued to completion, yields a correct answer. Because this objective simultaneously rewards high-quality partial solutions and penalizes redundancy among them, quality and diversity are naturally balanced by the criterion itself rather than through separate ad-hoc design choices. On eight open-weight reasoning models, our method outperforms existing quality-based and diversity-based pruning strategies. The gains are particularly pronounced when the pruning procedure keeps a moderate number of partial solutions for continued generation, highlighting the value of directly balancing quality and diversity during pruning.",
+          "extra": {
+            "authors": [
+              "Mahdi Salmani",
+              "Adel Javanmard",
+              "Devansh Gupta",
+              "Meisam Razaviyayn"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.31667v1"
+          },
+          "score": 9.0,
+          "summary": "提出测试时推理剪枝的优化方法，平衡质量与多样性，直接提升推理效率。"
+        },
+        {
+          "section": "paper",
+          "title": "Causal Chain of Thought: Mitigating Attention Leakage via Context Isolation",
+          "url": "https://arxiv.org/abs/2610.31639v1",
+          "source": "arXiv",
+          "published_at": "2026-10-22T17:52:56Z",
+          "raw_text": "Chain-of-thought (CoT) prompting elicits step-by-step rationales that appear to explain model predictions, but there is no guarantee these steps causally drive the final answer. In standard autoregressive generation, dense attention allows each reasoning step to attend to the full context, enabling the model to derive answers through direct lookup while generating plausible-sounding but post-hoc justifications. We introduce CausalCoT, an inference framework that enforces causal transparency by decomposing problems into a directed acyclic graph of atomic sub-questions, evaluating each node in an isolated context containing only its direct causal parents. This Markovian structure removes attention pathways to non-parent content, making downstream predictions sensitive to local reasoning rather than global context leakage. Across a diverse suite of reasoning benchmarks, CausalCoT preserves competitive predictive performance while improving explanation faithfulness, increasing causal sensitivity of intermediate reasoning steps by an average of 12 and up to 21 percentage points over the strongest baseline. The structured dependency graph additionally enables test-time interventions in which local corrections propagate predictably through downstream reasoning.",
+          "extra": {
+            "authors": [
+              "Gabriele Dominici",
+              "Teague McMillan",
+              "Fazl Barez",
+              "Marc Langheinrich",
+              "Martin Gjoreski"
+            ],
+            "categories": [
+              "cs.LG",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.31639v1"
+          },
+          "score": 8.0,
+          "summary": "通过上下文隔离缓解注意力泄漏，让思维链推理真正因果驱动，提升可解释性。"
+        },
+        {
+          "section": "paper",
+          "title": "EpiSEM-Bench: Evaluating Safety and Evidence Recovery in LLM Agents under Missing Evidence",
+          "url": "https://arxiv.org/abs/2610.31650v1",
+          "source": "arXiv",
+          "published_at": "2026-10-22T17:57:04Z",
+          "raw_text": "Tool-using language model agents rely on environmental facts to decide whether an action is permitted. When a tool response omits a safety-relevant fact, an agent may carry out a prohibited action even though the user request is benign and every returned statement is true. We introduce \\bench{}, an executable benchmark for evaluating unsafe execution, safety boundaries, and evidence recovery in LLM agents under missing evidence. It contains 300 matched unsafe/safe task pairs across six domains. By systematically suppressing critical facts, the benchmark measures unsafe execution under critical evidence omission and determines the minimum observed failure cardinality, including failures with full evidence and cases with no observed failure after exhaustive testing. An independent audit tool tests whether agents seek missing facts and then withhold prohibited actions while completing permissible tasks. The benchmark reveals substantial variation across the ten models in omission robustness, evidence acquisition, and appropriate action. Resistance to missing evidence does not necessarily translate into useful recovery. Recovery access reduces unsafe execution for all ten models, but agents differ in whether they actively obtain the missing facts and use them to act appropriately in both worlds.",
+          "extra": {
+            "authors": [
+              "Qijin Zhang",
+              "Hanzhen Wang",
+              "Yuehan Zhao",
+              "Haoyu Dai",
+              "Yao Shu",
+              "Zhongxiang Dai",
+              "Shuang Qiu"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.31650v1"
+          },
+          "score": 8.0,
+          "summary": "构建评估框架，测试工具型LLM在缺失证据时的安全性与证据恢复能力。"
+        },
+        {
+          "section": "paper",
+          "title": "Can an Agent Debug a Web Corpus? Agentic Auditing of Slovak FineWeb2",
+          "url": "https://arxiv.org/abs/2610.31636v1",
+          "source": "arXiv",
+          "published_at": "2026-10-22T17:52:22Z",
+          "raw_text": "Multilingual pipelines such as FineWeb2 apply one recipe across a thousand languages, leaving the failure modes of individual languages unanticipated. We use an LLM once, as a corpus debugger rather than a classifier: a tool-using agent explores the corpus through a read-only, budgeted API and compiles each finding into an executable test, which a native speaker then validates. On the 26.5M-document Slovak portion of FineWeb2, three runs costing \\$2.21-\\$2.84 each found seven findings over four phenomena. The largest is a machine-generated content farm of 1,408,437 documents (5.32%) that passed the pipeline's filters, 86.6% of it passing even stricter thresholds. Blinded labels support 6 of the 7 findings (defect rates .53-1.00 against .08 in a random control) and do not support one. The compiled suite scans the full corpus in 0.7 s of wall-clock time without a GPU, against \\$12k-\\$90k per LLM classification pass. The best static sampling baseline validates more selectors than any agent run, at under half the cost. The agent contributes exact prevalence, a precision estimate checked against sampled documents, an account of why the pipeline missed each slice, and a reusable test. We release the framework, Slovak test suite, validation data and agent trajectories.",
+          "extra": {
+            "authors": [
+              "Marek Šuppa",
+              "Ivan Vykopal",
+              "Jaroslav Kopčan"
+            ],
+            "categories": [
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.31636v1"
+          },
+          "score": 7.0,
+          "summary": "用LLM作为智能体调试多语言语料库，自动发现并报告语言级故障模式。"
+        },
+        {
+          "section": "paper",
+          "title": "Who Is Sycophantic to Whom? Confident LLMs, Human Deference, and the Collapse of Trust Calibration",
+          "url": "https://arxiv.org/abs/2610.31579v1",
+          "source": "arXiv",
+          "published_at": "2026-10-22T17:15:59Z",
+          "raw_text": "Research on sycophancy asks whether large language models (LLMs) bend towards what their users want to hear. We ask the reverse question: when an LLM is confident, consistent, and wrong, do users bend towards it? In a within-subjects experiment, 32 participants learned up to five science topics by chatting with five assistants built on the same model (GPT-5-mini). Unknown to participants, each assistant's briefing had 0, 25, 50, 75, or 100% of its facts replaced by plausible falsehoods, and every assistant spoke with full confidence. A surprise quiz after each topic offered the correct fact, the planted falsehood, and two distractors, with a confidence rating for every answer. Across 104 quizzes and 1,040 answers, scores fell from 7.4 to 2.9 out of 10, and the planted option was chosen on 60% of falsified items against 11% of correctly taught ones (odds ratio 12.5). Transcript coding showed that whenever the assistant stated a falsehood, it was adopted about 65% of the time at every falsification level. Absorbed falsehoods were held with high confidence (8.4/10), the modeled confidence advantage of right over wrong answers vanished, and the discrimination of confidence for correctness fell from an AUROC of 0.70 to chance, while post-task trust ratings barely moved. Participants tended to return to the chat more when the assistant was worse, but returning went with more absorption, not less, and 30% of all turns pasted quiz questions back to the source being checked. The assistant itself was almost never sycophantic and never conceded under pushback. We introduce a baseline-corrected Human Deference Index to quantify this human-side sycophancy and argue that trustworthiness is a property of the human-AI pair, that sycophancy evaluations should measure both directions, and that learning interfaces must make reliability legible claim by claim.",
+          "extra": {
+            "authors": [
+              "Deepthika S",
+              "Pawni Yadav",
+              "B. Sankar"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.HC"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.31579v1"
+          },
+          "score": 7.0,
+          "summary": "反向研究谄媚现象：当LLM自信且错误时，人类会顺从模型，破坏信任校准。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "hypit-ai/hypit",
+          "url": "https://github.com/hypit-ai/hypit",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-29T18:49:19Z",
+          "raw_text": "Clone any viral video with AI agents. Not just a script, the whole workflow: swap the face, the words, the B-roll, ship 100 variants in one command, and get your 100M views.",
+          "extra": {
+            "stars": 25429,
+            "language": "TypeScript",
+            "topics": [
+              "agentic-ai",
+              "ai",
+              "ai-agents",
+              "ai-video",
+              "compiler",
+              "dsl",
+              "ffmpeg",
+              "generative-ai",
+              "llm",
+              "markup-language",
+              "monorepo",
+              "plugin-system",
+              "programming-language",
+              "text-to-video",
+              "typescript",
+              "video",
+              "video-automation",
+              "video-clone",
+              "video-editing",
+              "video-generation"
+            ]
+          },
+          "score": 9.0,
+          "summary": "一键克隆爆款视频，支持换脸、改词、换素材，批量生成100个变体。直接解决内容创作痛点。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "Supercharge your AI agents with data from the web and beyond. Building the library for superintelligence. 🔥",
+          "extra": {
+            "stars": 195069,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "为AI代理提供网页数据抓取能力，可替代传统爬虫，直接喂给大模型做实时知识增强。"
+        },
+        {
+          "section": "repo",
+          "title": "lexmount/moli",
+          "url": "https://github.com/lexmount/moli",
+          "source": "GitHub 新星",
+          "published_at": "2026-08-10T13:20:30Z",
+          "raw_text": "Best headless browser for AI agents. Lite, Fast, High-Compatibility. Built in Rust",
+          "extra": {
+            "stars": 20517,
+            "language": "Rust",
+            "topics": [
+              "ai-agents",
+              "ai-tools",
+              "browser",
+              "browser-automation",
+              "cloud-browser",
+              "headless",
+              "headless-browser",
+              "kitesurf",
+              "playwright",
+              "puppeteer",
+              "rust",
+              "servo",
+              "web-crawler",
+              "web-crawling",
+              "web-scraper",
+              "web-scraping"
+            ]
+          },
+          "score": 8.0,
+          "summary": "Rust编写的高性能无头浏览器，专为AI代理设计，轻量且兼容性好，适合自动化任务。"
+        },
+        {
+          "section": "repo",
+          "title": "yetone/magpie",
+          "url": "https://github.com/yetone/magpie",
+          "source": "GitHub 新星",
+          "published_at": "2026-09-23T16:22:35Z",
+          "raw_text": "Every agent's model. One place. Codex on DeepSeek, Claude Code on Kimi, from the menu bar.",
+          "extra": {
+            "stars": 20913,
+            "language": "Go",
+            "topics": [
+              "claude-code",
+              "codex",
+              "deepseek",
+              "gemini-cli",
+              "llm",
+              "macos"
+            ]
+          },
+          "score": 8.0,
+          "summary": "在菜单栏一键切换不同模型后端，让Codex、Claude Code等工具用上DeepSeek、Kimi等国产模型。"
+        },
+        {
+          "section": "repo",
+          "title": "morluto/rea",
+          "url": "https://github.com/morluto/rea",
+          "source": "GitHub 经典",
+          "published_at": "2026-04-14T00:51:32Z",
+          "raw_text": "Reverse engineer anything with agents, from app behavior down to native binaries.",
+          "extra": {
+            "stars": 379649,
+            "language": "TypeScript",
+            "topics": [
+              "agent-skills",
+              "ai-agents",
+              "binary-analysis",
+              "claude-code",
+              "cli",
+              "codex",
+              "cordis",
+              "decompiler",
+              "developer-tools",
+              "dsh",
+              "dsh-plugin",
+              "ghidra",
+              "hopper",
+              "llm",
+              "mcp",
+              "model-context-protocol",
+              "rea",
+              "reverse-engineering",
+              "static-analysis",
+              "touhou"
+            ]
+          },
+          "score": 7.0,
+          "summary": "用AI代理逆向分析任何应用，从行为到二进制，适合安全研究和竞品分析场景。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Pennsylvania will require labels on AI-generated ads",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1018187/pennsylvania-ai-deceptive-advertising-act",
+          "source": "The Verge",
+          "published_at": "2026-10-24T18:32:21Z",
+          "raw_text": "On Thursday, Pennsylvania Governor Josh Shapiro signed the Artificial Intelligence Deceptive Advertising Act into law, requiring disclosures on AI-generated ads. The law requires any ad - whether it's a still image, video, audio, or text - that \"has been significantly modified or generated by artificial intelligence\" to include a label in the same format as […]",
+          "extra": {},
+          "score": 9.0,
+          "summary": "宾州签署法案，要求AI生成广告必须标注，系美国州级AI监管重要进展。"
+        },
+        {
+          "section": "news",
+          "title": "Forced to pick, Grok’s AI model chooses Republicans. OpenAI’s picks Democrats.",
+          "url": "https://techcrunch.com/2026/10/24/forced-to-pick-groks-ai-model-chooses-republicans-openais-picks-democrats/",
+          "source": "TechCrunch",
+          "published_at": "2026-10-24T15:00:00Z",
+          "raw_text": "A new study found Grok's AI overwhelmingly recommends Republican candidates while OpenAI's GPT favors Democrats, with the two AI models disagreeing in more than 90% of nearly 500 election races.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "研究显示Grok与GPT在选举推荐上严重对立，暴露AI政治偏见风险。"
+        },
+        {
+          "section": "news",
+          "title": "OpenAI now trains its frontier AI models with no internet access",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1018021/openai-training-top-ai-models-no-internet",
+          "source": "The Verge",
+          "published_at": "2026-10-23T21:11:07Z",
+          "raw_text": "OpenAI is now training its most advanced AI models without internet access following a string of rogue hacking incidents. In a blog post on Friday, OpenAI says it built an offline testing environment where AI models can interact with indexed and cached web content \"without risk of affecting external systems.\" OpenAI paused training its frontier […]",
+          "extra": {},
+          "score": 8.0,
+          "summary": "OpenAI为防黑客，前沿模型训练切断互联网，安全策略重大转向。"
+        },
+        {
+          "section": "news",
+          "title": "Intel gets waiver after worries fuzzy US ban on foreign-made robots may hit fabs",
+          "url": "https://arstechnica.com/ai/2026/10/intel-gets-waiver-after-worries-fuzzy-us-ban-on-foreign-made-robots-may-hit-fabs/",
+          "source": "Ars Technica",
+          "published_at": "2026-10-23T17:18:31Z",
+          "raw_text": "Company says foreign-made robotic vehicles are crucial to US chip production.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "英特尔获美国对华机器人禁令豁免，保芯片工厂关键设备供应。"
+        },
+        {
+          "section": "news",
+          "title": "The AI graveyard: a running list of projects and startups that didn’t make it",
+          "url": "https://techcrunch.com/2026/10/24/the-ai-graveyard-a-running-list-of-projects-and-startups-that-didnt-make-it/",
+          "source": "TechCrunch",
+          "published_at": "2026-10-24T19:00:00Z",
+          "raw_text": "From Apple's repeatedly delayed Siri AI to OpenAI's messy \"super app\" launch, here's a look at the AI projects that shut down or missed expectations.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "盘点AI项目失败案例，揭示行业泡沫与落地困难，具警示价值。"
+        },
+        {
+          "section": "news",
+          "title": "Block’s new voice model sounds eerily human",
+          "url": "https://techcrunch.com/2026/10/24/blocks-new-voice-model-sounds-eerily-human/",
+          "source": "TechCrunch",
+          "published_at": "2026-10-24T16:00:00Z",
+          "raw_text": "Block said that the voice model can run locally on a MacBook M4 Max",
+          "extra": {},
+          "score": 6.0,
+          "summary": "Block发布可在本地MacBook运行的逼真语音模型，降低AI语音门槛。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Solving a 31-year-old grand challenge in mathematics – the KLS conjecture",
+          "url": "https://www.microsoft.com/en-us/research/blog/solving-a-31-year-old-grand-challenge-in-mathematics-the-kls-conjecture/",
+          "source": "Microsoft Research",
+          "published_at": "2026-10-21T16:00:00Z",
+          "raw_text": "For decades, a fundamental question about the difficulty of computing in high-dimensional spaces has resisted proof. New research resolves this question, removing a major theoretical obstacle to understanding the efficiency of randomized algorithms used across science and computing. The Kannan–Lovász–Simonovits (KLS) conjecture was proposed in 1995. It asks whether, for a broad class of high-dimensional […] The post Solving a 31-year-old grand challenge in mathematics – the KLS conjecture appeared first on Microsoft Research .",
+          "extra": {},
+          "score": 9.0,
+          "summary": "解决KLS猜想这一31年数学难题，移除高维随机算法效率的理论障碍。"
+        },
+        {
+          "section": "product",
+          "title": "Flint-interactive: A language for creating interactive data visualizations",
+          "url": "https://www.microsoft.com/en-us/research/blog/flint-interactive-a-language-for-creating-interactive-data-visualizations/",
+          "source": "Microsoft Research",
+          "published_at": "2026-10-22T16:00:00Z",
+          "raw_text": "Flint-interactive gives AI agents a language for creating interactive visualizations. Click a chart, filter data, highlight related content, and explore beyond the view the author originally chose. The post Flint-interactive: A language for creating interactive data visualizations appeared first on Microsoft Research .",
+          "extra": {},
+          "score": 8.0,
+          "summary": "发布交互式可视化编程语言，让AI能动态探索数据而非静态图表。"
+        },
+        {
+          "section": "product",
+          "title": "Google DeepMind and Singapore Government collaborate to build fine-tuned AI model for scam detection",
+          "url": "https://deepmind.google/blog/on-device-ai-scam-detection-mddi/",
+          "source": "Google DeepMind",
+          "published_at": "2026-10-14T02:00:14Z",
+          "raw_text": "Learn how Google DeepMind and GovTech Singapore uses lightweight on-device Gemma models to intercept conversational scams in private chats with zero cloud data egress.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "与新加坡政府合作，用端侧模型零数据外泄拦截聊天诈骗。"
+        }
+      ]
+    }
+  ]
+}
