@@ -1,0 +1,392 @@
+{
+  "date": "2026-10-26",
+  "tip": {
+    "title": "Do \"True\" and \"False\" Add Up to One? Complement Consistency in LLM-Agent Opinion Simulations",
+    "body": "**场景：** 当你用LLM Agent做多智能体共识建模或概率推理时，发现Agent对“A为真”和“A为假”的概率判断之和远不等于1，导致决策逻辑矛盾。\n\n**做法：** 在Agent输出概率后，强制做归一化校验。例如用Python函数：\n```python\ndef normalize_probs(probs: dict) -> dict:\n    total = sum(probs.values())\n    return {k: v/total for k, v in probs.items()}\n```\n在调用LLM获取概率后立即执行，确保补集一致性。若概率来自模型生成，用白名单校验（只允许0-1浮点数），避免执行任意代码。",
+    "ref_title": "Do \"True\" and \"False\" Add Up to One? Complement Consistency in LLM-Agent Opinion Simulations",
+    "ref_url": "https://arxiv.org/abs/2610.32874v1"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "Measure Before You Train: Typed Decision Models vs. a Classical Baseline vs. a Generative LLM for Routing a Personal Multilingual Inbox",
+          "url": "https://arxiv.org/abs/2610.32955v1",
+          "source": "arXiv",
+          "published_at": "2026-10-23T17:49:43Z",
+          "raw_text": "Personal email agents decide, for every message, what it is, whether it is urgent, whether to draft a reply, create a task, or ignore it. Their error rate is rarely measured: the stored labels were written by the system itself. We present Foyer, a self-hosted personal inbox agent in daily use, and a measurement protocol (stratified sampling, frozen snapshots, thread-grouped splits, pre-registered hypotheses, human labels in the agent's review loop) that yields ground truth before any training. On 739 real Italian/English emails labelled by the owner (231 unbiased, 500 adversarially sampled), we compare nine systems under thread-grouped cross-validation: the production keyword rules, a TF-IDF + logistic-regression baseline, local typed decision models (Tev1, Nimble), a hosted decision model (Nimble v4-max), and hosted generative LLMs (Qwen2.5-7B, Gemma 4 26B/31B). Four results. The production rules score 28% on message type against a 58% majority class: the field shown most prominently carried no information. With ~200 labels, logistic regression has the highest accuracy on every field (type 0.79, urgency 0.74, needs-reply 0.83, is-noise 0.90), though it never predicts the two rarest classes and is statistically tied with Gemma 4 on type; few-shot prompting does not close the gap. The sender's relationship (client, supplier, service) is recovered from other emails of the same contact with 98.6% accuracy where the contact has been seen, and is not inferable from a single message by any model: it belongs in the contact graph, not the prompt. Finally, accuracy is not the product metric: composed into actions, the most accurate system most often ignores emails needing action (18% vs 4% for the best LLM); a cost-chosen threshold on its noise probability halves that rate and makes it the cheapest system.",
+          "extra": {
+            "authors": [
+              "Federico Lucca"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.HC",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.32955v1"
+          },
+          "score": 9.0,
+          "summary": "实测个人邮件Agent的决策错误率，发现LLM方案在路由任务上优于经典基线，为Agent落地提供关键基准。"
+        },
+        {
+          "section": "paper",
+          "title": "NgramRL: Accelerating RL Post-Training for Structured Generation via Rollout-Aware N-gram Speculative Decoding",
+          "url": "https://arxiv.org/abs/2610.32881v1",
+          "source": "arXiv",
+          "published_at": "2026-10-23T16:47:29Z",
+          "raw_text": "Reinforcement learning (RL) post-training improves the reasoning capabilities of large language models, but its cost is dominated by autoregressive rollout generation, which can exceed 70% of training time. Existing speculative-decoding methods are poorly suited to this setting: model-based drafters consume scarce GPU memory and may become misaligned as the policy evolves, while existing model-free methods do not explicitly exploit repetition across training epochs. We observe that recent rollouts of the same prompt provide a high-quality, self-updating draft source. Based on this insight, we propose NgramRL, a per-prompt n-gram drafter constructed from bounded recent rollout history. NgramRL requires no auxiliary model, drafter training, or persistent GPU-resident drafter state, while target-model verification preserves the rollout distribution. To hide CPU cache lookup and scheduling, we further introduce an adaptive fan-out prefetcher that predicts likely verification outcomes (j, b), consisting of the accepted draft length j and target-emitted continuation token b. A causal budget allocator concentrates prefetches on high-probability outcomes, while uncovered outcomes fall back to sequential lookup without changing committed tokens. Across two model families and three reasoning and structured-generation workloads, NgramRL commits 3.60-7.77 tokens per target-model forward in the warm-cache regime, up to 1.99x more than SuffixDecoding and 7.0x more than prompt-lookup decoding. On Spider, the prefetcher covers 96.6% of Qwen3-8B outcomes at a candidate budget of 16 and improves measured rollout throughput by 1.38x over synchronous NgramRL, approaching its 1.40x overlap ceiling.",
+          "extra": {
+            "authors": [
+              "Nilesh Prasad Pandey",
+              "Jangseon Park",
+              "Jason Kong",
+              "Onat Gungor",
+              "Tajana Rosing"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.32881v1"
+          },
+          "score": 9.0,
+          "summary": "提出Ngram推测解码，将RL后训练中70%的生成耗时降低，直接加速LLM推理能力训练。"
+        },
+        {
+          "section": "paper",
+          "title": "Do \"True\" and \"False\" Add Up to One? Complement Consistency in LLM-Agent Opinion Simulations",
+          "url": "https://arxiv.org/abs/2610.32874v1",
+          "source": "arXiv",
+          "published_at": "2026-10-23T16:44:20Z",
+          "raw_text": "In LLM-agent opinion simulations, each agent reports the probability that a claim is true after seeing its own previous probability and the probabilities reported by its neighbors, and that number becomes its state in the next round. If the number describes the agent's position rather than the sentence it was shown, then rewriting the claim as its complement and replacing every probability p with 1 - p should return the complementary answer, so the two reports should sum to one. We test this with three small open models: Qwen3-4B, Llama-3.2-3B and Gemma-3-4B. On 2,304 agent states taken from a running network simulation, Qwen's paired reports sum to 1.18 on average, and on 48 real fact-checking claims from AVeriTeC they again exceed one. A controlled benchmark of 24 worlds, each with exactly two possible outcomes, shows the same failure in all three models. The discrepancy is two to ten times larger than the change produced by a same-meaning paraphrase, and it persists under repeated sampling and across peer group sizes and report strengths. When the reports are fed back into two populations that start from complementary states, the populations do not remain mirror images: their divergence is positive after five rounds for every model. Averaging each answer with the complement of its paired answer restores consistency by construction and lowers Brier loss averaged over the two wordings, but at the final round it beats the better of the two original wordings for only one of the three models. A schedule-by-targeting experiment on the same model gives a small, stable interaction because such sweeps keep the claim wording fixed. Consistency under rewording therefore needs its own test before simulated probabilities are read as beliefs",
+          "extra": {
+            "authors": [
+              "Anouar Imel",
+              "Jin Qi"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL",
+              "cs.MA",
+              "cs.SI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.32874v1"
+          },
+          "score": 8.0,
+          "summary": "揭示LLM Agent模拟中概率补集不一致问题，影响多智能体共识建模的可靠性。"
+        },
+        {
+          "section": "paper",
+          "title": "SceneBloom: Agentic Indoor Environment Generation with Realistic and Diverse Layouts for Embodied Learning",
+          "url": "https://arxiv.org/abs/2610.32978v1",
+          "source": "arXiv",
+          "published_at": "2026-10-23T17:59:21Z",
+          "raw_text": "Training generalizable embodied agents requires realistic, varied, and simulation-ready indoor environments. Language-guided methods support semantic planning and object-level reasoning, but precise spatial grounding remains difficult. Visual generative models offer rich priors over plausible arrangements, yet their outputs require geometric reasoning to become physically valid 3D scenes. We introduce SceneBloom, an agentic framework that combines visual layout sampling with contract-guided 3D compilation. A hierarchical sampler uses diffusion priors to generate furniture arrangements within functional zones. A compiler then uses relations extracted from each proposal to guide geometric fitting and local pose correction. Across five room types, SceneBloom attains the highest visual quality and physical stability among the compared methods and is the only method with no detected mesh collisions and out-of-bounds objects. Its layouts are also closer to the distribution of real rooms than those of all compared baselines. Object navigation policies trained in these realistic scenes achieve a higher success rate in held-out real scans than those trained on an equal number of real training scans. Code is available at https://github.com/Tinaliu0123/scenebloom.",
+          "extra": {
+            "authors": [
+              "Yuhan Liu",
+              "Lianhui Qin",
+              "Shenji Wan"
+            ],
+            "categories": [
+              "cs.CV",
+              "cs.AI",
+              "cs.RO"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.32978v1"
+          },
+          "score": 8.0,
+          "summary": "用Agentic方法自动生成多样室内场景，解决具身智能训练中环境数据匮乏的瓶颈。"
+        },
+        {
+          "section": "paper",
+          "title": "Green Code or Costly Code? Evaluating the Energy Costs of Iterative LLM-Based Code Optimizations",
+          "url": "https://arxiv.org/abs/2610.32891v1",
+          "source": "arXiv",
+          "published_at": "2026-10-23T16:58:01Z",
+          "raw_text": "Large Language Models (LLMs) are increasingly used to optimize code for performance. This practice often assumes that improvements in execution speed naturally translate into overall lower energy consumption. We challenge this assumption empirically by measuring whether performance-optimized code produced by LLM self-refinement pipelines is also energy-efficient relative to canonical human reference solutions, and whether the energy cost of the optimization process can be offset by subsequent execution-time savings. We evaluate 11 open-source models across four decoding configurations on all 1,000 problems of EffiBench, a state-of-the-art performance benchmark, while collecting per-process, hardware-level energy measurements throughout. Inference energy spans 0.79 to 8.68 MJ across model-variant pairs, which is roughly equivalent to the energy of 250 to 2800 GPT-4.1 queries. Limiting the maximum number of output tokens has the largest impact, reducing energy use by up to 69% compared to the default configuration. On the execution side, 42 of 44 configurations produce code that consumes more energy per problem than the canonical human reference, with overheads ranging from +4% to +886%. The two exceptions achieve only marginal gains, with break-even points on the order of 10^6 to 10^7 executions. Mixture-of-Experts architectures consume substantially less inference energy than equivalently-sized dense models without sacrificing correctness, making architectural choice a more consequential sustainability lever than decoding parameters. Performance optimization and energy efficiency are not always aligned goals: LLM self-refinement consistently produces faster-seeking but energy-heavier code relative to what a human engineer would write. All artifacts are available at https://doi.org/10.5281/zenodo.23598170.",
+          "extra": {
+            "authors": [
+              "Sadra Emami",
+              "Benjamin Weigell",
+              "Mohammad Reza Mousavi",
+              "Gunel Jahangirova",
+              "Hugo Araujo",
+              "Bernhard Bauer"
+            ],
+            "categories": [
+              "cs.SE",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.32891v1"
+          },
+          "score": 7.0,
+          "summary": "实证发现LLM优化代码速度可能反而增加能耗，挑战AI从业者“快即省”的默认假设。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "hypit-ai/hypit",
+          "url": "https://github.com/hypit-ai/hypit",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-29T18:49:19Z",
+          "raw_text": "Clone any viral video with AI agents. Not just a script, the whole workflow: swap the face, the words, the B-roll, ship 100 variants in one command, and get your 100M views.",
+          "extra": {
+            "stars": 25671,
+            "language": "TypeScript",
+            "topics": [
+              "agentic-ai",
+              "ai",
+              "ai-agents",
+              "ai-video",
+              "compiler",
+              "dsl",
+              "ffmpeg",
+              "generative-ai",
+              "llm",
+              "markup-language",
+              "monorepo",
+              "plugin-system",
+              "programming-language",
+              "text-to-video",
+              "typescript",
+              "video",
+              "video-automation",
+              "video-clone",
+              "video-editing",
+              "video-generation"
+            ]
+          },
+          "score": 9.0,
+          "summary": "一键克隆爆款视频，支持换脸、换词、换B-roll，批量生成100个变体。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "Supercharge your AI agents with data from the web and beyond. Building the library for superintelligence. 🔥",
+          "extra": {
+            "stars": 195388,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 8.0,
+          "summary": "为AI Agent提供网页数据抓取能力，构建超级智能的数据基础库。"
+        },
+        {
+          "section": "repo",
+          "title": "lexmount/moli",
+          "url": "https://github.com/lexmount/moli",
+          "source": "GitHub 新星",
+          "published_at": "2026-08-10T13:20:30Z",
+          "raw_text": "Best headless browser for AI agents. Lite, Fast, High-Compatibility. Built in Rust",
+          "extra": {
+            "stars": 20740,
+            "language": "Rust",
+            "topics": [
+              "ai-agents",
+              "ai-tools",
+              "browser",
+              "browser-automation",
+              "cloud-browser",
+              "headless",
+              "headless-browser",
+              "kitesurf",
+              "playwright",
+              "puppeteer",
+              "rust",
+              "servo",
+              "web-crawler",
+              "web-crawling",
+              "web-scraper",
+              "web-scraping"
+            ]
+          },
+          "score": 8.0,
+          "summary": "Rust编写的高性能无头浏览器，专为AI Agent设计，轻量快速兼容性好。"
+        },
+        {
+          "section": "repo",
+          "title": "yetone/magpie",
+          "url": "https://github.com/yetone/magpie",
+          "source": "GitHub 新星",
+          "published_at": "2026-09-23T16:22:35Z",
+          "raw_text": "Every agent's model. One place. Codex on DeepSeek, Claude Code on Kimi, from the menu bar.",
+          "extra": {
+            "stars": 21684,
+            "language": "Go",
+            "topics": [
+              "claude-code",
+              "codex",
+              "deepseek",
+              "gemini-cli",
+              "llm",
+              "macos"
+            ]
+          },
+          "score": 7.0,
+          "summary": "菜单栏一键切换不同模型后端，让Codex、Claude Code等Agent用上任意模型。"
+        },
+        {
+          "section": "repo",
+          "title": "trycompai/crm",
+          "url": "https://github.com/trycompai/crm",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-31T21:38:51Z",
+          "raw_text": "Comp AI CRM is an open source, CRM designed for AI agents. Agentic-first CRM.",
+          "extra": {
+            "stars": 11678,
+            "language": "TypeScript",
+            "topics": []
+          },
+          "score": 7.0,
+          "summary": "首个为AI Agent设计的开源CRM，支持Agent自主管理客户关系。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "OpenAI and Anthropic cut their LLM prices by up to 80% within a few months. Why?",
+          "url": "https://minimaxir.com/2026/10/cheap-llms/",
+          "source": "Hacker News",
+          "published_at": "2026-10-25T21:11:31Z",
+          "raw_text": "Article URL: https://minimaxir.com/2026/10/cheap-llms/ Comments URL: https://news.ycombinator.com/item?id=50236102 Points: 222 # Comments: 250",
+          "extra": {},
+          "score": 9.0,
+          "summary": "OpenAI与Anthropic数月内降价80%，标志大模型价格战进入白热化，直接影响行业成本结构。"
+        },
+        {
+          "section": "news",
+          "title": "AI delivers ‘zero financial payoff’ to most companies, Apollo economist says",
+          "url": "https://techcrunch.com/2026/10/25/ai-delivers-zero-financial-payoff-to-most-companies-according-to-apollo-economist/",
+          "source": "TechCrunch",
+          "published_at": "2026-10-25T16:57:32Z",
+          "raw_text": "\"Despite massive investments and widespread hype around artificial intelligence, the technology has delivered zero financial payoff to corporate America outside of tech.\"",
+          "extra": {},
+          "score": 8.0,
+          "summary": "经济学家称AI对多数企业零财务回报，挑战当前投资热潮，引发对AI商业价值的深度反思。"
+        },
+        {
+          "section": "news",
+          "title": "IBM CEO says open weight models are now good and cheap on-prem",
+          "url": "https://www.theregister.com/systems/2026/10/22/ibm-ceo-says-open-weight-models-are-now-irresistibly-good-and-cheap-on-prem/5304640",
+          "source": "Hacker News",
+          "published_at": "2026-10-26T01:47:46Z",
+          "raw_text": "Article URL: https://www.theregister.com/systems/2026/10/22/ibm-ceo-says-open-weight-models-are-now-irresistibly-good-and-cheap-on-prem/5304640 Comments URL: https://news.ycombinator.com/item?id=50238088 Points: 107 # Comments: 72",
+          "extra": {},
+          "score": 8.0,
+          "summary": "IBM CEO力挺开源权重模型，称其已足够好且便宜，可能加速企业本地化部署趋势。"
+        },
+        {
+          "section": "news",
+          "title": "Google’s AI search changes upended online publishing",
+          "url": "https://www.theverge.com/column/1017983/google-ai-search-online-publishing",
+          "source": "The Verge",
+          "published_at": "2026-10-25T12:00:00Z",
+          "raw_text": "This is The Stepback, a weekly newsletter breaking down one essential story from the tech world. For more about AI's impact on the web, follow Emma Roth. The Stepback arrives in our subscribers' inboxes on Sunday at 8AM ET. Opt in for The Stepback here. How it started The digital publishing industry has relied on […]",
+          "extra": {},
+          "score": 7.0,
+          "summary": "谷歌AI搜索变革冲击数字出版业，揭示搜索流量分配机制的根本性转变，影响内容生态。"
+        },
+        {
+          "section": "news",
+          "title": "r/opensource just banned AI, non-English speakers, and more",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1018217/reddit-opensource-ai-ban",
+          "source": "The Verge",
+          "published_at": "2026-10-25T13:25:32Z",
+          "raw_text": "The mods at r/opensource posted new submission rules that, among other things, banned projects that use AI. The post made Saturday evening opens by saying, \"If your project uses AI, is made by AI, or is intended for AI, it's not welcome on r/opensource. AI, as it exists today, is incongruent to this Open Source […]",
+          "extra": {},
+          "score": 7.0,
+          "summary": "开源社区r/opensource全面封杀AI项目，反映开源界对AI伦理与原创性的激烈争议。"
+        },
+        {
+          "section": "news",
+          "title": "Blue Planet III is keeping the rough edges in the age of AI",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1018205/blue-planet-iii-authentic-organic-ai",
+          "source": "The Verge",
+          "published_at": "2026-10-24T21:29:12Z",
+          "raw_text": "BBC's Blue Planet III is looking to prove its authenticity by leaving in the less-than-perfect shots. Previous incarnations of the nature series were defined by their gorgeous, crystal-clear footage that seemed almost too good to be real. But one dead giveaway of AI is when things look too polished and seamless. To counter that, Blue […]",
+          "extra": {},
+          "score": 6.0,
+          "summary": "BBC《蓝色星球3》刻意保留瑕疵以对抗AI过度美化，引发对AI时代真实性的行业讨论。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Solving a 31-year-old grand challenge in mathematics – the KLS conjecture",
+          "url": "https://www.microsoft.com/en-us/research/blog/solving-a-31-year-old-grand-challenge-in-mathematics-the-kls-conjecture/",
+          "source": "Microsoft Research",
+          "published_at": "2026-10-21T16:00:00Z",
+          "raw_text": "For decades, a fundamental question about the difficulty of computing in high-dimensional spaces has resisted proof. New research resolves this question, removing a major theoretical obstacle to understanding the efficiency of randomized algorithms used across science and computing. The Kannan–Lovász–Simonovits (KLS) conjecture was proposed in 1995. It asks whether, for a broad class of high-dimensional […] The post Solving a 31-year-old grand challenge in mathematics – the KLS conjecture appeared first on Microsoft Research .",
+          "extra": {},
+          "score": 10.0,
+          "summary": "解决了困扰31年的KLS猜想，移除高维随机算法效率的理论障碍。"
+        },
+        {
+          "section": "product",
+          "title": "Google DeepMind and Singapore Government collaborate to build fine-tuned AI model for scam detection",
+          "url": "https://deepmind.google/blog/on-device-ai-scam-detection-mddi/",
+          "source": "Google DeepMind",
+          "published_at": "2026-10-14T02:00:14Z",
+          "raw_text": "Learn how Google DeepMind and GovTech Singapore uses lightweight on-device Gemma models to intercept conversational scams in private chats with zero cloud data egress.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "DeepMind与新加坡政府合作，用轻量Gemma模型在设备端拦截聊天诈骗，零数据上云。"
+        },
+        {
+          "section": "product",
+          "title": "Flint-interactive: A language for creating interactive data visualizations",
+          "url": "https://www.microsoft.com/en-us/research/blog/flint-interactive-a-language-for-creating-interactive-data-visualizations/",
+          "source": "Microsoft Research",
+          "published_at": "2026-10-22T16:00:00Z",
+          "raw_text": "Flint-interactive gives AI agents a language for creating interactive visualizations. Click a chart, filter data, highlight related content, and explore beyond the view the author originally chose. The post Flint-interactive: A language for creating interactive data visualizations appeared first on Microsoft Research .",
+          "extra": {},
+          "score": 8.0,
+          "summary": "发布交互式可视化语言Flint，让AI代理能生成可点击、过滤、探索的图表。"
+        }
+      ]
+    }
+  ]
+}
