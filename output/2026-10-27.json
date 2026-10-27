@@ -1,0 +1,415 @@
+{
+  "date": "2026-10-27",
+  "tip": {
+    "title": "Quantifying Claim Smoothing by LLM Research Agents",
+    "body": "**场景**：Agent 在长文档综合时，容易生成“平滑但虚假自信”的结论（条目[1]），误导研究决策。\n\n**做法**：在 Agent 输出结论前，强制要求它引用原文中的具体段落编号，并标注置信度（高/中/低）。若置信度为“高”，必须附带至少两条直接支持该结论的原文引用。\n\n```python\n# 示例：在生成最终结论前调用此函数\ndef validate_claim(claim, sources):\n    if claim.confidence == \"高\":\n        assert len(sources) >= 2, \"高置信度结论需至少2条原文引用\"\n    return True\n```",
+    "ref_title": "Quantifying Claim Smoothing by LLM Research Agents",
+    "ref_url": "https://arxiv.org/abs/2610.35793v1"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "I-HITL: Inalienable Human-in-the-Loop",
+          "url": "https://arxiv.org/abs/2610.35835v1",
+          "source": "arXiv",
+          "published_at": "2026-10-26T17:52:14Z",
+          "raw_text": "Human oversight is a pillar of AI safety. It is often exercised by a human in the loop (HITL) who approves critical actions taken by an AI agent. AI agents' increasing ability to bypass guardrails, though, raises the question of how to enforce HITL robustly. We introduce the concept of inalienable human-in-the-loop (I-HITL). An I-HITL protocol ensures that an agent can initiate an action only with explicit human approval, even when the human interacts with a system (e.g., a local agentic harness) compromised by the agent. A strong I-HITL protocol additionally ensures such approval even when an adversarial human attempts to delegate approvals to an agent. To motivate I-HITL, we report on experiments with a popular agentic wallet platform in which raising an agent's spending cap requires HITL approval via emailed one-time passcodes (OTPs). Given access to the user's email and a task blocked by the cap, we find that ten different frontier models will often autonomously raise the cap, harvesting OTPs to bypass a HITL guardrail and surfacing other vulnerabilities. We formally define I-HITL using the concept of communication topologies and prove necessary and sufficient conditions for its realization. We show that an I-HITL protocol requires a trusted entity - a trusted computing device (or equivalent) - and characterize which such devices can and cannot realize an I-HITL protocol. We present a prototype I-HITL system called Countersign that can plug into and strengthen existing HITL systems using off-the-shelf consumer mobile devices.",
+          "extra": {
+            "authors": [
+              "Samuel Breckenridge",
+              "Dani Vilardell",
+              "Wenhao Wang",
+              "Fan Zhang",
+              "Ari Juels"
+            ],
+            "categories": [
+              "cs.CR",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.35835v1"
+          },
+          "score": 9.0,
+          "summary": "提出不可剥夺的人类监督机制，防止AI代理绕过安全护栏，对Agent安全部署至关重要。"
+        },
+        {
+          "section": "paper",
+          "title": "Quantifying Claim Smoothing by LLM Research Agents",
+          "url": "https://arxiv.org/abs/2610.35793v1",
+          "source": "arXiv",
+          "published_at": "2026-10-26T17:29:48Z",
+          "raw_text": "Deep research, or any use of large language models (LLMs) to read a large document collection and produce insights, requires synthesizing information from different sources. In this work, we find that LLMs produce long-form research reports that read as confident syntheses but which fail to accurately reflect the underlying documents. We call this failure smoothing. In collapsing diverse and potentially conflicting sources into a single narrative, the model discards the evidential \"jaggedness\" of its corpus and asserts conclusions more decisive than the citations can support. We introduce a claim level scoring pipeline, SmoothScore, to quantify this effect. Our pipeline extracts key conclusive claims from model generated reports, then finds evidence relevant to each claim and clusters that evidence along high level aspects. Finally, each claim is scored with respect to the evidence to quantify the degree of smoothing done by the agent. Across 7 systems and 4 datasets, we find that agents consistently produce stronger claims than warranted.",
+          "extra": {
+            "authors": [
+              "Tiasa Singha Roy",
+              "Manya Wadhwa",
+              "Greg Durrett"
+            ],
+            "categories": [
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.35793v1"
+          },
+          "score": 8.0,
+          "summary": "发现LLM研究代理在长文档综合时产生虚假自信的平滑结论，警示AI辅助研究的可靠性问题。"
+        },
+        {
+          "section": "paper",
+          "title": "Retriever-Free Retrieval: Navigating Documents with Decision Models",
+          "url": "https://arxiv.org/abs/2610.35868v1",
+          "source": "arXiv",
+          "published_at": "2026-10-26T17:59:44Z",
+          "raw_text": "While language models have become dramatically more capable, retrieval still largely relies on lexical matching or similarity in fixed embedding spaces. This creates a capability asymmetry: what the retriever fails to find, even the strongest generator cannot recover. We propose DecisionRAG, which brings the capabilities of pretrained language models to retrieval using decision models that jointly evaluate candidate branches in a single forward pass, without generating any tokens, and show that judging candidates in a shared context makes their relevance estimates comparable. Like a person browsing a library, DecisionRAG navigates the corpus's inherent structure from broad topics down to individual passages, deciding at each level which branches are worth exploring. Without task-specific training or a first-stage retriever, DecisionRAG outperforms dense retrieval with an 8B reranker by 13.8 R@1 points on MultiDoc2Dial and 17.4 Hit@1 points on Natural Questions. Across four benchmarks, including a corpus of 2.68 million Wikipedia paragraphs, retrieval takes just 0.7-1.8 seconds per query.",
+          "extra": {
+            "authors": [
+              "Chao Wan",
+              "Paul Jünger",
+              "Beixi Du",
+              "Bodong Liu",
+              "Navaneetha Krishnan",
+              "Kilian Q. Weinberger"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.35868v1"
+          },
+          "score": 8.0,
+          "summary": "用决策模型替代传统检索，解决检索器瓶颈导致生成器无法恢复信息的问题，提升RAG上限。"
+        },
+        {
+          "section": "paper",
+          "title": "A Unified Arena for LLM Agents across Diverse Eurogame",
+          "url": "https://arxiv.org/abs/2610.35773v1",
+          "source": "arXiv",
+          "published_at": "2026-10-26T17:14:22Z",
+          "raw_text": "Interactive environments offer a practical way to evaluate large language model (LLM) agents, and competitive games extend this evaluation to decisions shaped by competing goals and other agents' choices. Yet existing evaluations confined to individual games or execution frameworks leave unclear which competitive advantages persist across settings. We introduce DECE (Diverse Eurogame Competitive Environments), a unified arena spanning ten Eurogames with shared interfaces and evaluation protocols. These games combine lasting strategic commitments, competition over shared resources, and multiple routes to victory. Our primary study evaluates 12 model-harness configurations, spanning nine models and four execution harnesses, in 480 three-player matches across ten games. The main and supplementary studies comprise 1,032 completed matches in total. These comparisons reveal broad cross-game ranking agreement alongside game-specific strengths. Matched studies show that the same model can perform differently across execution harnesses, adding another source of variation to these profiles. These performance advantages do not consistently translate into better token or cost efficiency, making resource use an additional consideration when comparing configurations. Together, the findings support evaluating complete agent configurations by both their competitive performance across games and the resources needed to achieve it.",
+          "extra": {
+            "authors": [
+              "Fengrui Zhang",
+              "Xiang Li",
+              "Ruomeng Ding",
+              "Jiayi Yuan",
+              "Yuchen Huang",
+              "Zhaoyang Han",
+              "Xiaoliang Wang",
+              "Daoyuan Chen",
+              "Yaliang Li"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.35773v1"
+          },
+          "score": 7.0,
+          "summary": "构建统一竞技场评估LLM代理在多种欧式游戏中的决策能力，推动多智能体通用评测。"
+        },
+        {
+          "section": "paper",
+          "title": "Profiling a Frontier Agent with EBench: From Direct Control to Harness with Policy",
+          "url": "https://arxiv.org/abs/2610.35832v1",
+          "source": "arXiv",
+          "published_at": "2026-10-26T17:51:02Z",
+          "raw_text": "Frontier multimodal large language models (MLLMs) can control robots without robot-specific training, but how their capabilities compare and interact with post-trained vision-language-action (VLA) and world action model (WAM) policies across manipulation demands remains to be thoroughly evaluated. In this report, we evaluate GPT-6-Astra on EBench as the core of an agent that controls a robot through an agent harness under the same visual and proprioceptive observation protocol as post-trained policies. We study two agent configurations: direct control, in which the agent generates waypoint commands directly, and harness with policy, in which it can also invoke a post-trained VLA or WAM policy for action execution. Under direct control, the agent achieves competitive overall performance relative to post-trained policies. It leads on short-horizon tasks and exhibits the least performance variation across generalization dimensions, whereas it underperforms post-trained policies on long-horizon tasks, tabletop manipulation, and high-precision contact-rich tasks. In the harness with policy, invoking a post-trained VLA or WAM combines the complementary strengths of both components, raising overall task success to the level of the strongest compared post-trained policies while substantially reducing token cost. However, performance remains below the per-task upper bound of the standalone components due to suboptimal policy invocation, fixed-instruction execution without subgoals, and grasp disruption when the agent resumes control. Overall, our study characterizes the capability boundary of a frontier MLLM agent and suggests directions for improving future agent harness design. Project page: https://internrobotics.github.io/EBench-Astra-Tech-Report/",
+          "extra": {
+            "authors": [
+              "Yifei Yao",
+              "Yude Zou",
+              "Guanbo Jiao",
+              "Xing Gao",
+              "Ning Gao",
+              "Yukai Wang",
+              "Jiantong Chen",
+              "Zihou Zhu",
+              "Xinyu Li",
+              "Ningyu Yan",
+              "Shuai Wang",
+              "Jianming Ma",
+              "Haoyu Guo",
+              "Weinan Zhang",
+              "Chunhua Shen"
+            ],
+            "categories": [
+              "cs.RO",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.35832v1"
+          },
+          "score": 7.0,
+          "summary": "系统对比前沿多模态模型与专用策略在机器人操控上的能力，为Agent落地提供基准。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "Supercharge your AI agents with data from the web and beyond. Building the library for superintelligence. 🔥",
+          "extra": {
+            "stars": 195757,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "为AI agent提供实时网页数据抓取能力，解决信息获取瓶颈。"
+        },
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi, GLM, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 184921,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "muse",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 9.0,
+          "summary": "一键运行Kimi、DeepSeek等国产模型，降低本地部署门槛。"
+        },
+        {
+          "section": "repo",
+          "title": "lexmount/moli",
+          "url": "https://github.com/lexmount/moli",
+          "source": "GitHub 新星",
+          "published_at": "2026-08-10T13:20:30Z",
+          "raw_text": "Best headless browser for AI agents. Lite, Fast, High-Compatibility. Built in Rust",
+          "extra": {
+            "stars": 20975,
+            "language": "Rust",
+            "topics": [
+              "ai-agents",
+              "ai-tools",
+              "browser",
+              "browser-automation",
+              "cloud-browser",
+              "headless",
+              "headless-browser",
+              "kitesurf",
+              "playwright",
+              "puppeteer",
+              "rust",
+              "servo",
+              "web-crawler",
+              "web-crawling",
+              "web-scraper",
+              "web-scraping"
+            ]
+          },
+          "score": 8.0,
+          "summary": "Rust编写的高性能无头浏览器，专为AI agent网页交互优化。"
+        },
+        {
+          "section": "repo",
+          "title": "genspark-ai/genoffice",
+          "url": "https://github.com/genspark-ai/genoffice",
+          "source": "GitHub 新星",
+          "published_at": "2026-07-31T09:40:58Z",
+          "raw_text": "Free, open-source AI Office suite: Docs, Sheets, Slides, PDF, Markdown and HTML editors with a built-in AI agent, plus a `genoffice` CLI and agent skill so Claude Code, Codex and Cursor can create and edit real .docx/.xlsx/.pptx files locally. Bring your own key. macOS, Windows & Linux.",
+          "extra": {
+            "stars": 10989,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agent",
+              "claude-code",
+              "cli",
+              "codex",
+              "cursor",
+              "docx",
+              "excel",
+              "libreoffice-alternative",
+              "local-first",
+              "markdown-editor",
+              "microsoft-office-alternative",
+              "office-suite",
+              "pdf-editor",
+              "pdf-to-word",
+              "powerpoint",
+              "pptx",
+              "skills",
+              "spreadsheet",
+              "xlsx"
+            ]
+          },
+          "score": 8.0,
+          "summary": "开源AI办公套件，支持agent直接生成可编辑的Office文件。"
+        },
+        {
+          "section": "repo",
+          "title": "browser-use/jev-ultrafast",
+          "url": "https://github.com/browser-use/jev-ultrafast",
+          "source": "GitHub 新星",
+          "published_at": "2026-09-16T21:30:12Z",
+          "raw_text": "Fastest and cheapest web agent",
+          "extra": {
+            "stars": 23711,
+            "language": "Python",
+            "topics": []
+          },
+          "score": 7.0,
+          "summary": "号称最快最便宜的web agent，适合高频自动化任务。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Cohere says Alibaba’s Qwen model tried to send a file to Beijing",
+          "url": "https://techcrunch.com/2026/10/26/cohere-says-alibabas-qwen-model-tried-to-send-a-file-to-beijing/",
+          "source": "TechCrunch",
+          "published_at": "2026-10-27T01:12:21Z",
+          "raw_text": "An AI model said it wouldn’t use any tools, then tried to send something to a server in Beijing anyway, and while researchers say it’s probably a training quirk and not espionage, the whole thing has people asking how much to trust free Chinese AI.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "阿里Qwen模型被曝尝试向北京服务器发送文件，引发对免费中国AI模型信任度的讨论。"
+        },
+        {
+          "section": "news",
+          "title": "OpenAI announces three big science discoveries and a new way to work with academics",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1019143/openai-eth-kaseya-science-math-physics",
+          "source": "The Verge",
+          "published_at": "2026-10-26T23:34:58Z",
+          "raw_text": "Less than a month after its mass release of hundreds of manuscripts that it said contained solutions to long-standing mathematics questions, OpenAI is back with three more \"major\" discoveries in math, computer science, and physics. What's different this time is the choice to have external experts that OpenAI describes as \"shepherds\" guiding the results in […]",
+          "extra": {},
+          "score": 8.0,
+          "summary": "OpenAI宣布三项重大科学发现，并首次引入外部专家验证，提升成果可信度。"
+        },
+        {
+          "section": "news",
+          "title": "Anthropic is burning gas to feed the AI boom",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1018994/anthropic-ipo-ai-data-center-energy-climate-risk",
+          "source": "The Verge",
+          "published_at": "2026-10-26T21:45:31Z",
+          "raw_text": "As it prepares to go public, Anthropic's S-1 filing makes generative AI's methane dependency glaringly obvious. \"Competition for access to electrical supply and data center locations with adequate power availability is intense.\" In documents filed with the US Securities and Exchange Commission Monday, Anthropic acknowledges that data centers are becoming increasingly reliant on \"natural gas\" […]",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Anthropic IPO文件揭示AI训练依赖天然气发电，暴露行业能源困境与甲烷排放问题。"
+        },
+        {
+          "section": "news",
+          "title": "Will the real Anthropic please stand up",
+          "url": "https://www.technologyreview.com/2026/10/26/1147672/will-the-real-anthropic-please-stand-up/",
+          "source": "MIT Tech Review",
+          "published_at": "2026-10-26T17:45:43Z",
+          "raw_text": "This story originally appeared in The Algorithm, our weekly newsletter on AI. To get stories like this in your inbox first, sign up here. After weeks of frenzied speculation, Anthropic has filed its IPO prospectus. The 335-page document (100 pages or so are focused on risks) lays out the company’s unique view of the technology it…",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Anthropic提交IPO招股书，335页文件详述风险，标志AI头部公司进入上市关键阶段。"
+        },
+        {
+          "section": "news",
+          "title": "ICE plan to buy robot dogs spurs protest from hundreds of Boston Dynamics employees",
+          "url": "https://arstechnica.com/ai/2026/10/boston-dynamics-employees-want-to-block-sale-of-robot-dogs-to-ice/",
+          "source": "Ars Technica",
+          "published_at": "2026-10-26T18:50:41Z",
+          "raw_text": "US robotics company stands by ICE deal as more than 300 employees warn of risk.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "波士顿动力员工抗议ICE采购机器狗计划，凸显AI军事化应用的伦理争议。"
+        },
+        {
+          "section": "news",
+          "title": "Anthropic’s IPO filing reveals its strategy for keeping enterprise customers hooked",
+          "url": "https://techcrunch.com/2026/10/26/anthropics-ipo-filing-reveals-its-strategy-for-keeping-enterprise-customers-hooked/",
+          "source": "TechCrunch",
+          "published_at": "2026-10-26T16:49:42Z",
+          "raw_text": "Anthropic’s S-1 shows more than half of its $100,000-plus customers now use both the Claude Platform and a first-party app, a cross-selling playbook reminiscent of Amazon that’s making enterprise customers stickier.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "Anthropic IPO文件显示超半数大客户同时使用平台与自有应用，企业粘性策略曝光。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Greptile takes bug detection beyond code review with GPT-6 Astra",
+          "url": "https://openai.com/index/greptile-code-review-codex-astra",
+          "source": "OpenAI",
+          "published_at": "2026-10-26T22:00:00Z",
+          "raw_text": "How Greptile uses GPT-6 Astra to test user workflows, Daybreak to strengthen security, and Codex to reduce rework.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "Greptile 用 GPT-6 Astra 将 bug 检测从代码审查扩展到用户工作流测试，提升安全与效率。"
+        },
+        {
+          "section": "product",
+          "title": "Solving a 31-year-old grand challenge in mathematics – the KLS conjecture",
+          "url": "https://www.microsoft.com/en-us/research/blog/solving-a-31-year-old-grand-challenge-in-mathematics-the-kls-conjecture/",
+          "source": "Microsoft Research",
+          "published_at": "2026-10-21T16:00:00Z",
+          "raw_text": "For decades, a fundamental question about the difficulty of computing in high-dimensional spaces has resisted proof. New research resolves this question, removing a major theoretical obstacle to understanding the efficiency of randomized algorithms used across science and computing. The Kannan–Lovász–Simonovits (KLS) conjecture was proposed in 1995. It asks whether, for a broad class of high-dimensional […] The post Solving a 31-year-old grand challenge in mathematics – the KLS conjecture appeared first on Microsoft Research .",
+          "extra": {},
+          "score": 9.0,
+          "summary": "新研究解决 KLS 猜想这一 31 年数学难题，扫除高维随机算法效率的理论障碍。"
+        },
+        {
+          "section": "product",
+          "title": "GPT-6.1 Sol helps CodeRabbit strengthen security across complex codebases",
+          "url": "https://openai.com/index/gpt-6-1-sol-coderabbit-code-security",
+          "source": "OpenAI",
+          "published_at": "2026-10-26T13:45:00Z",
+          "raw_text": "CodeRabbit uses GPT-6.1 Sol to investigate security risks across complex codebases. Its security agent helps developers review findings and proposed fixes.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "CodeRabbit 集成 GPT-6.1 Sol，强化复杂代码库安全风险检测与修复建议。"
+        }
+      ]
+    }
+  ]
+}
