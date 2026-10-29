@@ -1,0 +1,411 @@
+{
+  "date": "2026-10-29",
+  "tip": {
+    "title": "firecrawl/firecrawl",
+    "body": "当你的Agent需要从网页抓取实时数据（如新闻、价格），但目标网站结构频繁变化时，可用[5] firecrawl的`scrape_url`方法直接提取结构化内容，无需手写选择器。\n\n```python\nfrom firecrawl import FirecrawlApp\n\napp = FirecrawlApp(api_key='your_key')\nresult = app.scrape_url('https://example.com', params={'formats': ['markdown']})\nprint(result['data']['content'])\n```\n\n注意：API密钥需通过环境变量传入，避免硬编码。",
+    "ref_title": "firecrawl/firecrawl",
+    "ref_url": "https://github.com/firecrawl/firecrawl"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "Heads of Security: Learned Attention Gates Improve Prompt Injection Robustness",
+          "url": "https://arxiv.org/abs/2610.37657v1",
+          "source": "arXiv",
+          "published_at": "2026-10-27T17:58:52Z",
+          "raw_text": "We introduce Heads of Security (HoS), a prompt injection defense that enforces instruction-data separation via a small set of learned per-head attention gates. HoS learns how each head should redistribute attention between trusted and untrusted tokens, enabling models to reason over untrusted content without following injected instructions. We evaluate HoS on Llama-3.3-70B-Instruct and GPT-OSS-20B. We compare it against SecAlign++, a state-of-the-art finetuning-based defense, and ASIDE, a defense that, like ours, builds instruction-data separation into the model architecture. We show that HoS offers greater robustness to adaptive attacks, better performance on standard utility benchmarks, and matches top performance on standard agentic prompt injection benchmarks. More specifically, the black-box RL-Hammer attack reaches 97% ASR against GPT-OSS-20B and 85% against SecAlign, but only 10% against HoS. Claudini, a state-of-the-art white-box attack, strengthened against HoS through autoresearch, requires 3 times more FLOPs to reach the same ASR on HoS as it does on GPT-OSS-20B or SecAlign. HoS preserves base-model utility across standard multiple-choice benchmarks and prompting setups, whereas SecAlign and ASIDE degrade in few-shot settings. On agentic benchmarks with static attacks, HoS and SecAlign perform similarly and substantially improve the security-utility trade-off over the base model. ASIDE struggles with tool use, achieving only 10% utility. These results show that prompt injection robustness can be achieved and improved through targeted attention interventions.",
+          "extra": {
+            "authors": [
+              "Igor Shilov",
+              "Xiaoxue Yang",
+              "Alexander Panfilov",
+              "Evgenii Kortukov",
+              "Matthieu Meeus",
+              "Peter Romov",
+              "Wojciech Samek",
+              "Jonas Geiping",
+              "Yves-Alexandre de Montjoye"
+            ],
+            "categories": [
+              "cs.LG",
+              "cs.CL",
+              "cs.CR"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.37657v1"
+          },
+          "score": 9.0,
+          "summary": "用可学习的注意力门控实现指令与数据分离，防御提示注入，无需额外模型或训练。"
+        },
+        {
+          "section": "paper",
+          "title": "GEPA-Curator: Curated Learning for Self Improving Agents",
+          "url": "https://arxiv.org/abs/2610.37651v1",
+          "source": "arXiv",
+          "published_at": "2026-10-27T17:58:11Z",
+          "raw_text": "Large Language Models (LLMs) are increasingly used in multi-turn agentic workloads that require sustained interaction with complex environments. Existing reflective prompt optimizers such as GEPA learn from failed rollouts, but agentic failures can also come from prompt weaknesses, harness limitations, stochastic execution, or noisy judges. We argue that such failures may not provide useful learning signal, and may even be harmful; and thus it is essential to curate which tasks are provided to the prompt optimizer for better performance. We introduce GEPA-Curator, a framework that augments the prompt optimizer to select which agent experiences should shape prompt optimization. In particular, GEPA-Curator consists of two components: task curation, which filters out tasks that are likely to provide noisy or unreliable learning signals, and prior success retrieval, which selectively retrieves past successful trajectories for a task and provides them as additional context to the prompt optimizer. We evaluate GEPA-Curator on GoBrowse, ALFWorld, AppWorld, and $τ$-bench, using both Gemini 3.1 Pro and Claude Opus 5 as optimizer models. GEPA-Curator matches or exceeds the mean performance of both baselines, with gains of up to 20.7% over GEPA and 21.2% over ACE.",
+          "extra": {
+            "authors": [
+              "Zack Yu",
+              "Nicholas Lee",
+              "Minjae Lee",
+              "Lakshya Agarwal",
+              "Luca Manolache",
+              "Wonjun Kang",
+              "Matei Zaharia",
+              "Michael W. Mahoney",
+              "Kurt Keutzer",
+              "Sehoon Kim",
+              "Amir Gholami"
+            ],
+            "categories": [
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.37651v1"
+          },
+          "score": 8.0,
+          "summary": "提出基于课程学习的自改进Agent框架，从失败中系统化学习，提升多轮任务成功率。"
+        },
+        {
+          "section": "paper",
+          "title": "EnvSched: Environment-Aware Scheduling for Rollout-Efficient Agent Reinforcement Learning",
+          "url": "https://arxiv.org/abs/2610.37609v1",
+          "source": "arXiv",
+          "published_at": "2026-10-27T17:38:52Z",
+          "raw_text": "As executable environments for language agents scale, generating and verifying their rollouts becomes increasingly expensive. Under finite rollout budgets, this raises an important question: can data management at the environment level make agentic reinforcement learning (RL) more efficient by organizing, evaluating, and scheduling task instances together with the environments that determine their tools, states, transitions, and verification? To address this question, we introduce EnvSched (Environment-aware Scheduling), an online scheduler that learns from rollout history. EnvSched assigns scheduling value through two complementary modeling choices: exploitation prioritizes tasks likely to provide informative reward differences, while coverage spreads each batch across underobserved environments and interaction patterns. EnvSched organizes environment--task pairs as nodes in a dual-relation graph, with within-environment edges capturing task semantics and shared tool, state, and verifier structure, and cross-environment edges capturing abstract execution and reward topology. By propagating historical rollout statistics along both edge types, it predicts within-task reward variance. These predictions guide a scheduler that allocates each batch to tasks with high predicted reward variance and underobserved environments and tasks. Environment quotas and a similarity penalty further limit concentration and redundancy, yielding informative and diverse batches without additional pilot rollouts. In RL on Qwen3-8B, EnvSched achieves an average score of 48.81 across BFCL-v3, tau-Bench, and ACEBench-Agent after 40 training steps, exceeding the highest score attained by random task selection after 120 steps. It also improves downstream performance across model sizes at the same training budget.",
+          "extra": {
+            "authors": [
+              "Sihan Yang",
+              "Weichen Bai",
+              "Ruichuan An",
+              "Yiming Cheng",
+              "Zhiyuan Feng",
+              "Tianyi Jiang",
+              "Renye Yan",
+              "Ning Ding",
+              "Yifan Zhang",
+              "Renrui Zhang",
+              "Yehui Tang",
+              "Wentao Zhang"
+            ],
+            "categories": [
+              "cs.LG",
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.37609v1"
+          },
+          "score": 8.0,
+          "summary": "环境级调度策略优化Agent强化学习中的轨迹生成效率，降低有限预算下的验证成本。"
+        },
+        {
+          "section": "paper",
+          "title": "Can LLMs Uncover Hidden Physical Laws through Free Exploration?",
+          "url": "https://arxiv.org/abs/2610.37649v1",
+          "source": "arXiv",
+          "published_at": "2026-10-27T17:57:00Z",
+          "raw_text": "Scientific discovery often begins with an unexpected observation that prompts a new research question. In a world with altered physical laws, can large language models (LLMs) notice unexpected behavior, such as heavier objects falling more slowly, and discover the law through experiments without being told what to investigate? To evaluate this ability, we introduce LongChang, an automated framework that creates simulated worlds with altered physics, where one or more laws differ from ordinary physics. The evaluated LLMs act as explorers, manipulating objects and building tools to investigate their own questions without research tasks or hints about these laws. Separate LLM agents generate and review scenes, review tool designs, and evaluate reports for correctness and experimental support using the altered physical laws and exploration records. These records guide scene evolution for further exploration, allowing the full cycle to run without human intervention. Among 12 LLMs, GPT-6-Astra achieves a discovery rate of 16.7%, while the other 11 score 0%. The exploration records reveal uninvestigated anomalies and only partial identification of the altered physical laws.",
+          "extra": {
+            "authors": [
+              "Zhen Yang",
+              "Wen Wang",
+              "Xander Xu",
+              "Ying-Cong Chen"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.AI",
+              "cs.MA"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.37649v1"
+          },
+          "score": 7.0,
+          "summary": "测试LLM能否在未知物理规则下自主发现规律，探索科学发现与自由探索的边界。"
+        },
+        {
+          "section": "paper",
+          "title": "Metacognitive Decoding: Efficient Inference for Diffusion Language Agents",
+          "url": "https://arxiv.org/abs/2610.37642v1",
+          "source": "arXiv",
+          "published_at": "2026-10-27T17:55:24Z",
+          "raw_text": "Diffusion language models offer a promising path to efficient agents through parallel token generation. However, efficient interaction requires adapting both where computation is spent and how much text is generated. We introduce a metacognitive controller that guides diffusion generation according to the needs of the current response and the agent's interaction with the environment. It learns when to finalize tokens and how far generation should extend, reducing overall computation within responses. Our controller, a lightweight plug-in for the diffusion backbone, is trained on agent trajectories to balance correctness and generation cost. This approach connects the agent's generation process to the interaction the agent serves. Experiments across five benchmarks demonstrate that our approach reduces inference FLOPs by 20.6% on average compared with the most efficient baseline, while maintaining competitive task accuracy. Ablation studies further validate the effectiveness of our approach.",
+          "extra": {
+            "authors": [
+              "Mingyu Zhao",
+              "Shuhang Lin",
+              "Ligong Han",
+              "Xiaojing Yu",
+              "Zhenting Wang",
+              "Yifei Pang",
+              "Yang Zhou",
+              "Dimitris N. Metaxas"
+            ],
+            "categories": [
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.37642v1"
+          },
+          "score": 7.0,
+          "summary": "元认知控制器引导扩散语言模型动态分配计算与生成长度，提升推理效率。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "Supercharge your AI agents with data from the web and beyond. Building the library for superintelligence. 🔥",
+          "extra": {
+            "stars": 196502,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "开源网页数据抓取库，为AI代理提供实时、结构化的互联网信息输入，实用性强。"
+        },
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi, GLM, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 185164,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "muse",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 9.0,
+          "summary": "本地运行主流大模型的工具，支持Kimi、DeepSeek等，降低AI应用部署门槛。"
+        },
+        {
+          "section": "repo",
+          "title": "lexmount/moli",
+          "url": "https://github.com/lexmount/moli",
+          "source": "GitHub 新星",
+          "published_at": "2026-08-10T13:20:30Z",
+          "raw_text": "Best headless browser for AI agents. Lite, Fast, High-Compatibility. Built in Rust",
+          "extra": {
+            "stars": 21405,
+            "language": "Rust",
+            "topics": [
+              "ai-agents",
+              "ai-tools",
+              "browser",
+              "browser-automation",
+              "cloud-browser",
+              "headless",
+              "headless-browser",
+              "kitesurf",
+              "playwright",
+              "puppeteer",
+              "rust",
+              "servo",
+              "web-crawler",
+              "web-crawling",
+              "web-scraper",
+              "web-scraping"
+            ]
+          },
+          "score": 8.0,
+          "summary": "Rust编写的高性能无头浏览器，专为AI代理设计，轻量且兼容性好。"
+        },
+        {
+          "section": "repo",
+          "title": "browser-use/jev-ultrafast",
+          "url": "https://github.com/browser-use/jev-ultrafast",
+          "source": "GitHub 新星",
+          "published_at": "2026-09-16T21:30:12Z",
+          "raw_text": "Fastest and cheapest web agent",
+          "extra": {
+            "stars": 23840,
+            "language": "Python",
+            "topics": []
+          },
+          "score": 7.0,
+          "summary": "号称最快最便宜的网页代理，适合需要高频自动化浏览的AI任务。"
+        },
+        {
+          "section": "repo",
+          "title": "CopilotKit/OpenBot",
+          "url": "https://github.com/CopilotKit/OpenBot",
+          "source": "GitHub 新星",
+          "published_at": "2026-08-17T00:44:59Z",
+          "raw_text": "Open-source AI coworkers that each get a computer of their own: a browser, files and tools, with every action decided before it happens and recorded after. Bring any AG-UI agent.",
+          "extra": {
+            "stars": 7700,
+            "language": "TypeScript",
+            "topics": [
+              "ag-ui",
+              "agent-governance",
+              "ai-agents",
+              "browser-automation",
+              "copilotkit",
+              "generative-ui",
+              "mcp"
+            ]
+          },
+          "score": 7.0,
+          "summary": "开源AI同事框架，每个代理拥有独立浏览器和文件系统，操作可审计。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Microsoft just shared Azure’s actual revenue in dollars: $33.2 billion",
+          "url": "https://techcrunch.com/2026/10/28/microsoft-just-shared-azures-actual-revenue-in-dollars-33-2-billion/",
+          "source": "TechCrunch",
+          "published_at": "2026-10-28T21:58:32Z",
+          "raw_text": "Microsoft has never disclosed Azure's quarterly revenue in dollars. But for the first time, we can see just how close it is getting to besting the biggest competitor in the market, AWS.",
+          "extra": {},
+          "score": 10.0,
+          "summary": "微软首次披露Azure季度营收332亿美元，逼近AWS，揭示云市场格局关键变化。"
+        },
+        {
+          "section": "news",
+          "title": "Microsoft recorded $10 billion in revenue from OpenAI",
+          "url": "https://techcrunch.com/2026/10/28/microsoft-recorded-10-billion-in-revenue-from-openai/",
+          "source": "TechCrunch",
+          "published_at": "2026-10-28T21:34:30Z",
+          "raw_text": "Microsoft said it made $10 billion in revenue from commercial arrangements with OpenAI, including revenue-sharing payments, in the quarter ending September 30. It underscores the still-enormous financial dependency of the partnership.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "微软披露从OpenAI获100亿美元收入，凸显AI巨头间巨额财务依赖关系。"
+        },
+        {
+          "section": "news",
+          "title": "Google launches Gemini 4 Carbon with a ‘significant leap’ in cybersecurity",
+          "url": "https://www.theverge.com/tech/1021339/google-gemini-4-carbon-cybersecurity-frontier",
+          "source": "The Verge",
+          "published_at": "2026-10-28T20:03:00Z",
+          "raw_text": "Google has released its latest frontier model, Gemini 4 Carbon, offering \"significant gains\" in coding, agentic tasks, and cybersecurity. In an announcement on Wednesday, Google highlights Carbon's top spot on the Artificial Analysis Intelligence Index (v5.0) benchmark, with Claude Opus 5.5 and GPT-6 Astra trailing behind. The new Gemini 4 Carbon model offers improvements over […]",
+          "extra": {},
+          "score": 9.0,
+          "summary": "谷歌发布前沿模型Gemini 4 Carbon，在编程、智能体和网络安全上显著提升。"
+        },
+        {
+          "section": "news",
+          "title": "\"No human at the helm\": Delaware plan would let AI agents run entire businesses",
+          "url": "https://arstechnica.com/tech-policy/2026/10/no-human-at-the-helm-delaware-plan-would-let-ai-agents-run-entire-businesses/",
+          "source": "Ars Technica",
+          "published_at": "2026-10-27T21:50:04Z",
+          "raw_text": "Owners of AI-run firms would evade liability for \"reckless\" AI, US Rep. Comer says.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "特拉华州拟允许AI代理全权运营企业且所有者免责，引发重大监管与责任讨论。"
+        },
+        {
+          "section": "news",
+          "title": "GitLab Security Incident: Attempted Exploitation of CVE-2026-97229",
+          "url": "https://alpinelinux.org/posts/GitLab-security-incident-CVE-2026-97229.html",
+          "source": "Hacker News",
+          "published_at": "2026-10-28T23:45:46Z",
+          "raw_text": "Article URL: https://alpinelinux.org/posts/GitLab-security-incident-CVE-2026-97229.html Comments URL: https://news.ycombinator.com/item?id=50282544 Points: 137 # Comments: 59",
+          "extra": {},
+          "score": 7.0,
+          "summary": "GitLab遭CVE-2026-97229漏洞利用攻击，安全事件影响企业DevOps用户。"
+        },
+        {
+          "section": "news",
+          "title": "Google expands AI Search ads globally as core ad growth slows",
+          "url": "https://techcrunch.com/2026/10/28/google-expands-ai-search-ads-globally-as-core-ad-growth-slows/",
+          "source": "TechCrunch",
+          "published_at": "2026-10-28T21:48:37Z",
+          "raw_text": "The announcement came alongside parent company Alphabet's third-quarter earnings report, which saw revenue grow 25% year over year to $127.6 billion.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "谷歌将AI搜索广告扩展至全球，核心广告增长放缓下押注AI变现。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Gemini 4 Carbon: Our next frontier model",
+          "url": "https://deepmind.google/blog/gemini-4-carbon-our-next-frontier-model/",
+          "source": "Google DeepMind",
+          "published_at": "2026-10-28T17:00:58Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 10.0,
+          "summary": "谷歌发布新一代前沿模型，直接对标GPT-4与Claude 3，是本周最重磅的模型更新。"
+        },
+        {
+          "section": "product",
+          "title": "Genie 4: A new generation of world simulation",
+          "url": "https://deepmind.google/blog/genie-4-a-new-generation-of-world-simulation/",
+          "source": "Google DeepMind",
+          "published_at": "2026-10-27T16:01:38Z",
+          "raw_text": "Genie 4: our new world model unlocking unprecedented realism in real-time simulation.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "DeepMind推出Genie 4世界模型，实时仿真真实度突破，为游戏与机器人训练提供新基座。"
+        },
+        {
+          "section": "product",
+          "title": "Solving a 31-year-old grand challenge in mathematics – the KLS conjecture",
+          "url": "https://www.microsoft.com/en-us/research/blog/solving-a-31-year-old-grand-challenge-in-mathematics-the-kls-conjecture/",
+          "source": "Microsoft Research",
+          "published_at": "2026-10-21T16:00:00Z",
+          "raw_text": "For decades, a fundamental question about the difficulty of computing in high-dimensional spaces has resisted proof. New research resolves this question, removing a major theoretical obstacle to understanding the efficiency of randomized algorithms used across science and computing. The Kannan–Lovász–Simonovits (KLS) conjecture was proposed in 1995. It asks whether, for a broad class of high-dimensional […] The post Solving a 31-year-old grand challenge in mathematics – the KLS conjecture appeared first on Microsoft Research .",
+          "extra": {},
+          "score": 8.0,
+          "summary": "数学界31年悬而未决的KLS猜想被证明，扫除了高维随机算法效率的理论障碍。"
+        }
+      ]
+    }
+  ]
+}
