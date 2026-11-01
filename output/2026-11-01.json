@@ -1,0 +1,407 @@
+{
+  "date": "2026-11-01",
+  "tip": {
+    "title": "Pre-Crime for Agents, at the Last Second: Probing When a Recruited Agent Gives In",
+    "body": "当多智能体系统中某个Agent可能被诱导违规时（如社交机器人被恶意指令劫持），可以用线性探针在它行动前最后一刻检测意图。做法：在Agent的隐藏层输出上训练一个二分类线性探针（如逻辑回归），实时监控其决策前的中间表征。代码示例：\n```python\nfrom sklearn.linear_model import LogisticRegression\nprobe = LogisticRegression()\nprobe.fit(hidden_states, labels)  # labels: 0=正常, 1=违规\nif probe.predict_proba(current_hidden)[0][1] > 0.8:\n    trigger_alert()  # 触发拦截或降权\n```\n注意：探针训练数据需在沙箱中生成，避免污染生产环境。",
+    "ref_title": "Pre-Crime for Agents, at the Last Second: Probing When a Recruited Agent Gives In",
+    "ref_url": "https://arxiv.org/abs/2610.40588v1"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "From extreme weather to agricultural consequences with agentic AI",
+          "url": "https://arxiv.org/abs/2610.40641v1",
+          "source": "arXiv",
+          "published_at": "2026-10-29T17:58:53Z",
+          "raw_text": "Extreme weather is forecast days ahead, yet its consequences for agriculture remain hard to predict: a forecast says where a storm will strike, not which crops will suffer or how much is at risk, and the records that could tell span many sources. We present WxCrop, the first agent that judges agricultural hazards from physically interpretable weather indices examined by causal analysis, and the first that combines weather and agricultural information to predict crop loss reliably for past and forecast dates. We demonstrate it in Florida on hurricanes, freezes and dry heat, with a loss model calibrated on insurance records for each, and the same procedure extends to other hazards and areas. Three checks show reliability: the hurricane index detects recorded cyclone days with an AUC of 0.98, recorded losses in held-out years are reproduced to within 2%, and independent production records confirm the county rankings (rank correlation 0.63). Users ask the agent for each crop group's loss as a fraction of expected season value, every number sourced, so that governments, growers and scientists respond to agricultural disasters quickly.",
+          "extra": {
+            "authors": [
+              "Minghan Yu",
+              "Mengyu Dai",
+              "Yixin Wen",
+              "Haizhao Yang"
+            ],
+            "categories": [
+              "physics.ao-ph",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.40641v1"
+          },
+          "score": 9.0,
+          "summary": "首个用Agent将极端天气预报转化为农业损失评估的系统，打通了气象数据到决策的最后一公里。"
+        },
+        {
+          "section": "paper",
+          "title": "Collaborative AI agents for autonomous experimental research with solid-state quantum spins",
+          "url": "https://arxiv.org/abs/2610.40589v1",
+          "source": "arXiv",
+          "published_at": "2026-10-29T17:47:50Z",
+          "raw_text": "An autonomous research laboratory could conduct an entire study, from formulating questions to preparing manuscripts. Artificial intelligence (AI) offers one route towards this goal. Recent AI systems take on several research roles, but may draw conclusions that the evidence does not support. Here, we present an autonomous research laboratory in which agents based on large language models assess one another's work and can stop or redirect investigations. They can generate and reject research questions, require separate theoretical checks and conduct experiments designed to challenge their claims. We demonstrate these capabilities by investigating ensembles of quantum spins in diamond. The agents derived the minimum number of calibration settings needed to predict responses to a defined family of microwave pulse sequences. They checked the result computationally and designed experiments to distinguish competing predictions. An initial experiment agreed with the theoretical predictions, but repeated reference measurements showed that the signal was drifting during data collection. The agents therefore treated the result as inconclusive and revised the measurement protocol without relaxing the acceptance criteria. The revised experiment met those criteria and supported the theoretical predictions. This study demonstrates that collaborating AI agents can select research questions, derive theoretical results and test their predictions experimentally.",
+          "extra": {
+            "authors": [
+              "El Mustapha Mansouri",
+              "Eikichi Kimura",
+              "Masato Koga",
+              "Keigo Arai"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.MA",
+              "quant-ph"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.40589v1"
+          },
+          "score": 9.0,
+          "summary": "多智能体协作完成固态量子自旋实验全流程，从提问到写论文，展示了AI自主科研的可行性。"
+        },
+        {
+          "section": "paper",
+          "title": "Pre-Crime for Agents, at the Last Second: Probing When a Recruited Agent Gives In",
+          "url": "https://arxiv.org/abs/2610.40588v1",
+          "source": "arXiv",
+          "published_at": "2026-10-29T17:47:40Z",
+          "raw_text": "When AI agents share channels and credentials, one agent can press another to break its operator's rule, a first step towards collusion. Output filters check only what an agent has already written. Can an overseer tell beforehand that an agent is about to give in? We show that a linear probe on the agent's activations can, in a controlled multi-agent setting. Across six scenarios, a peer presses a target for up to 20 rounds to reveal a secret, such as a deploy token; the target often refuses, then gives in. Read at each model call before its output is written, the probe picks out the one that leaks. On held-out Qwen3-32B episodes, at a threshold set to flag 5% of benign calls, it catches 82% of leaking calls. At a similar flag rate, a zero-shot decision-model monitor catches 26%. On gpt-oss-20b, a probe on its reasoning reaches AUROC 0.91. A bag-of-words classifier trained on the same calls comes close, so most of the gain comes from training on labels, not activations. The probe also flags permitted disclosures: it reads the coming disclosure more than the violation. The warning is short-range, and halting on any alarm would stop most benign episodes, which a second text check does not fix. A warning raised before generation could let an overseer stop an agent that is about to give in, ahead of others acting on its messages or recruitment spreading through a swarm.",
+          "extra": {
+            "authors": [
+              "Leonidas Raghav"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.40588v1"
+          },
+          "score": 8.0,
+          "summary": "在Agent被诱导违规前一刻，用线性探针提前检测其意图，为多智能体安全提供预警机制。"
+        },
+        {
+          "section": "paper",
+          "title": "VeriCUA: Verification as Agentic Exploration for Computer-Using Agents",
+          "url": "https://arxiv.org/abs/2610.40578v1",
+          "source": "arXiv",
+          "published_at": "2026-10-29T17:45:26Z",
+          "raw_text": "Building and scaling computer-using agents (CUAs) across desktop, mobile, and web environments requires reliable task-completion verification for data curation, evaluation, and reinforcement learning. Typical automated approaches prompt vision-language models (VLMs) to judge trajectories or generate programs to inspect application state. However, both rely on partial views of complex digital environments. VLM judges are restricted to supplied observations, while generated programs depend on accessible state. These views can omit decisive evidence or leave completion judgments unsupported. Tailoring separate verifiers to different platforms and access settings adds further engineering cost. We present VeriCUA, a platform-agnostic framework for verification through agentic exploration. It treats verification as dynamic evidence gathering and assessment within a shared procedure for online and offline settings across platforms and observation modalities. After inspecting the available context to construct a task rubric, the verifier selects GUI or code checks for unresolved requirements and combines their findings under explicit evidence rules. Experiments show improved agreement with reference labels over the compared baselines across these settings, with the largest offline gains on hard cases and stronger rejection of false completion claims online. Further analyses connect these gains to complementary evidence and test-time exploration.",
+          "extra": {
+            "authors": [
+              "Qiushi Sun",
+              "Da Yu",
+              "Alexander Knop",
+              "Amer Sinha",
+              "Lingpeng Kong",
+              "Ben Kao",
+              "Ravi Kumar",
+              "Pritish Kamath"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL",
+              "cs.CV"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.40578v1"
+          },
+          "score": 8.0,
+          "summary": "将任务完成验证转化为Agent主动探索问题，提升计算机使用Agent在复杂环境下的可靠性。"
+        },
+        {
+          "section": "paper",
+          "title": "ShallowDefend: Harnessing Shallow Safety Alignment for Multi-Turn Defender",
+          "url": "https://arxiv.org/abs/2610.40627v1",
+          "source": "arXiv",
+          "published_at": "2026-10-29T17:56:53Z",
+          "raw_text": "Safety alignment has enabled large language models to reliably refuse harmful requests directly, yet the same request distributed across a multi-turn conversation still succeeds far too often. This brittleness has a mechanistic root: Alignment is shallow, with safety behavior concentrated in a model's first few output tokens, and existing defenses inherit the weakness, supervising the surface form of the response without ever giving the model an explicit safety decision to learn. We take the opposite view of shallowness: if a short span determines the trajectory of an entire response, that span is the highest-leverage place to intervene, and the defender can occupy it first. We propose Assess $\\to$ Decide $\\to$ Respond, a framework in which the defender assesses the user's intent, commits to an explicit, parseable safety decision, and only then generates a reply conditioned on it, with the commitment trained by reinforcement learning at the payload turn. Because the decision is a token span, the reward can be a rule: a self-verified reward checks the committed label against the conversation's known nature, requiring no judge and no annotation, while the same format also supports an LLM-as-judge reward over a graded decision space with safe redirection. Across two model families and fourteen benchmarks spanning safety, utility, and helpfulness, our defenders achieve the strongest multi-turn safety in a controlled comparison, maintaining their lead in safety while preserving utility at a modest cost to helpfulness. A per-token KL analysis and interventional probes confirm why this works: training concentrates its effect on the brief deliberation that sets a response's trajectory, and the decision committed there is a causal control point. The very shallowness attackers exploit becomes the mechanism of defense.",
+          "extra": {
+            "authors": [
+              "Qiyao Ma",
+              "Xiaodong Liu",
+              "Weiwei Yang",
+              "Mingqian Feng",
+              "Chengquan Guo",
+              "Jialin Song",
+              "Carolyn Buractaon",
+              "Zhe Zhao",
+              "Junshan Zhang",
+              "Sandeep Atluri",
+              "Christopher White",
+              "Jianfeng Gao"
+            ],
+            "categories": [
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2610.40627v1"
+          },
+          "score": 7.0,
+          "summary": "发现多轮对话越狱源于安全对齐的浅层性，提出利用浅层特征构建多轮防御器，实用价值高。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi, GLM, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 185511,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "muse",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 10.0,
+          "summary": "本地运行多种国产及开源大模型，一键部署，AI 从业者必备工具。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "Supercharge your AI agents with data from the web and beyond. Building the library for superintelligence. 🔥",
+          "extra": {
+            "stars": 197480,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "为 AI Agent 提供网页数据抓取能力，构建超级智能的数据管道。"
+        },
+        {
+          "section": "repo",
+          "title": "lexmount/moli",
+          "url": "https://github.com/lexmount/moli",
+          "source": "GitHub 新星",
+          "published_at": "2026-08-10T13:20:30Z",
+          "raw_text": "Best headless browser for AI agents. Lite, Fast, High-Compatibility. Built in Rust",
+          "extra": {
+            "stars": 21915,
+            "language": "Rust",
+            "topics": [
+              "ai-agents",
+              "ai-tools",
+              "browser",
+              "browser-automation",
+              "cloud-browser",
+              "headless",
+              "headless-browser",
+              "kitesurf",
+              "playwright",
+              "puppeteer",
+              "rust",
+              "servo",
+              "web-crawler",
+              "web-crawling",
+              "web-scraper",
+              "web-scraping"
+            ]
+          },
+          "score": 8.0,
+          "summary": "Rust 编写的高性能无头浏览器，专为 AI Agent 网页交互优化。"
+        },
+        {
+          "section": "repo",
+          "title": "CopilotKit/OpenBot",
+          "url": "https://github.com/CopilotKit/OpenBot",
+          "source": "GitHub 新星",
+          "published_at": "2026-08-17T00:44:59Z",
+          "raw_text": "Open-source AI coworkers that each get a computer of their own: a browser, files and tools, with every action decided before it happens and recorded after. Bring any AG-UI agent.",
+          "extra": {
+            "stars": 9169,
+            "language": "TypeScript",
+            "topics": [
+              "ag-ui",
+              "agent-governance",
+              "ai-agents",
+              "browser-automation",
+              "copilotkit",
+              "generative-ui",
+              "mcp"
+            ]
+          },
+          "score": 8.0,
+          "summary": "开源 AI 同事，拥有独立浏览器与文件系统，操作可审计可回放。"
+        },
+        {
+          "section": "repo",
+          "title": "DietrichGebert/ponytail",
+          "url": "https://github.com/DietrichGebert/ponytail",
+          "source": "GitHub 经典",
+          "published_at": "2026-06-12T00:52:37Z",
+          "raw_text": "Makes your AI agent think like the laziest senior dev in the room. The best code is the code you never wrote.",
+          "extra": {
+            "stars": 181664,
+            "language": "JavaScript",
+            "topics": [
+              "agent-skills",
+              "ai-agents",
+              "claude",
+              "claude-code",
+              "claude-code-plugin",
+              "cursor-rules",
+              "developer-tools",
+              "llm",
+              "prompt-engineering",
+              "yagni"
+            ]
+          },
+          "score": 7.0,
+          "summary": "让 AI Agent 像资深懒程序员一样思考，减少不必要代码生成。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Anthropic VS code extension on Cursor backdoored for nearly 12 hours",
+          "url": "https://arstechnica.com/security/2026/10/anthropic-vs-code-extension-on-cursor-backdoored-for-nearly-12-hours/",
+          "source": "Ars Technica",
+          "published_at": "2026-10-30T21:09:54Z",
+          "raw_text": "It's still unknown how attackers got access to Anthropic's verified Cursor account.",
+          "extra": {},
+          "score": 10.0,
+          "summary": "Anthropic官方扩展被植入后门12小时，暴露AI供应链安全重大漏洞。"
+        },
+        {
+          "section": "news",
+          "title": "Apple Intelligence is finally coming to China with iOS 27.3",
+          "url": "https://www.theverge.com/tech/1023974/apple-intelligence-china-ios-27-3",
+          "source": "The Verge",
+          "published_at": "2026-10-30T22:32:53Z",
+          "raw_text": "Apple will launch Apple Intelligence in China with iOS 27.3, the company announced on its Chinese newsroom website, as reported by MacRumors. The Apple Intelligence features will be available first in an iOS 27.3 beta that's set to launch on November 4th, with a full iOS 27.3 release scheduled for December. This launch doesn't bring […]",
+          "extra": {},
+          "score": 9.0,
+          "summary": "Apple Intelligence正式入华，中美AI生态竞争进入终端落地关键节点。"
+        },
+        {
+          "section": "news",
+          "title": "Memdoor: A team of 5 Qwen3.8-27B models beats Fable 5 on LiveCodeBench Hard",
+          "url": "https://github.com/guregodevo/memdoor/tree/main/examples/workflows/team-solve",
+          "source": "Hacker News",
+          "published_at": "2026-10-31T22:46:12Z",
+          "raw_text": "Article URL: https://github.com/guregodevo/memdoor/tree/main/examples/workflows/team-solve Comments URL: https://news.ycombinator.com/item?id=50320995 Points: 173 # Comments: 92",
+          "extra": {},
+          "score": 8.0,
+          "summary": "5个开源模型协作击败顶级闭源模型，证明小模型组合可超越大模型单打独斗。"
+        },
+        {
+          "section": "news",
+          "title": "Judge allows NAACP lawsuit over xAI data center pollution to move forward",
+          "url": "https://techcrunch.com/2026/10/31/judge-allows-naacp-lawsuit-over-xai-data-center-pollution-to-move-forward/",
+          "source": "TechCrunch",
+          "published_at": "2026-10-31T21:17:03Z",
+          "raw_text": "An NAACP lawsuit accuses the SpaceX-owned AI company of violating the Clean Air Act.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "xAI数据中心被诉污染环境，AI算力扩张面临环保合规实质性挑战。"
+        },
+        {
+          "section": "news",
+          "title": "Apple CEO says the company doesn’t ‘want to ship AI for AI’s sake’",
+          "url": "https://techcrunch.com/2026/10/31/apple-ceo-says-the-company-doesnt-want-to-ship-ai-for-ais-sake/",
+          "source": "TechCrunch",
+          "published_at": "2026-10-31T21:41:00Z",
+          "raw_text": "Apple's new CEO defended the company's current position in the AI landscape.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "苹果CEO表态不盲目追AI，反映头部公司对技术落地的务实态度转变。"
+        },
+        {
+          "section": "news",
+          "title": "Dartmouth's provost warned us about AI cheating—but his own AI use cost him his job",
+          "url": "https://arstechnica.com/tech-policy/2026/10/dartmouths-provost-warned-us-about-ai-cheating-but-his-own-ai-use-cost-him-his-job/",
+          "source": "Ars Technica",
+          "published_at": "2026-10-30T20:40:13Z",
+          "raw_text": "People who love AI don't always love telling others they used it.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "名校教务长因AI作弊言论与自身使用AI的矛盾被解职，学术诚信争议升级。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Gemini 4 Carbon: Our next frontier model",
+          "url": "https://deepmind.google/blog/gemini-4-carbon-our-next-frontier-model/",
+          "source": "Google DeepMind",
+          "published_at": "2026-10-28T17:00:58Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 10.0,
+          "summary": "谷歌发布新一代前沿模型，延续碳基命名系列，性能或再突破。"
+        },
+        {
+          "section": "product",
+          "title": "Genie 4: A new generation of world simulation",
+          "url": "https://deepmind.google/blog/genie-4-a-new-generation-of-world-simulation/",
+          "source": "Google DeepMind",
+          "published_at": "2026-10-27T16:01:38Z",
+          "raw_text": "Genie 4: our new world model unlocking unprecedented realism in real-time simulation.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "推出全新世界模型，实时模拟真实感达前所未有水平，推动具身智能。"
+        },
+        {
+          "section": "product",
+          "title": "Making it easier for websites to express AI training preferences",
+          "url": "https://openai.com/index/helping-websites-express-ai-training-preferences",
+          "source": "OpenAI",
+          "published_at": "2026-10-30T09:30:00Z",
+          "raw_text": "OpenAI will honor a shared robots.txt signal to help website operators communicate their AI training preferences to participating providers.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "OpenAI 将遵守共享 robots.txt 信号，让网站统一声明 AI 训练偏好。"
+        }
+      ]
+    }
+  ]
+}
