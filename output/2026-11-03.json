@@ -1,0 +1,464 @@
+{
+  "date": "2026-11-03",
+  "tip": {
+    "title": "firecrawl/firecrawl",
+    "body": "**场景：** 当你的Agent需要从网页获取实时信息（如股价、新闻），但传统爬虫常因页面结构变化而失效。\n\n**做法：** 用 Firecrawl 的 `scrape_url` 接口替代手动解析 HTML，它会自动提取结构化数据（标题、正文、元数据）。\n\n```python\nfrom firecrawl import FirecrawlApp\n\napp = FirecrawlApp(api_key=\"YOUR_KEY\")\nresult = app.scrape_url(\"https://example.com\")\nprint(result[\"data\"][\"content\"])  # 直接获取清洗后的文本\n```\n\n**安全提示：** 无需执行模型生成的代码，Firecrawl 返回纯 JSON，无注入风险。",
+    "ref_title": "firecrawl/firecrawl",
+    "ref_url": "https://github.com/firecrawl/firecrawl"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "Strategist: Evolving Reasoning with Agents",
+          "url": "https://arxiv.org/abs/2611.03618v1",
+          "source": "arXiv",
+          "published_at": "2026-11-02T18:51:04Z",
+          "raw_text": "A model is only half of an AI agent system. The other half is the inference strategy: the reasoning procedure that turns model calls into a response. Today that second half is written by hand, and the experience of building one strategy never carries to the next. We introduce Strategist, a meta-agent that evolves inference strategies across tasks. Each strategy is written as a blueprint,executable code that other strategies can reuse, and together the blueprints form a library. Given a task and a small development set, Strategist retrieves related blueprints, writes candidate strategies, tests them on real samples, and revises them from the results. Every candidate then enters the library, so later tasks build on earlier discoveries. On 30 benchmarks, Strategist beats the strongest baseline on 24 and matches its average accuracy (74.7% vs.74.0%) at 39% lower inference cost. Its strategies also transfer to unseen tasks and other models without further search. The part of an AI system that is not improved on its own now does.",
+          "extra": {
+            "authors": [
+              "Taiming Lu",
+              "Qi Xu",
+              "Zhigang Hua",
+              "Zhuang Liu"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.03618v1"
+          },
+          "score": 9.0,
+          "summary": "提出元智能体自动设计推理策略，将手工调参变为自动化，显著提升Agent系统泛化能力。"
+        },
+        {
+          "section": "paper",
+          "title": "WebHarbor: Docking Real Websites for Evolving GUI Agent Environments",
+          "url": "https://arxiv.org/abs/2611.03634v1",
+          "source": "arXiv",
+          "published_at": "2026-11-02T18:57:36Z",
+          "raw_text": "GUI web agents require realistic and interactive environments that remain stable during both evaluation and training. Live website evaluation suffers from changing content, access restrictions, and limited coverage of authenticated workflows, while existing synthetic environments for training often lack functional depth and visual fidelity. We propose WebHarbor, a suite of 153 executable and dockerized website environments that faithfully reconstruct the visual interfaces, content, and functional workflows of real-world web services under deterministic control. We build WebHarbor through task-driven human-agent collaboration, where environments evolve as new tasks expand their functional scope, coding agents implement the required changes, and human contributors audit visual fidelity, functional correctness, and task validity. The resulting suite comprises 3,518 tasks spanning multi-step and post-authentication workflows, where existing works often fail to cover. Beyond reliable evaluation, WebHarbor provides high-fidelity synthetic web environments for cost-efficient reinforcement learning (RL). We demonstrate that a Qwen 4B-level GUI agent trained with RL in WebHarbor generalizes to unseen tasks and performs competitively with leading open-source GUI web agents across four benchmarks. The code and data are publicly available at https://github.com/aiming-lab/WebHarbor.",
+          "extra": {
+            "authors": [
+              "Zhaoyang Wang",
+              "Qianhui Wu",
+              "Boyu Gou",
+              "Demi Wang",
+              "Jiacheng Zhang",
+              "Peichun Hua",
+              "Qize Li",
+              "Shi Qiu",
+              "Yifan Jiang",
+              "Yifan Zhang",
+              "Zexu Jin",
+              "Baolin Peng",
+              "Bolin Shen",
+              "Chetan Bansal",
+              "Dehan Kong",
+              "Deren Lei",
+              "Dongshen Peng",
+              "Fengqing Jiang",
+              "Hao Cheng",
+              "Haoqing Wang",
+              "Jiaming Shan",
+              "Jicheng Wang",
+              "Jingguang Zhou",
+              "Jixuan He",
+              "Kaide Zeng",
+              "Kangyu Zhu",
+              "Lama Moukheiber",
+              "Mufan Qiu",
+              "Peng Xia",
+              "Qihan Sun",
+              "Qingwei Lin",
+              "Qiushi Sun",
+              "Ruichen Zhang",
+              "Shuqing Luo",
+              "Si Qin",
+              "Sicheng Fan",
+              "Tao Xiong",
+              "Wenlin Yao",
+              "Xinyu Zhang",
+              "Xinyue Zeng",
+              "Xuanrui Li",
+              "Xuchao Zhang",
+              "Yian Wang",
+              "Yichao Liu",
+              "Yiming Liang",
+              "Yiyang Zhou",
+              "Yizhu Jiao",
+              "Yuetai Li",
+              "Yurun Chen",
+              "Yuxuan Zhang",
+              "Zheyuan Yang",
+              "Zhiyuan Yao",
+              "Zhongyang Li",
+              "Zihao Li",
+              "Zili Wang",
+              "Jianfeng Gao",
+              "Huaxiu Yao"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.03634v1"
+          },
+          "score": 8.0,
+          "summary": "为GUI智能体提供稳定、可复现的网页环境，解决在线评估与训练环境不一致的痛点。"
+        },
+        {
+          "section": "paper",
+          "title": "Four Bridges: Measuring Deception Propensity in a Multi-Agent Game",
+          "url": "https://arxiv.org/abs/2611.03600v1",
+          "source": "arXiv",
+          "published_at": "2026-11-02T18:40:47Z",
+          "raw_text": "AI agents are increasingly deployed in settings where they interact and coordinate with other agents, yet honesty is mostly measured in single-turn, single-agent benchmarks that pressure the model to deceive. We study deception that emerges in multi-agent interaction without any instruction to deceive. We introduce Kradle, a platform for evaluating AI models, and Four Bridges, an information asymmetry game in which four agents distribute across four rooms: one is the death room, the others hold food worth more if not shared. One agent, the informed agent, knows which room is the death room and can withhold or disclose that information. We evaluate eight frontier models as the informed agent. Deceptive behavior appears in every model and in 73% of all runs (6% to 100% per model), and does not decrease with capability tier within a model family. When the informed agent does disclose, the warning is often challenged, and agents that challenge it enter the death room twice as often as those that do not. Telling all agents that one of them knows the death room collapses deception in six of eight models; telling the informed agent that the room is permanently fatal moves only one. On an open-weight model, an honesty steering vector reduces deception to 0% and adversarial honesty training to 6%. The platform and game provide a testbed for measuring deceptive behavior and comparing interventions.",
+          "extra": {
+            "authors": [
+              "Raphael Casey",
+              "Michael Simeone",
+              "Alberto Tosato",
+              "Florian Ernst",
+              "Kemal El Moujahid",
+              "James Tamplin",
+              "Tommaso Tosato"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.MA"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.03600v1"
+          },
+          "score": 8.0,
+          "summary": "在多智能体博弈中测量欺骗倾向，揭示无指令下的涌现欺骗行为，对安全部署有警示意义。"
+        },
+        {
+          "section": "paper",
+          "title": "From Natural Language to Exact Cover: A Neuro-Symbolic Approach to Zebra Puzzles",
+          "url": "https://arxiv.org/abs/2611.03641v1",
+          "source": "arXiv",
+          "published_at": "2026-11-02T18:58:21Z",
+          "raw_text": "Chain-of-Thought (CoT) generation has substantially improved the performance of Large Language Models (LLMs) on complex reasoning tasks, including code generation, data analysis, and exam-style question answering. Despite these advances, purely neural LLMs continue to struggle with elementary logical reasoning problems and lack the determinism, soundness, and reliability characteristic of symbolic reasoning systems. Conversely, classical symbolic methods such as SAT solving and exact cover guarantee correctness and completeness, but require problems to be expressed in highly specialized formal encodings, limiting their applicability to natural language inputs. In this work, we present a synergistic neuro-symbolic framework that bridges this gap by combining neural semantic parsing with deterministic exact cover reasoning. Given a Zebra-style logic puzzle in natural language, an LLM translates entities and constraints into structured tool calls that construct an exact cover instance. A symbolic solver then computes the solution and provides feedback to iteratively refine invalid, under- or overconstrained encodings, exploiting the uniqueness property of Zebra puzzles. We conduct a comprehensive empirical evaluation across multiple parameter scales, post-training paradigms, and LLM families. The results demonstrate that our hybrid approach consistently outperforms strong plain neural baselines, including CoT prompting, as well as recent neuro-symbolic methods.",
+          "extra": {
+            "authors": [
+              "Paulius Skaisgiris",
+              "Thomas Pammer",
+              "Veronika Semmelrock",
+              "Mykyta Ielanskyi",
+              "Maximilian Heisinger",
+              "Erich Kobler"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.03641v1"
+          },
+          "score": 7.0,
+          "summary": "神经符号方法结合LLM与精确求解器，解决纯神经模型在逻辑谜题上的系统性失败。"
+        },
+        {
+          "section": "paper",
+          "title": "DiabAgent: Toward Agentic Physiological Control",
+          "url": "https://arxiv.org/abs/2611.03601v1",
+          "source": "arXiv",
+          "published_at": "2026-11-02T18:41:02Z",
+          "raw_text": "As pretraining scales, medical language models have advanced rapidly in clinical question answering. Their ability to achieve effective physiological control through sustained intervention still lacks systematic quantitative evaluation. Type 1 diabetes provides a concrete setting: impaired insulin secretion creates dependence on exogenous insulin, with dosing continually adjusted using information about meals, exercise, illness, and glucose measurements. We introduce DiabAgent, a research suite for agentic physiological control comprising the Agentic Physiological Control (APC) framework, the DiabetSim simulator, and the SweetBench benchmark. APC controls glucose through medical-device tools, using ongoing observations to infer individual states, accumulate personal experience, and choose treatment actions. We build DiabetSim to simulate different patients, events, and device conditions for scalable virtual testing and training. Using DiabetSim, we construct SweetBench by instantiating 32 scenario designs as 212 glucose-control tasks. With Claude Opus 5.5 and a fixed decision interval of one hour, APC achieves a COGI of 73.5, compared with 71.2 for the open-source closed-loop baseline OpenAPS. Ablations further show that individual adaptation and contextual information improve glucose control. Combining high-frequency rule-based control with lower-frequency agent decisions shows potential for balancing control performance and computational cost. Our work provides a framework, simulator, and evaluation foundation for agents to participate in human physiological control.",
+          "extra": {
+            "authors": [
+              "Chengxi Li",
+              "Shaoxuan Li",
+              "Deyao Hong",
+              "Qingle Liu",
+              "Yi Huang",
+              "Puheng Bian",
+              "Minzhi Xu",
+              "Lanyue Zhang",
+              "Mingze Sun",
+              "Xin Li",
+              "Calvin Xiao",
+              "Shengyuan Wang",
+              "Huan-ang Gao",
+              "Jiazheng Xu",
+              "Kaisen Yang",
+              "Hongning Wang"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.03601v1"
+          },
+          "score": 7.0,
+          "summary": "将智能体框架用于糖尿病生理控制，首次系统评估LLM在持续干预任务中的效果。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi, GLM, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 185747,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "muse",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 9.0,
+          "summary": "Ollama 新增对 Kimi、GLM 等国产模型的支持，本地运行门槛进一步降低。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "Supercharge your AI agents with data from the web and beyond. Building the library for superintelligence. 🔥",
+          "extra": {
+            "stars": 198104,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "Firecrawl 为 AI Agent 提供结构化网页数据抓取，解决实时信息获取痛点。"
+        },
+        {
+          "section": "repo",
+          "title": "yetone/magpie",
+          "url": "https://github.com/yetone/magpie",
+          "source": "GitHub 新星",
+          "published_at": "2026-09-23T16:22:35Z",
+          "raw_text": "Every agent's model. One place. Codex on DeepSeek, Claude Code on Kimi, from the menu bar.",
+          "extra": {
+            "stars": 28710,
+            "language": "Go",
+            "topics": [
+              "claude-code",
+              "codex",
+              "deepseek",
+              "gemini-cli",
+              "llm",
+              "macos"
+            ]
+          },
+          "score": 8.0,
+          "summary": "Magpie 在菜单栏统一管理多种模型，让 Codex 跑在 DeepSeek 上成为可能。"
+        },
+        {
+          "section": "repo",
+          "title": "lexmount/moli",
+          "url": "https://github.com/lexmount/moli",
+          "source": "GitHub 新星",
+          "published_at": "2026-08-10T13:20:30Z",
+          "raw_text": "Best headless browser for AI agents. Lite, Fast, High-Compatibility. Built in Rust",
+          "extra": {
+            "stars": 22318,
+            "language": "Rust",
+            "topics": [
+              "ai-agents",
+              "ai-tools",
+              "browser",
+              "browser-automation",
+              "cloud-browser",
+              "headless",
+              "headless-browser",
+              "kitesurf",
+              "playwright",
+              "puppeteer",
+              "rust",
+              "servo",
+              "web-crawler",
+              "web-crawling",
+              "web-scraper",
+              "web-scraping"
+            ]
+          },
+          "score": 8.0,
+          "summary": "Moli 用 Rust 重写无头浏览器，为 Agent 提供轻量高兼容的网页操作能力。"
+        },
+        {
+          "section": "repo",
+          "title": "CopilotKit/OpenBot",
+          "url": "https://github.com/CopilotKit/OpenBot",
+          "source": "GitHub 新星",
+          "published_at": "2026-08-17T00:44:59Z",
+          "raw_text": "Open-source AI coworkers that each get a computer of their own: a browser, files and tools, with every action decided before it happens and recorded after. Bring any AG-UI agent.",
+          "extra": {
+            "stars": 9937,
+            "language": "TypeScript",
+            "topics": [
+              "ag-ui",
+              "agent-governance",
+              "ai-agents",
+              "browser-automation",
+              "copilotkit",
+              "generative-ui",
+              "mcp"
+            ]
+          },
+          "score": 8.0,
+          "summary": "OpenBot 为每个 AI 协作者分配独立浏览器和文件系统，实现可审计的自主操作。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Y Combinator’s Garry Tan uses AI agents so much, he spends up to $200K a year on tokens",
+          "url": "https://techcrunch.com/2026/11/02/y-combinators-garry-tan-uses-ai-agents-so-much-he-spends-up-to-200k-a-year-on-tokens/",
+          "source": "TechCrunch",
+          "published_at": "2026-11-03T00:35:52Z",
+          "raw_text": "Y Combinator Garry Tan has jokingly admitted that he's suffered from \"cyber psychosis” and barely sleeps sometimes because he’s so excited to be working with his AI agents. On a new episode of Walter Isaacson’s podcast, The Builders, Tan put a price tag on his passion.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "YC掌门人自曝年耗20万美元AI代币，揭示顶级创投对AI Agent的狂热投入与行业成本趋势。"
+        },
+        {
+          "section": "news",
+          "title": "Intel stock collapse worsens as $3.5T chip rout spreads",
+          "url": "https://finance.yahoo.com/markets/article/the-intel-stock-collapse-is-getting-worse--and-the-37-trillion-chip-rout-is-spreading-212154947.html",
+          "source": "Hacker News",
+          "published_at": "2026-11-03T00:08:53Z",
+          "raw_text": "Article URL: https://finance.yahoo.com/markets/article/the-intel-stock-collapse-is-getting-worse--and-the-37-trillion-chip-rout-is-spreading-212154947.html Comments URL: https://news.ycombinator.com/item?id=50346153 Points: 183 # Comments: 136",
+          "extra": {},
+          "score": 9.0,
+          "summary": "英特尔股价暴跌加剧芯片行业3.5万亿美元抛售潮，反映AI硬件市场结构性风险。"
+        },
+        {
+          "section": "news",
+          "title": "The New York Times sues Brave web browser for AI scraping and bypassing paywalls",
+          "url": "https://www.theverge.com/tech/1024588/brave-lawsuit-ai-scraping-new-york-times",
+          "source": "The Verge",
+          "published_at": "2026-11-02T17:51:19Z",
+          "raw_text": "The New York Times and a group of other publications have filed lawsuits against the company that makes the Brave web browser over alleged unlawful scraping to train AI and also letting users bypass their paywalls, as reported by Reuters. According to a complaint filed by the New York Daily News, the Chicago Tribune, and […]",
+          "extra": {},
+          "score": 9.0,
+          "summary": "纽约时报起诉Brave浏览器AI抓取与绕过付费墙，或重塑AI训练数据合规边界。"
+        },
+        {
+          "section": "news",
+          "title": "Anthropic clamps down on Claude’s AI video game clones",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1024632/anthropic-claude-ai-video-game-clones",
+          "source": "The Verge",
+          "published_at": "2026-11-02T18:56:02Z",
+          "raw_text": "Anthropic has updated Claude Code's system prompt to prevent the AI tool from being used to re-create existing video games, as reported by Tom's Hardware. Retro gaming is currently being overrun with AI-made decompilations, recompilations, and ports, but while Anthropic will still let people use Claude Code to make games, it doesn't want people to […]",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Anthropic更新Claude系统提示禁止游戏克隆，标志AI公司首次主动限制模型滥用场景。"
+        },
+        {
+          "section": "news",
+          "title": "OpenAI pitches data center power plants as a way to protect nearby areas",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1024604/openai-data-center-grid-protection-program",
+          "source": "The Verge",
+          "published_at": "2026-11-02T18:01:30Z",
+          "raw_text": "In an announcement on Monday, OpenAI says it will pilot its \"Grid Protectors Program\" at an upcoming data center in Effingham County, Georgia, where the company promises to free up to 1,000 megawatts of power during extreme weather or emergencies, enough to power air conditioners in around 700,000 homes. The announcement comes as opposition to […]",
+          "extra": {},
+          "score": 8.0,
+          "summary": "OpenAI试点数据中心应急供电计划，探索AI基础设施与社区能源安全的协同模式。"
+        },
+        {
+          "section": "news",
+          "title": "Coming in 2027: Apple’s $1,000 home robot for FaceTime and switching on lights",
+          "url": "https://arstechnica.com/apple/2026/11/apples-roaming-home-robot-may-do-facetime-switch-lights-on-and-yell-at-your-cat/",
+          "source": "Ars Technica",
+          "published_at": "2026-11-02T18:32:21Z",
+          "raw_text": "Apple robot backed by CEO John Ternus may have hefty price tag and limited uses.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "苹果计划2027年推出千美元级家用机器人，标志消费级AI硬件新赛道启动。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Gemini 4 Carbon: Our next frontier model",
+          "url": "https://deepmind.google/blog/gemini-4-carbon-our-next-frontier-model/",
+          "source": "Google DeepMind",
+          "published_at": "2026-10-28T17:00:58Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 10.0,
+          "summary": "谷歌发布新一代前沿模型Gemini 4 Carbon，性能与效率显著提升。"
+        },
+        {
+          "section": "product",
+          "title": "Genie 4: A new generation of world simulation",
+          "url": "https://deepmind.google/blog/genie-4-a-new-generation-of-world-simulation/",
+          "source": "Google DeepMind",
+          "published_at": "2026-10-27T16:01:38Z",
+          "raw_text": "Genie 4: our new world model unlocking unprecedented realism in real-time simulation.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "DeepMind推出Genie 4世界模型，实现实时模拟的逼真度突破。"
+        },
+        {
+          "section": "product",
+          "title": "Granite Switch 4.1.1 — Update models like you update software",
+          "url": "https://huggingface.co/blog/ibm-granite/granite-switch-4-1-1",
+          "source": "Hugging Face",
+          "published_at": "2026-10-29T13:37:07Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 8.0,
+          "summary": "IBM发布Granite Switch 4.1.1，支持像更新软件一样更新AI模型。"
+        }
+      ]
+    }
+  ]
+}
