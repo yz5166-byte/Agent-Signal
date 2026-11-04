@@ -1,0 +1,401 @@
+{
+  "date": "2026-11-04",
+  "tip": {
+    "title": "You don't need long context",
+    "body": "当你的Agent需要处理超长文本（如整本书或长对话），但发现后段token成本比前段高7倍时，可以用**频繁压缩法**替代长上下文。\n\n做法：将文本按固定长度（如4K tokens）分段，每段用LLM压缩为摘要，再拼接处理。\n\n```python\ndef compress_chunks(text, chunk_size=4000):\n    chunks = [text[i:i+chunk_size] for i in range(0, len(text), chunk_size)]\n    summaries = []\n    for chunk in chunks:\n        # 调用LLM压缩（示例用占位函数）\n        summary = llm_summarize(chunk)  # 替换为实际API调用\n        summaries.append(summary)\n    return \" \".join(summaries)\n```\n\n注意：压缩函数需在沙箱环境（如Docker容器）中运行，避免直接执行模型生成的代码。",
+    "ref_title": "You don't need long context",
+    "ref_url": "https://arxiv.org/abs/2611.05306v1"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "Adversarial Speculative Reasoning Improves Long Horizon Agents",
+          "url": "https://arxiv.org/abs/2611.05345v1",
+          "source": "arXiv",
+          "published_at": "2026-11-03T18:45:23Z",
+          "raw_text": "Speculative decoding has been treated purely as a systems optimization that speeds up large language model decoding without changing the model behavior. Under this view, the growing effort to train better draft models has been focused solely on acceptance rate. We argue that this view does not hold true for long-horizon agent reasoning. Measuring frontier open-weight models on complex agentic tasks with different speculative decoding approaches, we found that numerical noise grows within verification windows, and the draft acceptance results of the thinking process can change the output distribution of the model after 30 steps, thus noticeably influencing the reasoning accuracy of long-horizon agents in random directions. In this work, we improve the reasoning capability of target models by controlling such noise. While we cannot change the overall token distribution verified by the target model, we can encode critical reasoning with highest precision by training the draft model to be rejected. We identify these points in agent traces and train the draft model to favor adversarial preference. At inference the trained draft and the target part ways precisely at these decision points, verification restarts, so that critical thinking tokens are sampled from the target model and encoded under its least noisy conditions. This approach makes critical reasoning better indexed and more durable over a long horizon. On complex agentic coding benchmarks, our approach raises end-to-end success rate with no change to the target model or its output distribution. Our results recast the speculative decoding mechanism from a pure accelerator into an active allocator for context precision that improves the accuracy of long-horizon agents by training 0.06% to 0.28% of hosted parameters.",
+          "extra": {
+            "authors": [
+              "Hongyin Luo",
+              "Wei Fang",
+              "Lijie Yang",
+              "Owen Stepan",
+              "Daniel Suit",
+              "Jeff Krapf",
+              "Dana Wensberg",
+              "Jack O'Brien"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.05345v1"
+          },
+          "score": 9.0,
+          "summary": "将投机解码从纯加速工具升级为推理增强器，用对抗性推测推理提升长程Agent任务表现。"
+        },
+        {
+          "section": "paper",
+          "title": "PyRUA-DataFarm: LLM Agent as a Cost-Efficient Teleoperator for Real-Ready Robot Data",
+          "url": "https://arxiv.org/abs/2611.05320v1",
+          "source": "arXiv",
+          "published_at": "2026-11-03T18:25:14Z",
+          "raw_text": "Teleoperation remains the default way to collect robot demonstrations, but every episode costs robot and operator time, and every new task starts from scratch. We ask whether a coding agent can take over the teleoperator's job. In our DataFarm, the agent receives a data request and one calibration episode of the robot in the target scene and rebuilds the task in simulation: it writes the scene, an expert controller, and a success judge. The simulator supplies exact actions, and a video model conditioned on real images renders each rollout as photographic video, generating all camera views together consistently. The output is real-ready data: synchronized camera views labelled with the robot's actions, on which a policy can be trained directly and deployed on the real robot. Independent judges certify the expert and every rendered episode before admission. On five real-robot tasks, policies trained only on farm data match policies trained on as many teleoperated episodes (93 vs. 84 successes in 100 trials), and under an unseen tablecloth and coloured light they keep 87 successes where the teleoperation-trained policies fall to 46. Adapting a task is fully automatic and costs \\$21 of API usage on average, paid once per task, plus \\$5 for a render contract; every further episode costs \\$0.80 on average for simulation, rendering, and review, with no robot or operator. One hour of three-view data for a task costs \\$107 on average, these costs included, slightly below a quote of \\$117 for teleoperation in China and below \\$290 in labour alone in North America.",
+          "extra": {
+            "authors": [
+              "Kewei Zhang",
+              "Juncheng Ma",
+              "Guodong Lv",
+              "Duomin Wang",
+              "Feixiang Ruan",
+              "Ruiyang Si",
+              "Chuanrui Zhang",
+              "Yuxuan Chen",
+              "Hao Chen",
+              "Yichen Liu",
+              "Yintianrun Zhang",
+              "Yufan Deng",
+              "Enze Xie",
+              "Daquan Zhou"
+            ],
+            "categories": [
+              "cs.RO",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.05320v1"
+          },
+          "score": 8.0,
+          "summary": "LLM Agent替代人类远程操作员收集机器人数据，大幅降低数据采集成本与门槛。"
+        },
+        {
+          "section": "paper",
+          "title": "You don't need long context",
+          "url": "https://arxiv.org/abs/2611.05306v1",
+          "source": "arXiv",
+          "published_at": "2026-11-03T18:17:23Z",
+          "raw_text": "Later tokens are costlier to generate than earlier tokens. On frontier open weight models, the disparity in cost may rise to as much as 7x. Through frequent compaction, we show across a broad range of long-horizon and long-input tasks that frontier language models sacrifice little to no task accuracy when maintaining short contexts. We further demonstrate that LLM performance does not collapse on long-horizon software engineering tasks even when taking at most one action per context, and based on that we outline the concept of semantic state space models (SSSMs). Our findings question the need for long-context language models.",
+          "extra": {
+            "authors": [
+              "Peter Belcak",
+              "Saurav Muralidharan",
+              "Jindong Jiang",
+              "Yonggan Fu",
+              "Wonmin Byeon",
+              "Hanrong Ye",
+              "Ryan Angilly",
+              "Ali Taghibakhshi",
+              "Shih-Yang Liu",
+              "Siru Ouyang",
+              "Greg Heinrich",
+              "Pavlo Molchanov"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.05306v1"
+          },
+          "score": 8.0,
+          "summary": "发现长文本生成中后段token成本高7倍，提出频繁压缩法无损处理长任务，挑战长上下文迷信。"
+        },
+        {
+          "section": "paper",
+          "title": "From Autonomous Agents to Cognitive Symbionts: Toward AI-Augmented Human Intelligence",
+          "url": "https://arxiv.org/abs/2611.05376v1",
+          "source": "arXiv",
+          "published_at": "2026-11-03T18:59:52Z",
+          "raw_text": "For a decade, progress in artificial intelligence has been measured by how much a machine can do on its own. Large foundation models now write code and run multistep tasks, and personal agents act on a person's behalf. Yet people still forget what they once knew, miss what they are not looking at, fail to find the right words, and face hard choices without the benefit of their own history, because the machine that could help stands outside the situation. As AI moves into the physical world, attention has settled on one kind of intelligent individual, the embodied robot; we argue that the era of Physical AI holds a second kind of equal importance, the person augmented by AI. Alongside artificial general intelligence, which asks how intelligent a machine can be, stands AI-augmented human intelligence (AHI), which asks how much intelligence a machine can enable in a particular person. Realizing it calls for a new kind of system, a cognitive symbiont: a lifelong, embedded, real-time, private, low-friction, and proactive companion that senses what the person senses through external devices, keeps their context across years, models their situation and their mind, takes part in their thinking at the right moment, carries out everyday tasks with their context, and keeps learning the person as both change. We give the paradigm a conceptual core, the cognitive gap between what a person could bring to a situation and what they can hold in working memory, and organize its design space as a symbiosis loop of sensing, keeping, understanding, living alongside, acting for and thinking with the person, and growing, enclosed by a personal runtime and by trust. Because a symbiont changes what a person can do in front of others, it also raises risks of a new kind, from covert assistance in examinations to pressure on everyone to adopt it, and we treat their governance as part of the paradigm.",
+          "extra": {
+            "authors": [
+              "Hao Fei"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.05376v1"
+          },
+          "score": 7.0,
+          "summary": "反思自主Agent范式，提出AI应增强而非替代人类智能，为认知共生系统设计提供新框架。"
+        },
+        {
+          "section": "paper",
+          "title": "MDSKILL: Learning to Internalize Skill Memory through Multi-View Distillation for Efficient Dynamic Agent Self-Evolution",
+          "url": "https://arxiv.org/abs/2611.05313v1",
+          "source": "arXiv",
+          "published_at": "2026-11-03T18:19:55Z",
+          "raw_text": "Skill memories encode past experiences as textual prompts to improve reinforcement learning (RL) for self-evolving agents. Complementing RL, On-Policy Self-Distillation (OPSD) provides dense, fine-grained supervision to internalize knowledge from skill-guided trajectories and accelerate policy learning. However, self-generated memories often contain noisy supervision and functionally entangled, redundant, or conflicting knowledge, making direct distillation difficult. Under limited training budgets, these issues can hinder knowledge internalization and even degrade performance. To address this problem, we propose MDSKILL, a multi-view distillation approach for skill memory internalization. MDSKILL organizes skill memories into three complementary functional views (state grounding, action planning, and execution control) and selects high-quality skills using dynamic metrics to construct view-specific and integrated reasoning branches. OPSD then transfers and consolidates complementary experiential knowledge across these branches into a shared policy, enabling efficient skill internalization and continuous agent self-evolution. We evaluate MDSKILL on three agent benchmarks against RL, skill-augmented, and self-distillation baselines that do not rely on stronger external teacher models. Without additional computational overhead, MDSKILL improves upon SOTA performance by up to 7.1% and 8.1% on ALFWorld and WebShop. Extensive ablations and evolution analyses further validate its effectiveness in knowledge internalization and policy improvement. The code is available at https://anonymous.4open.science/r/MDSKILL-CF53.",
+          "extra": {
+            "authors": [
+              "Dian Jin",
+              "Jinluan Yang",
+              "Kairong Han",
+              "Baohong Li",
+              "Zijing Hu",
+              "Yi He",
+              "Wenlin Zhong",
+              "Yunze Tong",
+              "Minqin Zhu",
+              "Linchuan Li",
+              "Yanan Niu",
+              "Kun Kuang"
+            ],
+            "categories": [
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.05313v1"
+          },
+          "score": 7.0,
+          "summary": "多视角蒸馏将技能记忆内化为策略，加速强化学习Agent的自我进化效率。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi, GLM, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 185850,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "muse",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 9.0,
+          "summary": "本地运行多种国产与开源大模型，一键部署，降低AI应用门槛。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "Supercharge your AI agents with data from the web and beyond. Building the library for superintelligence. 🔥",
+          "extra": {
+            "stars": 198397,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 8.0,
+          "summary": "为AI Agent提供网页数据抓取能力，直接提升信息获取效率。"
+        },
+        {
+          "section": "repo",
+          "title": "yetone/magpie",
+          "url": "https://github.com/yetone/magpie",
+          "source": "GitHub 新星",
+          "published_at": "2026-09-23T16:22:35Z",
+          "raw_text": "Every agent's model. One place. Codex on DeepSeek, Claude Code on Kimi, from the menu bar.",
+          "extra": {
+            "stars": 29313,
+            "language": "Go",
+            "topics": [
+              "claude-code",
+              "codex",
+              "deepseek",
+              "gemini-cli",
+              "llm",
+              "macos"
+            ]
+          },
+          "score": 8.0,
+          "summary": "菜单栏统一管理多种模型API，方便切换不同Agent后端。"
+        },
+        {
+          "section": "repo",
+          "title": "browser-use/jev-ultrafast",
+          "url": "https://github.com/browser-use/jev-ultrafast",
+          "source": "GitHub 新星",
+          "published_at": "2026-09-16T21:30:12Z",
+          "raw_text": "Fastest and cheapest web agent",
+          "extra": {
+            "stars": 24147,
+            "language": "Python",
+            "topics": []
+          },
+          "score": 7.0,
+          "summary": "宣称最快最便宜的网页Agent，适合高频自动化任务场景。"
+        },
+        {
+          "section": "repo",
+          "title": "CopilotKit/OpenBot",
+          "url": "https://github.com/CopilotKit/OpenBot",
+          "source": "GitHub 新星",
+          "published_at": "2026-08-17T00:44:59Z",
+          "raw_text": "Open-source AI coworkers that each get a computer of their own: a browser, files and tools, with every action decided before it happens and recorded after. Bring any AG-UI agent.",
+          "extra": {
+            "stars": 10064,
+            "language": "TypeScript",
+            "topics": [
+              "ag-ui",
+              "agent-governance",
+              "ai-agents",
+              "browser-automation",
+              "copilotkit",
+              "generative-ui",
+              "mcp"
+            ]
+          },
+          "score": 7.0,
+          "summary": "开源AI同事，拥有独立浏览器与文件系统，操作可审计。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Anthropic is working on a system to prove AI models’ identity",
+          "url": "https://techcrunch.com/2026/11/03/anthropic-is-working-on-a-system-to-prove-ai-models-identity/",
+          "source": "TechCrunch",
+          "published_at": "2026-11-03T22:41:03Z",
+          "raw_text": "Called FlashProve, the system would let anyone check that an AI response really came from the model it claims to be from.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "Anthropic推FlashProve系统，可验证AI回复来源，解决深度伪造与模型身份信任难题。"
+        },
+        {
+          "section": "news",
+          "title": "The biggest modding site in PC gaming is taking a stance on AI",
+          "url": "https://www.theverge.com/games/1026085/nexus-mods-ai-disclosures",
+          "source": "The Verge",
+          "published_at": "2026-11-04T00:42:10Z",
+          "raw_text": "The PC gaming mods repository Nexus Mods is making disclosures about AI mandatory for uploads of new mods, meaning that mod authors will have to declare \"whether AI has been used in their work,\" the site announced today as part of a big post about AI-generated content on the platform. \"One of the most consistent […]",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Nexus Mods强制AI生成内容标注，影响千万玩家生态，树立平台监管先例。"
+        },
+        {
+          "section": "news",
+          "title": "Ted Schlein’s Ballistic Ventures seeks $490M for new funds amid AI-driven cybersecurity boom",
+          "url": "https://techcrunch.com/2026/11/03/ted-schleins-ballistic-ventures-seeks-490m-for-new-funds-amid-ai-driven-cybersecurity-boom/",
+          "source": "TechCrunch",
+          "published_at": "2026-11-03T21:43:08Z",
+          "raw_text": "Cybersecurity-focused Ballistic Ventures is seeking to raise $360 million for a new flagship fund and another $130 million for a separate investment vehicle.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Ballistic Ventures拟募4.9亿美元，AI驱动网安投资热潮持续升温，标志资本风向。"
+        },
+        {
+          "section": "news",
+          "title": "How “reverse game theory” could keep AI agents in check",
+          "url": "https://www.technologyreview.com/2026/11/03/1147934/reverse-game-theory-mechanism-design-ai-alignment/",
+          "source": "MIT Tech Review",
+          "published_at": "2026-11-03T10:43:41Z",
+          "raw_text": "A new approach known as “reverse game theory” aims to control powerful AI models by designing systems that incentivize them to stick to the rules. As AI models become more capable, safety researchers are scrambling to ensure they are “aligned” with human desires—to make sure, in other words, that rogue agents don’t break the law,…",
+          "extra": {},
+          "score": 8.0,
+          "summary": "“反向博弈论”提出新AI对齐方法，用激励机制约束模型行为，突破传统安全范式。"
+        },
+        {
+          "section": "news",
+          "title": "Data centers are turning to old jet engines as the wait for power grows",
+          "url": "https://techcrunch.com/2026/11/03/data-centers-are-turning-to-old-jet-engines-as-the-wait-for-power-grows/",
+          "source": "TechCrunch",
+          "published_at": "2026-11-03T22:19:53Z",
+          "raw_text": "The years-long wait for access to the grid and new turbines is causing data center builders to turn to an unusual, less-efficient and less environmentally friendly solution: once-discarded jet engines.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "数据中心因电网等待改用旧喷气发动机，暴露AI算力扩张与能源基础设施的尖锐矛盾。"
+        },
+        {
+          "section": "news",
+          "title": "Ukraine’s drone strikes spur hasty Russian plans for underground data centers",
+          "url": "https://arstechnica.com/ai/2026/11/russia-looks-to-hide-data-centers-underground-as-ukrainian-drones-strike-back/",
+          "source": "Ars Technica",
+          "published_at": "2026-11-03T20:39:55Z",
+          "raw_text": "Russia tries to fix exposed digital infrastructure as data center war backfires.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "乌克兰无人机迫使俄罗斯急建地下数据中心，地缘冲突重塑AI基础设施安全策略。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Gemini 4 Carbon: Our next frontier model",
+          "url": "https://deepmind.google/blog/gemini-4-carbon-our-next-frontier-model/",
+          "source": "Google DeepMind",
+          "published_at": "2026-10-28T17:00:58Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 10.0,
+          "summary": "Google发布新一代前沿模型Gemini 4 Carbon，性能与架构重大升级。"
+        },
+        {
+          "section": "product",
+          "title": "The sleep framework: A new way for LLMs to retain knowledge in continual learning",
+          "url": "https://research.google/blog/the-sleep-framework-a-new-way-for-llms-to-retain-knowledge-in-continual-learning/",
+          "source": "Google Research",
+          "published_at": "2026-10-27T17:35:00Z",
+          "raw_text": "Education Innovation",
+          "extra": {},
+          "score": 8.0,
+          "summary": "提出LLM持续学习新框架，解决模型知识遗忘问题，有实际应用潜力。"
+        },
+        {
+          "section": "product",
+          "title": "CWE-bench v2: More coverage, quality, and transparency",
+          "url": "https://huggingface.co/blog/cwe-bench",
+          "source": "Hugging Face",
+          "published_at": "2026-11-03T00:00:00Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 7.0,
+          "summary": "CWE-bench v2发布，提升代码漏洞评估基准的覆盖度与质量。"
+        }
+      ]
+    }
+  ]
+}
