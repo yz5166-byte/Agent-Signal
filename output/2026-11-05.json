@@ -1,0 +1,482 @@
+{
+  "date": "2026-11-05",
+  "tip": {
+    "title": "用逐层最佳N采样定位Agent中间步骤错误",
+    "body": "在调试多步Agent任务时，常遇到“某一步输出错误但无法定位”的问题。\n\n做法：使用**逐层最佳N采样**，对每个中间步骤生成N个候选，用验证模型打分后保留最优分支。\n\n```python\n# 伪代码示例：对第t步生成3个候选并筛选\ncandidates = [agent.step(state) for _ in range(3)]\nscores = verifier(candidates)  # 验证模型打分\nbest = candidates[argmax(scores)]\nstate = apply_step(state, best)\n```\n\n注意：验证模型与执行模型分离，避免自评偏差。无需裸执行代码，仅调用API。\n\n（基于条目[0]）",
+    "ref_title": "On Turn-Level Best-of-N Sampling for Scaling LLM Agents",
+    "ref_url": "https://arxiv.org/abs/2611.06868v1"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "On Turn-Level Best-of-N Sampling for Scaling LLM Agents",
+          "url": "https://arxiv.org/abs/2611.06868v1",
+          "source": "arXiv",
+          "published_at": "2026-11-04T18:23:14Z",
+          "raw_text": "In this work, we evaluate a simple inference-time scaling approach based on \\textit{turn-level best-of-N sampling} (\\method) for large language model (LLM) agents on complex, long-horizon tasks. We instantiate this using a \\textit{generator-selector} framework with two LLMs; at each turn, a \\emph{generator} model generates $N$ candidate actions and a \\emph{selector} model selects one of them, which is then executed in the environment. This paper is closely related to the work of \\cite{zainullina2025guided} who used critic models for guided search at inference time. Different from their work, we evaluate if off-the-shelf, open-weight LLMs can be effective at comparing different candidate actions directly. Experiments on long-horizon terminal tasks show that \\method can lead to significant performance improvements, both in terms of accuracy (5--10\\%) and consistency across repeated attempts. Analysis of agent trajectories reveal a shift in agent behaviour towards desirable patterns such as reduction in number of attempts to solve the task, improved task instruction following, debugging and testing.",
+          "extra": {
+            "authors": [
+              "Jalaj Bhandari",
+              "Dhawal Gupta",
+              "Hongli Zhan",
+              "Zhenting Wang",
+              "Varad Pimpalkhute",
+              "Zhengzhong Liu",
+              "Eric Xing",
+              "Rupesh Srivastava"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.06868v1"
+          },
+          "score": 9.0,
+          "summary": "提出逐层最佳N采样，用双LLM框架在长程任务中实现推理时扩展，简单有效。"
+        },
+        {
+          "section": "paper",
+          "title": "SpecCompact: Accelerating LLM Agent Context Compaction with Slot-Parallel Semantic Speculative Verification",
+          "url": "https://arxiv.org/abs/2611.06876v1",
+          "source": "arXiv",
+          "published_at": "2026-11-04T18:34:41Z",
+          "raw_text": "LLM agents use context compaction to manage growing interaction histories, but summarizing long histories with large models can introduce substantial delays. Compaction therefore requires balancing information retention against latency. We observe that structured summary slots can retain information when generated independently. Based on this observation, we present SpecCompact, a framework that accelerates compaction through slot-parallel semantic speculation. SpecCompact fine-tunes a small drafter and generates slots in parallel. The target model verifies each proposed line and repairs rejected content, while subsequent drafting uses the updated slot prefix. System optimizations further reduce repeated context processing and model calls. Across AppWorld and $τ^3$ benchmarks with two target models, SpecCompact achieves $2.04$--$5.63\\times$ compaction speedups over Hermes-style summarization. Separate downstream evaluations reveal model- and task-dependent performance trade-offs. A user study within Hermes further shows an $8.68\\times$ median compaction speedup.",
+          "extra": {
+            "authors": [
+              "Yulu An",
+              "Yifei Feng",
+              "Xiangyang Yin"
+            ],
+            "categories": [
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.06876v1"
+          },
+          "score": 8.0,
+          "summary": "用槽并行语义推测验证加速LLM Agent上下文压缩，兼顾信息保留与延迟。"
+        },
+        {
+          "section": "paper",
+          "title": "CompressionBench: How can your coding agents compress LLMs?",
+          "url": "https://arxiv.org/abs/2611.06858v1",
+          "source": "arXiv",
+          "published_at": "2026-11-04T18:14:50Z",
+          "raw_text": "Recursive self-improvement requires AI systems to improve the models and infrastructure used by subsequent systems. LLM compression offers a concrete efficiency objective: retain a pretrained model's behavior within a smaller model storage budget. We study whether coding agents can carry out this step autonomously. We formulate compression as a terminal task in which an agent receives a source checkpoint, storage limit, inference environment, and time budget, then constructs compressed weights and executable inference code. The agent controls its algorithm and experiments; perplexity feedback guides search, and independent verification checks the final model. Across six agents and six model--size settings, 29 of 36 submissions pass verification. Selecting the lowest-perplexity agent design per task yields an average 3.4% perplexity increase over BF16 and 77.33% downstream accuracy, compared with 79.56% for BF16. Recorded experiments reveal how agents achieve these outcomes and where improvement breaks down. Agents lower PPL in 21 of 24 revisions at nearly fixed storage; complete-model feedback reverses 17 of 79 prior local rankings; and generation and inference tests expose failures that likelihood alone misses. The results identify representation design, experimental judgment, and capability validation as central to agent-driven model compression, a measurable component of efficiency-oriented self-improvement.",
+          "extra": {
+            "authors": [
+              "Xinrui Zhong",
+              "Zhifeng Li",
+              "Zhiming Wang",
+              "Yongqi Liu",
+              "Shanglin Yang",
+              "Yang Zhou",
+              "Zikun Li",
+              "Zhuoming Chen",
+              "Beidi Chen"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.06858v1"
+          },
+          "score": 8.0,
+          "summary": "首个让编码Agent自主压缩LLM的基准，推动递归自我改进落地。"
+        },
+        {
+          "section": "paper",
+          "title": "FrontierPhysics: Evaluating Agents for End-to-End Physics Research",
+          "url": "https://arxiv.org/abs/2611.06910v1",
+          "source": "arXiv",
+          "published_at": "2026-11-04T18:56:22Z",
+          "raw_text": "AI agents are playing an increasingly important role in physics research. However, existing physics benchmarks only evaluate fixed questions, isolated sub-tasks, or paper reproduction with given solutions, and rarely check research quality alongside correctness. We introduce FrontierPhysics, an end-to-end benchmark with 56 tasks made by 42 physicists based on their own research, covering nine domains across theoretical, computational, and experimental physics. Each task requires agents to review the literature, develop a research plan, conduct research and experiments, and produce structured outputs and scientific manuscripts. Combining deterministic verifiers with expert-authored rubrics, FrontierPhysics evaluates whether agents' research is correct and publishable. Across 22 models in 26 configurations, no configuration passes more than 46 of its 168 rollouts. Manual review of agent trajectories shows that frontier agents' main weaknesses are insufficiently rigorous reasoning and limited expert intuition, rather than gaps in physics knowledge or execution errors.",
+          "extra": {
+            "authors": [
+              "Bingran You",
+              "Wenjun Ke",
+              "Ria Rosenauer",
+              "Bo Liu",
+              "Wenbo Chen",
+              "Min Chen",
+              "Shuqi Xu",
+              "Yue Ma",
+              "Jiechao Feng",
+              "Bo Chen",
+              "Xiangkai Sun",
+              "Jiarui Liu",
+              "Jinen Guo",
+              "Zeyu Zhou",
+              "Xu Huang",
+              "Zhuohan Li",
+              "Haoyu Li",
+              "Heguang Lin",
+              "Lijie Ding",
+              "Yadong Zeng",
+              "Kangqi Zhang",
+              "Xinge Liu",
+              "Hanwen Liu",
+              "Zhenghong Li",
+              "Alexander von Recum",
+              "Yuchen Zhu",
+              "Felix Schwarzfischer",
+              "Yizhou Zhao",
+              "Jicheng Wang",
+              "Binxu Li",
+              "Qian Yu",
+              "Chan Li",
+              "Cheng Dai",
+              "Di Wang",
+              "Haoyu Zhang",
+              "Jiankai Sun",
+              "Kaituo Feng",
+              "Mian Qin",
+              "Ruihong Yin",
+              "Yiqun Luo",
+              "Weiwei Wu",
+              "Shihong Pan",
+              "Tsung Yeh Hsieh",
+              "Xiao Huang",
+              "Yan Zhang",
+              "Sihan Li",
+              "Zirui Ren",
+              "Zengji Tu",
+              "Kyoung Whan Choe",
+              "Ke Sun",
+              "Vincenzo Galia",
+              "Vaisakhi Mishra",
+              "Jiashu He",
+              "Hongyang Wang",
+              "Zhiheng Yang",
+              "Shubham Gaur",
+              "Yifan Gu",
+              "Shuyi Wang",
+              "Zihao Zuo",
+              "Steven Dillmann",
+              "Yiyou Sun",
+              "Xinyang Han",
+              "Hanchung Lee",
+              "Molei Tao",
+              "Yue Zhao",
+              "Shilong Liu",
+              "Yuchen Wu",
+              "Xuandong Zhao",
+              "Xiangyi Li",
+              "Florian Brand",
+              "Gerbrand Ceder",
+              "Hartmut Haeffner"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.06910v1"
+          },
+          "score": 7.0,
+          "summary": "端到端物理研究Agent基准，评估研究质量而非仅正确性，填补空白。"
+        },
+        {
+          "section": "paper",
+          "title": "ServerBench: How can your coding agents design specialized LLM serving systems?",
+          "url": "https://arxiv.org/abs/2611.06841v1",
+          "source": "arXiv",
+          "published_at": "2026-11-04T17:59:07Z",
+          "raw_text": "Large language model (LLM) coding agents develop software through experimentation, offering an opportunity to design the serving systems supporting their own operation. Effective serving requires coordinating implementation and operating decisions under session dependencies, latency constraints, and correctness requirements. We introduce ServerBench, a benchmark for agentic design of complete, specialized LLM serving systems. Agents experiment against a common objective, dollars per dollar: latency-qualified token value per dollar of GPU cost. Stateful replay preserves session dependencies, and independent verification checks the submitted system. Across 11 coding-agent models and three deployments, Claude Sonnet 5.5 achieves 2.97 dollars per dollar on Gemma E4B, $4.87\\times$ the vLLM reference; 22 of 33 runs yield verified systems, and 13 exceed the strongest baseline. Our analysis identifies three findings: high-value designs coordinate capacity improvements with load selection; agents interpret performance feedback through workload-relevant experiments; and reliable delivery requires verification of the execution paths introduced by optimization. Overall, ServerBench supports systematic study of how agents translate service objectives and feedback into effective, verified serving systems for given task specifications.",
+          "extra": {
+            "authors": [
+              "Xinrui Zhong",
+              "Zhiming Wang",
+              "Yongqi Liu",
+              "Zhaohui Wang",
+              "Shanglin Yang",
+              "Zikun Li",
+              "Zhuoming Chen",
+              "Beidi Chen"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.06841v1"
+          },
+          "score": 7.0,
+          "summary": "编码Agent设计LLM服务系统的基准，协调实现与运维决策，贴近实际部署。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi, GLM, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 185955,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "muse",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 9.0,
+          "summary": "本地运行最新国产大模型，开箱即用，降低AI应用门槛。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 160441,
+            "language": "Python",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "deepseek",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "python",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 9.0,
+          "summary": "一站式构建Agent工作流与RAG，从原型到生产无需重构。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "Supercharge your AI agents with data from the web and beyond. Building the library for superintelligence. 🔥",
+          "extra": {
+            "stars": 198740,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 8.0,
+          "summary": "为AI Agent提供实时网页数据抓取，扩展知识边界。"
+        },
+        {
+          "section": "repo",
+          "title": "lexmount/moli",
+          "url": "https://github.com/lexmount/moli",
+          "source": "GitHub 新星",
+          "published_at": "2026-08-10T13:20:30Z",
+          "raw_text": "Best headless browser for AI agents. Lite, Fast, High-Compatibility. Built in Rust",
+          "extra": {
+            "stars": 22642,
+            "language": "Rust",
+            "topics": [
+              "ai-agents",
+              "ai-tools",
+              "browser",
+              "browser-automation",
+              "cloud-browser",
+              "headless",
+              "headless-browser",
+              "kitesurf",
+              "playwright",
+              "puppeteer",
+              "rust",
+              "servo",
+              "web-crawler",
+              "web-crawling",
+              "web-scraper",
+              "web-scraping"
+            ]
+          },
+          "score": 8.0,
+          "summary": "Rust编写的高性能无头浏览器，专为AI Agent优化速度与兼容性。"
+        },
+        {
+          "section": "repo",
+          "title": "CopilotKit/OpenBot",
+          "url": "https://github.com/CopilotKit/OpenBot",
+          "source": "GitHub 新星",
+          "published_at": "2026-08-17T00:44:59Z",
+          "raw_text": "Open-source AI coworkers that each get a computer of their own: a browser, files and tools, with every action decided before it happens and recorded after. Bring any AG-UI agent.",
+          "extra": {
+            "stars": 10191,
+            "language": "TypeScript",
+            "topics": [
+              "ag-ui",
+              "agent-governance",
+              "ai-agents",
+              "browser-automation",
+              "copilotkit",
+              "generative-ui",
+              "mcp"
+            ]
+          },
+          "score": 7.0,
+          "summary": "开源AI同事，拥有独立浏览器与文件系统，操作可审计可回放。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Qualcomm is betting big on data centers as smartphone sales sink",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1026867/qualcomm-earnings-data-centers",
+          "source": "The Verge",
+          "published_at": "2026-11-04T22:42:15Z",
+          "raw_text": "With smartphone sales tanking by around 20 percent compared to 2025, Qualcomm is looking to data centers to help boost its bottom line. During its Q4 2026 earnings call, the company laid out its plans to make a splash in the AI data center business, through partnerships with companies like Amazon and Meta announced earlier […]",
+          "extra": {},
+          "score": 9.0,
+          "summary": "高通因手机销量下滑，转向AI数据中心业务，与亚马逊等合作，标志芯片巨头战略重心转移。"
+        },
+        {
+          "section": "news",
+          "title": "Big Tech claims voters’ AI backlash is “anti-Trump” not “anti-tech”",
+          "url": "https://arstechnica.com/tech-policy/2026/11/big-tech-claims-voters-ai-backlash-is-anti-trump-not-anti-tech/",
+          "source": "Ars Technica",
+          "published_at": "2026-11-04T20:55:50Z",
+          "raw_text": "Tech industry in denial as US overwhelmingly votes to restrict AI, data centers.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "美国选民压倒性支持限制AI和数据中心，科技界却归因于反特朗普情绪，暴露行业与民意脱节。"
+        },
+        {
+          "section": "news",
+          "title": "Texas was the new epicenter of the AI data center buildout. That might be kaput.",
+          "url": "https://www.technologyreview.com/2026/11/04/1148043/texas-was-the-new-epicenter-of-the-ai-data-center-buildout-that-might-be-kaput/",
+          "source": "MIT Tech Review",
+          "published_at": "2026-11-04T18:50:55Z",
+          "raw_text": "Texas is the fastest-growing data center market in the US and ground zero for Big Tech’s largest AI buildouts. But the blue wave that swept the Lone Star State may jeopardize that position. Democrat James Talarico won the US Senate seat against Ken Paxton. Gina Hinojosa won the race for governor against the Republican incumbent,…",
+          "extra": {},
+          "score": 8.0,
+          "summary": "德州数据中心建设因民主党胜选面临政策逆转，可能动摇美国AI基建核心区域布局。"
+        },
+        {
+          "section": "news",
+          "title": "Ukraine’s drone strikes spur hasty Russian plans for underground data centers",
+          "url": "https://arstechnica.com/ai/2026/11/russia-looks-to-hide-data-centers-underground-as-ukrainian-drones-strike-back/",
+          "source": "Ars Technica",
+          "published_at": "2026-11-03T20:39:55Z",
+          "raw_text": "Russia tries to fix exposed digital infrastructure as data center war backfires.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "乌克兰无人机袭击迫使俄罗斯仓促建设地下数据中心，暴露数字基础设施在战争中的脆弱性。"
+        },
+        {
+          "section": "news",
+          "title": "AI PACs spent millions trying to shape Congress — here’s how they fared",
+          "url": "https://techcrunch.com/2026/11/04/ai-pacs-spent-millions-trying-to-shape-congress-heres-how-they-fared/",
+          "source": "TechCrunch",
+          "published_at": "2026-11-04T22:45:09Z",
+          "raw_text": "AI industry PACs spent millions influencing the 2026 midterms, with mixed results. Political groups are already looking toward the next election cycle.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "AI行业PAC在中期选举投入数百万美元影响国会，结果喜忧参半，预示未来政治博弈加剧。"
+        },
+        {
+          "section": "news",
+          "title": "How “reverse game theory” could keep AI agents in check",
+          "url": "https://www.technologyreview.com/2026/11/03/1147934/reverse-game-theory-mechanism-design-ai-alignment/",
+          "source": "MIT Tech Review",
+          "published_at": "2026-11-03T10:43:41Z",
+          "raw_text": "A new approach known as “reverse game theory” aims to control powerful AI models by designing systems that incentivize them to stick to the rules. As AI models become more capable, safety researchers are scrambling to ensure they are “aligned” with human desires—to make sure, in other words, that rogue agents don’t break the law,…",
+          "extra": {},
+          "score": 7.0,
+          "summary": "“逆向博弈论”提出通过激励机制约束AI行为，为对齐研究提供新思路，但落地尚远。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Gemini 4 Carbon: Our next frontier model",
+          "url": "https://deepmind.google/blog/gemini-4-carbon-our-next-frontier-model/",
+          "source": "Google DeepMind",
+          "published_at": "2026-10-28T17:00:58Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 10.0,
+          "summary": "Google 发布下一代前沿模型 Gemini 4 Carbon，值得关注。"
+        },
+        {
+          "section": "product",
+          "title": "Daybreak Red is now available in AWS GovCloud (US-East)",
+          "url": "https://openai.com/index/daybreak-red-aws-govcloud",
+          "source": "OpenAI",
+          "published_at": "2026-11-04T07:00:00Z",
+          "raw_text": "Daybreak Red brings GPT-5.6 Cyber to approved customers in AWS GovCloud (US-East) through Amazon Bedrock for authorized cybersecurity work.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "GPT-5.6 Cyber 登陆 AWS GovCloud，专为授权网络安全工作设计。"
+        },
+        {
+          "section": "product",
+          "title": "Agentic cheminformatics with Google Antigravity",
+          "url": "https://deepmind.google/blog/agentic-cheminformatics-with-google-antigravity/",
+          "source": "Google DeepMind",
+          "published_at": "2026-11-03T17:01:49Z",
+          "raw_text": "Learn how Google Antigravity and our Cheminformatics Skills accelerate drug discovery workflows, search compounds, and propose novel rigidified macrocycles.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Google Antigravity 结合化学信息学加速药物发现与分子设计。"
+        }
+      ]
+    }
+  ]
+}
