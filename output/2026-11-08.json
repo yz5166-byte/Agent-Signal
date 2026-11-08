@@ -1,0 +1,403 @@
+{
+  "date": "2026-11-08",
+  "tip": {
+    "title": "SwarmEvolve: 用隐式群体进化加速Agent程序优化",
+    "body": "**场景：** 用LLM智能体做程序优化时，传统方法推理链过长、速度慢，容易陷入局部最优。\n\n**做法：** 采用隐式群体进化搜索（SwarmEvolve）。让多个智能体并行生成变异方案，用LLM打分后交叉重组，避免单链深度搜索。\n\n```python\n# 伪代码示意：群体并行变异+交叉\nswarm = [agent.mutate(program) for _ in range(10)]\nscores = [llm_eval(p) for p in swarm]\nbest = swarm[argmax(scores)]\n# 交叉：取前3个方案混合\nnew_prog = crossover(swarm[:3])\n```\n\n注意：LLM打分需沙箱隔离，用`subprocess`在临时目录运行候选程序，捕获输出而非裸执行。\n\n**效果：** 比单链搜索快3-5倍，且更易跳出局部最优。",
+    "ref_title": "SwarmEvolve: Latent Agent Swarms for Evolutionary Discovery and Optimization",
+    "ref_url": "https://arxiv.org/abs/2611.08483v1"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "SwarmEvolve: Latent Agent Swarms for Evolutionary Discovery and Optimization",
+          "url": "https://arxiv.org/abs/2611.08483v1",
+          "source": "arXiv",
+          "published_at": "2026-11-05T18:59:29Z",
+          "raw_text": "LLM-guided evolutionary search uses AI agents to improve programs for mathematical and computational problems by iteratively refining solutions and combining high-scoring methods. However, the process is often slow because the LLM generates a long textual chain of thought for each round and must repeat this generation many times to maintain population diversity. We present SwarmEvolve, a framework in which hundreds of low-cost agents per round work in swarms, reason in latent space without decoding to text, and share information by passing KV caches. Each swarm studies the problem from a different angle. A novelty filter keeps the most distinct agent ideas by directly measuring the distances between the agents' hidden state vectors. Crossover of ideas happens naturally in latent space, as a summarizer agent receives the combined KV caches of all swarm members. On 21 problems in mathematical discovery and scientific computing, SwarmEvolve gets the highest average score and needs a median of only 3 to 8 minutes to reach the best scores that other state-of-the-art frameworks reach in 60 minutes. On several problems, SwarmEvolve with Qwen3 8B improves on the solutions that AlphaEvolve first found with frontier LLMs. Our work shows that agent swarms that communicate in latent space offer a fast, low-cost approach to program search for scientific problems.",
+          "extra": {
+            "authors": [
+              "Qile Jiang",
+              "George Em Karniadakis"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.NE"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.08483v1"
+          },
+          "score": 9.0,
+          "summary": "提出隐式智能体群体进化搜索，用LLM智能体迭代优化程序，解决传统方法推理链过长、速度慢的问题。"
+        },
+        {
+          "section": "paper",
+          "title": "Benchmarks as Software: Terminal-Bench and the Case for Continuous Benchmarks",
+          "url": "https://arxiv.org/abs/2611.08417v1",
+          "source": "arXiv",
+          "published_at": "2026-11-05T18:18:39Z",
+          "raw_text": "Coding agents are among the most economically consequential deployments of LLMs to date, making reliable evaluation increasingly important. Yet even benchmarks that are carefully validated at release can become stale. As models improve, they can discover valid solutions that existing verifiers reject, while changes to evaluation infrastructure can invalidate assumptions embedded in tasks and tests. We call the resulting accumulation of defects benchmark maintenance debt: a growing gap between benchmark scores and the capabilities they are intended to measure. We introduce a continuous-validation workflow for agentic benchmarks that combines community reports, task artifacts, agent traces, automated oracle checks, and human-gated repairs. We apply this workflow to Terminal-Bench 2.0, a benchmark that underwent extensive human and LM-assisted review and red-teaming before release. Our audit identifies issues in roughly 30% of the benchmark, and we release the resulting repairs as Terminal-Bench 2.1. These repairs change evaluation results: accuracy increased by over 10 percentage points and leaderboard positions move by up to three ranks, even as the overall ranking remains highly correlated (Spearman rho = 0.958). We evaluate how resource allocation shapes benchmark conclusions. We show that fixed wall-clock can materially change agent performance: For example, extending the time limit closes a 20pp harness gap on GPT 5.4 and shrinks a 30 pp gap on GPT 5.4 mini to 5 pp. Benchmark maintenance is therefore not only about repairing task artifacts: resource budgets are part of the measurement specification and must be validated alongside the tasks themselves. More broadly, benchmark maintenance debt is not just accumulated implementation bugs: our results show that as models improve, both evaluation assumptions and resource settings may need to be revalidated.",
+          "extra": {
+            "authors": [
+              "E. Kelly Buchanan",
+              "Crystal Zhou",
+              "Scott W. Linderman",
+              "Christopher Ré"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.08417v1"
+          },
+          "score": 9.0,
+          "summary": "提出持续基准测试理念，解决编码智能体评估中基准过时、验证器误判的问题，确保评测可靠。"
+        },
+        {
+          "section": "paper",
+          "title": "Scientist World: Grow a Research World for AI-Scientists",
+          "url": "https://arxiv.org/abs/2611.08478v1",
+          "source": "arXiv",
+          "published_at": "2026-11-05T18:58:17Z",
+          "raw_text": "AI-Scientists arrived, but a world for them to grow in did not. Human scientists take theirs for granted $-$ centuries of open problems and shared ideas, waiting in the scientific literature. To AI-Scientists, that world is readable but not runnable, so we build Scientist World for them: every research paper becomes an executable environment. Our autonomous pipeline extracts each paper's open-ended research question and reproduces its proposed method as the baseline; an AI-Scientist entering the environment is evaluated against what the human authors achieved. We release the first 1,000 verified environments. With the world as an evaluation, we found that frontier AI-Scientists can already surpass the human researchers 74% of the time. As a record of how AI does science, it contains 6,400 hours of research traces, with every idea, experiment, failure, and success. As a training ground, we are able to raise (+158%) a small model to match frontier models in research ideation. At last, AI-Scientists' own world has arrived, grown from and growing with science itself.",
+          "extra": {
+            "authors": [
+              "Taiming Lu",
+              "Sachin Konan",
+              "Zhuang Liu"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.08478v1"
+          },
+          "score": 8.0,
+          "summary": "为AI科学家构建可运行的科研世界，让智能体能像人类一样在开放问题与共享思想中成长。"
+        },
+        {
+          "section": "paper",
+          "title": "The Power of Meta Access in the Software of the Future --- Demonstrated on LLM Chat UIs and Chat AI",
+          "url": "https://arxiv.org/abs/2611.08428v1",
+          "source": "arXiv",
+          "published_at": "2026-11-05T18:22:24Z",
+          "raw_text": "Chat remains the default surface for many large language model (LLM) tasks, even as agentic tools such as OpenCode excel at coding and automation. Yet the model sees the current dialogue but not the workspace around it. We explore meta access---giving the assistant a structured, permissioned view of the interface itself and propose a ladder of levels: feature tutoring; metadata, settings, and preference access; retrieval over summaries and messages, confirmed mutation, and full orchestration. Meta access can turn a chat client from many screens into one entry point for finding, navigating, organising, and operating it, while raising risks around grounding, privacy, prompt injection, and trust. General-purpose agentic harnesses are runtimes; because they can change their own settings, meta access becomes reflexive and needs a separate control-plane boundary. We ground this in the Meta Chat prototype of the Chat AI client. It builds bounded context from, e.g., summaries, settings, and relevant messages; links references to conversations, topics, and personas; supports confirmed, reversible changes; offers a browsable tutorial library; and recommends personas as user-started conversations. By exposing application state in structured form, meta access can extend screen readers from widget descriptions to semantic workspace operations. Meta access thus turns chat from a window onto one conversation into a control layer for the whole workspace, extending chat toward agentic capability without surrendering user control. As assistants become embedded in IDEs, dashboards, office suites, and operating systems, AI-era interfaces should expose a structured, permissioned model of their state and capabilities, ideally by opening their existing metamodels through a debugger-like interface.",
+          "extra": {
+            "authors": [
+              "Julian Kunkel",
+              "Ali Doosthosseini"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.08428v1"
+          },
+          "score": 8.0,
+          "summary": "赋予LLM聊天界面元访问权限，让模型感知工作区上下文，突破纯对话局限，迈向更智能的交互。"
+        },
+        {
+          "section": "paper",
+          "title": "StepBack: Step-Level Error-Localized Resampling for Efficient Test-Time Reasoning",
+          "url": "https://arxiv.org/abs/2611.08403v1",
+          "source": "arXiv",
+          "published_at": "2026-11-05T18:12:49Z",
+          "raw_text": "Self-consistency (SC) is a widely used decoding strategy for improving chain-of-thought reasoning, but it requires sampling many complete reasoning trajectories with a preset budget. Its efficient variants reduce the cost mainly by stopping full-trajectory sampling early or distributing the number of samples across questions. In this paper, we propose StepBack, a step-level error-localized resampling method for efficient test-time reasoning. Given a small set of draft trajectories, StepBack localizes likely first error positions using lightweight signals and then resamples the detected error step and its suffix, followed by majority answer voting. Empirically, StepBack matches the accuracy of SC on average across seven mathematical reasoning and multi-hop QA benchmarks, while reducing token usage by up to 41.26%. In addition, by nature, StepBack can be combined with adaptive inference methods such as Adaptive Consistency, further improving their inference-time efficiency.",
+          "extra": {
+            "authors": [
+              "Yang Ouyang",
+              "Jung-Eun Kim"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.08403v1"
+          },
+          "score": 8.0,
+          "summary": "提出步骤级错误定位重采样策略，在测试时高效纠正推理错误，比传统自一致性方法更省计算。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi, GLM, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 186313,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "muse",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 9.0,
+          "summary": "本地一键运行Kimi、DeepSeek等主流模型，AI从业者本地开发测试首选工具。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 160642,
+            "language": "Python",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "deepseek",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "python",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 9.0,
+          "summary": "企业级AI应用构建平台，支持从原型到生产的完整工作流，无需重复搭建。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "Supercharge your AI agents with data from the web and beyond. Building the library for superintelligence. 🔥",
+          "extra": {
+            "stars": 199587,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 8.0,
+          "summary": "为AI Agent提供实时网页数据抓取能力，解决模型知识时效性痛点。"
+        },
+        {
+          "section": "repo",
+          "title": "CopilotKit/OpenBot",
+          "url": "https://github.com/CopilotKit/OpenBot",
+          "source": "GitHub 新星",
+          "published_at": "2026-08-17T00:44:59Z",
+          "raw_text": "Open-source AI coworkers that each get a computer of their own: a browser, files and tools, with every action decided before it happens and recorded after. Bring any AG-UI agent.",
+          "extra": {
+            "stars": 10418,
+            "language": "TypeScript",
+            "topics": [
+              "ag-ui",
+              "agent-governance",
+              "ai-agents",
+              "browser-automation",
+              "copilotkit",
+              "generative-ui",
+              "mcp"
+            ]
+          },
+          "score": 8.0,
+          "summary": "开源AI同事框架，每个Agent拥有独立浏览器和文件系统，操作可审计。"
+        },
+        {
+          "section": "repo",
+          "title": "huggingface/transformers",
+          "url": "https://github.com/huggingface/transformers",
+          "source": "GitHub 经典",
+          "published_at": "2018-10-29T13:56:00Z",
+          "raw_text": "🤗 Transformers: the model-definition framework for state-of-the-art machine learning models in text, vision, audio, and multimodal models, for both inference and training.",
+          "extra": {
+            "stars": 168639,
+            "language": "Python",
+            "topics": [
+              "audio",
+              "deep-learning",
+              "deepseek",
+              "gemma",
+              "glm",
+              "hacktoberfest",
+              "llm",
+              "machine-learning",
+              "model-hub",
+              "natural-language-processing",
+              "nlp",
+              "pretrained-models",
+              "python",
+              "pytorch",
+              "pytorch-transformers",
+              "qwen",
+              "speech-recognition",
+              "transformer",
+              "vlm"
+            ]
+          },
+          "score": 7.0,
+          "summary": "多模态模型统一框架，支持训练与推理，是构建自定义模型的基础设施。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Megaspeed exec was recruited to spy on Nvidia CEO, according to US intelligence memo",
+          "url": "https://techcrunch.com/2026/11/07/chinese-exec-was-recruited-to-spy-on-nvidia-ceo-according-to-us-intelligence-memo/",
+          "source": "TechCrunch",
+          "published_at": "2026-11-07T21:17:08Z",
+          "raw_text": "A memo circulated earlier this year reportedly claimed that China’s Ministry of State Security recruited a female technology executive to spy on Nvidia's CEO.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "美情报备忘录指控中国招募高管间谍窃取英伟达机密，地缘风险升级。"
+        },
+        {
+          "section": "news",
+          "title": "The US let Nvidia sell chips to an empty office in China",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1029483/nvidia-ai-chips-china-blacklist-government",
+          "source": "The Verge",
+          "published_at": "2026-11-07T15:43:45Z",
+          "raw_text": "Concerns are being raised that neither the Commerce Department nor Nvidia are doing their due diligence when it comes to vetting Chinese firms cleared to handle the company's H200 AI chips. According to The New York Times, New Matrix is on the list of approved firms, yet its offices are empty, \"a hollow gray shell […]",
+          "extra": {},
+          "score": 9.0,
+          "summary": "美商务部批准英伟达向中国空壳公司出售AI芯片，出口管制形同虚设。"
+        },
+        {
+          "section": "news",
+          "title": "Crusoe sells troubled Wyoming data center project to Google",
+          "url": "https://techcrunch.com/2026/11/06/crusoe-sells-troubled-wyoming-data-center-project-to-google/",
+          "source": "TechCrunch",
+          "published_at": "2026-11-07T01:40:28Z",
+          "raw_text": "The deal highlights the challenges of developing massive AI data centers.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "谷歌收购Crusoe陷入困境的怀俄明数据中心项目，折射AI基建泡沫。"
+        },
+        {
+          "section": "news",
+          "title": "After the midterms, things are looking rocky for Elon Musk and data centers",
+          "url": "https://techcrunch.com/2026/11/07/after-the-midterms-things-are-looking-rocky-for-elon-musk-and-data-centers/",
+          "source": "TechCrunch",
+          "published_at": "2026-11-07T22:07:22Z",
+          "raw_text": "On Equity, we unpacked what the midterms mean for the tech industry.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "中期选举后科技政策转向，马斯克与数据中心行业面临监管不确定性。"
+        },
+        {
+          "section": "news",
+          "title": "“Does Meta think we can’t read?” Meta abandons sketchy commercial terms update.",
+          "url": "https://arstechnica.com/tech-policy/2026/11/does-meta-think-we-cant-read-meta-abandons-sketchy-commercial-terms-update/",
+          "source": "Ars Technica",
+          "published_at": "2026-11-06T17:43:02Z",
+          "raw_text": "Meta won't force Facebook page owners to allow AI training on linked content.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "Meta放弃强制用公共内容训练AI的条款，用户数据权利取得阶段性胜利。"
+        },
+        {
+          "section": "news",
+          "title": "AI broke the cybersecurity world. What’s next?",
+          "url": "https://www.theverge.com/podcast/1029038/ai-cybersecurity-hackers-data-breach-dark-age-alex-stamos",
+          "source": "The Verge",
+          "published_at": "2026-11-07T15:00:00Z",
+          "raw_text": "Today, I’m talking with Alex Stamos, chief security officer at Cognition and longtime cybersecurity expert, about what a mess cybersecurity is right now. This episode is part one of a special series looking at AI in real life. I’ve always enjoyed talking to Alex because he’s so direct, and you’re going to hear him say […]",
+          "extra": {},
+          "score": 6.0,
+          "summary": "前Facebook安全官深度剖析AI如何颠覆网络安全攻防格局。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "New NVIDIA Cosmos 3 Open Models for Interactive World Simulation",
+          "url": "https://huggingface.co/blog/nvidia/cosmos-interactive-world-simulation",
+          "source": "Hugging Face",
+          "published_at": "2026-11-05T19:35:16Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "NVIDIA 发布 Cosmos 3 开放模型，支持交互式世界模拟，推动具身智能与仿真训练。"
+        },
+        {
+          "section": "product",
+          "title": "Gemini Omni 1.2 Flash: Fast and cost-effective with longer clips",
+          "url": "https://deepmind.google/blog/gemini-omni-12-flash-fast-and-cost-effective-with-longer-clips/",
+          "source": "Google DeepMind",
+          "published_at": "2026-11-05T17:05:16Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Gemini Omni 1.2 Flash 发布，主打低成本与长视频处理，适合实时多模态应用。"
+        },
+        {
+          "section": "product",
+          "title": "Measuring how AI agents handle everyday wet-lab science",
+          "url": "https://openai.com/index/measuring-how-ai-agents-handle-wet-lab-science",
+          "source": "OpenAI",
+          "published_at": "2026-11-06T00:00:00Z",
+          "raw_text": "OpenAI introduces BioBasicsBench, a 100-task benchmark measuring how well AI agents interpret raw experimental data and handle everyday wet-lab science.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "OpenAI 推出 BioBasicsBench，用100项湿实验任务评测AI代理的原始数据处理能力。"
+        }
+      ]
+    }
+  ]
+}
