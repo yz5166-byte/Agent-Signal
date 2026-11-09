@@ -1,0 +1,421 @@
+{
+  "date": "2026-11-09",
+  "tip": {
+    "title": "Compaction, decay and reinforcement in a two-tier conversational memory: a paired evaluation against retrieval-augmented generation",
+    "body": "**场景**：Agent 需要长期记忆对话历史，但 RAG 检索会丢失上下文连贯性，导致回答碎片化。\n\n**做法**：改用双层压缩记忆策略。第一层用 LLM 对每轮对话生成摘要并压缩存储；第二层在检索时只返回压缩后的关键摘要，而非原始对话。\n\n```python\n# 伪代码示例：使用 LangChain 的 ConversationSummaryMemory\nfrom langchain.memory import ConversationSummaryMemory\nfrom langchain.llms import OpenAI\n\nmemory = ConversationSummaryMemory(\n    llm=OpenAI(),\n    max_token_limit=500  # 控制压缩后摘要长度\n)\nmemory.save_context({\"input\": \"用户问题\"}, {\"output\": \"Agent回答\"})\nprint(memory.load_memory_variables({}))  # 返回压缩后的摘要\n```\n\n**注意**：压缩过程需在沙箱环境（如 Docker 容器）中运行 LLM，避免直接暴露 API Key。",
+    "ref_title": "Compaction, decay and reinforcement in a two-tier conversational memory: a paired evaluation against retrieval-augmented generation",
+    "ref_url": "https://arxiv.org/abs/2611.09807v1"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "On Agentic Manipulation Policies",
+          "url": "https://arxiv.org/abs/2611.09892v1",
+          "source": "arXiv",
+          "published_at": "2026-11-06T18:59:34Z",
+          "raw_text": "Recent work on robot manipulation has focused on specialist policies trained on demonstrations. We show that generalist AI models can control manipulators more reliably than specialist policies such as vision-language-action models (VLAs) and world-action models (WAMs). We systematically analyze agentic manipulation policies (AMPs), in which a generalist AI model commands the manipulator directly, adapting its actions as the task unfolds. We present AMP1, a reference harness that runs unchanged across single-arm, bimanual, and mobile manipulation. AMP1 achieves state-of-the-art results on the RoboLab-120 and CaP-Gym benchmarks, with no demonstrations or task-specific training. On RoboLab-120, AMP1 reaches an 85.6\\% success rate zero-shot, compared to 49.2\\% and 42.9\\% for leading VLA and WAM policies. The agent succeeds zero-shot in 104 of 108 real-world trials spanning twelve tasks and three robot instances, reducing failure rates by 20x and 15x relative to strong VLA and WAM baselines. The basic harness supplies no grasping, pushing, or placing skills; the agent develops its own strategies, such as searching for hidden objects, using objects as tools, and calibrating its cameras. With the addition of a persistent memory store, the agent can also learn from experience: an augmented harness with a memory representation that is carried across episodes lowers the failure rate on RoboDojo bimanual manipulation tasks by 4.6x relative to zero-shot deployment. Our analysis suggests that AMPs are substantially more general and robust than specialist manipulation policies, providing a promising foundation for robot manipulation.",
+          "extra": {
+            "authors": [
+              "Chen Chen",
+              "Omid Bagherieh",
+              "Naveen Nikamanth Appiah Balaji",
+              "Jesse T. Gonzalez",
+              "Negin Heravi",
+              "Fahad Islam",
+              "Xueting Li",
+              "Jean-Baptiste Regli",
+              "Kejia Ren",
+              "Petr Švec",
+              "David J. Yoon",
+              "Matthias Müller",
+              "Vladlen Koltun"
+            ],
+            "categories": [
+              "cs.RO",
+              "cs.AI",
+              "cs.CV",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.09892v1"
+          },
+          "score": 9.0,
+          "summary": "通用AI模型在机器人操控上超越专用策略模型，为Agent落地物理世界提供新范式。"
+        },
+        {
+          "section": "paper",
+          "title": "CPU-ARC: Agentic Reasoning Caching for on-CPU Reasoning Reuse",
+          "url": "https://arxiv.org/abs/2611.09891v1",
+          "source": "arXiv",
+          "published_at": "2026-11-06T18:58:50Z",
+          "raw_text": "Large language models reinvent the wheel all the time. They conflate task-solving with the execution of the solutions, which forces them to solve every problem from scratch. We show that once a task has been reasoned through, the application of its solution to a new problem instance can be done very efficiently and with little involvement from language models. We introduce agentic reasoning caching, a method for constructing robust CPU-executable agentic reasoning caches (ARCs) from LLM reasoning traces. ARCs show on-par performance with frontier LLMs across a range of difficult mathematical and scientific tasks, are fully explainable, continually trainable, robust to input perturbations, and 16-291x cheaper to invoke than the source model.",
+          "extra": {
+            "authors": [
+              "Peter Belcak",
+              "Greg Heinrich",
+              "Saurav Muralidharan",
+              "Shizhe Diao",
+              "Pavlo Molchanov"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.09891v1"
+          },
+          "score": 8.0,
+          "summary": "提出Agent推理缓存机制，避免LLM每次从零求解，大幅降低推理成本。"
+        },
+        {
+          "section": "paper",
+          "title": "Can Agentic Systems Close the Gap in Radiology with Production AI Tools?",
+          "url": "https://arxiv.org/abs/2611.09836v1",
+          "source": "arXiv",
+          "published_at": "2026-11-06T18:23:14Z",
+          "raw_text": "Radiology AI has developed along two paths: specialized models that perform well on narrow tasks but cover few clinical findings, and generalist models that address a broader range of tasks but remain prone to hallucination and inaccurate measurements. Combining the two through agentic systems offers a route towards comprehensive radiology reporting, but published systems are tied to one modality or body part. We describe a radiology agentic framework that standardizes how an orchestrator calls modular tools to produce a structured report, and use it to measure what such a system can do with the tools from FDA-cleared radiology AI devices. Report generation is simulated on a large multi-modality report corpus, with the orchestrator given either a catalog of finding classes consolidated from the cleared devices, each available on the modalities it is cleared for, or an unlimited catalog in which any class can be requested, and planning either from the clinical indication or from the target report. Tool outputs are simulated from the reference report, so the comparison isolates tool availability and orchestration from tool error. With the cleared catalog and the indication alone, the orchestrator recovers under a third of the clinically actionable findings; recovery improves substantially with the unlimited catalog, and further when the plan is written from the target report. Attributing every missed finding to a cause shows that most are classes no cleared device offers for the study's modality, and that a third are classes or tools that were offered and not called. Adding the most frequently missing tools closes most of the gap to the unlimited catalog on held-out reports, whereas a smaller orchestrator with the unlimited catalog gives up the whole gain. Tool availability and effective orchestration are thus complementary constraints on comprehensive AI-assisted radiology reporting.",
+          "extra": {
+            "authors": [
+              "Aubin Charley",
+              "Julien Khlaut",
+              "Charles Corbière",
+              "Pierre Manceron",
+              "Corentin Dancette",
+              "Léo Machado"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.09836v1"
+          },
+          "score": 8.0,
+          "summary": "用Agent系统融合专用与通用放射学AI，填补临床落地鸿沟，实用价值高。"
+        },
+        {
+          "section": "paper",
+          "title": "CodeQuant2: Enhanced Outlier Mitigation and Adaptive Clustering for Low-Precision LRMs",
+          "url": "https://arxiv.org/abs/2611.09868v1",
+          "source": "arXiv",
+          "published_at": "2026-11-06T18:48:04Z",
+          "raw_text": "Large reasoning models (LRMs) improve task performance by generating longer intermediate reasoning traces, but this substantially increases inference costs and makes low-precision quantization increasingly important. However, aggressively quantized models often perform poorly on reasoning tasks. We observe larger activation fluctuations during the first decoding steps of reasoning. Calibration that omits these early states may miss their activation fluctuations. To address these reasoning-specific quantization challenges, we propose \\textbf{CodeQuant2}, a clustering-based LUT quantization framework for low-precision large reasoning models. CodeQuant2 mitigates activation outliers with rotation and scaling, uses clustering to represent non-uniform weight distributions, and adapts codebook sizes to the quantization difficulty of each layer. Guided by our observation of reasoning-time activation behavior, CodeQuant2 further improves calibration sample selection to better match actual decoding statistics. Combined with our customized LUT CUDA kernel, CodeQuant2 delivers substantial accuracy improvements on reasoning benchmarks while achieving up to $2.85\\times$ speedup over BF16.",
+          "extra": {
+            "authors": [
+              "Xingyu Liu",
+              "Xiangyang Yin",
+              "Tianhua Xia",
+              "Haiyu Wang",
+              "Sai Qian Zhang"
+            ],
+            "categories": [
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.09868v1"
+          },
+          "score": 7.0,
+          "summary": "针对长推理链模型提出低精度量化方案，解决推理任务中量化性能退化问题。"
+        },
+        {
+          "section": "paper",
+          "title": "Compaction, decay and reinforcement in a two-tier conversational memory: a paired evaluation against retrieval-augmented generation",
+          "url": "https://arxiv.org/abs/2611.09807v1",
+          "source": "arXiv",
+          "published_at": "2026-11-06T17:56:37Z",
+          "raw_text": "A conversational agent that remembers has to decide what to keep. Retrieval-augmented generation keeps the transcript and searches it; the alternative is to compact each turn into atomic facts and search those. We compare the two on LoCoMo, with both arms answering all 1,985 questions in one window, against the same stores, with the same generator and judge, and both predictions on one row, which licenses McNemar's exact test on the 512 questions where they disagree. On the four categories comparable work reports, compaction scores 71.4 per cent against 64.6, a lead of 6.8 points (p = 5.5e-08) at 34 per cent fewer prompt tokens. On all five, including the adversarial set comparable work drops, the lead falls to 2.0 and stops being significant, because the baseline leads adversarial by 14.6. That loss has a structure. Our lead falls as the reference answer demands more source wording, 9.6 points ahead at one or two reference words and 3.1 behind past eight, with token overlap moving the same way, so the judge is not the cause. Compaction keeps what a fact asserts and discards how it was said, so it wins where the answer is a value and loses where it is a phrasing. We also report four negative results with their power calculations.",
+          "extra": {
+            "authors": [
+              "Osamudiamen Edogun",
+              "Joshua Obigwe",
+              "Irfan Mehmood"
+            ],
+            "categories": [
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.09807v1"
+          },
+          "score": 7.0,
+          "summary": "对比两种对话记忆策略，证明压缩记忆优于RAG，对Agent长期交互有指导意义。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi, GLM, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 186410,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "muse",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 10.0,
+          "summary": "本地运行多种国产大模型，一键部署，AI从业者必备工具。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 160720,
+            "language": "Python",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "deepseek",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "python",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 9.0,
+          "summary": "一站式构建Agent工作流与RAG，从原型到生产无需重构。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "Supercharge your AI agents with data from the web and beyond. Building the library for superintelligence. 🔥",
+          "extra": {
+            "stars": 199900,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "为AI Agent提供实时网页数据抓取，扩展知识边界。"
+        },
+        {
+          "section": "repo",
+          "title": "CopilotKit/OpenBot",
+          "url": "https://github.com/CopilotKit/OpenBot",
+          "source": "GitHub 新星",
+          "published_at": "2026-08-17T00:44:59Z",
+          "raw_text": "Open-source AI coworkers that each get a computer of their own: a browser, files and tools, with every action decided before it happens and recorded after. Bring any AG-UI agent.",
+          "extra": {
+            "stars": 10509,
+            "language": "TypeScript",
+            "topics": [
+              "ag-ui",
+              "agent-governance",
+              "ai-agents",
+              "browser-automation",
+              "copilotkit",
+              "generative-ui",
+              "mcp"
+            ]
+          },
+          "score": 8.0,
+          "summary": "开源AI同事，拥有独立浏览器和文件系统，操作可审计。"
+        },
+        {
+          "section": "repo",
+          "title": "huggingface/transformers",
+          "url": "https://github.com/huggingface/transformers",
+          "source": "GitHub 经典",
+          "published_at": "2018-10-29T13:56:00Z",
+          "raw_text": "🤗 Transformers: the model-definition framework for state-of-the-art machine learning models in text, vision, audio, and multimodal models, for both inference and training.",
+          "extra": {
+            "stars": 168678,
+            "language": "Python",
+            "topics": [
+              "audio",
+              "deep-learning",
+              "deepseek",
+              "gemma",
+              "glm",
+              "hacktoberfest",
+              "llm",
+              "machine-learning",
+              "model-hub",
+              "natural-language-processing",
+              "nlp",
+              "pretrained-models",
+              "python",
+              "pytorch",
+              "pytorch-transformers",
+              "qwen",
+              "speech-recognition",
+              "transformer",
+              "vlm"
+            ]
+          },
+          "score": 8.0,
+          "summary": "多模态模型推理与训练框架，行业标准级工具库。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Nvidia will investigate CEO Jensen Huang’s relationship with possible Chinese spy",
+          "url": "https://techcrunch.com/2026/11/08/nvidia-says-its-investigating-ceo-jensen-huangs-relationship-with-possible-chinese-spy/",
+          "source": "TechCrunch",
+          "published_at": "2026-11-08T21:00:11Z",
+          "raw_text": "In a memo to the company, Huang admitted that he had an affair.",
+          "extra": {},
+          "score": 10.0,
+          "summary": "英伟达董事会调查CEO黄仁勋与疑似中国间谍的关系，黄仁勋承认婚外情，直接影响公司治理与股价"
+        },
+        {
+          "section": "news",
+          "title": "Here’s the full text of Jensen Huang’s memo to Nvidia",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1029595/full-text-jensen-huang-affair-memo-nvidia",
+          "source": "The Verge",
+          "published_at": "2026-11-08T22:54:50Z",
+          "raw_text": "On Sunday, Nvidia announced it was launching an investigation into CEO Jensen Huang's relationship with Alice Huang, an AI executive and agent of the Chinese government. In addition to the Board of Directors announcing the investigation, Huang sent a memo to Nvidia employees acknowledging the affair. You can read the full text below. To my […]",
+          "extra": {},
+          "score": 9.0,
+          "summary": "黄仁勋向全员发送备忘录承认与涉华间谍嫌疑人的关系，事件升级为内部危机"
+        },
+        {
+          "section": "news",
+          "title": "Nvidia is investigating Jensen Huang’s relationship with a Chinese spy",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1029562/nvidia-investigating-jensen-huang-relationship-chinese-spy",
+          "source": "The Verge",
+          "published_at": "2026-11-08T20:22:39Z",
+          "raw_text": "Nvidia has announced that it is opening an investigation into CEO Jensen Huang and his relationship with Megaspeed executive Alice Huang, who was reportedly recruited by China's Ministry of State Security to spy on the company. A statement posted by the board of directors reads: The NVIDIA Board is initiating an independent investigation in light […]",
+          "extra": {},
+          "score": 9.0,
+          "summary": "英伟达官方宣布调查CEO与疑似中国间谍的关系，涉及国家安全与商业机密风险"
+        },
+        {
+          "section": "news",
+          "title": "Apple is racing to make Siri more agentic",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1029552/apple-siri-ai-agentic",
+          "source": "The Verge",
+          "published_at": "2026-11-08T19:18:19Z",
+          "raw_text": "Bloomberg's Mark Gurman says CEO John Ternus is pressuring AI czar Craig Federighi to accelerate the Siri roadmap and deliver a powerful AI agent that can compete with OpenAI's Dots or Meta's Muse. While Federighi has delivered a functional version of Siri AI on an incredibly short timeline, the company has no illusions that it's […]",
+          "extra": {},
+          "score": 8.0,
+          "summary": "苹果加速Siri智能化转型，CEO施压AI负责人追赶OpenAI与Meta的智能体产品"
+        },
+        {
+          "section": "news",
+          "title": "After the midterms, things are looking rocky for Elon Musk and data centers",
+          "url": "https://techcrunch.com/2026/11/07/after-the-midterms-things-are-looking-rocky-for-elon-musk-and-data-centers/",
+          "source": "TechCrunch",
+          "published_at": "2026-11-07T22:07:22Z",
+          "raw_text": "On Equity, we unpacked what the midterms mean for the tech industry.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "美国中期选举后科技行业政策环境生变，马斯克的数据中心业务面临不确定性"
+        },
+        {
+          "section": "news",
+          "title": "I'm not convinced the AI bubble exists",
+          "url": "https://matteoraso.github.io/im-not-convinced-the-ai-bubble-exists.html#im-not-convinced-the-ai-bubble-exists",
+          "source": "Hacker News",
+          "published_at": "2026-11-08T23:44:36Z",
+          "raw_text": "Article URL: https://matteoraso.github.io/im-not-convinced-the-ai-bubble-exists.html#im-not-convinced-the-ai-bubble-exists Comments URL: https://news.ycombinator.com/item?id=50418975 Points: 175 # Comments: 230",
+          "extra": {},
+          "score": 6.0,
+          "summary": "技术博客从工程视角论证AI泡沫论缺乏依据，引发社区对估值合理性的讨论"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "New NVIDIA Cosmos 3 Open Models for Interactive World Simulation",
+          "url": "https://huggingface.co/blog/nvidia/cosmos-interactive-world-simulation",
+          "source": "Hugging Face",
+          "published_at": "2026-11-05T19:35:16Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "英伟达发布Cosmos 3开放模型，支持交互式世界模拟，推动具身智能与仿真训练。"
+        },
+        {
+          "section": "product",
+          "title": "Gemini Omni 1.2 Flash: Fast and cost-effective with longer clips",
+          "url": "https://deepmind.google/blog/gemini-omni-12-flash-fast-and-cost-effective-with-longer-clips/",
+          "source": "Google DeepMind",
+          "published_at": "2026-11-05T17:05:16Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Gemini Omni 1.2 Flash发布，支持更长视频片段，兼顾速度与成本优势。"
+        },
+        {
+          "section": "product",
+          "title": "Measuring how AI agents handle everyday wet-lab science",
+          "url": "https://openai.com/index/measuring-how-ai-agents-handle-wet-lab-science",
+          "source": "OpenAI",
+          "published_at": "2026-11-06T00:00:00Z",
+          "raw_text": "OpenAI introduces BioBasicsBench, a 100-task benchmark measuring how well AI agents interpret raw experimental data and handle everyday wet-lab science.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "OpenAI推出BioBasicsBench基准，测试AI处理湿实验数据的能力，加速科学自动化。"
+        }
+      ]
+    }
+  ]
+}
