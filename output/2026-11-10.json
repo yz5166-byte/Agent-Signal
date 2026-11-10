@@ -1,0 +1,415 @@
+{
+  "date": "2026-11-10",
+  "tip": {
+    "title": "Claude Code is accidentally exposing secrets all over GitHub",
+    "body": "**场景**：用 Claude Code 等 AI 编程工具时，提示词可能意外泄露 API 密钥或密码（如条目 [12] 所示）。\n\n**做法**：在调用模型前，用正则或专用库（如 `detect-secrets`）对输入做敏感信息扫描，命中则拒绝执行。\n\n```python\nimport re\n\n# 白名单：仅允许安全模式匹配，不执行任何代码\nAPI_KEY_PATTERN = re.compile(r'(sk-[A-Za-z0-9]{32,})')\n\ndef sanitize_prompt(prompt: str) -> str:\n    if API_KEY_PATTERN.search(prompt):\n        raise ValueError(\"提示词包含疑似 API 密钥，已拦截\")\n    return prompt\n```\n\n将 `sanitize_prompt` 作为工具链入口，确保模型只处理脱敏后的输入。",
+    "ref_title": "Claude Code is accidentally exposing secrets all over GitHub",
+    "ref_url": "https://arstechnica.com/ai/2026/11/claude-code-settings-files-expose-thousands-of-secrets-on-github/"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "WorkflowArena: Benchmarking Executable Workflow Orchestration in LLM-Based Multi-Agent Systems",
+          "url": "https://arxiv.org/abs/2611.12856v1",
+          "source": "arXiv",
+          "published_at": "2026-11-09T18:45:28Z",
+          "raw_text": "Large language model agents are increasingly deployed as multi-agent systems rather than as a standalone model operating within a single context. Recent agent harnesses allow the model to instantiate worker agents and to author the executable workflow that coordinates them, shifting the design of system structure from developers to the model at run time. The quality of this organization therefore constitutes a distinct capability, yet existing benchmarks either measure end-to-end task completion or evaluate coordination under structures specified in advance. We formalize this capability as workflow orchestration and introduce WorkflowArena, a benchmark of 145 long-horizon tasks spanning 8 professional domains, from software engineering and formal mathematics to legal analysis and 3D production. Each task specifies an initial workspace and an integrated deliverable composed of interdependent components, which is assessed by a hidden verifier. Agents determine autonomously whether and how to delegate, and all delegation is recorded, enabling joint evaluation of deliverable quality and the organization of the underlying work. Experiments with nine models show that no single configuration performs best across all domains and that systems exhibit distinct delegation strategies: at high effort, Claude models in Claude Code invoke workflows less frequently but with larger worker groups, whereas GPT models in Codex delegate more frequently in smaller units. When the executing model is held fixed on a challenging subset of tasks, workflows authored by Claude Opus 5.5 substantially improve weaker executors, indicating that workflow organization is itself a measurable determinant of task performance.",
+          "extra": {
+            "authors": [
+              "Zheng Jiang",
+              "Fang Niu",
+              "Bo Peng",
+              "Houde Qian",
+              "Wenyi Li",
+              "Deyao Hong",
+              "Mingju Gao",
+              "Yizhe Chi",
+              "Youjie Zheng",
+              "Kaisen Yang",
+              "Calvin Xiao",
+              "Lifeng Sun",
+              "Huan-ang Gao"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.SE"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.12856v1"
+          },
+          "score": 9.0,
+          "summary": "提出可执行工作流编排基准，填补多智能体系统标准化评估空白。"
+        },
+        {
+          "section": "paper",
+          "title": "Agentic-OPD: Recovering Forgotten Agent Capabilities via On-Policy Distillation for Agentic Tasks",
+          "url": "https://arxiv.org/abs/2611.12799v1",
+          "source": "arXiv",
+          "published_at": "2026-11-09T18:07:42Z",
+          "raw_text": "Reinforcement learning is now the mainstream paradigm for training LLMs on agentic tasks, yet standard practice keeps only the best-validation checkpoint and discards the rest. We show that this is lossy: in GRPO training of LLM agents, the best-validation checkpoint fails on problems that earlier checkpoints from the same run had already solved, and the union of problems solved across checkpoints far exceeds any single one. The discarded checkpoints thus form a teacher pool obtained at no additional training cost, which on-policy distillation (OPD) can mine to recover the lost coverage. Mining this pool raises two challenges: i) which checkpoint to distill from, as no checkpoint dominates the others and complementarity to the student is problem-specific; ii) where to trust it, as even a well-chosen teacher is only locally superior, so indiscriminate distillation overwrites behavior the student has already mastered. We propose Agentic-OPD, which treats the best-validation checkpoint as the student and all saved checkpoints as frozen teacher candidates, using the student's evolving capability gaps to guide both teacher selection and supervision filtering: the HCN policy (Highest Coverage Next) dynamically selects teachers by weighted coverage of the student's unsolved problems, while the LAD module (Locality-Aware Distillation) confines transfer to failed student rollouts on problems where the teacher performs better. Across five agentic task domains and 24 benchmarks and task subsets, Agentic-OPD improves over its initialization checkpoint by up to 7.4 points, with a 4B student surpassing the latest frontier models GPT-5.6 and DeepSeek-V4.1 on deep search. Agentic-OPD recasts a finished RL run as a reusable pool of policies and establishes post-RL capability recovery as a stage orthogonal to improvements in the RL algorithm itself.",
+          "extra": {
+            "authors": [
+              "Tingcheng Bian",
+              "Kangye Gong",
+              "Jinchang Luo",
+              "MingQuan Cheng",
+              "Feiran Liu",
+              "Ni Li",
+              "Xiaoling Xia",
+              "Haiwei Wang",
+              "Hui Li"
+            ],
+            "categories": [
+              "cs.LG",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.12799v1"
+          },
+          "score": 9.0,
+          "summary": "发现RL训练中丢弃早期检查点会丢失关键能力，提出在线蒸馏恢复方法。"
+        },
+        {
+          "section": "paper",
+          "title": "HiVe-Mem: Interleaving Horizontal Memory Expansion and Vertical Evidence Composition for Multimodal Agents",
+          "url": "https://arxiv.org/abs/2611.12872v1",
+          "source": "arXiv",
+          "published_at": "2026-11-09T18:57:00Z",
+          "raw_text": "As multimodal agents accumulate increasingly long interaction histories, effectively retrieving and utilizing past information becomes critical for long-term interaction. Existing memory systems typically rely on semantic retrieval over compressed memories and expose predefined representations, which may miss relevant memories and overlook heterogeneous evidence needs across queries. We introduce \\textbf{\\hivemem}, a multimodal memory framework that interleaves \\textbf{\\textsc{H}}or\\textbf{\\textsc{i}}zontal Memory Expansion with \\textbf{\\textsc{Ve}}rtical Evidence Composition. For horizontal memory expansion, \\hivemem organizes memory episodes into a relational graph using textual and visual anchors, expanding semantically retrieved seeds with related neighbors to recover complementary information. For vertical evidence composition, each retrieved memory retains multiple evidence forms, including compact summaries, captions, grounded visual views, raw images, and interaction history. A lightweight trainable selector independently composes an evidence subset for each retrieved memory, enabling query-adaptive utilization of heterogeneous multimodal information. This two-dimensional design jointly broadens memory coverage and adapts the evidence contributed by individual memories. Experiments across three multimodal memory benchmarks show that \\hivemem consistently improves task performance across base models while reducing token consumption by about 90\\% compared with the most efficient competing multimodal baselines.",
+          "extra": {
+            "authors": [
+              "Haozhen Zhang",
+              "Bohan Liu",
+              "Jianzhu Bao",
+              "Qingyuan Liu",
+              "Haodong Yue",
+              "Xiao Li",
+              "Zi Pong Lim",
+              "Wenya Wang"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.AI",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.12872v1"
+          },
+          "score": 8.0,
+          "summary": "提出交错式记忆扩展与证据组合方法，解决多模态智能体长期交互记忆瓶颈。"
+        },
+        {
+          "section": "paper",
+          "title": "Shortcuts and Boundaries: Verifiable RL Misalignment and Contextual Safety Learning",
+          "url": "https://arxiv.org/abs/2611.12865v1",
+          "source": "arXiv",
+          "published_at": "2026-11-09T18:52:20Z",
+          "raw_text": "Reinforcement learning (RL) can improve an agent's task capability while reinforcing behavior that violates contextual execution requirements. We study this reward-driven misalignment, including reward hacking, through verifiable reward--context conflicts, where compliant task completion remains feasible while some executable shortcuts earn more reward than every compliant strategy. Encoding these conflicts in task dynamics lets us generate diverse interactive environments at scale and derive compliance feedback from execution histories. In resource and reporting workflows, task optimization increases real productivity through unauthorized resource use or raises reported scores while actual work declines. Controlled changes in the training distribution show that minority conflict exposure can still lead to widespread shortcut acquisition, reaching 97.9\\% certified profitable violations on an API task under a 25\\% conflict mixture after 128 updates. The same contextual checks supply a simple binary penalty that supports joint capability and compliance gains and partially mitigates acquired violations. Learned safety adapts to expanded authorization and transfers across mechanisms into workflows with evolving evidence and approval requirements. On 32 unseen changing-evidence tasks, resource-trained safety increases safe completion from 53.1\\% to 89.1\\% relative to task-only training, while both policies achieve full real work. These results connect a verifiable account of reward-driven misalignment with scalable task construction and safety learning that remains useful under changing execution requirements.",
+          "extra": {
+            "authors": [
+              "Xinjie Shen"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CR"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.12865v1"
+          },
+          "score": 8.0,
+          "summary": "通过可验证奖励-上下文冲突研究RL对齐失败，揭示奖励黑客行为机制。"
+        },
+        {
+          "section": "paper",
+          "title": "Large Language Models as a Universal Searcher for Open-World Automated Machine Learning",
+          "url": "https://arxiv.org/abs/2611.12791v1",
+          "source": "arXiv",
+          "published_at": "2026-11-09T17:58:38Z",
+          "raw_text": "Developing effective machine learning models requires complex manual tuning, while current Automated Machine Learning (AutoML) frameworks remain domain-specific and isolate model architecture, training hyperparameter, and data ratio optimization. Here, we bridge this gap by proposing a universal, large language model (LLM)-based AutoML framework that jointly optimizes these configurations for the first time without the need for task-specific fine-tuning. We propose NCode, a unified numerical encoding scheme that translates diverse AutoML design choices into universal discrete sequences and effectively reframes the optimization process as a unified ranking task. Trained solely on optimization trajectories derived from a limited, single-domain vision task, the proposed LLM-based searcher demonstrates impressive cross-task, cross-modality and joint search-space optimization generalizability, achieving state-of-the-art performance across image classification, image segmentation, speaker verification and text-to-image benchmarks. Crucially, it exhibits superior scalability in the large-scale training and joint optimization of a billion-parameter Diffusion Transformer, requiring 896 GPU-days and attaining a state-of-the-art GenEval score of 0.91. By leveraging reinforcement learning to instill Chain-of-Thought reasoning, we provide a systematic way to interpret the LLM-based searcher's internal decision-making mechanisms, revealing its optimization strategy shifted from the early-stage diversity-driven exploration to the late-stage anchor exploitation. Our proposed framework provides a scalable, generalizable, and interpretable pathway toward general-purpose open-world machine learning optimization.",
+          "extra": {
+            "authors": [
+              "Yuxuan Hu",
+              "Jihao Liu",
+              "Weikang Shi",
+              "Xijie Huang",
+              "Linda Wei",
+              "Mingjie Zhan",
+              "Aojun Zhou",
+              "Rui Liu",
+              "Hongsheng Li"
+            ],
+            "categories": [
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.12791v1"
+          },
+          "score": 7.0,
+          "summary": "用LLM作为通用搜索器统一优化模型架构、超参和数据配比，突破AutoML领域隔离。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi, GLM, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 186489,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "muse",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 10.0,
+          "summary": "本地运行主流中文大模型，一键部署，降低AI应用门槛。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 160804,
+            "language": "Python",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "deepseek",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "python",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 9.0,
+          "summary": "一站式构建Agent工作流与RAG管道，支持私有化部署，从原型到生产无需重构。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "Supercharge your AI agents with data from the web and beyond. Building the library for superintelligence. 🔥",
+          "extra": {
+            "stars": 200266,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 8.0,
+          "summary": "为AI Agent提供实时网页数据抓取能力，扩展知识边界。"
+        },
+        {
+          "section": "repo",
+          "title": "CopilotKit/OpenBot",
+          "url": "https://github.com/CopilotKit/OpenBot",
+          "source": "GitHub 新星",
+          "published_at": "2026-08-17T00:44:59Z",
+          "raw_text": "Open-source AI coworkers that each get a computer of their own: a browser, files and tools, with every action decided before it happens and recorded after. Bring any AG-UI agent.",
+          "extra": {
+            "stars": 10599,
+            "language": "TypeScript",
+            "topics": [
+              "ag-ui",
+              "agent-governance",
+              "ai-agents",
+              "browser-automation",
+              "copilotkit",
+              "generative-ui",
+              "mcp"
+            ]
+          },
+          "score": 8.0,
+          "summary": "开源AI协作者，拥有独立浏览器与文件系统，操作可审计可回放。"
+        },
+        {
+          "section": "repo",
+          "title": "wheresryan22/anatomy",
+          "url": "https://github.com/wheresryan22/anatomy",
+          "source": "GitHub 新星",
+          "published_at": "2026-10-08T10:12:49Z",
+          "raw_text": "An agent skill for creating detailed, interactive isometric illustrations of real-world machines and complex systems. Generates polished SVGs with optional WebGL shaders and 3D effects.",
+          "extra": {
+            "stars": 26331,
+            "language": "JavaScript",
+            "topics": [
+              "agent-skill",
+              "open-source",
+              "svg",
+              "vizualization"
+            ]
+          },
+          "score": 7.0,
+          "summary": "生成交互式等距机械图解SVG，支持WebGL特效，适合技术文档与教学。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Anthropic reportedly plans to move forward with IPO plans",
+          "url": "https://techcrunch.com/2026/11/09/anthropic-reportedly-plans-to-move-forward-with-ipo-plans/",
+          "source": "TechCrunch",
+          "published_at": "2026-11-10T01:27:12Z",
+          "raw_text": "The AI company is expected to set its valuation range this week, the Wall Street Journal reported.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "Anthropic 计划推进 IPO，本周将确定估值区间，标志头部 AI 公司进入公开市场。"
+        },
+        {
+          "section": "news",
+          "title": "CoreWeave bond yield tops 16% as AI credit stress rises",
+          "url": "https://www.cnbc.com/2026/11/06/coreweave-bond-yield-tops-16percent-as-ai-credit-stress-rises.html",
+          "source": "Hacker News",
+          "published_at": "2026-11-10T03:20:06Z",
+          "raw_text": "Article URL: https://www.cnbc.com/2026/11/06/coreweave-bond-yield-tops-16percent-as-ai-credit-stress-rises.html Comments URL: https://news.ycombinator.com/item?id=50435660 Points: 115 # Comments: 60",
+          "extra": {},
+          "score": 9.0,
+          "summary": "CoreWeave 债券收益率超 16%，AI 算力泡沫下信贷风险信号显著。"
+        },
+        {
+          "section": "news",
+          "title": "Claude Code is accidentally exposing secrets all over GitHub",
+          "url": "https://arstechnica.com/ai/2026/11/claude-code-settings-files-expose-thousands-of-secrets-on-github/",
+          "source": "Ars Technica",
+          "published_at": "2026-11-09T17:24:26Z",
+          "raw_text": "\"Do not ask again\" prompt leads to passwords, API keys, and more being shared.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Claude Code 因提示词缺陷在 GitHub 泄露密码和 API 密钥，暴露 AI 工具安全风险。"
+        },
+        {
+          "section": "news",
+          "title": "Nvidia CEO's affair becomes a national security problem",
+          "url": "https://arstechnica.com/tech-policy/2026/11/ceo-jensen-huang-admits-affair-as-nvidia-probes-possible-chinese-espionage/",
+          "source": "Ars Technica",
+          "published_at": "2026-11-09T15:23:20Z",
+          "raw_text": "Nvidia is probing whether Chinese intelligence targeted its CEO through an affair.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "英伟达 CEO 婚外情涉中国情报疑云，公司启动调查，引发国家安全关注。"
+        },
+        {
+          "section": "news",
+          "title": "Nancy Pelosi’s replacement is ready to regulate AI",
+          "url": "https://www.technologyreview.com/2026/11/09/1148182/nancy-pelosis-replacement-is-ready-to-regulate-ai/",
+          "source": "MIT Tech Review",
+          "published_at": "2026-11-09T17:05:43Z",
+          "raw_text": "As a California state senator, Scott Wiener authored legislation aimed at curbing the risks of advanced AI. Now, after winning a tight congressional race for former Speaker of the House Nancy Pelosi’s open San Francisco seat, he could play a key role in setting federal AI policy. I spoke with Wiener on Friday, only a…",
+          "extra": {},
+          "score": 7.0,
+          "summary": "加州 AI 监管立法者斯科特·维纳接替佩洛西席位，联邦 AI 政策或加速落地。"
+        },
+        {
+          "section": "news",
+          "title": "Amazon saves millions by replacing Sonnet 4.6 with Strands Decider",
+          "url": "https://strandsagents.com/blog/amazon-saves-millions-replacing-sonnet-with-strands-decider/",
+          "source": "Hacker News",
+          "published_at": "2026-11-10T06:01:08Z",
+          "raw_text": "Article URL: https://strandsagents.com/blog/amazon-saves-millions-replacing-sonnet-with-strands-decider/ Comments URL: https://news.ycombinator.com/item?id=50436640 Points: 131 # Comments: 33",
+          "extra": {},
+          "score": 7.0,
+          "summary": "亚马逊用自研 Strands Decider 替代 Sonnet 4.6，节省数百万美元推理成本。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "ChatGPT Enterprise now available in AWS Marketplace",
+          "url": "https://openai.com/index/chatgpt-enterprise-aws-marketplace",
+          "source": "OpenAI",
+          "published_at": "2026-11-09T19:00:00Z",
+          "raw_text": "ChatGPT Enterprise is now available through AWS Marketplace, helping organizations simplify procurement through existing AWS purchasing and billing relationships.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "ChatGPT Enterprise 上架 AWS Marketplace，企业可通过现有 AWS 账户直接采购，简化部署流程。"
+        },
+        {
+          "section": "product",
+          "title": "Gemini Omni 1.2 Flash: Fast and cost-effective with longer clips",
+          "url": "https://deepmind.google/blog/gemini-omni-12-flash-fast-and-cost-effective-with-longer-clips/",
+          "source": "Google DeepMind",
+          "published_at": "2026-11-05T17:05:16Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Gemini Omni 1.2 Flash 发布，主打低延迟、低成本，并支持更长的上下文片段。"
+        },
+        {
+          "section": "product",
+          "title": "CodeRabbit scales agentic software development and ships 20x more",
+          "url": "https://openai.com/index/coderabbit-codex-daybreak",
+          "source": "OpenAI",
+          "published_at": "2026-11-09T08:00:00Z",
+          "raw_text": "CodeRabbit uses OpenAI models to govern and trust AI-generated code and Codex to ship 20 times more software with the same engineering team.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "CodeRabbit 集成 OpenAI 模型，实现 AI 代码治理与信任，工程团队效率提升 20 倍。"
+        }
+      ]
+    }
+  ]
+}
