@@ -1,0 +1,412 @@
+{
+  "date": "2026-11-12",
+  "tip": {
+    "title": "firecrawl/firecrawl",
+    "body": "当你的Agent需要从网页抓取实时数据（如新闻、价格），但目标网站结构频繁变化时，可用firecrawl的智能爬取。做法：调用firecrawl的`/scrape`接口，传入URL和`formats: ['markdown']`，自动提取正文并转为结构化文本。代码示例：\n```python\nimport requests\nresponse = requests.post(\n    'https://api.firecrawl.dev/v1/scrape',\n    json={'url': 'https://example.com', 'formats': ['markdown']},\n    headers={'Authorization': 'Bearer YOUR_API_KEY'}\n)\nprint(response.json()['data']['content'])\n```\n注意：API密钥需从firecrawl控制台获取，勿硬编码在公开仓库中。",
+    "ref_title": "firecrawl/firecrawl",
+    "ref_url": "https://github.com/firecrawl/firecrawl"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "AutoScaffold: AI-Guided Scaffolding for Reinforcement Learning of Language Models",
+          "url": "https://arxiv.org/abs/2611.14515v1",
+          "source": "arXiv",
+          "published_at": "2026-11-10T18:58:46Z",
+          "raw_text": "Reinforcement learning with verifiable rewards (RLVR) produces rich training experience, yet outcome rewards reduce each attempt to a single number and leave most of this information unused. Training-time scaffolds, such as strategies or hints added to the prompt during training, offer a natural way to turn this information into guidance, but their design and adaptation are largely left to humans and tailored to specific domains. We introduce AutoScaffold, a unified AI-for-AI framework that turns a student's training experience into adaptive scaffolds, with minimal domain-specific information and no human intervention during training. A frozen teacher periodically examines this experience, diagnoses bottlenecks, and designs scaffolds in two forms: (i) strategies shared across a class of tasks and (ii) hints for individual hard tasks, adjusting the content and amount of support as the student learns. The scaffolds are removed at evaluation. We apply the same framework to ALFWorld, search-based QA, mathematical reasoning, and GPU kernel generation. When evaluated without scaffolds, students trained with AutoScaffold outperform those trained with the corresponding RL baselines in all four domains, with gains of 7.2 points in ALFWorld success and 4.0 points in average QA exact match. On GPU kernel generation, AutoScaffold increases the fraction of tasks with a correct kernel that runs faster than the PyTorch reference by up to 5.0 points. On math, our student surpasses QuestA's reported accuracy using approximately one-third as many student training steps. Analyses show that the teacher identifies a different failure in each task class and shifts its scaffolds from step-by-step workflows to targeted fixes as the student improves, and that its revised scaffolds help the student learn more than keeping the previous scaffold or using no scaffold.",
+          "extra": {
+            "authors": [
+              "Zijian Zhang",
+              "Rizhen Hu",
+              "Jiangweizhi Peng",
+              "Shiyang Li",
+              "Sujay Bhatt",
+              "Sihan Zeng",
+              "Mingyi Hong"
+            ],
+            "categories": [
+              "cs.LG",
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.14515v1"
+          },
+          "score": 9.0,
+          "summary": "提出AI引导的脚手架方法，让RL训练中的过程信息不再被浪费，提升LLM推理效率。"
+        },
+        {
+          "section": "paper",
+          "title": "Contrastive Discovery: Open-Ended Scientific Discovery over Competing Explanations",
+          "url": "https://arxiv.org/abs/2611.14514v1",
+          "source": "arXiv",
+          "published_at": "2026-11-10T18:58:43Z",
+          "raw_text": "LLM agents are increasingly used for open-ended, data-driven scientific discovery, yet most of them evaluate hypotheses pointwise, testing an empirical claim $h$ only against its complement $\\neg h$. When evidence rejects $h$, the agent learns that one explanation is unlikely but not which alternative the evidence supports. To recover that alternative, we introduce Contrastive Discovery, which replaces the single hypothesis with a contrast set, a scientific question paired with mutually exclusive and collectively exhaustive competing explanations. Each experiment is scored by how its evidence redistributes belief across the set, and the question is resolved when belief concentrates on one explanation. Because contrast sets change only the unit an agent proposes and scores, an existing agent can use them to re-evaluate evidence it has already collected or to guide its search. Across six domains, $89\\%$ of the pointwise candidates with the largest belief shifts are rejections. On the same evidence, contrast sets resolve $73\\%$ of these candidates to a specific alternative. When contrast sets guide search, the agent resolves $67\\%$ more questions than pointwise surprisal under the same experiment budget. In a blinded study, $38$ human experts chose the same explanation on $78\\%$ of resolved questions and on $82\\%$ of questions where the pointwise agent rejected its hypothesis and stopped. Together, these results support explicit competing explanations as a way for discovery agents to resolve more scientific questions from the same evidence and validation budget.",
+          "extra": {
+            "authors": [
+              "Ziang Liu",
+              "James J. Kim",
+              "Yijia Dai",
+              "Jennifer J. Sun"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.14514v1"
+          },
+          "score": 9.0,
+          "summary": "让LLM智能体在科学发现中对比竞争假设，而非孤立验证，显著提升发现质量。"
+        },
+        {
+          "section": "paper",
+          "title": "Comparative Analysis of Agent Evaluation Frameworks: Stability, Detection, and Discovery in Enterprise Analytics Agents",
+          "url": "https://arxiv.org/abs/2611.14493v1",
+          "source": "arXiv",
+          "published_at": "2026-11-10T18:50:06Z",
+          "raw_text": "Deploying LLM-based analytics agents in enterprise settings requires evaluation frameworks that can reliably detect failures across complex, multi-tool workflows. We present a three-phase comparative study of three evaluation frameworks, each representing a distinct evaluation paradigm (trace-based LLM judging, text-only LLM judging with red-teaming, and deterministic heuristics), applied to two analytics agents in a controlled research setting using frozen execution traces. Phase 1 quantifies evaluation harness stability through repeated measurements, finding that 97% of configurations meet the stability threshold and that stability patterns are agent-independent. Phase 2 measures known risk detection on 72 ground-truth test cases, where the trace-based framework achieves the best precision-recall balance (F1=0.90) while text-only evaluation matches on recall but generates 5x more false alarms. Phase 3 evaluates unknown risk discovery, uncovering 24 novel failures with zero overlap between functional testing and security red-teaming. Our results demonstrate that (1) the information available to the evaluation harness determines evaluation quality, (2) functional and security evaluation are complementary, and (3) LLM-based evaluation harnesses surface subtle errors that human reviewers miss. We recommend a two-framework strategy: trace-based evaluation for functional assessment and adversarial red-teaming for security validation.",
+          "extra": {
+            "authors": [
+              "Howard Zhang",
+              "Chuck Arvin",
+              "Logan Brown",
+              "Mihir Bhatia",
+              "Neelu Choudhary",
+              "Lily Miao"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL",
+              "cs.LG",
+              "cs.SE"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.14493v1"
+          },
+          "score": 8.0,
+          "summary": "系统对比三种企业级Agent评估框架，为多工具工作流中的故障检测提供实用指南。"
+        },
+        {
+          "section": "paper",
+          "title": "ReTrace: Distilling Tool-Using Agents into Planner-Free Workflows",
+          "url": "https://arxiv.org/abs/2611.14492v1",
+          "source": "arXiv",
+          "published_at": "2026-11-10T18:49:47Z",
+          "raw_text": "Business process automation runs the same Standard Operating Procedure (SOP) again and again on new inputs. Large Language Model (LLM) agents can follow an SOP written in natural language, but they call an LLM to choose every step of every run, which adds latency and cost at scale. We present ReTrace, which turns an SOP and a few logged agent runs into a reusable workflow in which code, not an LLM, selects the next step. The agent's reasoning, the explanation it writes with each tool call, often states why it took an action; the tool calls alone do not. ReTrace extracts the condition behind each step, merges these conditions across runs into a compact rule document, and generates an executable workflow from it. Only this last stage depends on the platform, so rule documents can be compiled for different orchestration platforms. On $79$ procedures from our production platform, ReTrace workflows reach $93.8\\%$ completion, against $96.8\\%$ for the agent, at $24\\%$ lower cost per task. On $τ^2$-Bench, they reach $75.8\\%$ task success (agent: $80.6\\%$) and run in $1.3$s instead of $170$s; three rounds of repair on training failures lift $k{=}2$ workflows from $66.7\\%$ to $81.2\\%$. On eight SOP-Bench procedures, ReTrace without repair trails few-shot generation ($80.6\\%$ vs. $83.6\\%$), but repair from labeled training failures lifts it to $87.8\\%$ at $0.40$s per task, compared to $85.5\\%$ in $46.6$s for the agent.",
+          "extra": {
+            "authors": [
+              "Kaiyuan Hou",
+              "Yang Ping Kuo",
+              "Indranil Bhattacharya",
+              "Rohith Nama",
+              "Arushi Gupta",
+              "Carlos D. Castillo",
+              "Prathap Ramachandra",
+              "Xiaofan Jiang",
+              "Francesco Carbone"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.LG",
+              "cs.MA"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.14492v1"
+          },
+          "score": 8.0,
+          "summary": "将工具调用智能体蒸馏为无规划器工作流，大幅降低企业自动化中的延迟与成本。"
+        },
+        {
+          "section": "paper",
+          "title": "Re-Search: Dissecting LLM Ideation Through a Two-Player Questioning Game",
+          "url": "https://arxiv.org/abs/2611.14487v1",
+          "source": "arXiv",
+          "published_at": "2026-11-10T18:47:22Z",
+          "raw_text": "Research ideation is iterative: researchers refine their ideas step by step based on feedback. Yet existing evaluations obscure this search process, making it difficult to understand how LLMs explore the space of research ideas and what limits their progress. We introduce Re-Search, which adapts the format of Twenty Questions to research ideation: given only the research problem of a published paper, a model must rediscover the paper's core idea by asking yes-or-no questions. Built from 200 ICML 2026 papers, Re-Search tracks how a model's idea evolves as it asks questions and receives binary oracle feedback, isolating ideation from execution. Across six recent LLMs, nearly all progress happens within the first 30 of 100 questions, which largely decide how the game ends; after that, most models plateau. Through controlled interventions on the candidate questions and the hypothesis space, we find that the bottleneck is generation, not judgment: models recognize a good idea or a good question when one is offered, but often cannot produce it on their own. We further analyze the ideation traces and find that models fail by either over-exploiting one direction or over-exploring too many. These findings point to concrete design principles for autoresearch systems: since models can judge candidates they cannot produce, enriching the search with externally sourced ideas and questions may be more effective than improving any single model's generation ability.",
+          "extra": {
+            "authors": [
+              "Muhan Gao",
+              "Hangxiao Zhu",
+              "Xinqi Su",
+              "Yu Zhang",
+              "Daniel Khashabi",
+              "Kuan-Hao Huang"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.14487v1"
+          },
+          "score": 8.0,
+          "summary": "通过双人问答游戏剖析LLM研究构思过程，揭示其探索空间与瓶颈。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi, GLM, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 186734,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "muse",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 9.0,
+          "summary": "本地运行多种国产及开源大模型，降低云端依赖，适合快速实验与部署。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 161010,
+            "language": "Python",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "deepseek",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "python",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 9.0,
+          "summary": "一站式构建Agent工作流与RAG管道，支持多模型与工具，从原型到生产无需重构。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "Supercharge your AI agents with data from the web and beyond. Building the library for superintelligence. 🔥",
+          "extra": {
+            "stars": 201047,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 8.0,
+          "summary": "为AI Agent提供网页数据抓取能力，扩展知识边界，提升自主信息获取效率。"
+        },
+        {
+          "section": "repo",
+          "title": "CopilotKit/OpenBot",
+          "url": "https://github.com/CopilotKit/OpenBot",
+          "source": "GitHub 新星",
+          "published_at": "2026-08-17T00:44:59Z",
+          "raw_text": "Open-source AI coworkers that each get a computer of their own: a browser, files and tools, with every action decided before it happens and recorded after. Bring any AG-UI agent.",
+          "extra": {
+            "stars": 11151,
+            "language": "TypeScript",
+            "topics": [
+              "ag-ui",
+              "agent-governance",
+              "ai-agents",
+              "browser-automation",
+              "copilotkit",
+              "generative-ui",
+              "mcp"
+            ]
+          },
+          "score": 8.0,
+          "summary": "为AI Agent分配独立浏览器与文件系统，实现可审计的自主操作，适合自动化任务。"
+        },
+        {
+          "section": "repo",
+          "title": "yetone/magpie",
+          "url": "https://github.com/yetone/magpie",
+          "source": "GitHub 新星",
+          "published_at": "2026-09-23T16:22:35Z",
+          "raw_text": "Every agent's model. One place. Codex on DeepSeek, Claude Code on Kimi, from the menu bar.",
+          "extra": {
+            "stars": 35039,
+            "language": "Go",
+            "topics": [
+              "claude-code",
+              "codex",
+              "deepseek",
+              "gemini-cli",
+              "llm",
+              "macos"
+            ]
+          },
+          "score": 7.0,
+          "summary": "菜单栏统一管理多种Agent模型，快速切换Codex、Claude Code等，提升开发效率。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Nvidia is preparing to oust Jensen Huang",
+          "url": "https://www.wsj.com/business/nvidia-is-preparing-to-oust-nvidia-ceo-jensen-huang-30f421ad",
+          "source": "Hacker News",
+          "published_at": "2026-11-11T22:31:06Z",
+          "raw_text": "Article URL: https://www.wsj.com/business/nvidia-is-preparing-to-oust-nvidia-ceo-jensen-huang-30f421ad Comments URL: https://news.ycombinator.com/item?id=50459703 Points: 902 # Comments: 1249",
+          "extra": {},
+          "score": 10.0,
+          "summary": "英伟达董事会据报准备罢免CEO黄仁勋，涉及国家安全与公司治理重大变动。"
+        },
+        {
+          "section": "news",
+          "title": "Taiwan’s chipmaking giant TSMC to invest $1B in Anthropic, OpenAI",
+          "url": "https://arstechnica.com/ai/2026/11/taiwans-chipmaking-giant-tsmc-to-invest-1b-in-anthropic-openai/",
+          "source": "Ars Technica",
+          "published_at": "2026-11-11T18:16:40Z",
+          "raw_text": "Latest example of the AI boom’s circular financing comes as AI trade wobbles.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "台积电拟向Anthropic和OpenAI投资10亿美元，体现AI产业链资本闭环新动向。"
+        },
+        {
+          "section": "news",
+          "title": "Critical RCE Vulnerability in Apache HTTP Server",
+          "url": "https://www.wiz.io/blog/cve-2026-119618-rce-apache-http-server-vulnerability",
+          "source": "Hacker News",
+          "published_at": "2026-11-12T02:11:11Z",
+          "raw_text": "Article URL: https://www.wiz.io/blog/cve-2026-119618-rce-apache-http-server-vulnerability Comments URL: https://news.ycombinator.com/item?id=50462177 Points: 140 # Comments: 60",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Apache HTTP Server曝出严重远程代码执行漏洞，影响全球大量Web服务器。"
+        },
+        {
+          "section": "news",
+          "title": "United won’t let your AI agent book your flight",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1031623/united-unauthorized-ai-agents",
+          "source": "The Verge",
+          "published_at": "2026-11-11T21:54:21Z",
+          "raw_text": "United says it won't let personal AI assistants book tickets on the airline, citing both privacy and regulatory concerns. The company says it hasn't yet seen many people try to use AI agents to book their flights, The Wall Street Journal reports, in line with observations from other businesses like Doordash. But United is concerned […]",
+          "extra": {},
+          "score": 7.0,
+          "summary": "美联航禁止AI代理代订机票，引发对AI服务监管与隐私边界的行业讨论。"
+        },
+        {
+          "section": "news",
+          "title": "Google DeepMind just mathematically verified key parts of Signal",
+          "url": "https://arstechnica.com/ai/2026/11/signals-encryption-just-passed-an-ai-powered-mathematical-checkup/",
+          "source": "Ars Technica",
+          "published_at": "2026-11-11T14:08:57Z",
+          "raw_text": "The four-week project hints that AI could make formal verification far more practical.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "DeepMind用AI数学验证Signal协议关键部分，推动形式化验证实用化。"
+        },
+        {
+          "section": "news",
+          "title": "Big Walk used AI to fix a bug. Now the indie gaming world is having a reckoning.",
+          "url": "https://arstechnica.com/gaming/2026/11/big-walk-used-ai-to-fix-a-bug-now-the-indie-gaming-world-is-having-a-reckoning/",
+          "source": "Ars Technica",
+          "published_at": "2026-11-11T17:37:32Z",
+          "raw_text": "Any amount of AI coding is too much for many Independent Games Festival judges.",
+          "extra": {},
+          "score": 6.0,
+          "summary": "独立游戏节因AI修复bug争议，折射游戏行业对AI使用的伦理分歧。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Gemini 4 Carbon is now available",
+          "url": "https://deepmind.google/blog/gemini-4-carbon-is-now-available/",
+          "source": "Google DeepMind",
+          "published_at": "2026-11-10T16:03:47Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "谷歌发布 Gemini 4 Carbon 模型，为 AI 从业者提供新一代多模态能力基准。"
+        },
+        {
+          "section": "product",
+          "title": "Introducing AlphaProof Code: a breakthrough in verifying complex software at depth",
+          "url": "https://deepmind.google/blog/introducing-alphaproof-code/",
+          "source": "Google DeepMind",
+          "published_at": "2026-11-10T12:02:28Z",
+          "raw_text": "AlphaProof Code agents wrote three million lines of proofs in Lean to verify Signal’s core encryption.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "AlphaProof Code 用三百万行 Lean 证明验证 Signal 核心加密，实现深度代码形式化验证。"
+        },
+        {
+          "section": "product",
+          "title": "Lazare, veni foras: Reprogramming Dormant Neurons to Backdoor AI Agents",
+          "url": "https://www.microsoft.com/en-us/research/blog/lazare-veni-foras-reprogramming-dormant-neurons-to-backdoor-ai-agents/",
+          "source": "Microsoft Research",
+          "published_at": "2026-11-10T20:52:56Z",
+          "raw_text": "Microsoft researchers have discovered “Lazarus,” a backdoor technique that can reprogram dormant neurons in an AI model, causing an otherwise normal AI agent to execute malicious commands when a hidden trigger appears. The threat is especially serious for AI agents with tool or terminal access. A triggered model could quietly download and run attacker code, […] The post Lazare, veni foras: Reprogramming Dormant Neurons to Backdoor AI Agents appeared first on Microsoft Research .",
+          "extra": {},
+          "score": 8.0,
+          "summary": "微软发现“拉撒路”后门技术，可重编程休眠神经元劫持 AI 代理，威胁严重。"
+        }
+      ]
+    }
+  ]
+}
