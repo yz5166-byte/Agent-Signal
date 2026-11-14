@@ -1,0 +1,405 @@
+{
+  "date": "2026-11-14",
+  "tip": {
+    "title": "firecrawl/firecrawl",
+    "body": "**场景**：Agent 需要从网页抓取实时数据（如股价、新闻），但模型知识截止导致信息过时。\n**做法**：用 `firecrawl` 的 API 让 Agent 直接获取网页内容，避免手动爬虫。\n```python\nfrom firecrawl import FirecrawlApp\n\napp = FirecrawlApp(api_key=\"your_key\")\ncontent = app.scrape_url(\"https://example.com\", params={\"formats\": [\"markdown\"]})\nprint(content[\"markdown\"][:500])  # 取前500字符\n```\n**注意**：API 密钥存环境变量，不要硬编码。若需执行返回的代码，用 `subprocess.run` 配合白名单路径。",
+    "ref_title": "firecrawl/firecrawl",
+    "ref_url": "https://github.com/firecrawl/firecrawl"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "AgentSSL: Can MLE Agents Leverage Unlabeled Data?",
+          "url": "https://arxiv.org/abs/2611.17323v1",
+          "source": "arXiv",
+          "published_at": "2026-11-12T18:59:06Z",
+          "raw_text": "Applying machine learning systems to new domains introduces bottlenecks in both labeled data acquisition and manual pipeline engineering. While recent MLE agents show promise in automating pipeline design, they have been studied almost exclusively in fully supervised settings, leaving them untested in realistic regimes where labeled data is scarce but unlabeled data is abundant. In this work, we introduce Agentic Semi-Supervised Learning (AgentSSL), framing SSL as a program search problem and studying how agents navigate this space under limited supervision. We find that even under weak feedback and matched compute, agents can synthesize code that combines and adapts established SSL techniques, exceeding the strongest human-engineered baselines in 8 of 12 settings by up to +21.8%. However, our results identify program selection as a critical bottleneck in AgentSSL, where performance drops by as much as 47% when selecting based on the agent's feedback metric. To systematically study this bottleneck, we introduce ProgramSelectBench, a large-scale benchmark with a combined total of 16,977 agent-generated and human-engineered SSL programs, and evaluate both unsupervised and active program selection methods. We further evaluate AgentSSL on real-world ecology detection tasks, highlighting the opportunities and challenges of transferring agent-discovered strategies beyond controlled benchmarks.",
+          "extra": {
+            "authors": [
+              "Ethan Lin",
+              "Akanksha Sarkar",
+              "Ziang Liu",
+              "Kristin Branson",
+              "Jennifer J. Sun"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.17323v1"
+          },
+          "score": 9.0,
+          "summary": "MLE智能体首次探索利用无标签数据，突破全监督局限，对降低标注成本意义重大。"
+        },
+        {
+          "section": "paper",
+          "title": "CoReMem: Cost-Internalizing Memory for Successive Coding Tasks with Prospective Valuation",
+          "url": "https://arxiv.org/abs/2611.17316v1",
+          "source": "arXiv",
+          "published_at": "2026-11-12T18:58:22Z",
+          "raw_text": "Coding agents tackle successive tasks on an evolving repository, carrying forward edits and writing memory before the next task is known. Selecting memory for unknown next tasks requires balancing future usefulness against the costs of writing and reading it. The actor must also decide when acting on available memory saves effort as the task unfolds. We introduce Coding-Repository Memory (CoReMem), a cost-internalizing framework that guides memory design and actor adaptation through measured memory value on the next task. Prospective segment valuation compares runs of the next task with and without individual trajectory segments from the same inherited repository state, guiding a compact memory built around anchors: repository locations and executable checks. Actor adaptation estimates on-policy memory value within rollout groups with and without memory, using a reward that prioritizes resolution and penalizes step count in successful runs. Provenance-gated value credit assigns the additional value term to steps identified as using memory-supplied anchors, while every step retains outcome credit. On ChainSWE, CoReMem raises the 27B actor's resolve rate from 21.0% to 25.7%, with 17% fewer steps and 11% fewer total cache-aware tokens, including memory-module calls, relative to the untrained actor model without memory.",
+          "extra": {
+            "authors": [
+              "Peiwen Li",
+              "Harshit Verma",
+              "Sophia Zhou",
+              "Haiwen Wang",
+              "Ngoc Bui",
+              "Heng Chang",
+              "Fei Fei",
+              "David van Dijk",
+              "Rex Ying"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL",
+              "cs.SE"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.17316v1"
+          },
+          "score": 9.0,
+          "summary": "提出成本内化记忆机制，让编码智能体在连续任务中前瞻性选择记忆，提升长期效率。"
+        },
+        {
+          "section": "paper",
+          "title": "Negative-Only Policy Optimization for One-Sided Verifiable Rewards",
+          "url": "https://arxiv.org/abs/2611.17287v1",
+          "source": "arXiv",
+          "published_at": "2026-11-12T18:52:33Z",
+          "raw_text": "Reinforcement learning with verifiable rewards (RLVR) typically relies on a verifier that can reliably judge whether sampled solutions are correct. However, in many realistic settings, complete verification is generally unavailable, while cheap checks can only falsify failures. We formalize this regime as one-sided verifiability (OSV): verified negatives are reliable counterexamples, but verified positives are merely non-falsified candidates and may contain many false positives. This asymmetry makes standard RLVR unreliable, because reinforcing verified positives can directly reward shortcuts that pass partial checks. To address this issue, we propose Negative-Only Policy Optimization (NOPO), which treats verified positives as unlabeled and updates the policy only by suppressing trusted verified negatives. Specifically, NOPO combines a reference-relative negative suppression loss with a group-level adapter that scales each update by the proportion of non-falsified responses. Across unit-test, constraint-check, and LLM self-verifiers, NOPO improves pass@k over baselines on code, logic, and math benchmarks when oracle rewards are unavailable. These gains persist under inference-time scaling and cross-benchmark transfer.",
+          "extra": {
+            "authors": [
+              "Jiacheng Xu",
+              "Shuo He",
+              "Fuxiang Zhang",
+              "Chaojie Wang",
+              "Bo An"
+            ],
+            "categories": [
+              "cs.LG",
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.17287v1"
+          },
+          "score": 8.0,
+          "summary": "针对仅能验证错误场景，提出负向策略优化，拓展RLVR在现实弱监督下的可用性。"
+        },
+        {
+          "section": "paper",
+          "title": "LiveGeo: Benchmarking Geographic Agents in Continuously Evolving Worlds",
+          "url": "https://arxiv.org/abs/2611.17267v1",
+          "source": "arXiv",
+          "published_at": "2026-11-12T18:45:58Z",
+          "raw_text": "We introduce GeoWorld, a controllable and continuously evolving geographic environment platform for LLM agents, and LiveGeo, a benchmark for evaluating reliable decision-making in real-world geographic environments using GeoWorld. Unlike existing evaluations that largely reason and plan over fixed geographic states, GeoWorld is grounded in real-world geographic structure and allows external world states to evolve along their own temporal processes while preserving verifiable state histories. LiveGeo places geographic tasks within this evolving environment, requiring agents to actively acquire task-relevant information, verify whether the evidence supporting prior decisions remains valid, and revise their plans when necessary. Our results reveal that even frontier LLMs struggle with static tasks, with no model consistently excelling across tasks, while strong static performance does not ensure dynamic reliability. Further analysis identifies a key bottleneck: agents struggle to acquire and translate relevant evidence into valid decisions and maintain their correctness as the world evolves. By releasing LiveGeo together with its GeoWorld platform, we aim to provide the community with a flexible and extensible infrastructure for studying the next generation of agents capable of reliable action in evolving geographic worlds.",
+          "extra": {
+            "authors": [
+              "Pengcheng Zhou",
+              "Xuanyu Liu",
+              "Yanchen Yin",
+              "Tianjie Ju",
+              "Bobo Li",
+              "Shengqiong Wu",
+              "Hao Fei",
+              "Mong-Li Lee",
+              "Wynne Hsu"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.17267v1"
+          },
+          "score": 8.0,
+          "summary": "推出持续演化的地理环境基准，考验LLM智能体在动态世界中的决策可靠性。"
+        },
+        {
+          "section": "paper",
+          "title": "Ballad: Bandit-Based LLM Routing for Automated Heuristic Discovery",
+          "url": "https://arxiv.org/abs/2611.17241v1",
+          "source": "arXiv",
+          "published_at": "2026-11-12T18:28:08Z",
+          "raw_text": "Modern automated heuristic discovery (AHD) systems increasingly rival hand-crafted heuristics by leveraging Large Language Models (LLMs) to iteratively mutate and refine solutions. A natural assumption is that more powerful and more expensive models consistently yield better heuristics. We challenge this empirically: across multiple NP-hard combinatorial optimization problems, we find no consistent advantage for larger, costlier models. This raises a deeper question: given a pool of LLMs spanning frontier and freely hosted or open-weight models, how should one adaptively select which model to invoke at each step of the search? The challenge is non-trivial. The optimal LLM may shift over the course of a run, and because one LLM's output seeds the context for subsequent calls, each model's reward signal is non-stationary and entangled across the heuristic population, thus violating the independence assumptions of classical online decision-making settings. We address this through Ballad (Bandit-based LLM Routing for Automated Heuristic Discovery), an online bandit algorithm that learns to orchestrate a pool of LLMs into an ensemble that matches or exceeds what any soloist LLM achieves alone. This orchestration is powered by an LLM selection policy that favors rare, high-scoring heuristics over stable averages, a DAG-based credit propagation mechanism through the genealogy of the heuristic population, and discounting of stale observations to remain attuned to each model's current utility. Across five NP-hard combinatorial optimization problems and a pool of four models of varying capability and cost, Ballad not only matches the best individual LLM in hindsight but, in several cases, surpasses every individual model while reducing API cost by up to 65.6% relative to always using the strongest model.",
+          "extra": {
+            "authors": [
+              "Samidha Verma",
+              "Ankit Anand",
+              "Sayan Ranu"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.17241v1"
+          },
+          "score": 8.0,
+          "summary": "用多臂老虎机动态路由LLM，打破“更强模型必更优”假设，降低启发式搜索成本。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi, GLM, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 186915,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "muse",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 9.0,
+          "summary": "本地一键运行 Kimi、DeepSeek 等主流模型，AI 从业者调试和测试的首选工具。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 161129,
+            "language": "Python",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "deepseek",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "python",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 9.0,
+          "summary": "一站式构建 Agent 工作流与 RAG 管线，支持私有部署，从原型到生产无需重构。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "Supercharge your AI agents with data from the web and beyond. Building the library for superintelligence. 🔥",
+          "extra": {
+            "stars": 201633,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 8.0,
+          "summary": "为 AI Agent 提供实时网页数据抓取能力，填补模型知识截止后的信息缺口。"
+        },
+        {
+          "section": "repo",
+          "title": "CopilotKit/OpenBot",
+          "url": "https://github.com/CopilotKit/OpenBot",
+          "source": "GitHub 新星",
+          "published_at": "2026-08-17T00:44:59Z",
+          "raw_text": "Open-source AI coworkers that each get a computer of their own: a browser, files and tools, with every action decided before it happens and recorded after. Bring any AG-UI agent.",
+          "extra": {
+            "stars": 12156,
+            "language": "TypeScript",
+            "topics": [
+              "ag-ui",
+              "agent-governance",
+              "ai-agents",
+              "browser-automation",
+              "copilotkit",
+              "generative-ui",
+              "mcp"
+            ]
+          },
+          "score": 8.0,
+          "summary": "给每个 AI 协作者分配独立浏览器与文件系统，操作可审计，适合安全敏感场景。"
+        },
+        {
+          "section": "repo",
+          "title": "wheresryan22/anatomy",
+          "url": "https://github.com/wheresryan22/anatomy",
+          "source": "GitHub 新星",
+          "published_at": "2026-10-08T10:12:49Z",
+          "raw_text": "An agent skill for creating detailed, interactive isometric illustrations of real-world machines and complex systems. Generates polished SVGs with optional WebGL shaders and 3D effects.",
+          "extra": {
+            "stars": 27176,
+            "language": "JavaScript",
+            "topics": [
+              "agent-skill",
+              "open-source",
+              "svg",
+              "vizualization"
+            ]
+          },
+          "score": 7.0,
+          "summary": "Agent 技能插件，自动生成机械系统的交互式等轴测图，输出 SVG 或 WebGL 效果。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Jensen Huang’s departure blasts big hole in AI startup funding, VCs and founders say",
+          "url": "https://techcrunch.com/2026/11/13/jensen-huangs-departure-blasts-big-hole-in-ai-startup-funding-vcs-and-founders-say/",
+          "source": "TechCrunch",
+          "published_at": "2026-11-13T22:43:00Z",
+          "raw_text": "Nvidia poured tens of billions into AI startups under Huang. Without him at the helm, founders and VCs are bracing for smaller checks and lower valuations.",
+          "extra": {},
+          "score": 10.0,
+          "summary": "黄仁勋离职导致英伟达对AI初创投资骤减，VC与创始人预期估值与支票规模将缩水。"
+        },
+        {
+          "section": "news",
+          "title": "Export-banned Nvidia chips are behind China’s most powerful AI models — uh-oh, Jensen!",
+          "url": "https://techcrunch.com/2026/11/13/export-banned-nvidia-chips-are-behind-chinas-most-powerful-ai-models-uh-oh-jensen/",
+          "source": "TechCrunch",
+          "published_at": "2026-11-13T18:40:30Z",
+          "raw_text": "New research shows the most advanced AI models from China were trained on banned Nvidia chips.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "研究证实中国最先进AI模型使用英伟达被禁芯片训练，凸显出口管制执行漏洞。"
+        },
+        {
+          "section": "news",
+          "title": "Nvidia privately confirmed it could track chips to fight smuggling, even as industry publicly questioned feasibility",
+          "url": "https://www.technologyreview.com/2026/11/12/1148483/nvidia-chip-tracking/",
+          "source": "MIT Tech Review",
+          "published_at": "2026-11-12T20:16:24Z",
+          "raw_text": "Representatives from Nvidia told Illinois representative Bill Foster that it would be technically possible to implement the anti-smuggling measures called for in the Chip Security Act, Foster told MIT Technology Review in an interview on Thursday, even while an industry group claimed they were “potentially infeasible.” Foster, a Democrat who serves on the Committee on…",
+          "extra": {},
+          "score": 9.0,
+          "summary": "英伟达私下承认可技术追踪芯片防走私，与公开行业表态矛盾，影响芯片安全法案执行。"
+        },
+        {
+          "section": "news",
+          "title": "AI agent startup LangChain hits $3B valuation",
+          "url": "https://techcrunch.com/2026/11/13/ai-agent-startup-langchain-hits-3b-valuation/",
+          "source": "TechCrunch",
+          "published_at": "2026-11-13T19:37:57Z",
+          "raw_text": "LangChain now claims 7,000 customers of its model and platform agnostic agent management tool LangSmith.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "AI代理基础设施公司LangChain估值达30亿美元，反映企业级Agent工具赛道爆发。"
+        },
+        {
+          "section": "news",
+          "title": "ChatGPT Wallet lets OpenAI’s Dots agents make purchases for you",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1033425/openai-chatgpt-wallet",
+          "source": "The Verge",
+          "published_at": "2026-11-13T20:45:10Z",
+          "raw_text": "After launching its Dots AI agents platform earlier this year, OpenAI is launching a wallet for the agents. ChatGPT Wallet is rolling out starting today for ChatGPT Pro subscribers in the US aged 18 and older using a US billing address and \"eligible US-issued American Express, Chase, Mastercard and Visa cards.\" After adding a card […]",
+          "extra": {},
+          "score": 8.0,
+          "summary": "OpenAI推出ChatGPT钱包，允许AI代理代用户完成支付，拓展商业化场景。"
+        },
+        {
+          "section": "news",
+          "title": "Amazon has a plan to index the world’s online shopping data",
+          "url": "https://www.theverge.com/tech/1033697/amazon-world-product-graph-ai-search",
+          "source": "The Verge",
+          "published_at": "2026-11-13T23:49:11Z",
+          "raw_text": "Amazon has plans to build a vault of data on every product sold anywhere on the internet, even products Amazon doesn't sell, and make the information available through its own site, according to Reuters. The project, called the \"World Product Graph,\" is meant to make it less likely that shoppers leave Amazon to do their […]",
+          "extra": {},
+          "score": 7.0,
+          "summary": "亚马逊启动全球商品图谱项目，意图索引全网商品数据，重塑电商搜索格局。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Introducing ChatGPT Wallet",
+          "url": "https://openai.com/index/introducing-chatgpt-wallet",
+          "source": "OpenAI",
+          "published_at": "2026-11-13T15:00:00Z",
+          "raw_text": "Introducing ChatGPT Wallet, a secure way for agents in ChatGPT Work, Codex, and dots to complete purchases with user approval and existing card protections.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "ChatGPT 推出内置钱包，支持 AI 代理经用户授权后完成支付，打通了 AI 执行消费场景的关键闭环。"
+        },
+        {
+          "section": "product",
+          "title": "llama.cpp v1.0.0 : A stronger foundation for the local AI ecosystem",
+          "url": "https://huggingface.co/blog/ggml-org/llama-cpp-v1",
+          "source": "Hugging Face",
+          "published_at": "2026-11-13T14:05:22Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 8.0,
+          "summary": "llama.cpp 发布 1.0.0 正式版，为本地 AI 推理提供更稳定的基础，推动边缘部署生态成熟。"
+        },
+        {
+          "section": "product",
+          "title": "AlphaGenome 2: Deciphering how cells read DNA to better understand disease",
+          "url": "https://deepmind.google/blog/alphagenome-2-deciphering-how-cells-read-dna-to-better-understand-disease/",
+          "source": "Google DeepMind",
+          "published_at": "2026-11-11T15:00:15Z",
+          "raw_text": "Predicting how DNA sequences and their variations impact specific human cell types and disease.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "AlphaGenome 2 发布，可预测 DNA 变异对特定细胞类型的影响，加速疾病机制研究与精准医疗。"
+        }
+      ]
+    }
+  ]
+}
