@@ -1,0 +1,405 @@
+{
+  "date": "2026-11-15",
+  "tip": {
+    "title": "firecrawl/firecrawl",
+    "body": "当你的 Agent 需要从网页抓取动态内容（如实时股价、商品价格），但传统爬虫拿不到渲染后的数据时，可以用 FireCrawl 的 API 直接获取。做法：安装 `firecrawl-py`，调用 `crawl_url` 并指定 `pageOptions` 为 `{onlyMainContent: true}` 过滤噪声。代码示例：\n\n```python\nfrom firecrawl import FirecrawlApp\n\napp = FirecrawlApp(api_key=\"your_key\")\nresult = app.crawl_url(\n    url=\"https://example.com\",\n    params={\"pageOptions\": {\"onlyMainContent\": True}}\n)\nprint(result[\"data\"][0][\"content\"])\n```\n\n注意：API Key 通过环境变量传入，不要硬编码。若需执行返回的代码，用 `subprocess.run` 配合白名单路径。",
+    "ref_title": "firecrawl/firecrawl",
+    "ref_url": "https://github.com/firecrawl/firecrawl"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "CoReMem: Cost-Internalizing Memory for Successive Coding Tasks with Prospective Valuation",
+          "url": "https://arxiv.org/abs/2611.17316v1",
+          "source": "arXiv",
+          "published_at": "2026-11-12T18:58:22Z",
+          "raw_text": "Coding agents tackle successive tasks on an evolving repository, carrying forward edits and writing memory before the next task is known. Selecting memory for unknown next tasks requires balancing future usefulness against the costs of writing and reading it. The actor must also decide when acting on available memory saves effort as the task unfolds. We introduce Coding-Repository Memory (CoReMem), a cost-internalizing framework that guides memory design and actor adaptation through measured memory value on the next task. Prospective segment valuation compares runs of the next task with and without individual trajectory segments from the same inherited repository state, guiding a compact memory built around anchors: repository locations and executable checks. Actor adaptation estimates on-policy memory value within rollout groups with and without memory, using a reward that prioritizes resolution and penalizes step count in successful runs. Provenance-gated value credit assigns the additional value term to steps identified as using memory-supplied anchors, while every step retains outcome credit. On ChainSWE, CoReMem raises the 27B actor's resolve rate from 21.0% to 25.7%, with 17% fewer steps and 11% fewer total cache-aware tokens, including memory-module calls, relative to the untrained actor model without memory.",
+          "extra": {
+            "authors": [
+              "Peiwen Li",
+              "Harshit Verma",
+              "Sophia Zhou",
+              "Haiwen Wang",
+              "Ngoc Bui",
+              "Heng Chang",
+              "Fei Fei",
+              "David van Dijk",
+              "Rex Ying"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL",
+              "cs.SE"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.17316v1"
+          },
+          "score": 9.0,
+          "summary": "提出成本内化记忆机制，让编码智能体在连续任务中前瞻性地平衡记忆价值与成本。"
+        },
+        {
+          "section": "paper",
+          "title": "Negative-Only Policy Optimization for One-Sided Verifiable Rewards",
+          "url": "https://arxiv.org/abs/2611.17287v1",
+          "source": "arXiv",
+          "published_at": "2026-11-12T18:52:33Z",
+          "raw_text": "Reinforcement learning with verifiable rewards (RLVR) typically relies on a verifier that can reliably judge whether sampled solutions are correct. However, in many realistic settings, complete verification is generally unavailable, while cheap checks can only falsify failures. We formalize this regime as one-sided verifiability (OSV): verified negatives are reliable counterexamples, but verified positives are merely non-falsified candidates and may contain many false positives. This asymmetry makes standard RLVR unreliable, because reinforcing verified positives can directly reward shortcuts that pass partial checks. To address this issue, we propose Negative-Only Policy Optimization (NOPO), which treats verified positives as unlabeled and updates the policy only by suppressing trusted verified negatives. Specifically, NOPO combines a reference-relative negative suppression loss with a group-level adapter that scales each update by the proportion of non-falsified responses. Across unit-test, constraint-check, and LLM self-verifiers, NOPO improves pass@k over baselines on code, logic, and math benchmarks when oracle rewards are unavailable. These gains persist under inference-time scaling and cross-benchmark transfer.",
+          "extra": {
+            "authors": [
+              "Jiacheng Xu",
+              "Shuo He",
+              "Fuxiang Zhang",
+              "Chaojie Wang",
+              "Bo An"
+            ],
+            "categories": [
+              "cs.LG",
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.17287v1"
+          },
+          "score": 9.0,
+          "summary": "针对仅能验证错误的场景，提出仅用负样本优化的RLVR方法，扩展了可验证奖励的适用范围。"
+        },
+        {
+          "section": "paper",
+          "title": "Ballad: Bandit-Based LLM Routing for Automated Heuristic Discovery",
+          "url": "https://arxiv.org/abs/2611.17241v1",
+          "source": "arXiv",
+          "published_at": "2026-11-12T18:28:08Z",
+          "raw_text": "Modern automated heuristic discovery (AHD) systems increasingly rival hand-crafted heuristics by leveraging Large Language Models (LLMs) to iteratively mutate and refine solutions. A natural assumption is that more powerful and more expensive models consistently yield better heuristics. We challenge this empirically: across multiple NP-hard combinatorial optimization problems, we find no consistent advantage for larger, costlier models. This raises a deeper question: given a pool of LLMs spanning frontier and freely hosted or open-weight models, how should one adaptively select which model to invoke at each step of the search? The challenge is non-trivial. The optimal LLM may shift over the course of a run, and because one LLM's output seeds the context for subsequent calls, each model's reward signal is non-stationary and entangled across the heuristic population, thus violating the independence assumptions of classical online decision-making settings. We address this through Ballad (Bandit-based LLM Routing for Automated Heuristic Discovery), an online bandit algorithm that learns to orchestrate a pool of LLMs into an ensemble that matches or exceeds what any soloist LLM achieves alone. This orchestration is powered by an LLM selection policy that favors rare, high-scoring heuristics over stable averages, a DAG-based credit propagation mechanism through the genealogy of the heuristic population, and discounting of stale observations to remain attuned to each model's current utility. Across five NP-hard combinatorial optimization problems and a pool of four models of varying capability and cost, Ballad not only matches the best individual LLM in hindsight but, in several cases, surpasses every individual model while reducing API cost by up to 65.6% relative to always using the strongest model.",
+          "extra": {
+            "authors": [
+              "Samidha Verma",
+              "Ankit Anand",
+              "Sayan Ranu"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.17241v1"
+          },
+          "score": 8.0,
+          "summary": "用多臂老虎机动态路由LLM，证明弱模型+低成本组合可超越单一强模型，优化自动启发式发现。"
+        },
+        {
+          "section": "paper",
+          "title": "LiveGeo: Benchmarking Geographic Agents in Continuously Evolving Worlds",
+          "url": "https://arxiv.org/abs/2611.17267v1",
+          "source": "arXiv",
+          "published_at": "2026-11-12T18:45:58Z",
+          "raw_text": "We introduce GeoWorld, a controllable and continuously evolving geographic environment platform for LLM agents, and LiveGeo, a benchmark for evaluating reliable decision-making in real-world geographic environments using GeoWorld. Unlike existing evaluations that largely reason and plan over fixed geographic states, GeoWorld is grounded in real-world geographic structure and allows external world states to evolve along their own temporal processes while preserving verifiable state histories. LiveGeo places geographic tasks within this evolving environment, requiring agents to actively acquire task-relevant information, verify whether the evidence supporting prior decisions remains valid, and revise their plans when necessary. Our results reveal that even frontier LLMs struggle with static tasks, with no model consistently excelling across tasks, while strong static performance does not ensure dynamic reliability. Further analysis identifies a key bottleneck: agents struggle to acquire and translate relevant evidence into valid decisions and maintain their correctness as the world evolves. By releasing LiveGeo together with its GeoWorld platform, we aim to provide the community with a flexible and extensible infrastructure for studying the next generation of agents capable of reliable action in evolving geographic worlds.",
+          "extra": {
+            "authors": [
+              "Pengcheng Zhou",
+              "Xuanyu Liu",
+              "Yanchen Yin",
+              "Tianjie Ju",
+              "Bobo Li",
+              "Shengqiong Wu",
+              "Hao Fei",
+              "Mong-Li Lee",
+              "Wynne Hsu"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.17267v1"
+          },
+          "score": 8.0,
+          "summary": "推出持续演化的地理环境平台与基准，测试LLM智能体在动态世界中的可靠决策能力。"
+        },
+        {
+          "section": "paper",
+          "title": "Goal Encoding in LLMs",
+          "url": "https://arxiv.org/abs/2611.17297v1",
+          "source": "arXiv",
+          "published_at": "2026-11-12T18:55:06Z",
+          "raw_text": "We investigate whether and how LLMs encode goals: internal neural representations that precede and guide action, and that are flexible enough to be realized through many different execution paths. We construct a coding setting with multiple sub-tasks that allows us to evaluate goal-seeking behavior and the selection of sub-goals. In this setting, we localize an encoding of the next sub-goal in the outputs of a sparse set of attention heads. The same heads can be used to decode the LM's future actions in natural language (e.g., \"I'm checking if a word is a palindrome\"). We verify that this encoding is causal for next action and is plastic: transplanting it into a different environment, e.g., another programming language, triggers the same operation realized with a different sequence of tokens. The LM also sustains the encoding throughout the action's execution, which is puzzling because a transformer LM without recurrence cannot carry a state forward for more tokens than it has layers left. We propose that it does not need to. Under a non-recurrent goal-seeking (NRGS) account, the LM frequently re-reads the goal from the task specification, compares it with the progress visible in the growing context, and pursues what remains. We test the predictions of this account with targeted causal interventions.",
+          "extra": {
+            "authors": [
+              "Arnab Sen Sharma",
+              "Eric Todd",
+              "Sheridan Feucht",
+              "Andy Arditi",
+              "Rohit Gandikota",
+              "Natalie Shapira",
+              "Gabriele Sarti",
+              "Constanza Fierro",
+              "Lisa Schut",
+              "David Bau"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.AI",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.17297v1"
+          },
+          "score": 7.0,
+          "summary": "探究LLM是否编码灵活目标表征，通过多子任务编码实验揭示其目标导向行为机制。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi, GLM, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 187003,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "muse",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 10.0,
+          "summary": "本地一键运行Kimi、DeepSeek等主流模型，AI从业者必备的模型管理工具。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 161183,
+            "language": "Python",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "deepseek",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "python",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 9.0,
+          "summary": "一站式构建Agent工作流与RAG管道，支持私有部署，从原型到生产无需重构。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "Supercharge your AI agents with data from the web and beyond. Building the library for superintelligence. 🔥",
+          "extra": {
+            "stars": 201867,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 8.0,
+          "summary": "为AI Agent提供网页数据抓取能力，直接提升智能体信息获取效率。"
+        },
+        {
+          "section": "repo",
+          "title": "yetone/magpie",
+          "url": "https://github.com/yetone/magpie",
+          "source": "GitHub 新星",
+          "published_at": "2026-09-23T16:22:35Z",
+          "raw_text": "Every agent's model. One place. Codex on DeepSeek, Claude Code on Kimi, from the menu bar.",
+          "extra": {
+            "stars": 36657,
+            "language": "Go",
+            "topics": [
+              "claude-code",
+              "codex",
+              "deepseek",
+              "gemini-cli",
+              "llm",
+              "macos"
+            ]
+          },
+          "score": 7.0,
+          "summary": "菜单栏统一管理多种模型API，切换Codex、Claude Code等后端无需改代码。"
+        },
+        {
+          "section": "repo",
+          "title": "janestreet/agent_skills",
+          "url": "https://github.com/janestreet/agent_skills",
+          "source": "GitHub 新星",
+          "published_at": "2026-11-03T16:50:21Z",
+          "raw_text": "Agent skills",
+          "extra": {
+            "stars": 8700,
+            "language": null,
+            "topics": []
+          },
+          "score": 7.0,
+          "summary": "Jane Street开源的Agent技能库，可直接复用金融级工程实践。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "SpaceX catches the Starship to end Flight 15",
+          "url": "https://www.spacex.com/launches/starship-flight-15",
+          "source": "Hacker News",
+          "published_at": "2026-11-14T21:22:24Z",
+          "raw_text": "https://x.com/SpaceX/status/2121316300702056595 https://youtu.be/jHlpfNSpBmw?t=3233 Comments URL: https://news.ycombinator.com/item?id=50500963 Points: 1045 # Comments: 698",
+          "extra": {},
+          "score": 10.0,
+          "summary": "SpaceX成功回收星舰，标志重型火箭复用技术重大突破，影响航天与AI算力基建。"
+        },
+        {
+          "section": "news",
+          "title": "Where was Nvidia’s security team?",
+          "url": "https://techcrunch.com/2026/11/14/where-was-nvidias-security-team/",
+          "source": "TechCrunch",
+          "published_at": "2026-11-15T00:08:07Z",
+          "raw_text": "Nvidia’s security chief quietly left in August, and now that CEO Jensen Huang has stepped down over his relationships, including one with an executive at a company suspected of funneling chips to China, a former intelligence officer says it’s the kind of leak that runs everyday conversations, which most corporate security teams are poorly equipped to catch.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "英伟达安全主管离职、CEO因涉华芯片关系辞职，暴露企业治理与地缘风险。"
+        },
+        {
+          "section": "news",
+          "title": "Amazon has a plan to index the world’s online shopping data",
+          "url": "https://www.theverge.com/tech/1033697/amazon-world-product-graph-ai-search",
+          "source": "The Verge",
+          "published_at": "2026-11-13T23:49:11Z",
+          "raw_text": "Amazon has plans to build a vault of data on every product sold anywhere on the internet, even products Amazon doesn't sell, and make the information available through its own site, according to Reuters. The project, called the \"World Product Graph,\" is meant to make it less likely that shoppers leave Amazon to do their […]",
+          "extra": {},
+          "score": 8.0,
+          "summary": "亚马逊拟建全球商品数据图谱，或重塑电商搜索与AI训练数据格局。"
+        },
+        {
+          "section": "news",
+          "title": "FAA expands AI advice to manage air traffic congestion across entire US airspace",
+          "url": "https://arstechnica.com/features/2026/11/faa-expands-ai-advice-to-manage-air-traffic-congestion-across-entire-us-airspace/",
+          "source": "Ars Technica",
+          "published_at": "2026-11-13T21:20:47Z",
+          "raw_text": "Airlines praised the AI tool, but the air traffic controllers’ union wasn’t involved.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "FAA批准AI工具管理全美空域拥堵，AI在关键基础设施落地迈出实质一步。"
+        },
+        {
+          "section": "news",
+          "title": "The OpenAI board member who fired Sam Altman says we still can’t trust AI CEOs",
+          "url": "https://www.theverge.com/podcast/1032907/helen-toner-openai-cset-ai-safety-policy-interview",
+          "source": "The Verge",
+          "published_at": "2026-11-14T15:00:00Z",
+          "raw_text": "Today, I’m talking with Helen Toner, the executive director of the Center for Security and Emerging Technology at Georgetown University. This episode is part two of our series on AI in real life. Helen is a well-known figure in the AI safety and policy community, though she is perhaps best known for having served on […]",
+          "extra": {},
+          "score": 7.0,
+          "summary": "曾解雇Altman的OpenAI董事发声，重申对AI CEO信任缺失，延续治理争议。"
+        },
+        {
+          "section": "news",
+          "title": "OpenAI board member worries an AI \"takeover\" of society could be months away",
+          "url": "https://arstechnica.com/ai/2026/11/ai-is-the-most-likely-reason-youll-die-openai-board-member-warns/",
+          "source": "Ars Technica",
+          "published_at": "2026-11-13T17:25:45Z",
+          "raw_text": "Researcher traces a path from AI reward hacking to potential human extinction.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "OpenAI董事警告AI数月内可能接管社会，基于奖励黑客路径，引发安全讨论。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Introducing ChatGPT Wallet",
+          "url": "https://openai.com/index/introducing-chatgpt-wallet",
+          "source": "OpenAI",
+          "published_at": "2026-11-13T15:00:00Z",
+          "raw_text": "Introducing ChatGPT Wallet, a secure way for agents in ChatGPT Work, Codex, and dots to complete purchases with user approval and existing card protections.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "ChatGPT 推出内置钱包，Agent 可经用户授权直接调用信用卡完成支付。"
+        },
+        {
+          "section": "product",
+          "title": "llama.cpp v1.0.0 : A stronger foundation for the local AI ecosystem",
+          "url": "https://huggingface.co/blog/ggml-org/llama-cpp-v1",
+          "source": "Hugging Face",
+          "published_at": "2026-11-13T14:05:22Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 8.0,
+          "summary": "llama.cpp 发布 1.0.0 正式版，为本地 AI 推理提供更稳定的基础。"
+        },
+        {
+          "section": "product",
+          "title": "AlphaGenome 2: Deciphering how cells read DNA to better understand disease",
+          "url": "https://deepmind.google/blog/alphagenome-2-deciphering-how-cells-read-dna-to-better-understand-disease/",
+          "source": "Google DeepMind",
+          "published_at": "2026-11-11T15:00:15Z",
+          "raw_text": "Predicting how DNA sequences and their variations impact specific human cell types and disease.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "AlphaGenome 2 可预测 DNA 变异对特定细胞类型的影响，助力疾病研究。"
+        }
+      ]
+    }
+  ]
+}
