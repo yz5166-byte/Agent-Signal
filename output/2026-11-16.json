@@ -1,0 +1,412 @@
+{
+  "date": "2026-11-16",
+  "tip": {
+    "title": "Can Mechanistic Interpretability Help Explain LLM Agent Failures? A Case Study on Web Element Hallucination",
+    "body": "**场景**：当 Agent 需要执行网页操作（如点击、填写表单）时，常因模型幻觉导致定位错误元素。机械可解释性分析（条目[1]）发现，幻觉源于注意力机制对无关元素的误判。\n\n**做法**：在 Agent 的 HTML 解析层加入**白名单元素过滤器**，只允许操作显式标记为 `data-agent-safe` 的节点。\n\n```python\nfrom bs4 import BeautifulSoup\n\ndef safe_parse(html: str) -> list:\n    soup = BeautifulSoup(html, 'html.parser')\n    # 仅提取白名单元素\n    safe_elements = soup.select('[data-agent-safe]')\n    return [el.get('data-agent-safe') for el in safe_elements]\n```\n\n**注意**：此方法不执行任何模型生成的代码，仅通过 CSS 选择器过滤 DOM，无安全风险。",
+    "ref_title": "Can Mechanistic Interpretability Help Explain LLM Agent Failures? A Case Study on Web Element Hallucination",
+    "ref_url": "https://arxiv.org/abs/2611.18514v1"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "ModHarness-RL: Recasting Harnesses as Learnable and Evolving Programs for Agentic RL",
+          "url": "https://arxiv.org/abs/2611.18533v1",
+          "source": "arXiv",
+          "published_at": "2026-11-13T18:45:49Z",
+          "raw_text": "Agentic reinforcement learning (RL) increasingly relies on a harness, the scaffold around the model that decides what it sees of its own interaction and what guidance it receives. Most existing approaches train under a hand-written harness that stays fixed throughout. However, an effective harness depends on the domain, the data and the model, and keeps changing as the model trains. We introduce ModHarness-RL, which recasts the harness as programs that are learned from data and evolve as the model trains with RL. ModHarness-RL records the interaction as structured State, a set of typed blocks, and two core components of the harness are programs over these blocks, a Compression program that assembles the accumulated history into the model's context and a Steering program that supplies guidance when behavior deviates. During RL training, candidate programs are proposed from recent trajectories, verified by execution, and replayed over past trajectories, so the harness tracks how the model's behavior shifts. We study CodeSearch in depth and further analyze ALFWorld and BIRD SQL, with models from 1.5B to 8B. The proposed Compression and Steering mechanisms improve held-out performance over the fixed-harness baseline in most settings. These results suggest that a harness for agentic RL can be learned from the task's data and evolved with the model.",
+          "extra": {
+            "authors": [
+              "Zelin He",
+              "Siyu Zhu",
+              "Jacob Helwig",
+              "Yujian Liu",
+              "Li An",
+              "Rohit Jain",
+              "Shiyu Chang",
+              "Alborz Geramifard"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.18533v1"
+          },
+          "score": 9.0,
+          "summary": "提出让Agent的交互框架（Harness）随训练自动进化，而非固定不变，有望大幅提升Agentic RL的泛化能力。"
+        },
+        {
+          "section": "paper",
+          "title": "Can Mechanistic Interpretability Help Explain LLM Agent Failures? A Case Study on Web Element Hallucination",
+          "url": "https://arxiv.org/abs/2611.18514v1",
+          "source": "arXiv",
+          "published_at": "2026-11-13T18:30:58Z",
+          "raw_text": "Mechanistic Interpretability (MI) has made significant progress in explaining the internal computations of Large Language Models (LLMs); however, these advances have yet to demonstrate comparable success in explaining the decision-making processes of LLM-based agents. This paper examines the challenges MI tools face when applied to realistic agentic failures. We focus on one such failure: web agents hallucinating actions that are not available on a website. We apply a series of mechanistic analyzes to Qwen2.5-7B-Instruct as it interacts with live websites. We find that a linear probe trained on the last prompt token can predict hallucinations before generation begins (0.80 AUC) and steering along a probe direction corrects 85\\% of hallucinations, but disrupts 7\\% of valid actions. However, these results only provide a partial explanation of why the agent hallucinates. The probe direction is sensitive to prompt formatting, losing much of its steering effect after a minor change to how actions are represented. Additionally, circuit identification can be difficult as the computation is distributed across multiple components and positions, and the information the agent relies on varies across examples. We discuss how these observations challenge the assumptions underlying standard MI methods for circuit discovery and feature identification, and outline future directions for making these methods better suited to explain failures in LLM-based agents.",
+          "extra": {
+            "authors": [
+              "Mohamed Aghzal",
+              "Mor Geva",
+              "Gregory J. Stein",
+              "Ziyu Yao"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.18514v1"
+          },
+          "score": 8.0,
+          "summary": "首次用机械可解释性分析LLM Agent在网页操作中的幻觉失败原因，为Agent调试提供新视角。"
+        },
+        {
+          "section": "paper",
+          "title": "ARCHER: From Rationale Imitation to Executable Reasoning in Small Language Models",
+          "url": "https://arxiv.org/abs/2611.18494v1",
+          "source": "arXiv",
+          "published_at": "2026-11-13T18:05:33Z",
+          "raw_text": "Small language models are attractive for local, low-cost, and privacy-sensitive deployment, but they remain unreliable on mathematical reasoning tasks that require decomposition, exact computation, tool use, and verification. We introduce \\textbf{ARCHER}: \\textbf{A}ction-trace \\textbf{R}einforcement for \\textbf{C}alculator-grounded \\textbf{H}ierarchical \\textbf{E}xecutable \\textbf{R}easoning, a two-stage framework for training small language models (SLMs) to produce executable and auditable reasoning trajectories. In the first stage, ARCHER compiles free-form chain-of-thought rationales into typed action traces containing reasoning steps, calculator calls, deterministic runtime observations, verification actions, and final answers. This shifts the supervision target from imitating explanatory text to learning a tool-grounded reasoning policy. In the second stage, ARCHER refines this policy through asymmetric hierarchical reinforcement learning, using grouped and conditionally gated trajectory rewards for answer correctness, tool grounding, process discipline, and trace alignment. Across five standard sub-10B backbones, ARCHER improves over the strongest tool-augmented baseline by 5.51 percentage points on macro-average across benchmark accuracies, including gains of 8.95 points on MATH-500 and 5.33 and 5.34 points on AIME-2024 and AIME-2025. Evaluations on two additional reasoning-specialized 7B backbones further show that executable grounding remains beneficial after reasoning-focused reinforcement learning or distillation. These results demonstrate that executable supervision and reward-guided behavioral refinement provide a general and effective training paradigm for compact mathematical reasoners.",
+          "extra": {
+            "authors": [
+              "Dhruv Dixit",
+              "Khushi Patel",
+              "Congcong Xu",
+              "Min Song"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.18494v1"
+          },
+          "score": 8.0,
+          "summary": "让小型语言模型通过模仿推理轨迹+强化学习学会调用工具进行数学推理，兼顾效率与准确性。"
+        },
+        {
+          "section": "paper",
+          "title": "TradeGauntlet: Evaluating Compliance Controls for Autonomous Trading Agents",
+          "url": "https://arxiv.org/abs/2611.18493v1",
+          "source": "arXiv",
+          "published_at": "2026-11-13T18:05:23Z",
+          "raw_text": "Autonomous trading agents need controls that prevent problematic orders without making legitimate tasks impractical. We study this aspect of agentic compliance with TradeGauntlet, a replayable limit-order-book simulator that separates detection, prevention, and execution cost. In 1,680 simulated sessions with Claude Haiku 5.5 and Sonnet 5.5, all conduct alerts were self-matches. Gates eliminated those alerts by rejecting self-crossing orders, while the aggregate-gate condition reduced Sonnet's two-sided fills by about 15%. A conduct reminder reduced Sonnet's alert rate but reduced Haiku's fills without a detectable alert benefit. These results show why zero alerts alone do not establish an agent's compliance. Scripted probes and two search methods test weaknesses beyond those observed in the LLM runs. The searches find split-order schedules that evade the implemented conduct rules; a learned baseline catches all 2,400 tested searched episodes but also flags 15% of a large maker's sessions. Aggregate caps reduce the response-dependent gain unevenly, with smaller reductions when only near-touch depth affects prices. A response fitted to five Nasdaq stocks and a separate ABIDES experiment expose the dependence of these estimates on market assumptions. A distinct adversarial prompt elicited refusals from Sonnet in all 240 rounds, yielding no candidate strategies to evaluate. TradeGauntlet provides reproducible tests of controls around trading agents; the experiments do not establish legal compliance or real-market detection accuracy.",
+          "extra": {
+            "authors": [
+              "Sandip Nandi",
+              "Aishwarya Bose",
+              "Apurba Bose",
+              "Soovadeep Bakshi"
+            ],
+            "categories": [
+              "cs.MA",
+              "cs.AI",
+              "cs.CE"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.18493v1"
+          },
+          "score": 7.0,
+          "summary": "构建交易Agent合规性测试框架，量化检测、预防与执行成本间的权衡，对金融Agent落地有直接参考。"
+        },
+        {
+          "section": "paper",
+          "title": "Do Verifier Judgments Survive Abstraction? Measuring Verification Transport for LLM Agent Evaluation",
+          "url": "https://arxiv.org/abs/2611.18471v1",
+          "source": "arXiv",
+          "published_at": "2026-11-13T17:44:01Z",
+          "raw_text": "LLM-based verifiers are increasingly used to evaluate agent executions, but their reliability is typically measured under a single representation of the trajectory. In deployed agent systems, the same execution may be exposed through composed tools, delegation boundaries, or compacted histories, changing what execution evidence is directly observable to the verifier. It therefore remains unclear whether correct verifier judgments persist across such abstraction boundaries. We introduce Verification Transport, a reliability test that measures judgment stability under abstraction-induced changes in execution observability. We construct matched native, abstracted, and restored views of the same frozen executions while holding the task, realized trajectory, outcome, ground truth, evaluation criterion, and verifier fixed. Across four agent-evaluation benchmarks, seven verifier backbones, four verification protocols, and three abstraction boundaries, we find substantial transport failure, reaching about 31% under macro abstraction and delegation. Verification protocols exhibit distinct failure modes: direct verification more often produces incorrect verdicts, whereas evidence-grounded and deliberative protocols tend to abstain under limited observability. This suggests that lower transport failure rates do not necessarily imply greater reliability. Restoring the corresponding execution provenance recovers 85.5% of transport failures, while recovery is lower when provenance is lossy or unavailable. These results show that native-view accuracy alone is insufficient to characterize verifier reliability when execution evidence crosses abstraction boundaries.",
+          "extra": {
+            "authors": [
+              "Disha Sheshanarayana",
+              "Sai Linisha Reddy Goli"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.18471v1"
+          },
+          "score": 7.0,
+          "summary": "揭示LLM验证器在Agent轨迹被抽象或压缩后判断力下降的问题，提醒Agent评估需关注表示鲁棒性。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi, GLM, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 187151,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "muse",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 9.0,
+          "summary": "本地一键运行Kimi、DeepSeek等主流模型，降低AI应用开发门槛。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 161242,
+            "language": "Python",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "deepseek",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "python",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 9.0,
+          "summary": "一站式构建Agent工作流与RAG管道，支持私有化部署，生产级可用。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "Supercharge your AI agents with data from the web and beyond. Building the library for superintelligence. 🔥",
+          "extra": {
+            "stars": 202144,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 8.0,
+          "summary": "为AI Agent提供网页数据抓取能力，扩展模型实时信息来源。"
+        },
+        {
+          "section": "repo",
+          "title": "huggingface/transformers",
+          "url": "https://github.com/huggingface/transformers",
+          "source": "GitHub 经典",
+          "published_at": "2018-10-29T13:56:00Z",
+          "raw_text": "🤗 Transformers: the model-definition framework for state-of-the-art machine learning models in text, vision, audio, and multimodal models, for both inference and training.",
+          "extra": {
+            "stars": 169044,
+            "language": "Python",
+            "topics": [
+              "audio",
+              "deep-learning",
+              "deepseek",
+              "gemma",
+              "glm",
+              "hacktoberfest",
+              "llm",
+              "machine-learning",
+              "model-hub",
+              "natural-language-processing",
+              "nlp",
+              "pretrained-models",
+              "python",
+              "pytorch",
+              "pytorch-transformers",
+              "qwen",
+              "speech-recognition",
+              "transformer",
+              "vlm"
+            ]
+          },
+          "score": 8.0,
+          "summary": "业界标准模型框架，支持文本/视觉/多模态，训练推理两用。"
+        },
+        {
+          "section": "repo",
+          "title": "yetone/magpie",
+          "url": "https://github.com/yetone/magpie",
+          "source": "GitHub 新星",
+          "published_at": "2026-09-23T16:22:35Z",
+          "raw_text": "Every agent's model. One place. Codex on DeepSeek, Claude Code on Kimi, from the menu bar.",
+          "extra": {
+            "stars": 37249,
+            "language": "Go",
+            "topics": [
+              "claude-code",
+              "codex",
+              "deepseek",
+              "gemini-cli",
+              "llm",
+              "macos"
+            ]
+          },
+          "score": 7.0,
+          "summary": "菜单栏统一管理多种模型API，方便切换Codex、Claude Code等后端。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Qwen4-Max",
+          "url": "https://qwen.ai/blog?id=qwen4-max",
+          "source": "Hacker News",
+          "published_at": "2026-11-16T02:14:44Z",
+          "raw_text": "Article URL: https://qwen.ai/blog?id=qwen4-max Comments URL: https://news.ycombinator.com/item?id=50513215 Points: 369 # Comments: 123",
+          "extra": {},
+          "score": 10.0,
+          "summary": "Qwen4-Max 发布，阿里最新大模型，性能对标国际顶尖，国内 AI 从业者必看。"
+        },
+        {
+          "section": "news",
+          "title": "Universal XSS in uBlock Origin from website-driven element picker",
+          "url": "https://iter.ca/post/ubo-uxss/",
+          "source": "Hacker News",
+          "published_at": "2026-11-16T02:04:48Z",
+          "raw_text": "Article URL: https://iter.ca/post/ubo-uxss/ Comments URL: https://news.ycombinator.com/item?id=50513160 Points: 264 # Comments: 67",
+          "extra": {},
+          "score": 9.0,
+          "summary": "uBlock Origin 发现通用 XSS 漏洞，影响数百万用户，安全从业者需立即关注。"
+        },
+        {
+          "section": "news",
+          "title": "Congress wants to tighten export rules on AI chips after Nvidia spy scandal",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1033984/congress-export-rules-ai-chips-china",
+          "source": "The Verge",
+          "published_at": "2026-11-15T19:15:43Z",
+          "raw_text": "Unsurprisingly, following the scandal involving now-former Nvidia CEO Jensen Huang and a suspected Chinese spy, Congress is looking to further restrict exports of AI chips. Both Democrats and Republicans have voiced support for various measures and bills that would tighten rules and have demanded that Huang and other Nvidia leaders testify before Congress. Senate Minority […]",
+          "extra": {},
+          "score": 9.0,
+          "summary": "美国国会拟收紧 AI 芯片出口，受间谍丑闻推动，直接影响行业供应链与合规。"
+        },
+        {
+          "section": "news",
+          "title": "Apple launches new app to study how people use AI for health",
+          "url": "https://techcrunch.com/2026/11/15/apple-launches-new-app-to-study-how-people-use-ai-for-health/",
+          "source": "TechCrunch",
+          "published_at": "2026-11-16T01:30:00Z",
+          "raw_text": "Apple's new app for a study will answer everyday medical questions",
+          "extra": {},
+          "score": 8.0,
+          "summary": "苹果联合 OpenEvidence 启动 AI 健康研究，探索医疗问答场景，具行业风向标意义。"
+        },
+        {
+          "section": "news",
+          "title": "Tor Project Issues Rapid-Response DoS-Defense Fix Amid Sustained DDoS Attack",
+          "url": "https://forum.torproject.org/t/security-release-0-4-9-17/22454",
+          "source": "Hacker News",
+          "published_at": "2026-11-16T00:21:54Z",
+          "raw_text": "Article URL: https://forum.torproject.org/t/security-release-0-4-9-17/22454 Comments URL: https://news.ycombinator.com/item?id=50512441 Points: 118 # Comments: 29",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Tor 项目紧急修复 DoS 漏洞，应对持续攻击，隐私与安全领域关键更新。"
+        },
+        {
+          "section": "news",
+          "title": "Indian chip startup Bharat Semi lands $24M seed round as it eyes global AI sensor market",
+          "url": "https://techcrunch.com/2026/11/15/indian-chip-startup-bharat-semi-lands-24m-seed-round-as-it-eyes-global-ai-sensor-market/",
+          "source": "TechCrunch",
+          "published_at": "2026-11-15T23:30:00Z",
+          "raw_text": "Bharat Semi says it has secured design wins for its AI-enabled sensor technology with companies including General Atomics.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "印度芯片创企获 2400 万美元种子轮，布局 AI 传感器，反映全球供应链新动向。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Introducing ChatGPT Wallet",
+          "url": "https://openai.com/index/introducing-chatgpt-wallet",
+          "source": "OpenAI",
+          "published_at": "2026-11-13T15:00:00Z",
+          "raw_text": "Introducing ChatGPT Wallet, a secure way for agents in ChatGPT Work, Codex, and dots to complete purchases with user approval and existing card protections.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "ChatGPT推出内置钱包，让AI代理可经用户授权完成支付，打通AI自主消费闭环。"
+        },
+        {
+          "section": "product",
+          "title": "llama.cpp v1.0.0 : A stronger foundation for the local AI ecosystem",
+          "url": "https://huggingface.co/blog/ggml-org/llama-cpp-v1",
+          "source": "Hugging Face",
+          "published_at": "2026-11-13T14:05:22Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 8.0,
+          "summary": "llama.cpp发布1.0正式版，为本地运行大模型提供更稳定的基础设施。"
+        },
+        {
+          "section": "product",
+          "title": "AlphaGenome 2: Deciphering how cells read DNA to better understand disease",
+          "url": "https://deepmind.google/blog/alphagenome-2-deciphering-how-cells-read-dna-to-better-understand-disease/",
+          "source": "Google DeepMind",
+          "published_at": "2026-11-11T15:00:15Z",
+          "raw_text": "Predicting how DNA sequences and their variations impact specific human cell types and disease.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "AlphaGenome 2可预测DNA序列对细胞和疾病的影响，推动基因组AI应用。"
+        }
+      ]
+    }
+  ]
+}
