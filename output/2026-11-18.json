@@ -1,0 +1,380 @@
+{
+  "date": "2026-11-18",
+  "tip": {
+    "title": "firecrawl/firecrawl",
+    "body": "当你的 Agent 需要从网页抓取结构化数据（如竞品价格、新闻列表）时，直接用 `requests` + 正则容易因页面改版而失效。\n\n做法：用 `firecrawl` 的 API 一键抓取并转成 Markdown 或 JSON，避免手动解析。\n\n```bash\n# 安装 firecrawl Python SDK\npip install firecrawl-py\n\n# 抓取网页并返回结构化内容\nfrom firecrawl import FirecrawlApp\n\napp = FirecrawlApp(api_key='your-api-key')\nresult = app.scrape_url('https://example.com', params={'formats': ['markdown']})\nprint(result['markdown'])\n```\n\n注意：API Key 需从 [firecrawl.dev](https://firecrawl.dev) 获取，免费额度足够日常测试。",
+    "ref_title": "firecrawl/firecrawl",
+    "ref_url": "https://github.com/firecrawl/firecrawl"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "Do LLM Agents Still Need to Be Told How to Self-Improve?",
+          "url": "https://arxiv.org/abs/2611.23219v1",
+          "source": "arXiv",
+          "published_at": "2026-11-17T18:57:10Z",
+          "raw_text": "LLM agents increasingly drive their own learning. Self-improvement methods delegate various components of model optimization to the models themselves. As models become more capable, this motivates a basic question: do these increasingly capable models still need us to specify how they should self-improve? In this paper we study an autonomous paradigm in which, given basic primitives, resources, and a general goal for self-improvement, agents construct their own self-learning algorithm for context-based optimization. Using the setting of gameplay as a testbed, a frozen LLM agent is given a compute budget and tools for collecting experience and updating text documents, and allowed to freely experiment without an externally imposed loop or access to real-world data. We find that sufficiently capable models do self-improve under these conditions, demonstrating strategies that align with classic cognitive frameworks for self-regulated learning and constructs from machine learning literature on self-generated curricula. Furthermore, we study the extent to which the learned text artifacts transfer to external benchmarks, observing improvement across different game horizons, mechanics, and 3D navigation.",
+          "extra": {
+            "authors": [
+              "Shobhita Sundaram",
+              "Cansu Sancaktar",
+              "Phillip Isola"
+            ],
+            "categories": [
+              "cs.LG",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.23219v1"
+          },
+          "score": 9.0,
+          "summary": "探讨LLM能否自主决定自我改进策略，挑战当前人工指定改进范式的必要性。"
+        },
+        {
+          "section": "paper",
+          "title": "Agent Trust Infrastructure (ATI): A Federated Identity, Trust, Attestation, and Accountability Architecture for Cross-Organization Autonomous AI Agents",
+          "url": "https://arxiv.org/abs/2611.23202v1",
+          "source": "arXiv",
+          "published_at": "2026-11-17T18:44:25Z",
+          "raw_text": "AI agents increasingly collaborate across organizational boundaries, invoking tools and interacting with agents operated by independent entities. Although existing agent frameworks support planning and coordination, they lack a common mechanism for verifying cross-organizational agent identity, execution integrity, and authorization. We propose the Agent Trust Infrastructure (ATI), a framework-independent security architecture built on Public Key Infrastructure (PKI), Zero Trust Architecture (ZTA), and remote attestation. ATI establishes federated trust through peer organizational certificate authorities (AgentCAs), eliminating the need for a shared root authority. Before executing requests, ATI validates agent certificates, verifies approved model, tool, and system-prompt configurations, and enforces authorization through three policy checks. We implement ATI as an external security enforcement layer that integrates with existing agent frameworks without modifying their underlying models. We evaluate ATI in a simulated federation of eight organizations using six agent frameworks, each deploying a five-agent team. Security experiments involve two organizations and assess 14 attack scenarios and six benign tasks across five agent models, using five attack variations and three repetitions per variation. A panel of judge models evaluates the experimental outcomes. With all enforcement mechanisms enabled, attack containment increases from 43% to 84% (40% to 80% for the 11 attack scenarios evaluated consistently across all configurations), while enforcement introduces approximately 174 microseconds of overhead per request. ATI is released as an open-source, framework-independent package that uses IETF WIMSE workload token formats for identity and request verification and Entity Attestation Tokens for model, tool, and system-prompt integrity verification.",
+          "extra": {
+            "authors": [
+              "Viet K. Nguyen",
+              "Mohammad I. Husain"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.23202v1"
+          },
+          "score": 9.0,
+          "summary": "提出跨组织AI Agent的联邦身份与信任架构，解决多智能体协作中的安全与问责难题。"
+        },
+        {
+          "section": "paper",
+          "title": "Higher-Scoring Coding Models Did Not Get More Work Done",
+          "url": "https://arxiv.org/abs/2611.23216v1",
+          "source": "arXiv",
+          "published_at": "2026-11-17T18:56:42Z",
+          "raw_text": "New coding models advertise themselves on score improvements of coding benchmarks. Yet no study has tested if a model that scores higher on these benchmarks gets more real work done. On June 12, 2026, a U.S. export control directive banned access to Claude Fable 5 for 19 days, which forced users to switch to other models. During this time, most former Fable 5 users switched to Opus 4.8 (11 points lower on SWE-Bench Pro compared to Fable 5). We treat this suspension as a natural experiment, where the people and projects stayed the same and only the model changed, so we could isolate the effect of Fable 5 on user productivity. We tracked GitHub pull requests of 297 Fable 5 users before, during, and after the suspension. We used 8,908 developers who stayed on Opus 4.8 all the time as the control group. We also repeated the comparison across five model upgrades before and after the suspension in 2026 (1,208 developers, 15,442 pull requests). Fitting a difference-in-differences model with developer and date fixed effects, we found that having access to Fable 5 increased the 7-day merge rate of pull requests by only 1.4 percentage points [-1.4; +4.3], which was not statistically significant. Similarly, no significant increases of merge rates were found with the upgrades (weighted mean: -0.9 percentage points [-1.9; +0.2]); all five estimates were negative (95% intervals included 0, did not differ from each other). We also did not observe a significant increase in the number of pull requests merged per week (+2.4% [-4.9%; +10.2%]).",
+          "extra": {
+            "authors": [
+              "Yining Hua"
+            ],
+            "categories": [
+              "cs.SE",
+              "cs.AI",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.23216v1"
+          },
+          "score": 8.0,
+          "summary": "实证发现高基准分的编程模型并未提升实际工作效率，质疑现有评测的有效性。"
+        },
+        {
+          "section": "paper",
+          "title": "Inference after coding agents",
+          "url": "https://arxiv.org/abs/2611.23174v1",
+          "source": "arXiv",
+          "published_at": "2026-11-17T18:22:01Z",
+          "raw_text": "Empirical research is changing rapidly as AI coding agents are becoming increasingly proficient in every step of it, from writing code to manipulating data. We argue that while the potential of coding agents for science is vast, their use in hypothesis testing poses a substantial threat to classical inference, as these agents enable a supercharged form of selective inference. In particular, we argue that coding agents carrying out empirical research introduce a new type of post-selection inference that combines human-like, open-ended search over an implicit space of estimators with programmatic replayability of both the selection and the estimation process. Indeed, we find that on simulated data with zero effects, four frontier agents report significant p-values between 54% and 98% of the time when asked to produce a compelling finding. We propose a simple procedure for detecting and correcting these distortions. After an agent has completed its analysis, we reset and replay it on subsamples of the data to estimate the agent's relative probability of selecting that analysis when it looks statistically favorable. For agents with stable selection behavior, the resulting corrected test is asymptotically valid and consistent conditional on selection. Importantly, the correction is learned from the black-box agent's actual choices rather than a model of how it searches, so it remains valid even as AI technology continues to evolve rapidly. In simulations, the correction robustly lowers the high false rejection rates to near the nominal 5%. We illustrate the method on applications from two published papers.",
+          "extra": {
+            "authors": [
+              "Florian Gunsilius",
+              "David Van Dijcke",
+              "Kaspar Wüthrich"
+            ],
+            "categories": [
+              "stat.ME",
+              "cs.AI",
+              "econ.EM"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.23174v1"
+          },
+          "score": 8.0,
+          "summary": "警告AI编码Agent在假设检验中可能破坏经典统计推断，呼吁建立新的方法论规范。"
+        },
+        {
+          "section": "paper",
+          "title": "Say Less, Hallucinate Less? Diagnosing and Restoring Object Coverage in Preference-Optimized Vision-Language Models",
+          "url": "https://arxiv.org/abs/2611.23179v1",
+          "source": "arXiv",
+          "published_at": "2026-11-17T18:24:58Z",
+          "raw_text": "Preference optimization (PO) is the standard way to reduce object hallucination in large vision-language models. We find that four public PO checkpoints of LLaVA-1.5-7B also lower object coverage. They name fewer object categories, and their lower hallucination rates bring no significant gain in set-level object F1 on CHAIR. We therefore ask how much of the PO gain the base model can reproduce by stopping earlier. A positive end-of-sequence (EOS) logit bias lets the base model reach the recall of each PO model, and this early stopping alone reproduces 58 to 86 percent of the CHAIRi gain of three checkpoints on two disjoint COCO sets. Writing longer does not bring the lost categories back. Under greedy decoding, a negative EOS bias recovers only 2 to 9 percent of the lost CHAIR recall of these checkpoints, and 94 to 96 percent of the added object mentions repeat categories already named. On CHAIR, the base caption of the same image still names about half of the missed object categories. We therefore propose base-guided object-category restoration, which appends high-confidence base-only categories to the PO caption without training. With thresholds fixed on a development set, it brings three checkpoints within one point of the base recall on a held-out COCO set with a lower distinct-object hallucination rate than the base model. Against the recall-matched base stopping curve, its gain holds for RLAIF-V near the base recall and for RLAIF-V and CHAIR-DPO at an intermediate recall. We will release the code of the recall-controlled evaluation.",
+          "extra": {
+            "authors": [
+              "Hansang Lee"
+            ],
+            "categories": [
+              "cs.CV",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.23179v1"
+          },
+          "score": 7.0,
+          "summary": "揭示偏好优化虽减少视觉语言模型幻觉，却意外降低物体覆盖率的副作用。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "Knowledge infrastructure to make your agents smarter. Search, scrape and 550+ data providers through one API.",
+          "extra": {
+            "stars": 202725,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "一站式API整合搜索、抓取与550+数据源，让智能体知识获取效率倍增。"
+        },
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi, GLM, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 187481,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "muse",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 9.0,
+          "summary": "本地一键运行Kimi、DeepSeek等主流模型，降低大模型部署门槛。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 161396,
+            "language": "Python",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "deepseek",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "python",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 8.0,
+          "summary": "可视化搭建Agent工作流与RAG管道，支持云端或私有化部署，快速落地。"
+        },
+        {
+          "section": "repo",
+          "title": "yetone/magpie",
+          "url": "https://github.com/yetone/magpie",
+          "source": "GitHub 新星",
+          "published_at": "2026-09-23T16:22:35Z",
+          "raw_text": "Every agent's model. One place. Codex on DeepSeek, Claude Code on Kimi, from the menu bar.",
+          "extra": {
+            "stars": 38389,
+            "language": "Go",
+            "topics": [
+              "claude-code",
+              "codex",
+              "deepseek",
+              "gemini-cli",
+              "llm",
+              "macos"
+            ]
+          },
+          "score": 7.0,
+          "summary": "菜单栏统一管理Codex、Claude Code等智能体模型，切换无需离开工作流。"
+        },
+        {
+          "section": "repo",
+          "title": "browser-use/jev-ultrafast",
+          "url": "https://github.com/browser-use/jev-ultrafast",
+          "source": "GitHub 新星",
+          "published_at": "2026-09-16T21:30:12Z",
+          "raw_text": "Fastest and cheapest web agent",
+          "extra": {
+            "stars": 24599,
+            "language": "Python",
+            "topics": []
+          },
+          "score": 7.0,
+          "summary": "极速低成本的网页智能体，适合高频自动化浏览与数据采集场景。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Nvidia’s startup stakes ballooned to $65B, but Huang’s exit puts future deals in doubt",
+          "url": "https://techcrunch.com/2026/11/17/nvidias-startup-stakes-ballooned-to-65b-but-huangs-exit-puts-future-deals-in-doubt/",
+          "source": "TechCrunch",
+          "published_at": "2026-11-18T01:44:21Z",
+          "raw_text": "The value of Nvidia’s private investments has nearly tripled over the past nine months, fueled by Jensen Huang’s aggressive dealmaking and rising valuations of its existing portfolio companies.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "英伟达投资组合估值飙至650亿美元，黄仁勋退出或影响未来交易。"
+        },
+        {
+          "section": "news",
+          "title": "Google's AI answers reducing search traffic by 40%",
+          "url": "https://revscope.co/blog/search-seo-geo-2026/",
+          "source": "Hacker News",
+          "published_at": "2026-11-18T00:17:58Z",
+          "raw_text": "Article URL: https://revscope.co/blog/search-seo-geo-2026/ Comments URL: https://news.ycombinator.com/item?id=50540178 Points: 309 # Comments: 242",
+          "extra": {},
+          "score": 9.0,
+          "summary": "谷歌AI摘要致搜索流量下降40%，直接影响搜索引擎商业模式。"
+        },
+        {
+          "section": "news",
+          "title": "Copilot is \"the new OS for work,\" and now Office runs inside of it",
+          "url": "https://arstechnica.com/gadgets/2026/11/microsoft-calls-copilot-the-new-os-for-work-at-ignite-keynote/",
+          "source": "Ars Technica",
+          "published_at": "2026-11-18T00:27:29Z",
+          "raw_text": "Word, Excel, and PowerPoint now live inside Copilot; always-on agents are next.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "微软将Office嵌入Copilot，定义AI作为新操作系统的工作范式。"
+        },
+        {
+          "section": "news",
+          "title": "Satya Nadella says he’s AGI-pilled now",
+          "url": "https://www.theverge.com/tech/1036111/satya-nadella-says-hes-agi-pilled-now",
+          "source": "The Verge",
+          "published_at": "2026-11-17T23:41:18Z",
+          "raw_text": "Microsoft CEO Satya Nadella says he's AGI-pilled, at least when it comes to how AI might make startling changes to the structure of the economy and how politics might change because of it. \"I am AGI-pilled in the sense that at an economy level, what is the political economy's organization around AGI?\" he asked at […]",
+          "extra": {},
+          "score": 8.0,
+          "summary": "微软CEO纳德拉公开表态‘AGI觉醒’，预示经济与政治结构剧变。"
+        },
+        {
+          "section": "news",
+          "title": "Nvidia is abandoning China after Jensen Huang’s ouster",
+          "url": "https://techcrunch.com/2026/11/17/nvidia-is-abandoning-china-after-jensen-huangs-ouster/",
+          "source": "TechCrunch",
+          "published_at": "2026-11-17T23:37:48Z",
+          "raw_text": "Nvidia's interim CEO says the company is done selling chips to China. How much will that cost?",
+          "extra": {},
+          "score": 8.0,
+          "summary": "英伟达宣布退出中国芯片市场，地缘政治风险加剧行业震荡。"
+        },
+        {
+          "section": "news",
+          "title": "Google makes it easier to use Gemini without training AI on your data",
+          "url": "https://arstechnica.com/ai/2026/11/google-will-let-you-opt-out-of-ai-training-in-gemini-without-losing-your-history/",
+          "source": "Ars Technica",
+          "published_at": "2026-11-17T16:50:10Z",
+          "raw_text": "AI training and chat history will now have separate toggles in the Gemini activity settings.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "谷歌Gemini新增数据隔离开关，用户隐私与模型训练解耦。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Introducing GPT-6.2 Astra and Sol",
+          "url": "https://openai.com/index/introducing-gpt-6-2-astra-sol",
+          "source": "OpenAI",
+          "published_at": "2026-11-17T17:45:00Z",
+          "raw_text": "Introducing GPT‑6.2 Astra and Sol, with better professional outputs, coding, computer use, and efficiency at lower cost across ChatGPT Work, Codex, and the API.",
+          "extra": {},
+          "score": 10.0,
+          "summary": "OpenAI 发布 GPT-6.2 Astra 和 Sol，提升专业输出、编码和效率，成本更低。"
+        },
+        {
+          "section": "product",
+          "title": "Introducing Gemini 4 Hydrogen",
+          "url": "https://deepmind.google/blog/introducing-gemini-4-hydrogen/",
+          "source": "Google DeepMind",
+          "published_at": "2026-11-12T18:00:50Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "Google 推出 Gemini 4 Hydrogen，新一代模型正式上线。"
+        },
+        {
+          "section": "product",
+          "title": "AlphaGenome 2: Deciphering how cells read DNA to better understand disease",
+          "url": "https://deepmind.google/blog/alphagenome-2-deciphering-how-cells-read-dna-to-better-understand-disease/",
+          "source": "Google DeepMind",
+          "published_at": "2026-11-11T15:00:15Z",
+          "raw_text": "Predicting how DNA sequences and their variations impact specific human cell types and disease.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "AlphaGenome 2 发布，可预测 DNA 序列对细胞和疾病的影响。"
+        }
+      ]
+    }
+  ]
+}
