@@ -1,0 +1,416 @@
+{
+  "date": "2026-11-19",
+  "tip": {
+    "title": "Kaer: Security-Aware Replanning for Multi-Agent Systems",
+    "body": "**场景**：你在构建多智能体系统时，发现动态重规划（replanning）存在安全漏洞——比如某个Agent被劫持后，会诱导其他Agent执行危险操作。\n\n**做法**：使用Kaer框架的安全感知重规划机制，在每次重规划前插入一个**安全验证层**。代码示例：\n```python\n# 白名单验证器，只允许预定义的action\nSAFE_ACTIONS = {\"read\", \"write\", \"query\"}\ndef safe_replan(proposed_action):\n    if proposed_action not in SAFE_ACTIONS:\n        raise SecurityError(f\"Blocked: {proposed_action}\")\n    return proposed_action\n```\n将`safe_replan`作为重规划流程的守卫函数，拒绝任何未授权的操作。",
+    "ref_title": "Kaer: Security-Aware Replanning for Multi-Agent Systems",
+    "ref_url": "https://arxiv.org/abs/2611.24839v1"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "Ground, Iterate, Trace: Decomposing AI Research Ideation",
+          "url": "https://arxiv.org/abs/2611.24887v1",
+          "source": "arXiv",
+          "published_at": "2026-11-18T18:31:37Z",
+          "raw_text": "Large language models have been widely used to generate plausible research ideas, yet it remains unclear what makes automated ideation effective and how generated novel proposals arise from prior scientific work. We introduce the Creative AI Researcher (CAR), an agentic framework combining literature grounding, iterative development and explicit conceptual operators. CAR constructs a semantic knowledge graph from retrieved literature and equips an ideation agent with graph-retrieval tools and four operators: bisociation, analogy, exploration and elaboration. Each operator call is checked against structural acceptance conditions and recorded, producing a trace of intermediate transformations and declared literature sources. We evaluate CAR with two language-model backbones across 40 LiveIdeaBench research topics and two execution benchmarks. CAR achieves significantly higher methodological novelty (MN) than single-shot prompting and The AI Scientist. Its methodological novelty does not differ significantly from the Research Ideation Agent, while its feasibility scores are higher on both backbones. With a shared experiment executor, CAR achieves the highest pairwise win rate among the evaluated AI methods on FML-bench-Lite and BioXArena. In a ten-condition ablation study, MN point estimates favor CAR over one-step proposal on both backbones, but no MN contrast survives correction for multiple comparisons. The results do not establish a consistent quality benefit from explicit operators beyond free-form iteration. CAR makes the sequence of operations and declared literature sources inspectable, separating judged idea quality from procedural traceability.",
+          "extra": {
+            "authors": [
+              "Samson Yu",
+              "Qiran Zou",
+              "Jing Yu Lim",
+              "Rushi Shah",
+              "Anirudh Goyal",
+              "Dianbo Liu"
+            ],
+            "categories": [
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.24887v1"
+          },
+          "score": 9.0,
+          "summary": "提出CAR框架，将文献检索、迭代与追踪结合，系统化提升LLM生成研究创意的质量与可解释性。"
+        },
+        {
+          "section": "paper",
+          "title": "Vibe-Trading: Towards Agent-Native Trading",
+          "url": "https://arxiv.org/abs/2611.24845v1",
+          "source": "arXiv",
+          "published_at": "2026-11-18T18:07:57Z",
+          "raw_text": "Existing AI agents can retrieve information, call tools, run experiments, and produce multi-step outputs. Yet most are built around relatively static workflows and struggle to preserve reliable state as the environment changes. Financial trading makes this limitation especially consequential: prices, news, market conditions, portfolio positions, and available capital evolve continuously. A result is useful only when it remains tied to the correct time, data snapshot, and execution context. We present Vibe-Trading, a comprehensive agent-native trading framework and all-in-one workspace for building, evaluating, and evolving agents for financial trading. It unifies market research, financial data, strategy generation, backtesting, portfolio analysis, paper trading, multi-agent collaboration, and optional broker execution. Its central contribution is an architecture that keeps results, evidence, research history, and trading authority connected throughout the research-to-action process. Each result retains its source, temporal scope, configuration, and producing run. Shared evidence grounding enables verification, versioned research records support reproducible continuation, and an explicit authority gate separates strategy research from live execution. Together, these designs provide a practical foundation for trading agents whose results can be traced, reproduced, and acted on only under explicit authority.",
+          "extra": {
+            "authors": [
+              "Haozhe Wu",
+              "Zhonghang Li",
+              "Chao Huang"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.CL",
+              "cs.MA",
+              "q-fin.CP",
+              "q-fin.TR"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.24845v1"
+          },
+          "score": 9.0,
+          "summary": "提出Vibe-Trading框架，让Agent原生支持动态状态管理与连续决策，解决金融交易中的环境变化难题。"
+        },
+        {
+          "section": "paper",
+          "title": "Kaer: Security-Aware Replanning for Multi-Agent Systems",
+          "url": "https://arxiv.org/abs/2611.24839v1",
+          "source": "arXiv",
+          "published_at": "2026-11-18T18:05:47Z",
+          "raw_text": "One popular architecture for multi-agent systems (MAS) relies on an orchestrator that generates an initial plan, coordinates its execution, and dynamically revises the plan based on agent feedback when tasks cannot be fully specified in advance. This dynamic replanning introduces a critical vulnerability: malicious agents can embed instructions within their feedback to hijack the replanning process. Existing defenses focus exclusively on per-tool access control or static, pre-execution policy enforcement, leaving the replanning phase unsecured. We introduce Kaer, a multi-agent framework featuring security-aware replanning. Kaer shields the planner from untrusted agent feedback by conveying diagnostics to the replanning procedure strictly through abstract templates. Plan revisions are restricted to a set of deterministic repair operators, and all modified plans must satisfy preset policies. We create Cintra, a benchmark of simulated user tasks requiring replanning paired with adversarial objectives targeting the replanning phase. Using Cintra, we evaluate both task completion rates and system vulnerability to replanning exploits by malicious agents. Evaluating Kaer on Cintra against Magentic-One (an undefended MAS) and ControlValve (the state-of-the-art defense) demonstrates that Kaer achieves higher robustness than both systems while maintaining comparable utility to ControlValve. Although abstract failure templates slightly constrain utility on select tasks, Kaer enables MAS to perform secure, dynamic plan revisions without exposing the orchestrator to untrusted agent feedback.",
+          "extra": {
+            "authors": [
+              "Tushin Mallick",
+              "Evan Rose",
+              "Matthew Laws",
+              "Alina Oprea",
+              "Cristina Nita-Rotaru"
+            ],
+            "categories": [
+              "cs.MA",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.24839v1"
+          },
+          "score": 8.0,
+          "summary": "揭示多智能体系统动态重规划中的安全漏洞，提出Kaer框架实现安全感知的重规划，保障系统鲁棒性。"
+        },
+        {
+          "section": "paper",
+          "title": "Can Programs Replace LLM Judges? Executable Program Judges for Scalable and Efficient Relevance Labeling",
+          "url": "https://arxiv.org/abs/2611.24849v1",
+          "source": "arXiv",
+          "published_at": "2026-11-18T18:09:16Z",
+          "raw_text": "Large language model (LLM) judges have become a common way to create large-scale relevance judgments for retrieval evaluation. However, each judgment requires a potentially expensive call to a frontier model, and the judgments are hard to interpret and may not be reproducible. In this paper, we ask whether an LLM can write a readable program for each topic that replaces its per-document judgments. To address these issues, we propose ExecJudges, a method for generating fast, inspectable and scalable judges for automatic relevance labeling. Specifically, ExecJudges uses a frontier LLM to turn assessment guidelines into executable programs, which rely only on lexical matching, standard NLP libraries like parsers, and pool statistics. An ExecJudges-L variant also uses examples of human labels if available. We evaluate ExecJudges on seven TREC collections by comparing the produced labels with trained NIST assessors, frontier LLM judges, and recently proposed per-topic classifiers. Our results show that ExecJudges agrees with NIST assessors at the level of the Claude Sonnet 5.5 LLM judges on TREC DL 2019-2021. With a small number of human labels per topic, the ExecJudges-L variant agrees with NIST more than per-topic classifiers with the same labels on all seven collections, and either exceeds the agreement of LLM judges provided the same labels or is within about 0.05 of it in Krippendorff's alpha. The labels rank the official TREC DL runs with Kendall's tau of 0.87 to 0.94, and writing the programs incurs a one-time cost of $0.17 to $0.49 per topic, with no additional costs for grading. Our results suggest that ExecJudges offers a reproducible, inspectable, efficient and cost-effective alternative to LLM judges for labeling deep result pools for system evaluation or ranking improvements.",
+          "extra": {
+            "authors": [
+              "Eugene Agichtein",
+              "Charles L. A. Clarke",
+              "Kaustubh Dhole",
+              "William Stern"
+            ],
+            "categories": [
+              "cs.IR",
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.24849v1"
+          },
+          "score": 8.0,
+          "summary": "用可执行程序替代LLM作为相关性标注裁判，大幅降低成本、提升可解释性与可复现性，适合大规模检索评估。"
+        },
+        {
+          "section": "paper",
+          "title": "Agentic Harness Engineering Beta: Requirement-Centered Evolution of Agent Harnesses",
+          "url": "https://arxiv.org/abs/2611.24924v1",
+          "source": "arXiv",
+          "published_at": "2026-11-18T18:52:13Z",
+          "raw_text": "Real-world harness engineering is driven by explicit and implicit user requirements, which guide development and validation. However, existing harness evolution methods often overlook implicit requirements and interaction needs, while using a single evolution agent to modify the harness and benchmark scores to select changes. This process often produces narrow patches and leads to benchmark-specific local optima. We introduce Agentic Harness Engineering Beta (AHE-Beta), a requirement-centered loop that brings real-world engineering practices into harness evolution. The loop consists of three steps: (1) User-driven evaluation lets simulated users raise their requirements as issues while they work with the harness over multiple turns. (2) Team-based modification implements those requirements as generalizable changes rather than task-specific patches. (3) Requirement-driven selection merges a change only when it resolves a verified requirement and passes review. Empirically, on held-out tasks, AHE-Beta raises pass@1 from 21.9% to 33.3% while using 40.8% fewer tokens than Base Harness, and achieves higher pass@1 than Claude Code, Meta-Harness, and AHE. In a blind human A/B test, real users prefer AHE-Beta in 31 of 48 valid pairs and rate it higher on all five dimensions, matching the directional preference of the user simulator. The human A/B results show that AHE-Beta achieves its goal of aligning harness evolution with real-world user requirements. Without further evolution, the gains transfer to GLM-5.3 and DeepSeek-V4.1-Flash with pass@1 improvements of 15.8% and 5.3% over Base Harness. Together, these results show that requirement-centered harness evolution is a more general method for improving agent capabilities.",
+          "extra": {
+            "authors": [
+              "Jiahang Lin",
+              "Jiahao Chen",
+              "Yiding Wang",
+              "Shichun Liu",
+              "Chengjun Pan",
+              "Shihan Dou",
+              "Honglin Guo",
+              "Yuyang Hu",
+              "Changhao Jiang",
+              "Zhenhua Han",
+              "Hang Yan",
+              "Qi Zhang",
+              "Tao Gui",
+              "Xuanjing Huang"
+            ],
+            "categories": [
+              "cs.SE",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.24924v1"
+          },
+          "score": 7.0,
+          "summary": "提出以需求为中心的Agent框架演化方法，通过隐式需求挖掘与多Agent协作，提升工具链的适应性与鲁棒性。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "Knowledge infrastructure to make your agents smarter. Search, scrape and 550+ data providers through one API.",
+          "extra": {
+            "stars": 203413,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "一站式API整合搜索、抓取与550+数据源，让AI代理直接获取结构化知识。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 161472,
+            "language": "Python",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "deepseek",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "python",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 9.0,
+          "summary": "提供从原型到生产的完整AI工作流平台，支持RAG、Agent与多模型协作。"
+        },
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi, GLM, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 187576,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "muse",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 8.0,
+          "summary": "本地运行主流中文与开源大模型，一键部署，降低推理成本。"
+        },
+        {
+          "section": "repo",
+          "title": "huggingface/transformers",
+          "url": "https://github.com/huggingface/transformers",
+          "source": "GitHub 经典",
+          "published_at": "2018-10-29T13:56:00Z",
+          "raw_text": "🤗 Transformers: the model-definition framework for state-of-the-art machine learning models in text, vision, audio, and multimodal models, for both inference and training.",
+          "extra": {
+            "stars": 169219,
+            "language": "Python",
+            "topics": [
+              "audio",
+              "deep-learning",
+              "deepseek",
+              "gemma",
+              "glm",
+              "hacktoberfest",
+              "llm",
+              "machine-learning",
+              "model-hub",
+              "natural-language-processing",
+              "nlp",
+              "pretrained-models",
+              "python",
+              "pytorch",
+              "pytorch-transformers",
+              "qwen",
+              "speech-recognition",
+              "transformer",
+              "vlm"
+            ]
+          },
+          "score": 8.0,
+          "summary": "业界标准模型框架，覆盖文本/视觉/多模态，训练推理皆可用。"
+        },
+        {
+          "section": "repo",
+          "title": "browser-use/jev-ultrafast",
+          "url": "https://github.com/browser-use/jev-ultrafast",
+          "source": "GitHub 新星",
+          "published_at": "2026-09-16T21:30:12Z",
+          "raw_text": "Fastest and cheapest web agent",
+          "extra": {
+            "stars": 24661,
+            "language": "Python",
+            "topics": []
+          },
+          "score": 7.0,
+          "summary": "专为速度与成本优化的Web代理，适合高频自动化任务。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Microsoft CEO Satya Nadella explains why he asked 60K employees to quit",
+          "url": "https://techcrunch.com/2026/11/18/microsoft-ceo-satya-nadella-explains-why-he-asked-60k-employees-to-quit/",
+          "source": "TechCrunch",
+          "published_at": "2026-11-19T00:42:56Z",
+          "raw_text": "Microsoft CEO Satya Nadella explained why he offered buyouts to 60,000 of his employees in October, essentially urging them to voluntarily quit, rather than reducing the workforce via another massive layoff. The short answer is AI, but not in the way you might expect.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "微软CEO解释让6万员工自愿离职，核心是AI战略调整，影响科技行业用人风向。"
+        },
+        {
+          "section": "news",
+          "title": "The nation’s largest school districts consider ditching Google Search",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1037151/school-districts-ditching-google",
+          "source": "The Verge",
+          "published_at": "2026-11-18T23:18:35Z",
+          "raw_text": "New York, Los Angeles, and Chicago schools are considering Google alternatives after the company said it will disable Search for schools that opt out of its AI features, according to The New York Times. Starting next year, schools will not have the option to disable Gemini-powered features without also disabling Search. Chris Phillips, Google's vice […]",
+          "extra": {},
+          "score": 9.0,
+          "summary": "美国三大学区因AI功能强制捆绑考虑弃用谷歌搜索，教育市场格局或受冲击。"
+        },
+        {
+          "section": "news",
+          "title": "Gemini 4 Neon looks like an Opus 5.5 competitor",
+          "url": "https://micjm.com/blog/gemini-4-neon-looks-like-a-top-model/",
+          "source": "Hacker News",
+          "published_at": "2026-11-19T00:29:45Z",
+          "raw_text": "Article URL: https://micjm.com/blog/gemini-4-neon-looks-like-a-top-model/ Comments URL: https://news.ycombinator.com/item?id=50554374 Points: 213 # Comments: 68",
+          "extra": {},
+          "score": 8.0,
+          "summary": "谷歌Gemini 4 Neon模型性能对标Opus 5.5，大模型竞争格局生变。"
+        },
+        {
+          "section": "news",
+          "title": "Copilot is \"the new OS for work,\" and now Office runs inside of it",
+          "url": "https://arstechnica.com/gadgets/2026/11/microsoft-calls-copilot-the-new-os-for-work-at-ignite-keynote/",
+          "source": "Ars Technica",
+          "published_at": "2026-11-18T00:27:29Z",
+          "raw_text": "Word, Excel, and PowerPoint now live inside Copilot; always-on agents are next.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "微软将Office套件嵌入Copilot，并推出常驻AI代理，重新定义办公入口。"
+        },
+        {
+          "section": "news",
+          "title": "Amidst fears of AI cyberattacks, Satya Nadella says lots of critical infrastructure is ‘unpatchable’",
+          "url": "https://techcrunch.com/2026/11/18/amidst-fears-of-ai-cyberattacks-satya-nadella-says-lots-of-critical-infrastructure-is-unpatchable/",
+          "source": "TechCrunch",
+          "published_at": "2026-11-18T23:45:00Z",
+          "raw_text": "The Microsoft CEO downplayed the recent Outlook outage while noting that AI was causing both opportunities and new challenges for securing much of the connected world.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "微软CEO称大量关键基础设施无法打补丁，AI加剧网络安全挑战。"
+        },
+        {
+          "section": "news",
+          "title": "Muse privacy invasions are freaking out Meta staffers, internal chats show",
+          "url": "https://arstechnica.com/tech-policy/2026/11/muse-privacy-invasions-are-freaking-out-meta-staffers-internal-chats-show/",
+          "source": "Ars Technica",
+          "published_at": "2026-11-18T19:19:33Z",
+          "raw_text": "Erratic Muse outputs sharing random bank, bitcoin balances aren’t real, Meta says.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "Meta内部员工因Muse AI泄露隐私数据恐慌，暴露大模型部署安全风险。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Introducing Gemini 4 Neon",
+          "url": "https://deepmind.google/blog/introducing-gemini-4-neon/",
+          "source": "Google DeepMind",
+          "published_at": "2026-11-18T21:35:43Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "Google 发布 Gemini 4 Neon 模型，性能与效率显著提升。"
+        },
+        {
+          "section": "product",
+          "title": "Genie 4 is now available",
+          "url": "https://deepmind.google/blog/genie-4-is-now-available/",
+          "source": "Google DeepMind",
+          "published_at": "2026-11-18T18:13:42Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Genie 4 正式可用，为多模态交互提供新能力。"
+        },
+        {
+          "section": "product",
+          "title": "Introducing Gemini 4 Hydrogen",
+          "url": "https://deepmind.google/blog/introducing-gemini-4-hydrogen/",
+          "source": "Google DeepMind",
+          "published_at": "2026-11-12T18:00:50Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Gemini 4 Hydrogen 发布，轻量级模型适配边缘场景。"
+        }
+      ]
+    }
+  ]
+}
