@@ -1,0 +1,401 @@
+{
+  "date": "2026-11-21",
+  "tip": {
+    "title": "Replication of Agentic Security Events: Audit and Investigation (ROGUE-AI)",
+    "body": "**场景：** 当 Agent 需要执行危险操作（如删除数据库）时，缺乏可复现的审计机制，导致安全事件难以追溯和修复。\n\n**做法：** 使用 ROGUE-AI 框架，在 Agent 执行前插入审计钩子，记录所有敏感操作的输入、输出和决策链。\n\n```python\n# 示例：用装饰器记录数据库删除操作\nimport logging\nlogging.basicConfig(filename='agent_audit.log')\n\ndef audit_sensitive_op(func):\n    def wrapper(*args, **kwargs):\n        logging.info(f\"Operation: {func.__name__}, Args: {args}, Kwargs: {kwargs}\")\n        return func(*args, **kwargs)\n    return wrapper\n\n@audit_sensitive_op\ndef delete_database(table_name):\n    # 实际删除逻辑（需在沙箱中执行）\n    pass\n```\n\n**注意：** 将敏感操作封装在沙箱（如 Docker 容器）中执行，日志记录在宿主机，避免裸执行。",
+    "ref_title": "Replication of Agentic Security Events: Audit and Investigation (ROGUE-AI)",
+    "ref_url": "https://arxiv.org/abs/2611.26553v1"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "AgentRoboCritic: Understanding the Capability of Frontier Agents on Direct Robot Control",
+          "url": "https://arxiv.org/abs/2611.26613v1",
+          "source": "arXiv",
+          "published_at": "2026-11-19T18:57:25Z",
+          "raw_text": "Frontier multimodal language agents such as GPT-6 Astra have demonstrated strong capabilities in controlling robots directly via low-level numerical actions without high-level primitives. However, existing benchmarks report only episode-level success rates, which show neither how these agents succeed nor where they fail. In this paper, we present a systematic action-level analysis of frontier agents on direct robot control across 12 manipulation benchmarks. We introduce AgentRoboCritic, an intent-grounded critique framework in which the policy agent states a local intent alongside each action, and a critic evaluates the action's outcome and failure mode against this intent. Our action-level analysis demonstrates the promising capabilities of frontier agents on direct robot control, including closed-loop recovery from local execution failures, reliable semantic grounding across diverse scenes, and strong zero-shot manipulation without task-specific adaptation. It also identifies their current limitations, including task-relevant physical execution bottlenecks such as grasping and alignment, and uneven recovery across failure modes. Finally, we validate our critic on a 400-action human-annotated benchmark and release a dataset of 12,844 annotated actions alongside a fine-tuned open-source critic, Muse-Glimmer-30B, whose failure-mode accuracy rises from 32.58% to 74.24%, enabling low-cost action-level analysis.",
+          "extra": {
+            "authors": [
+              "Yiyang Du",
+              "Yuxuan Kuang",
+              "Qitao Zhao",
+              "Yixuan Wang",
+              "Zhanqiu Guo",
+              "Yi Xu",
+              "Xin Li",
+              "Wenbin He",
+              "Liu Ren",
+              "Chenyan Xiong"
+            ],
+            "categories": [
+              "cs.RO",
+              "cs.CL",
+              "cs.CV"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.26613v1"
+          },
+          "score": 9.0,
+          "summary": "评估前沿多模态语言智能体直接控制机器人的能力，填补了现有基准仅报告成功率而缺乏过程分析的空白。"
+        },
+        {
+          "section": "paper",
+          "title": "Replication of Agentic Security Events: Audit and Investigation (ROGUE-AI)",
+          "url": "https://arxiv.org/abs/2611.26553v1",
+          "source": "arXiv",
+          "published_at": "2026-11-19T18:23:35Z",
+          "raw_text": "Agents based on large language models (LLMs) can now delete files and send payments on behalf of their users. News media reports routinely describe failures of these agents (e.g., Replit's coding agent deleting a production database), but a report often only says what went wrong and rarely (in)validates the incident or finds its root cause. Incident catalogs collect these reports, and benchmarks record whether agents fail, but neither replicates an incident nor tests the cause its report might identify. In this paper, we present ROGUE-AI (Replication of Agentic Security Events: Audit and Investigation), a multi-agent framework that closes the above gap and rebuilds each reported incident offline together with a matched control that lacks only the blamed cause, and runs agents on both. Our results suggest that ROGUE-AI is able to reproduce the reported harm in 89% of its 108 attempted replications. Agents built on five current GPT, Claude, Gemini and DeepSeek models made the reported mistake in 18% to 33% of runs, against at most 1% without the blamed cause. Of the 72 incidents with real-world harm, 62 had no underlying attacker, and in these, agents did what their task asked for but missed an ordinary hazard, such as a database shared with the live site. Replications without an attacker caused more harm than replications of prompt injection for all five models. Defenses against prompt injection look for injected instructions, but these replications contain none. Further, a warning after each tool output that names the hazard and its consequence lowered harm for all five models, whereas a note of the same length that does not mention the hazard left most of the harm in place. Built from real incidents, the ROGUE-AI replications form a reusable audit framework that vendors can rerun before each new release.",
+          "extra": {
+            "authors": [
+              "Mengxiao Wang",
+              "Mahbub Alam",
+              "Kalyan Nakka",
+              "Nitesh Saxena"
+            ],
+            "categories": [
+              "cs.CR",
+              "cs.AI",
+              "cs.MA"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.26553v1"
+          },
+          "score": 9.0,
+          "summary": "针对LLM智能体安全事件（如误删数据库）提出可复现的审计与调查框架，提升Agent安全可信度。"
+        },
+        {
+          "section": "paper",
+          "title": "SoK: Assessing the Evolution of LLM Capability in Software Vulnerability Research",
+          "url": "https://arxiv.org/abs/2611.26601v1",
+          "source": "arXiv",
+          "published_at": "2026-11-19T18:54:19Z",
+          "raw_text": "LLM-based agents are becoming increasingly capable at discovering, validating and patching vulnerabilities in real software, and vendors and researchers report that this is already changing how vulnerabilities are found and fixed. These claims, however, are scattered across papers, vendor reports and disclosures and are rarely comparable. We introduce a framework that rates these capabilities on an autonomy scale modeled on the levels of driving automation, and qualifies each claim by its correctness, its availability and the strength of its evidence. We use this framework to systematize the published evidence on LLM capability in vulnerability research. We find that agents discovered, validated, and patched vulnerabilities in real-world software without human intervention before the restricted frontier models of 2026, and that open-weight models subsequently attained comparable autonomy for discovery and validation. We then measure the consequences of evolving LLM security capabilities in a decade of public vulnerability records, advisories and exploitation data. In 2026 the number of disclosed vulnerabilities more than doubled, with an increasing share rated critical or high, and severe bugs that had survived a decade or more in widely used code were reported several times more often than before. Yet the time between the stages of a vulnerability's life, from report to fix and from disclosure to attack, has not shifted noticeably so far. We grade the mitigations proposed in the literature with an explicit rubric and draw guidance for each group of stakeholders from the best-supported ones.",
+          "extra": {
+            "authors": [
+              "Amine Lbath",
+              "Manan Suri",
+              "Aurelien Delaitre",
+              "Vadim Okun",
+              "Massih-Reza Amini",
+              "Dinesh Manocha"
+            ],
+            "categories": [
+              "cs.CR",
+              "cs.AI",
+              "cs.SE"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.26601v1"
+          },
+          "score": 8.0,
+          "summary": "系统梳理了LLM智能体在软件漏洞发现、验证与修复方面的能力演进，为安全研究提供关键参考。"
+        },
+        {
+          "section": "paper",
+          "title": "PGX: Physically Grounded Execution for Long-Horizon Humanoid Loco-Manipulation",
+          "url": "https://arxiv.org/abs/2611.26596v1",
+          "source": "arXiv",
+          "published_at": "2026-11-19T18:52:18Z",
+          "raw_text": "Robotic vision-language-action (VLA) models can execute diverse individual manipulation skills, yet they still struggle with long-horizon loco-manipulation tasks, where temporal structure, skills, and precision are tightly coupled within a monolithic model. We propose Physically Grounded Execution (PGX), a framework that offloads temporal and precision control to two classical training-free components, allowing the VLA to focus on stage-specific skill dynamics. PGX decomposes long-horizon loco-manipulation into three layers: (i) a predicate-based state machine governs task progression, using physical predicates to gate phase transitions, trigger recovery, and coordinate navigation and waiting. Shared predicate semantics connect offline demonstration segmentation, online execution, and stage-wise evaluation; (ii) VLA skills operate within active manipulation phases, with flat or stage-trained models concentrating on task-relevant actions; and (iii) world-coordinate locking (WCL) maintains spatial consistency through base station keeping, object-relative positioning, and world-anchored contact targets. We demonstrate the effectiveness of PGX with extensive experiments conducted on three simulated tasks and one real-world task using a Unitree G1 humanoid robot for long-horizon loco-manipulation, showing improvements in stage progression and task success rates. Project page is available at: https://kl-research.github.io/pgx",
+          "extra": {
+            "authors": [
+              "Kai Lu",
+              "Chenyang Ma",
+              "Ioannis Havoutis"
+            ],
+            "categories": [
+              "cs.RO",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.26596v1"
+          },
+          "score": 8.0,
+          "summary": "提出物理接地执行方法，解决VLA模型在长时间跨度人形机器人操作任务中时序与精度耦合的难题。"
+        },
+        {
+          "section": "paper",
+          "title": "Verify the Verifier: Specification-Grounded LLM Cross-Checking for Bugs That Escape UVM Scoreboards",
+          "url": "https://arxiv.org/abs/2611.26588v1",
+          "source": "arXiv",
+          "published_at": "2026-11-19T18:45:54Z",
+          "raw_text": "A passing UVM regression shows the design agrees with the reference model on what the scoreboard checks, not that it meets the specification. Bugs that pass every test yet violate the specification, termed scoreboard escapes, survive mature testbenches. We present Verify the Verifier, to our knowledge the first framework whose LLM-based Anomaly Cross-Checker examines a passing regression's traces against the specification. Of 564 bugs inserted into four OpenTitan IPs, 68 are candidate scoreboard escapes: non-equivalent, exercised by the tests, yet passing. The framework confirmed 41 as scoreboard escapes with assertions failing on the buggy design and proven on the original.",
+          "extra": {
+            "authors": [
+              "Ana E. Sanchez Villalobos",
+              "Michael D. Quinn",
+              "Aakash Tyagi",
+              "Minh D. Luu",
+              "David Kebo Houngninou"
+            ],
+            "categories": [
+              "cs.SE",
+              "cs.AI",
+              "cs.AR"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.26588v1"
+          },
+          "score": 7.0,
+          "summary": "利用LLM交叉检查验证设计规范，捕获传统UVM测试遗漏的规格违反bug，提升芯片验证完备性。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "Knowledge infrastructure to make your agents smarter. Search, scrape and access 550+ data providers through one API.",
+          "extra": {
+            "stars": 205535,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "统一API接入550+数据源，让AI代理直接搜索和抓取结构化知识。"
+        },
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi, GLM, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 187793,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "muse",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 9.0,
+          "summary": "本地一键运行Kimi、DeepSeek等国产模型，无需云端依赖。"
+        },
+        {
+          "section": "repo",
+          "title": "langgenius/dify",
+          "url": "https://github.com/langgenius/dify",
+          "source": "GitHub 经典",
+          "published_at": "2023-04-12T07:40:24Z",
+          "raw_text": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+          "extra": {
+            "stars": 161598,
+            "language": "Python",
+            "topics": [
+              "agent",
+              "agentic-ai",
+              "agentic-framework",
+              "agentic-workflow",
+              "ai",
+              "automation",
+              "claude",
+              "deepseek",
+              "genai",
+              "gpt",
+              "llm",
+              "low-code",
+              "mcp",
+              "nextjs",
+              "no-code",
+              "openai",
+              "python",
+              "skills",
+              "workflow"
+            ]
+          },
+          "score": 8.0,
+          "summary": "一站式构建Agent工作流与RAG管道，支持私有化部署。"
+        },
+        {
+          "section": "repo",
+          "title": "yetone/magpie",
+          "url": "https://github.com/yetone/magpie",
+          "source": "GitHub 新星",
+          "published_at": "2026-09-23T16:22:35Z",
+          "raw_text": "Every agent's model. One place. Codex on DeepSeek, Claude Code on Kimi, from the menu bar.",
+          "extra": {
+            "stars": 39613,
+            "language": "Go",
+            "topics": [
+              "claude-code",
+              "codex",
+              "deepseek",
+              "gemini-cli",
+              "llm",
+              "macos"
+            ]
+          },
+          "score": 8.0,
+          "summary": "菜单栏统一管理多模型代理，如Codex跑在DeepSeek上。"
+        },
+        {
+          "section": "repo",
+          "title": "browser-use/jev-ultrafast",
+          "url": "https://github.com/browser-use/jev-ultrafast",
+          "source": "GitHub 新星",
+          "published_at": "2026-09-16T21:30:12Z",
+          "raw_text": "Fastest and cheapest web agent",
+          "extra": {
+            "stars": 24698,
+            "language": "Python",
+            "topics": []
+          },
+          "score": 7.0,
+          "summary": "极速低成本的网页代理，适合高频自动化任务。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Meta reconsiders 2030 net-zero goal amid record emissions from AI data centers",
+          "url": "https://arstechnica.com/ai/2026/11/meta-reconsiders-2030-net-zero-goal-amid-record-emissions-from-ai-data-centers/",
+          "source": "Ars Technica",
+          "published_at": "2026-11-20T21:47:10Z",
+          "raw_text": "Meta is “re-evaluating” 2030 sustainability goals. Will others follow?",
+          "extra": {},
+          "score": 9.0,
+          "summary": "Meta因AI数据中心排放激增，重新评估2030碳中和目标，行业标杆动摇。"
+        },
+        {
+          "section": "news",
+          "title": "Researcher plants 2m canaries into the AI supply chain. A privacy disaster surfaced.",
+          "url": "https://arstechnica.com/security/2026/11/a-leaky-ai-supply-chain-is-exposing-secret-user-data-at-an-alarming-rate/",
+          "source": "Ars Technica",
+          "published_at": "2026-11-20T20:59:08Z",
+          "raw_text": "Test using prompts with unique, trackable secrets proves that data doesn't stay private.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "研究员在AI供应链植入200万追踪标记，证实数据隐私保护形同虚设。"
+        },
+        {
+          "section": "news",
+          "title": "Trump threatens ‘tremendous tax’ for moving AI data centers outside the US",
+          "url": "https://www.theverge.com/policy/1038892/trump-foreign-data-centers-tax",
+          "source": "The Verge",
+          "published_at": "2026-11-20T18:50:19Z",
+          "raw_text": "President Donald Trump promised to put a \"tremendous tax\" on companies that build data centers outside of the US, even as states and cities around the country are placing restrictions on new applications to build them. \"We're not going to allow our companies to build data centers outside of our country,\" Trump said at a […]",
+          "extra": {},
+          "score": 8.0,
+          "summary": "特朗普威胁对海外建AI数据中心的企业征收重税，影响全球算力布局。"
+        },
+        {
+          "section": "news",
+          "title": "The most misunderstood graph in AI just got a major update",
+          "url": "https://www.technologyreview.com/2026/11/20/1149399/the-most-misunderstood-graph-in-ai-just-got-a-major-update/",
+          "source": "MIT Tech Review",
+          "published_at": "2026-11-20T18:15:15Z",
+          "raw_text": "A new report from the AI evaluation nonprofit METR finds that some AI capabilities are continuing to improve along an exponential trajectory—but it also indicates that models aren’t quite as good at tasks that require judgment as they are at coding. The report is an update to the organization’s time horizon plot, which was widely…",
+          "extra": {},
+          "score": 8.0,
+          "summary": "METR报告更新：AI能力指数级提升，但判断力仍远逊于编码能力。"
+        },
+        {
+          "section": "news",
+          "title": "Anthropic mathematician claims to have solved prestigious Millennium Prize problem with Claude",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1010051/anthropic-riemann-hypothesis-millennium-prize-problem",
+          "source": "The Verge",
+          "published_at": "2026-11-20T16:34:13Z",
+          "raw_text": "Anthropic mathematician Levent Alpöge claims he has proved the Riemann hypothesis, one of mathematics's most notoriously difficult problems, with the help of Claude, cracking a puzzle that has eluded some of the world's best mathematicians for decades. If verified, it would mark yet another seismic achievement for AI in mathematics and add to the upheaval […]",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Anthropic数学家声称用Claude证明黎曼猜想，若证实将颠覆AI科研范式。"
+        },
+        {
+          "section": "news",
+          "title": "Google rolls out new search homepage with AI chat history and no search button",
+          "url": "https://arstechnica.com/ai/2026/11/googles-latest-search-page-redesign-drops-the-search-button-adds-ai-sidebar/",
+          "source": "Ars Technica",
+          "published_at": "2026-11-20T21:58:29Z",
+          "raw_text": "Google search is making it even easier to access AI tools on the search page.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "Google搜索首页集成AI聊天历史并移除搜索按钮，搜索入口范式转变。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Introducing Gemini 4 Neon",
+          "url": "https://deepmind.google/blog/introducing-gemini-4-neon/",
+          "source": "Google DeepMind",
+          "published_at": "2026-11-18T21:35:43Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "Google 发布 Gemini 4 Neon，新一代多模态模型正式上线。"
+        },
+        {
+          "section": "product",
+          "title": "Introducing Gemini 4 Hydrogen",
+          "url": "https://deepmind.google/blog/introducing-gemini-4-hydrogen/",
+          "source": "Google DeepMind",
+          "published_at": "2026-11-12T18:00:50Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Gemini 4 Hydrogen 发布，轻量化版本面向边缘部署场景。"
+        },
+        {
+          "section": "product",
+          "title": "Welcome Inkling 2 Mini, Cutting-edge Performance for your Local Setup",
+          "url": "https://huggingface.co/blog/inkling2mini",
+          "source": "Hugging Face",
+          "published_at": "2026-11-20T00:00:00Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 7.0,
+          "summary": "Inkling 2 Mini 发布，为本地 AI 推理提供高性价比方案。"
+        }
+      ]
+    }
+  ]
+}
