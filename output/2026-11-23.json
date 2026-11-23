@@ -1,0 +1,403 @@
+{
+  "date": "2026-11-23",
+  "tip": {
+    "title": "MemOnce: A Scalable Memory Architecture for Large Language Models",
+    "body": "当Agent需要处理超长对话或持续学习时，KV缓存会线性膨胀导致显存爆炸。**做法**：采用MemOnce架构，将历史KV缓存压缩为固定大小的记忆向量，避免缓存无限增长。代码示例：\n```python\nfrom memonce import MemoryBank\nmemory = MemoryBank(max_size=512)  # 固定记忆容量\nfor step in long_conversation:\n    memory.store(kv_cache)  # 自动压缩\n    compressed = memory.retrieve()  # 返回固定维度向量\n```\n注意：需安装`pip install memonce`，该库内部使用滑动窗口+注意力池化，不涉及裸代码执行。",
+    "ref_title": "MemOnce: A Scalable Memory Architecture for Large Language Models",
+    "ref_url": "https://arxiv.org/abs/2611.27973v1"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "MemOnce: A Scalable Memory Architecture for Large Language Models",
+          "url": "https://arxiv.org/abs/2611.27973v1",
+          "source": "arXiv",
+          "published_at": "2026-11-20T18:51:29Z",
+          "raw_text": "Deploying large language models (LLMs) in long-horizon and continual interactions requires maintaining reusable memory states for future inference, posing challenges for existing architectures. Standard Transformers accumulate layer-wise, token-level KV caches, incurring linear GPU memory growth and quadratic computational complexity as the context expands. In contrast, linear-time architectures compress history into fixed-size states, but struggle to retain fine-grained details. We introduce MemOnce, a foundation architecture that learns scalable memory states for language models. MemOnce is based on two core designs: (a) Memory encoder-decoder: it caches only a small subset of final-layer hidden states as compact memory representations and dynamically decodes them back into KV caches for attention layers; (b) Memory sparse attention: for each continual input, MemOnce adaptively retrieves relevant memory representations, with the sparse indices computed only once across layers. Coupling these two designs enables efficient on-the-fly memory loading and KV cache decoding, drastically reducing the GPU memory footprint and achieving linear-time complexity. We conduct extensive experiments to show that MemOnce outperforms Transformers and other architectures across varying model sizes, context lengths, and training paradigms (pretraining and post-training adaptation). In particular, adapting Qwen3.5-4B with MemOnce reduces memory state cache by 1313$\\times$ and prefill latency by 6.9$\\times$ at 1M context, and improves throughput by 3.5$\\times$ and overall memory performance by +5.77%. Finally, MemOnce generalizes zero-shot to downstream representation tasks, achieving competitive results against specialized models.",
+          "extra": {
+            "authors": [
+              "Chang Nie",
+              "Chaoyou Fu",
+              "Songlin Liu",
+              "Yiqing Hu",
+              "Caifeng Shan"
+            ],
+            "categories": [
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.27973v1"
+          },
+          "score": 9.0,
+          "summary": "提出可扩展记忆架构，解决LLM长程交互中KV缓存线性增长问题，对Agent持续学习至关重要。"
+        },
+        {
+          "section": "paper",
+          "title": "TEA-Bench-BR: Can Coding Agents Turn a Branching Clinical Specification into Correct Code?",
+          "url": "https://arxiv.org/abs/2611.27895v1",
+          "source": "arXiv",
+          "published_at": "2026-11-20T17:35:59Z",
+          "raw_text": "Coding agents increasingly implement rules written by domain experts, and bugs in such code are silent: it runs and returns a plausible answer. We introduce TEA-Bench-BR, a benchmark built on the Brazilian pathway for early autism (TEA) screening: three fictitious instruments with the structure of real ones, a multi-professional referral flow, and export to FHIR R4 with the national RNDS profiles, all specified in Portuguese. A generator samples each task's parameters (144 tasks, 6,798 hidden cases), and the hidden cases kill all 1,955 non-equivalent mutants of the reference. With Gemma 4 as the agent, the 12B solves 38.0% of single-instrument tasks and none at the FHIR level; the 31B solves 77.8%, 85.2% and 78.7% at levels 1 to 3 and passes over 99% of the hidden cases, its remaining failures mostly in input validation rather than clinical decisions. With the same tasks in English, the 31B solves 57.4% at level 3, as its code validates an identifier less often; the 12B's, more often. The 12B misses 10.10% of the cases that call for referral; the 31B, 0.02%. A contamination probe on a modified PHQ-9 finds no error that follows the original rules.",
+          "extra": {
+            "authors": [
+              "Marcio Andre de Souza Estevam"
+            ],
+            "categories": [
+              "cs.SE",
+              "cs.AI",
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.27895v1"
+          },
+          "score": 9.0,
+          "summary": "新基准测试编码Agent将临床规范转为代码的能力，直击AI落地医疗的可靠性痛点。"
+        },
+        {
+          "section": "paper",
+          "title": "LesionAgent: Training-Free Agentic Tumor Tracking and Response Assessment in Longitudinal CT",
+          "url": "https://arxiv.org/abs/2611.27876v1",
+          "source": "arXiv",
+          "published_at": "2026-11-20T17:21:36Z",
+          "raw_text": "Every few months, a cancer patient's CT scans decide whether treatment continues. 3D foundation models can now detect, segment, register and track lesions, yet none of them reads the scans as a radiologist does. A radiologist decides which findings are lesions, which are the same lesion months later and whether a new spot means progression, and checks each decision against the extensive rules of a clinical guideline. We introduce LesionAgent, an LLM agent that performs this read end to end without task-specific training. It operates frozen 3D models as tools, acts in 3D through coordinate-labelled views, remembers every lesion across visits in a registry, verifies every model output it relies on, and leaves every number to a deterministic guideline engine. On four public longitudinal CT datasets, LesionAgent tracks more lesions and measures them more accurately than every automatic baseline, and where the same 3D models chained by fixed rules call progression falsely at 33 of 56 follow-ups, it does so twice. On clinical follow-up CTs, it agrees with the radiologists' response at 20 of 23 follow-ups, including every change in response, and without training on DeepLesion, it retrieves more of its lesions than every tracker trained on it (89.0% vs. 87.4%). Its harness, not its LLM, makes the difference: given the same LLM and 3D models but not the harness, Claude Code reaches a detection F1 of 41% and LesionAgent 78%, and an open-weight LLM that can run inside the hospital rises from 6% to 73%. LesionAgent and a napari reading app for any LLM are available at https://github.com/MIC-DKFZ/LesionAgent.",
+          "extra": {
+            "authors": [
+              "Maximilian Rokuss",
+              "Jeya Maria Jose Valanarasu",
+              "Alejandro Lozano",
+              "Benjamin Hamm",
+              "Yannick Kirchhoff",
+              "Fabian Isensee",
+              "Klaus Maier-Hein"
+            ],
+            "categories": [
+              "cs.CV",
+              "cs.AI",
+              "cs.MA"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.27876v1"
+          },
+          "score": 8.0,
+          "summary": "无需训练的Agent框架，模仿放射科医生逻辑进行CT肿瘤追踪与评估，提升临床AI实用性。"
+        },
+        {
+          "section": "paper",
+          "title": "StereoVLM: Binocular Vision-Language Models for Metric 3D Spatial Reasoning",
+          "url": "https://arxiv.org/abs/2611.27915v1",
+          "source": "arXiv",
+          "published_at": "2026-11-20T17:52:02Z",
+          "raw_text": "Vision-language models (VLMs) exhibit strong semantic understanding but remain limited in their ability to reason about metric 3D space in the physical world. Existing VLMs typically infer 3D scene structure from one or more images without known camera calibration or cross-view geometric constraints. This makes metric 3D inference inherently ambiguous and leaves it unclear whether their spatial predictions are grounded in visual evidence or driven primarily by semantic priors. In contrast, calibrated stereo provides explicit cross-view geometry that resolves this ambiguity and offers a more reliable foundation for metric 3D perception and geometric generalization. We investigate how VLMs can learn transferable 3D representations directly from calibrated binocular observations. To this end, we introduce StereoVLM, the first geometry-aware binocular VLM for metric 3D spatial reasoning. StereoVLM follows a hierarchical learning paradigm spanning from cross-view correspondence and disparity estimation to calibration-conditioned metric depth perception and semantic spatial reasoning. We further find that disparity supervision generalizes substantially better than direct binocular depth supervision on unseen environments. To evaluate these capabilities, we introduce Stereo3D-Bench, a comprehensive benchmark across three levels, from point-level geometry to object-level spatial reasoning. StereoVLM-8B achieves 95.17% depth accuracy ($δ_1$) and a 66.98 average object-level score on Stereo3D-Bench. Intervention results further indicate that the model's performance on Stereo3D-Bench benefits from valid cross-view geometry and cannot be explained solely by additional visual tokens or semantic priors. Hierarchical geometric supervision also yields average gains of 3.54 points across five spatial benchmarks and 4.3 percentage points in RoboCasa manipulation success.",
+          "extra": {
+            "authors": [
+              "Chi Yan",
+              "Guoyang Zhao",
+              "Wentao Yuan",
+              "Yixiao Ge",
+              "Yanning Zhou",
+              "Dan Xu"
+            ],
+            "categories": [
+              "cs.CV",
+              "cs.AI",
+              "cs.RO"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.27915v1"
+          },
+          "score": 8.0,
+          "summary": "双目视觉语言模型实现公制3D空间推理，突破现有VLM缺乏物理尺度感知的局限。"
+        },
+        {
+          "section": "paper",
+          "title": "Speculative Decoding Is Less Speculative Than You Think",
+          "url": "https://arxiv.org/abs/2611.27891v1",
+          "source": "arXiv",
+          "published_at": "2026-11-20T17:33:21Z",
+          "raw_text": "Speculative decoding accelerates language-model inference by preparing candidate continuations before the target model generates them. Its efficiency depends on how well limited drafting computation anticipates the path the target will actually follow. Anticipating this path involves two sources of uncertainty: the target model's predictions and the randomness of sampling. Yet the former requires a target-model forward pass, while the latter can be fixed before drafting. Building on this observation, we introduce DICE (Draw-Informed Candidate Selection), which pre-samples and synchronizes verification randomness across drafting and verification. By combining these known draws with predictions from an existing drafter, DICE allocates computation toward continuations more likely to be used in the current sampling run. This principle guides node selection throughout draft-tree construction and extends to asynchronous prefetching, where DICE predicts which next-round drafts to prepare. Without additional drafter training or changes to the target sampling distribution, DICE achieves state-of-the-art decoding throughput across diverse settings, with speedups of up to 24.6pp over strong baselines.",
+          "extra": {
+            "authors": [
+              "Guanning Zeng",
+              "Andrea Zanette"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.27891v1"
+          },
+          "score": 7.0,
+          "summary": "重新审视投机解码效率，揭示其实际加速效果低于理论预期，对LLM推理优化有指导意义。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi, GLM, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 187902,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "muse",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 10.0,
+          "summary": "本地运行国产大模型，支持Kimi、DeepSeek等，一键部署实用性强。"
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "Knowledge infrastructure to make your agents smarter. Search, scrape and access 550+ data providers through one API.",
+          "extra": {
+            "stars": 207321,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "统一API接入550+数据源，让Agent实时获取结构化知识，开箱即用。"
+        },
+        {
+          "section": "repo",
+          "title": "huggingface/transformers",
+          "url": "https://github.com/huggingface/transformers",
+          "source": "GitHub 经典",
+          "published_at": "2018-10-29T13:56:00Z",
+          "raw_text": "🤗 Transformers: the model-definition framework for state-of-the-art machine learning models in text, vision, audio, and multimodal models, for both inference and training.",
+          "extra": {
+            "stars": 169403,
+            "language": "Python",
+            "topics": [
+              "audio",
+              "deep-learning",
+              "deepseek",
+              "gemma",
+              "glm",
+              "hacktoberfest",
+              "llm",
+              "machine-learning",
+              "model-hub",
+              "natural-language-processing",
+              "nlp",
+              "pretrained-models",
+              "python",
+              "pytorch",
+              "pytorch-transformers",
+              "qwen",
+              "speech-recognition",
+              "transformer",
+              "vlm"
+            ]
+          },
+          "score": 9.0,
+          "summary": "业界标准模型框架，覆盖文本/视觉/多模态，训练推理全支持。"
+        },
+        {
+          "section": "repo",
+          "title": "Significant-Gravitas/AutoGPT",
+          "url": "https://github.com/Significant-Gravitas/AutoGPT",
+          "source": "GitHub 经典",
+          "published_at": "2023-03-16T09:21:07Z",
+          "raw_text": "AutoGPT is the vision of accessible AI for everyone, to use and to build on. Our mission is to provide the tools, so that you can focus on what matters.",
+          "extra": {
+            "stars": 188146,
+            "language": "Python",
+            "topics": [
+              "agentic-ai",
+              "agents",
+              "ai",
+              "artificial-intelligence",
+              "autonomous-agents",
+              "claude",
+              "gpt",
+              "llama-api",
+              "llm",
+              "openai",
+              "python"
+            ]
+          },
+          "score": 8.0,
+          "summary": "开源自主Agent标杆，提供工具链让开发者快速构建自动化任务。"
+        },
+        {
+          "section": "repo",
+          "title": "yetone/magpie",
+          "url": "https://github.com/yetone/magpie",
+          "source": "GitHub 新星",
+          "published_at": "2026-09-23T16:22:35Z",
+          "raw_text": "Every agent's model. One place. Codex on DeepSeek, Claude Code on Kimi, from the menu bar.",
+          "extra": {
+            "stars": 40237,
+            "language": "Go",
+            "topics": [
+              "claude-code",
+              "codex",
+              "deepseek",
+              "gemini-cli",
+              "llm",
+              "macos"
+            ]
+          },
+          "score": 8.0,
+          "summary": "菜单栏一键切换Codex/Claude Code等模型，提升多模型协作效率。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "How Notable Capital, GIC, and Baillie Gifford bet big on Anthropic before its IPO",
+          "url": "https://techcrunch.com/2026/11/22/how-notable-capital-gic-and-baillie-gifford-bet-big-on-anthropic-before-its-ipo/",
+          "source": "TechCrunch",
+          "published_at": "2026-11-23T01:25:53Z",
+          "raw_text": "Three significant backers share what gave them conviction to bet billions on Anthropic.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "三大顶级投资方披露押注 Anthropic 数十亿美元的逻辑，预示 AI 资本格局。"
+        },
+        {
+          "section": "news",
+          "title": "XNU Linux: Full OS X GUI Userspace on Linux",
+          "url": "https://github.com/AFK-surf/xnulinux",
+          "source": "Hacker News",
+          "published_at": "2026-11-23T03:49:24Z",
+          "raw_text": "Article URL: https://github.com/AFK-surf/xnulinux Comments URL: https://news.ycombinator.com/item?id=50607261 Points: 208 # Comments: 93",
+          "extra": {},
+          "score": 8.0,
+          "summary": "在 Linux 上原生运行 macOS 图形界面，开源项目突破系统壁垒。"
+        },
+        {
+          "section": "news",
+          "title": "We haven’t seen the last of the major tech outages",
+          "url": "https://www.theverge.com/tech/1039851/major-tech-outages",
+          "source": "The Verge",
+          "published_at": "2026-11-22T22:48:02Z",
+          "raw_text": "Over the last week or so, we have seen a nationwide FAA ground stop, a multi-day Outlook outage that brought entire companies to a standstill, and a banking outage at JPMorgan Chase. But the consensus is that there are more to come. Director of National Intelligence Jay Clayton told CNN: \"The American people should be […]",
+          "extra": {},
+          "score": 8.0,
+          "summary": "FAA、Outlook、摩根大通接连宕机，专家警告更多重大故障将至。"
+        },
+        {
+          "section": "news",
+          "title": "OpenAI’s chief scientist has thoughts on how to limit AI development",
+          "url": "https://techcrunch.com/2026/11/22/openais-chief-scientist-has-thoughts-on-how-to-limit-ai-development/",
+          "source": "TechCrunch",
+          "published_at": "2026-11-22T21:14:07Z",
+          "raw_text": "To establish a speed limit on AI development, you need to agree on how to measure speed.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "OpenAI 首席科学家提出量化 AI 发展速度以设立开发上限。"
+        },
+        {
+          "section": "news",
+          "title": "Why data centers are at the center of the Big Tech backlash",
+          "url": "https://techcrunch.com/2026/11/22/why-data-centers-are-at-the-center-of-the-big-tech-backlash/",
+          "source": "TechCrunch",
+          "published_at": "2026-11-22T18:08:43Z",
+          "raw_text": "Journalist Paris Marx unpacks his new book \"Hyperscale.\"",
+          "extra": {},
+          "score": 7.0,
+          "summary": "新书剖析数据中心如何成为科技巨头反垄断与民怨焦点。"
+        },
+        {
+          "section": "news",
+          "title": "Binding of Isaac developer removes AI music from Repentance Plus",
+          "url": "https://www.theverge.com/games/1039770/binding-of-isaac-ai-music",
+          "source": "The Verge",
+          "published_at": "2026-11-22T17:25:20Z",
+          "raw_text": "The Binding of Isaac: Repentance Plus has spent the last few days getting review-bombed on Steam after it was discovered that a particular segment of the game used AI music. Reddit user ShweetsStuff discovered the songs used during a Grand Theft Auto-themed section. They found several audio files with Suno metadata that pointed back to […]",
+          "extra": {},
+          "score": 6.0,
+          "summary": "《以撒的结合》因使用 AI 音乐遭差评轰炸，开发者紧急移除。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Introducing Gemini 4 Neon",
+          "url": "https://deepmind.google/blog/introducing-gemini-4-neon/",
+          "source": "Google DeepMind",
+          "published_at": "2026-11-18T21:35:43Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "Google 发布 Gemini 4 Neon，新一代模型能力升级，值得关注其性能与架构变化。"
+        },
+        {
+          "section": "product",
+          "title": "Welcome Inkling 2 Mini, Cutting-edge Performance for your Local Setup",
+          "url": "https://huggingface.co/blog/inkling2mini",
+          "source": "Hugging Face",
+          "published_at": "2026-11-20T00:00:00Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Inkling 2 Mini 发布，为本地部署提供前沿性能，适合开发者自建推理环境。"
+        },
+        {
+          "section": "product",
+          "title": "Genie 4 is now available",
+          "url": "https://deepmind.google/blog/genie-4-is-now-available/",
+          "source": "Google DeepMind",
+          "published_at": "2026-11-18T18:13:42Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Genie 4 正式可用，新版本模型或带来能力提升，值得第一时间体验。"
+        }
+      ]
+    }
+  ]
+}
