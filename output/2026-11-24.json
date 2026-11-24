@@ -1,0 +1,388 @@
+{
+  "date": "2026-11-24",
+  "tip": {
+    "title": "用共形预测让 Text-to-SQL Agent 学会“拒绝回答”",
+    "body": "**场景**：构建 Text-to-SQL Agent 时，模型可能生成语法正确但答案错误的 SQL，导致下游任务失败。\n\n**做法**：用共形预测（Conformal Prediction）为每条 SQL 输出置信区间。当置信度低于阈值（如 0.8）时，让 Agent 主动拒绝执行并请求人工确认。\n\n```python\nfrom conformal_tool import ConformalSQL\n\nsql_agent = ConformalSQL(model, alpha=0.2)  # 90% 置信度\nsql, conf = sql_agent.predict(\"查询2024年销售额\")\nif conf < 0.8:\n    print(\"置信度不足，请人工审核\")\nelse:\n    execute(sql)\n```\n\n**注意**：使用预训练共形预测器，无需裸执行模型输出。",
+    "ref_title": "Know When to Abstain: Conformal Confidence Estimation for Text-to-SQL",
+    "ref_url": "https://arxiv.org/abs/2611.31190v1"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "ToolSmith: An Automatic Tool-Generation Framework for Multimodal Search Agents",
+          "url": "https://arxiv.org/abs/2611.31198v1",
+          "source": "arXiv",
+          "published_at": "2026-11-23T18:48:02Z",
+          "raw_text": "Recent multimodal search agents use reasoning, vision, and live web search across many turns to answer questions beyond parametric knowledge by orchestrating a small library of hand-crafted search and visual tools. However, the library is laborious to create and maintain, and frozen when new query types, evidence formats, and failure modes are encountered in the wild. Human practitioners, by contrast, cope with insufficient tools by fashioning new ones from familiar parts and reusing them across tasks. Inspired by this, we propose ToolSmith, an automatic tool-generation framework that grows and reuses modules on top of a lean base tool library. We evaluate ToolSmith on three in-domain multimodal search benchmarks and ten out-of-domain benchmarks under a VLM-as-a-Judge protocol. ToolSmith consistently improves over the base library across deployed agents of varying scales, with larger backbones reaping greater gains, demonstrating the scalability of the approach. Our code and data are available at https://threesr.github.io/toolsmith/.",
+          "extra": {
+            "authors": [
+              "Rui Sun",
+              "Junhua Huang",
+              "Luca Zancato",
+              "Md Mofijul Islam",
+              "Kai-Wei Chang"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.AI",
+              "cs.CV"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.31198v1"
+          },
+          "score": 9.0,
+          "summary": "提出自动生成多模态搜索工具框架，替代手工维护，让Agent动态适配新查询需求。"
+        },
+        {
+          "section": "paper",
+          "title": "ACAP: Asynchronous Coding Agents for Efficient Robot Control",
+          "url": "https://arxiv.org/abs/2611.31205v1",
+          "source": "arXiv",
+          "published_at": "2026-11-23T18:52:19Z",
+          "raw_text": "Coding agents can construct and revise robot behavior during execution, but using one agent for the whole robot can delay otherwise independent work. We introduce Asynchronous Coding Agents as Policy (ACAP), an asynchronous framework that organizes one robot as a team of persistent agents. Each member reasons and acts for a configurable control group, such as an arm with its gripper or the torso and chassis, enabling asynchronous reasoning and execution. However, different robot components often have physical dependencies that require coordination. To address this challenge, ACAP introduces a hyper-agent that assigns tasks, coordinates dependencies, and dynamically allocates control between the lead and member agents. This allows independent work to progress concurrently while supporting tightly coupled manipulation when necessary. Across 72 real-world rollouts covering 25 task/platform settings, ACAP reduces task-balanced time cost by 28.2% compared with a single-agent Direct Policy, with improvements across Fully Parallel, Parallel-Sequential, and Collaborative tasks. Across all eight Collaborative settings, ACAP also achieves lower mean time cost than Fixed Delegation, where only member agents can control their assigned groups. An additional 90-rollout study shows lower mean 30-minute-capped time cost than Direct on all six tasks. We further demonstrate mobile manipulation using the same member interface for chassis and torso control. We present the framework and a real-world rollout dataset containing observations, generated programs, actions, and feedback to support research on how coding agents reason and act in the physical world.",
+          "extra": {
+            "authors": [
+              "Zexin He",
+              "Rui Li",
+              "Yushi Lan",
+              "Chengkai Jin",
+              "Zhi Hou",
+              "Xingang Pan"
+            ],
+            "categories": [
+              "cs.RO",
+              "cs.MA"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.31205v1"
+          },
+          "score": 8.0,
+          "summary": "用异步多Agent协作控制机器人，各部件独立决策，提升实时任务执行效率。"
+        },
+        {
+          "section": "paper",
+          "title": "CO-GRAFT: Attributing Reinforcement Learning Gains in Search Agents via Role-Level Policy Grafting",
+          "url": "https://arxiv.org/abs/2611.31185v1",
+          "source": "arXiv",
+          "published_at": "2026-11-23T18:38:53Z",
+          "raw_text": "Reinforcement learning (RL) improves large language model search agents by up to 32 exact-match (EM) points over their pre-RL initializations, yet overall accuracy gains do not identify which underlying functional capabilities improve or interact during training. We introduce CO-GRAFT, a reward-agnostic interventional attribution framework in which an RL-trained agent and its pre-RL initialization jointly generate a single trajectory under closed-loop execution with live retrieval. Each policy controls a mutually exclusive subset of four functional roles: intermediate reasoning, search-or-answer decision, search query generation, and final answer extraction. Evaluating all 2^4=16 role assignments without modifying weights or retraining defines a cooperative game whose Shapley values decompose the total RL gain across roles, while M\"obius interaction terms distinguish standalone role improvements from multi-role coupling. Applying CO-GRAFT to Search-R1 agents across Qwen2.5 and Llama-3.2 models (spanning two sizes, base and instruction-tuned initializations, GRPO and PPO optimizers, and NQ and HotpotQA datasets), we show that query generation never exceeds 15% of the total gain; instead, gains are governed by pre-RL answer validity, search retention, model scale, and fixed task-level search budgets, shifting credit from reasoning toward answer extraction in larger or well-formatted answer response checkpoints while smaller base models rely on reasoning--decision coupling.",
+          "extra": {
+            "authors": [
+              "Ramraj Chandradevan",
+              "Sayontan Ghosh",
+              "Vinoth Selvendran"
+            ],
+            "categories": [
+              "cs.IR",
+              "cs.AI",
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.31185v1"
+          },
+          "score": 8.0,
+          "summary": "通过策略嫁接归因RL对搜索Agent各能力的贡献，揭示提升来源而非只看总分。"
+        },
+        {
+          "section": "paper",
+          "title": "Language Models Steer on Injected Uncertainty Tokens, but Fail to Self-Monitor In Situ",
+          "url": "https://arxiv.org/abs/2611.31228v1",
+          "source": "arXiv",
+          "published_at": "2026-11-23T18:58:52Z",
+          "raw_text": "Prompting language models to verbalize stepwise numerical confidence during generation is an increasingly popular approach for triggering backtracking and error correction in agentic reasoning. This strategy presupposes two capabilities: (1) in-situ monitoring fidelity (does confidence drop when an error occurs?) and (2) downstream steering control (does an uncertainty token causally steer the model to repair its error?). We evaluated four open-weights models (Qwen2.5-7B, Llama-3.1-8B, Mistral-7B, and Phi-4, 14.7B) across 15,200 math benchmark attempts, isolating 2,017 reasoning errors within each model's capability frontier. Applying 27,568 counterfactual continuations across these failure points, we demonstrate a consistent decoupling between monitoring and control. On monitoring, all four models fail to detect their own errors. Verbalized confidence does not distinguish mistake steps from sound reasoning, yielding near-chance within-position AUROCs between 0.500 and 0.561. Even at a model's first reasoning error, trajectory confidence remains saturated at 95.1% to 99.9%, with noticeable drops ($\\ge 10$ points) appearing on fewer than 9% of errors in Llama and under 1.6% in the other three models. In contrast, models respond readily to external uncertainty: injecting a low-confidence tag (10%) at the error step significantly increases downstream correction across all models (+3.7 to +22.5 points over format-matched 95% certainty; all $p \\le 0.0022$), reaching up to 38.5% under active rethinking instructions. However, injecting doubt onto already-correct steps causes models to discard valid reasoning, reducing solve rates by up to 22.8 points. Inference-time self-correction is thus bottlenecked by in-situ error detection rather than downstream repair capacity: models readily steer toward recovery when prompted with doubt, yet fail to self-monitor during generation.",
+          "extra": {
+            "authors": [
+              "Daniel Theron"
+            ],
+            "categories": [
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.31228v1"
+          },
+          "score": 8.0,
+          "summary": "发现LLM虽能表达置信度，但实际推理中无法自主监控并纠错，暴露Agent关键缺陷。"
+        },
+        {
+          "section": "paper",
+          "title": "Know When to Abstain: Conformal Confidence Estimation for Text-to-SQL",
+          "url": "https://arxiv.org/abs/2611.31190v1",
+          "source": "arXiv",
+          "published_at": "2026-11-23T18:42:54Z",
+          "raw_text": "Text-to-SQL systems often return queries that execute successfully but answer the wrong question. Detecting these errors at deployment is hard because execution correctness is defined against a gold query, which exists only in labeled data. We formulate confidence estimation for Text-to-SQL as probabilistic query validation under a latent correctness variable that is observable at calibration time through gold-SQL execution and latent at deployment. Our estimator separates generation from validation. A generator LLM writes and executes the query, and a different critic LLM judges the query and its execution result. The critic's validation and execution-grounded alignment scores are fused with the generator's verbalized confidence, token-level uncertainty, and SQL-structural features in a Random Forest, using two sequential LLM calls. Two calibration steps give finite-sample guarantees. A Learn-then-Test threshold ensures, with probability $1-δ$, that the error rate among accepted queries stays below a user-chosen budget. A conformal p-value bounds the false abstention rate. On Spider we use GPT-OSS-120B as generator and Gemma-4-31B as critic. The estimator obtains an AUARC of 0.899. Without abstention, 22.6% of queries are wrong. With a 15% risk budget ($δ=0.1$), a threshold is certified on all 10 resampled splits, and the system accepts 52.4% of queries on average with 9.1% observed error. Five different critic models give similar results. In a controlled comparison on Spider with Olmo-3-32B as generator, the estimator obtains an AUARC of 89.5, compared with 81.2 for the strongest logit-based baseline. Applied to BIRD without retraining, the confidence scores remain informative (AUROC 0.72, against 0.79 on Spider), but the risk guarantee does not transfer, as expected without exchangeability.",
+          "extra": {
+            "authors": [
+              "Avinash Kumar Singh",
+              "Bhaskarjit Sarmah",
+              "Stefano Pasquali"
+            ],
+            "categories": [
+              "cs.AI",
+              "q-fin.CP"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.31190v1"
+          },
+          "score": 7.0,
+          "summary": "用共形预测为Text-to-SQL提供可靠置信度，避免执行正确但答案错误的风险。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "Knowledge infrastructure to make your agents smarter. Search, scrape and access 550+ data providers through one API.",
+          "extra": {
+            "stars": 208336,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "一站式API接入550+数据源，让智能体搜索和抓取更高效。"
+        },
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi, GLM, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 187972,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "muse",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 9.0,
+          "summary": "本地运行Kimi、DeepSeek等主流模型，无需联网即可部署。"
+        },
+        {
+          "section": "repo",
+          "title": "huggingface/transformers",
+          "url": "https://github.com/huggingface/transformers",
+          "source": "GitHub 经典",
+          "published_at": "2018-10-29T13:56:00Z",
+          "raw_text": "🤗 Transformers: the model-definition framework for state-of-the-art machine learning models in text, vision, audio, and multimodal models, for both inference and training.",
+          "extra": {
+            "stars": 169282,
+            "language": "Python",
+            "topics": [
+              "audio",
+              "deep-learning",
+              "deepseek",
+              "gemma",
+              "glm",
+              "hacktoberfest",
+              "llm",
+              "machine-learning",
+              "model-hub",
+              "natural-language-processing",
+              "nlp",
+              "pretrained-models",
+              "python",
+              "pytorch",
+              "pytorch-transformers",
+              "qwen",
+              "speech-recognition",
+              "transformer",
+              "vlm"
+            ]
+          },
+          "score": 8.0,
+          "summary": "业界标准模型框架，支持文本/视觉/多模态的推理与训练。"
+        },
+        {
+          "section": "repo",
+          "title": "yetone/magpie",
+          "url": "https://github.com/yetone/magpie",
+          "source": "GitHub 新星",
+          "published_at": "2026-09-23T16:22:35Z",
+          "raw_text": "Every agent's model. One place. Codex on DeepSeek, Claude Code on Kimi, from the menu bar.",
+          "extra": {
+            "stars": 40829,
+            "language": "Go",
+            "topics": [
+              "claude-code",
+              "codex",
+              "deepseek",
+              "gemini-cli",
+              "llm",
+              "macos"
+            ]
+          },
+          "score": 8.0,
+          "summary": "菜单栏一键切换Codex、Claude Code等模型，统一管理AI代理。"
+        },
+        {
+          "section": "repo",
+          "title": "browser-use/jev-ultrafast",
+          "url": "https://github.com/browser-use/jev-ultrafast",
+          "source": "GitHub 新星",
+          "published_at": "2026-09-16T21:30:12Z",
+          "raw_text": "Fastest and cheapest web agent",
+          "extra": {
+            "stars": 24718,
+            "language": "Python",
+            "topics": []
+          },
+          "score": 7.0,
+          "summary": "极速低成本的网页代理，适合高频自动化任务。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Jensen Huang reinstated as Nvidia CEO, board chair",
+          "url": "https://arstechnica.com/ai/2026/11/jensen-huang-reinstated-as-nvidia-ceo-board-chair/",
+          "source": "Ars Technica",
+          "published_at": "2026-11-23T15:46:18Z",
+          "raw_text": "Trump says he spoke to the board and that Huang \"did nothing wrong.\"",
+          "extra": {},
+          "score": 10.0,
+          "summary": "黄仁勋在董事会接受辞职后，因特朗普干预被复职，标志政商干预公司治理的极端案例。"
+        },
+        {
+          "section": "news",
+          "title": "Anthropic launches Claude Ship, letting AI agents review, fix, and approve code changes",
+          "url": "https://techcrunch.com/2026/11/23/anthropic-launches-claude-ship-letting-ai-agents-review-fix-and-approve-code-changes/",
+          "source": "TechCrunch",
+          "published_at": "2026-11-23T22:05:50Z",
+          "raw_text": "As AI-generated code piles up, Anthropic's new developer tools aim to eliminate another bottleneck by letting agents handle routine approvals.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "Anthropic推出Claude Ship，让AI代理自动审查、修复和批准代码，直击AI代码质量瓶颈。"
+        },
+        {
+          "section": "news",
+          "title": "States sue SpaceX to stop Grok from generating child sex images, revenge porn",
+          "url": "https://arstechnica.com/tech-policy/2026/11/states-sue-spacex-to-stop-grok-from-generating-child-sex-images-revenge-porn/",
+          "source": "Ars Technica",
+          "published_at": "2026-11-23T21:30:44Z",
+          "raw_text": "X says every Grok output is screened, but state AGs say Grok is still making CSAM.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "多州起诉SpaceX，指控Grok生成儿童性虐待图像，AI安全监管再升级。"
+        },
+        {
+          "section": "news",
+          "title": "Supertake raises $20M to let AI agents turn your market predictions into stock portfolios",
+          "url": "https://techcrunch.com/2026/11/23/supertake-raises-20m-to-let-ai-agents-turn-your-market-predictions-into-stock-portfolios/",
+          "source": "TechCrunch",
+          "published_at": "2026-11-23T22:02:05Z",
+          "raw_text": "Think you know where the market is headed? A startup called Supertake lets you put money behind your ideas without having to pick the stocks yourself.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "Supertake获2000万美元融资，用AI代理将市场预测自动转化为股票组合。"
+        },
+        {
+          "section": "news",
+          "title": "New York Bans Subscription and Post-Purchase Fees on Cars",
+          "url": "https://www.governor.ny.gov/news/money-your-pockets-governor-hochul-signs-bill-restricting-exploitative-vehicle-subscription",
+          "source": "Hacker News",
+          "published_at": "2026-11-24T02:27:02Z",
+          "raw_text": "Article URL: https://www.governor.ny.gov/news/money-your-pockets-governor-hochul-signs-bill-restricting-exploitative-vehicle-subscription Comments URL: https://news.ycombinator.com/item?id=50622774 Points: 366 # Comments: 113",
+          "extra": {},
+          "score": 6.0,
+          "summary": "纽约州签署法案禁止汽车订阅及售后收费，影响汽车行业商业模式。"
+        },
+        {
+          "section": "news",
+          "title": "A legendary philosopher isn’t buying Anthropic’s consciousness argument",
+          "url": "https://www.technologyreview.com/2026/11/23/1149569/a-legendary-philosopher-isnt-buying-anthropics-consciousness-argument/",
+          "source": "MIT Tech Review",
+          "published_at": "2026-11-23T17:36:08Z",
+          "raw_text": "This story originally appeared in The Algorithm, our weekly newsletter on AI. To get stories like this in your inbox first, sign up here. Before going public last week, Anthropic named the possibility that AI could be conscious or sentient as a risk factor for anyone investing. Given “the way we approach model sentience and moral…",
+          "extra": {},
+          "score": 6.0,
+          "summary": "知名哲学家质疑Anthropic关于AI可能具有意识的论点，引发伦理讨论。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Introducing Gemini 4 Neon",
+          "url": "https://deepmind.google/blog/introducing-gemini-4-neon/",
+          "source": "Google DeepMind",
+          "published_at": "2026-11-18T21:35:43Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "谷歌发布 Gemini 4 Neon，新一代旗舰模型正式上线。"
+        },
+        {
+          "section": "product",
+          "title": "Genie 4 is now available",
+          "url": "https://deepmind.google/blog/genie-4-is-now-available/",
+          "source": "Google DeepMind",
+          "published_at": "2026-11-18T18:13:42Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 9.0,
+          "summary": "Genie 4 模型正式可用，基础模型能力再升级。"
+        },
+        {
+          "section": "product",
+          "title": "Welcome Inkling 2 Mini, Cutting-edge Performance for your Local Setup",
+          "url": "https://huggingface.co/blog/inkling2mini",
+          "source": "Hugging Face",
+          "published_at": "2026-11-20T00:00:00Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Inkling 2 Mini 发布，面向本地部署的高性能边缘模型。"
+        }
+      ]
+    }
+  ]
+}
