@@ -1,0 +1,371 @@
+{
+  "date": "2026-11-25",
+  "tip": {},
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError",
+    "技巧生成失败：OpenAIInvalidRequestError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "Delegent: A Multi-Agent Harness That Reduces Cost without Sacrificing Performance",
+          "url": "https://arxiv.org/abs/2611.33098v1",
+          "source": "arXiv",
+          "published_at": "2026-11-24T18:34:40Z",
+          "raw_text": "Agents built on frontier language models are expensive. At every step, the frontier model re-reads its entire context and executes every subtask regardless of its difficulty. This paper explores the simple thesis that much of this cost can be removed by delegating easy subtasks to a small language model, or SLM, that runs on hardware one already owns. To test it, we build Delegent, a simple and effective agent harness built on Claude Code, in which the frontier model stays in charge of every task but hands focused subtasks, such as investigating code, running tests, and searching a corpus, to SLM subagents. Existing approaches such as cascades and model routers usually choose which model executes the entire task, whereas in Delegent, the frontier model always leads the execution and delegates easy subtasks to the SLM. No router or model is trained, so either model can be swapped freely. With the help of a 27B FP8 SLM, Delegent reduces the frontier cost of long-horizon coding by 67% and of agentic search by 59%, with no loss in task performance, and even a 2B SLM that fits on a laptop reduces the coding cost by 66%. The savings grow with the legwork that the frontier model would otherwise do itself, and a short instruction, which leaves the main coding tasks to the frontier model, accounts for most of the saving and keeps the 2B SLM from losing tasks. Code: https://github.com/castorini/delegent",
+          "extra": {
+            "authors": [
+              "Lingwei Gu",
+              "Jimmy Lin"
+            ],
+            "categories": [
+              "cs.AI",
+              "cs.IR"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.33098v1"
+          },
+          "score": 9.0,
+          "summary": "提出用小型模型代理简单子任务，大幅降低前沿模型调用成本而不牺牲性能。"
+        },
+        {
+          "section": "paper",
+          "title": "CoT-Proxy: Cross-Format Transfer for Distilling Long-Horizon Policies",
+          "url": "https://arxiv.org/abs/2611.33148v1",
+          "source": "arXiv",
+          "published_at": "2026-11-24T18:58:53Z",
+          "raw_text": "Reasoning models become long-horizon agents through reinforcement learning or, more cheaply, through fine-tuning on a stronger teacher's trajectories, which contain the teacher's chain-of-thought as well as its actions. The standard fine-tuning approach imitates both, yet the strongest teachers are closed models whose chain-of-thought is hidden behind an API. We show that the chain-of-thought can be left out altogether and that the long-horizon policy can be distilled from the teacher's actions alone. The student is trained on these trajectories with its reasoning block left empty, while a KL loss on a replay buffer of its own generations limits drift from its initial model. Surprisingly, the policy learned from these trajectories with an empty reasoning block carries over to inference with thinking enabled, where the student reasons in its own style while acting like the teacher, an effect we call cross-format transfer. Distilling the actions of Qwen3.6-27B raises the task success of Qwen3-4B on AppWorld from 7% to 18% and that of Qwen3-32B from 12% to 25%. We further introduce CoT-proxies, short summaries of the teacher's reasoning placed after the empty reasoning block, which raise Qwen3-4B further, to 35%. Since neither actions nor CoT-proxies need the hidden chain-of-thought, the recipe applies unchanged to closed teachers. Distilling GPT-5.6 Luna from its visible outputs and the reasoning summaries its API returns raises Qwen3-4B from 7% to 48% on AppWorld and from 3% to 28% on SWE-bench Verified.",
+          "extra": {
+            "authors": [
+              "Dawid J. Kopiczko",
+              "Tijmen Blankevoort",
+              "Yuki M. Asano"
+            ],
+            "categories": [
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.33148v1"
+          },
+          "score": 8.0,
+          "summary": "提出跨格式蒸馏方法，让推理模型从强教师轨迹中高效学习长程规划能力。"
+        },
+        {
+          "section": "paper",
+          "title": "A Bias in Disguise: Tiny Gradient Edits Stop a Small Language Model's Thinking Loops and Complement a Frontier Model's Weight Edit",
+          "url": "https://arxiv.org/abs/2611.33133v1",
+          "source": "arXiv",
+          "published_at": "2026-11-24T18:53:22Z",
+          "raw_text": "Qwen3.5-0.8B rarely finishes reasoning in thinking mode: at a 4,096-token budget only 1 or 2 of 500 MATH-500 answers close their think block (two seeds), and accuracy is 15.4%. A recent demonstration had GPT-6 Astra edit 131,072 of the model's weights without gradients and reported MATH-500 rising from 7.9% to 48.1% at a 32,768-token budget. We provide the missing gradient baseline, then combine the two edits. Fine-tuning only the 140 to 139,750 weights with the largest gradient, on the model's own correct answers to MATH training problems, raises thinking-mode MATH-500 at 4k tokens to 39.0-45.5% after 2-9 minutes of training on one GPU; 50 training examples suffice, and 1,398 random positions give only 16.3%. The gradient concentrates the edit on the most nearly constant channel of each of the first three layers. Because the model has no bias terms, an edit confined to those channels acts as a constant vector added to the residual stream: adding three fixed vectors to the unedited model matches the accuracy of such an edit. Under the Astra protocol (32k tokens, presence penalty 1.5), the Astra edit scores 52.1% (finished and correct) in our reproduction and our full-strength edits reach 45.6-45.7%, but ours win at every budget up to 16k tokens (39.5% against 6.7% at 4k). The two edits are complementary. The Astra edit plus our 139,750-weight edit at half strength scores 62.2% at 32k, 10 points above the Astra edit alone (p = 3e-9), with half as many tokens; our half-strength edit alone scores 46.7%.",
+          "extra": {
+            "authors": [
+              "Hussamuddin Syed"
+            ],
+            "categories": [
+              "cs.LG",
+              "cs.CL"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.33133v1"
+          },
+          "score": 8.0,
+          "summary": "发现微小梯度修改即可阻断小模型思考循环，为推理控制提供低成本新思路。"
+        },
+        {
+          "section": "paper",
+          "title": "AIChipBench: Benchmarking LLM Agents for Automated AI Accelerator Design",
+          "url": "https://arxiv.org/abs/2611.33093v1",
+          "source": "arXiv",
+          "published_at": "2026-11-24T18:28:41Z",
+          "raw_text": "A language-model decoder carries state between decoding steps, and in hardware a wrong state update can leave the current token correct and corrupt the output several tokens later, so a design can pass output tests and still be wrong. AIChipBench asks what LLM coding agents need to build such hardware correctly. Agents implement quantized Qwen3.5, Gemma 3, Gemma 4, and Llama 3.2 decoders in synthesizable register-transfer-level (RTL) code against an executable integer reference that specifies the outputs and the stored state at every decoding step. They debug against public tests under fixed budgets; their frozen designs are graded on held-out token sequences, resets, memory stalls, and synthesis, and a second track asks them to speed up a correct design at nearly fixed area. Across 9,136 attempts by four coding agents, the difficulty lies in stored state. Feedback that points to the first state mismatch raises acceptance over output-only feedback in all 12 agent--task cells of a matched study, by 25.0 to 46.9 percentage points, and halves the agent-hours per accepted design. Regraded on new sequences and conditions, 45 of 69 accepted designs fail within the 32 steps their tests required. More than a third of attempts to speed up a correct design end without one. An overall score ranks Sol 5.6 and Fable 5.1 above Astra 6 and Opus 5.5, and both halves of the instances give this order in all 200 random splits. Hardware agents therefore need debugging feedback that exposes stored state, and their benchmarks need final tests well beyond the development cases.",
+          "extra": {
+            "authors": [
+              "Guangyuan Wang",
+              "Chengran Li",
+              "Minchen Luo",
+              "Jichen Feng",
+              "Mengdi Wang",
+              "Yifan Zhang"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.33093v1"
+          },
+          "score": 7.0,
+          "summary": "发布AI芯片设计基准，测试LLM智能体处理硬件状态依赖的复杂代码生成能力。"
+        },
+        {
+          "section": "paper",
+          "title": "FOL-Proof: Verifying LLM Text-to-Logic Translations via Deterministic Semantics",
+          "url": "https://arxiv.org/abs/2611.33078v1",
+          "source": "arXiv",
+          "published_at": "2026-11-24T18:13:28Z",
+          "raw_text": "Large Language Models (LLMs) are increasingly used to translate natural-language statements into first-order logic (FOL) to improve reasoning. However, LLMs are prone to errors, and so a semantically unfaithful FOL formula could corrupt downstream reasoning. We present FOL-Proof, a semantic firewall pipeline that validates LLM-generated FOL translations against independently derived linguistic interpretations. FOL-Proof operates by deterministically obtaining a pool of candidate translations via semantic analysis tools, such as the English Resource Grammar and Minimal Recursion Semantics; then applying an SMT solver to check each derived reading for logical equivalence to the LLM-generated formula. If the translation is faithful it is accepted; otherwise, it is rejected, or optionally repaired via repeated invocations to the LLM. The procedure is conservative: incomplete search, unsupported constructions, or inconclusive checks yield abstention rather than false rejection. We evaluated FOL-Proof on established benchmarks (ProofWriter, RuleTaker and PrOntoQA), and also on a new adversarial benchmark (LongFaithCheck). Our experiments show that FOL-Proof attains near perfect selective accuracy, while direct LLM judges and round-trip baselines show substantially worse performance.",
+          "extra": {
+            "authors": [
+              "Yisrael Clark",
+              "Guy Katz"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.LO"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.33078v1"
+          },
+          "score": 7.0,
+          "summary": "提出语义防火墙，用确定性逻辑验证LLM文本到一阶逻辑翻译的忠实性。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "Knowledge infrastructure to make your agents smarter. Search, scrape and access 550+ data providers through one API.",
+          "extra": {
+            "stars": 209335,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "一个API搞定搜索、抓取和550+数据源，让智能体知识获取效率翻倍。"
+        },
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi, GLM, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 188058,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "muse",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 9.0,
+          "summary": "本地运行Kimi、DeepSeek、Qwen等主流模型，零门槛上手开源大模型。"
+        },
+        {
+          "section": "repo",
+          "title": "huggingface/transformers",
+          "url": "https://github.com/huggingface/transformers",
+          "source": "GitHub 经典",
+          "published_at": "2018-10-29T13:56:00Z",
+          "raw_text": "🤗 Transformers: the model-definition framework for state-of-the-art machine learning models in text, vision, audio, and multimodal models, for both inference and training.",
+          "extra": {
+            "stars": 169300,
+            "language": "Python",
+            "topics": [
+              "audio",
+              "deep-learning",
+              "deepseek",
+              "gemma",
+              "glm",
+              "hacktoberfest",
+              "llm",
+              "machine-learning",
+              "model-hub",
+              "natural-language-processing",
+              "nlp",
+              "pretrained-models",
+              "python",
+              "pytorch",
+              "pytorch-transformers",
+              "qwen",
+              "speech-recognition",
+              "transformer",
+              "vlm"
+            ]
+          },
+          "score": 8.0,
+          "summary": "文本/视觉/音频/多模态模型训练推理的行业标准框架，必装工具。"
+        },
+        {
+          "section": "repo",
+          "title": "browser-use/jev-ultrafast",
+          "url": "https://github.com/browser-use/jev-ultrafast",
+          "source": "GitHub 新星",
+          "published_at": "2026-09-16T21:30:12Z",
+          "raw_text": "Fastest and cheapest web agent",
+          "extra": {
+            "stars": 24734,
+            "language": "Python",
+            "topics": []
+          },
+          "score": 8.0,
+          "summary": "号称最快最便宜的Web Agent，适合高频自动化任务场景。"
+        },
+        {
+          "section": "repo",
+          "title": "janestreet/agent_skills",
+          "url": "https://github.com/janestreet/agent_skills",
+          "source": "GitHub 新星",
+          "published_at": "2026-11-03T16:50:21Z",
+          "raw_text": "Agent skills",
+          "extra": {
+            "stars": 11689,
+            "language": null,
+            "topics": []
+          },
+          "score": 7.0,
+          "summary": "Jane Street开源的Agent技能库，可直接复用的工程化能力集合。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Yale’s Sonnenfeld: Nvidia is a ‘detriment’ to US industrial might — not a champion",
+          "url": "https://techcrunch.com/2026/11/24/yales-sonnenfeld-nvidia-is-a-detriment-to-u-s-industrial-might-not-a-champion/",
+          "source": "TechCrunch",
+          "published_at": "2026-11-25T00:12:02Z",
+          "raw_text": "Yale's Jeffrey Sonnenfeld warns that what the market cheered Monday, Jensen Huang's White House–backed return as Nvidia's CEO and board member, could prove a giant mistake, exposing the directors to \"historic\" personal liability from a growing pile of lawsuits and raising the question of whether the country is celebrating a company that has helped put advanced chips in its adversaries' hands.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "耶鲁教授警告黄仁勋回归董事会可能带来历史性个人责任，质疑英伟达对美国工业的损害。"
+        },
+        {
+          "section": "news",
+          "title": "Jensen Huang reportedly tells Nvidia staff it’s ‘not true’ Trump got him rehired",
+          "url": "https://www.theverge.com/tech/1041571/jensen-huang-all-hands-nvidia-apology",
+          "source": "The Verge",
+          "published_at": "2026-11-24T20:02:03Z",
+          "raw_text": "Nvidia CEO Jensen Huang apologized to staff during his first all-hands since returning to the company, while attempting to distance himself from the narrative that the White House and tech leaders helped him get his job back, according to reports from Bloomberg, The New York Times, and The Handbasket's Marisa Kabas. During the meeting, Huang […]",
+          "extra": {},
+          "score": 8.0,
+          "summary": "黄仁勋否认特朗普助其复职，向员工道歉并试图与白宫叙事切割，反映治理风波。"
+        },
+        {
+          "section": "news",
+          "title": "In all-hands meeting, Jensen Huang thanks White House and says he’s in therapy",
+          "url": "https://techcrunch.com/2026/11/24/in-all-hands-meeting-jensen-huang-thanks-white-house-and-says-hes-in-therapy/",
+          "source": "TechCrunch",
+          "published_at": "2026-11-24T21:48:27Z",
+          "raw_text": "The Nvidia founder apologized to his staff on Tuesday and said he was grateful for a second chance to lead the company.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "黄仁勋在全员会上感谢白宫并透露接受治疗，罕见公开个人状态，影响公司形象。"
+        },
+        {
+          "section": "news",
+          "title": "Tidal announces ban on AI-generated music; 27 million tracks will be deleted",
+          "url": "https://arstechnica.com/ai/2026/11/tidal-will-ban-fully-ai-generated-music-on-december-9/",
+          "source": "Ars Technica",
+          "published_at": "2026-11-24T17:34:34Z",
+          "raw_text": "AI songs account for 6.3 percent of Tidal's catalog, but it's about to be zero.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Tidal宣布下月删除2700万首AI生成歌曲，成首个大规模清理AI音乐的主流平台。"
+        },
+        {
+          "section": "news",
+          "title": "What's going on with the Riemann hypothesis?",
+          "url": "https://arstechnica.com/ai/2026/11/whats-going-on-with-the-riemann-hypothesis/",
+          "source": "Ars Technica",
+          "published_at": "2026-11-24T20:34:53Z",
+          "raw_text": "A new AI-assisted proof seems to be solid, but we're not sure what it tells us.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "AI辅助黎曼猜想证明取得进展，虽未完全解决，但标志AI在数学证明中的新里程碑。"
+        },
+        {
+          "section": "news",
+          "title": "A legendary philosopher isn’t buying Anthropic’s consciousness argument",
+          "url": "https://www.technologyreview.com/2026/11/23/1149569/a-legendary-philosopher-isnt-buying-anthropics-consciousness-argument/",
+          "source": "MIT Tech Review",
+          "published_at": "2026-11-23T17:36:08Z",
+          "raw_text": "This story originally appeared in The Algorithm, our weekly newsletter on AI. To get stories like this in your inbox first, sign up here. Before going public last week, Anthropic named the possibility that AI could be conscious or sentient as a risk factor for anyone investing. Given “the way we approach model sentience and moral…",
+          "extra": {},
+          "score": 7.0,
+          "summary": "著名哲学家质疑Anthropic关于AI可能具备意识的论点，引发AI伦理与投资风险讨论。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "GPT-6 models demonstrate intrinsic protein-design capabilities",
+          "url": "https://openai.com/index/gpt-6-models-demonstrate-intrinsic-protein-design-capabilities",
+          "source": "OpenAI",
+          "published_at": "2026-11-24T13:00:00Z",
+          "raw_text": "GPT-6 models design protein structures and sequences using reasoning and code. Lab tests found evidence of binding across five targets.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "GPT-6 模型展示了利用推理和代码设计蛋白质结构与序列的能力，实验室测试证实了结合活性。"
+        },
+        {
+          "section": "product",
+          "title": "Genie 4 is now available",
+          "url": "https://deepmind.google/blog/genie-4-is-now-available/",
+          "source": "Google DeepMind",
+          "published_at": "2026-11-18T18:13:42Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Genie 4 正式发布，为 AI 从业者提供了新的生成式模型能力。"
+        },
+        {
+          "section": "product",
+          "title": "Introducing Gemini 4 Neon",
+          "url": "https://deepmind.google/blog/introducing-gemini-4-neon/",
+          "source": "Google DeepMind",
+          "published_at": "2026-11-18T21:35:43Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 7.0,
+          "summary": "Gemini 4 Neon 发布，标志着谷歌新一代多模态模型正式亮相。"
+        }
+      ]
+    }
+  ]
+}
