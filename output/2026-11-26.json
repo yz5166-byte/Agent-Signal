@@ -1,0 +1,398 @@
+{
+  "date": "2026-11-26",
+  "tip": {
+    "title": "How Much Do Coding Agents Over-Edit, and Why? An Empirical Study of Unneeded Edits in Repository-Level Agent Patches",
+    "body": "当你的代码 Agent 在仓库级任务中频繁修改无关文件（如条目[0]所述），导致审查成本飙升时，可以用 **Git 差异白名单** 约束修改范围。\n\n做法：在 Agent 执行前注入 `allowed_paths` 列表，只允许修改指定文件。\n\n```python\nimport subprocess\n\ndef safe_edit(file_path, new_content):\n    allowed = [\"src/\", \"tests/\"]  # 白名单路径\n    if not any(file_path.startswith(p) for p in allowed):\n        raise PermissionError(f\"禁止修改 {file_path}\")\n    # 写入前先 diff 预览\n    subprocess.run([\"git\", \"diff\", \"--stat\", \"--\", file_path])\n    with open(file_path, \"w\") as f:\n        f.write(new_content)\n```\n\n这样既避免裸 `exec`，又通过文件路径白名单和 Git 预览双重防护。",
+    "ref_title": "How Much Do Coding Agents Over-Edit, and Why? An Empirical Study of Unneeded Edits in Repository-Level Agent Patches",
+    "ref_url": "https://arxiv.org/abs/2611.34875v1"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "How Much Do Coding Agents Over-Edit, and Why? An Empirical Study of Unneeded Edits in Repository-Level Agent Patches",
+          "url": "https://arxiv.org/abs/2611.34875v1",
+          "source": "arXiv",
+          "published_at": "2026-11-25T18:37:06Z",
+          "raw_text": "Agent patches are larger than developers', which is widely read as over-editing. But patch size does not say whether the extra edits are needed, what they are, or where they come from. We introduce Delta Residue Attribution (DRA), which replays agent trajectories, traces every block (unit) of the final patch to the step that wrote it, reverts each unit, and reruns the task tests to decide whether the unit is needed. We apply DRA to 7,660 resolved GitHub Copilot CLI trajectories from 18 frontier models on SWE-bench Verified (6,728) and DeepSWE (932), and grade developer patches using the same method. Agent patches do change more lines than developers'; on SWE-bench Verified the majority of extra edits add tests (61%) and documentation (13%) while on DeepSWE, most extra edits are code (58%). On both benchmarks, agents' code is on average at least as necessary as developers' (mean $NP_{code}$ 0.887 vs. 0.864 on SWE-bench Verified, where 11 of 18 models leave less unneeded code than developers, and 0.797 vs. 0.785 on DeepSWE). On average, 11% of an agent patch's code units on SWE-bench Verified are still unneeded, and 89% of those change behavior. Debug steps write almost none of the unneeded code. Code necessity differs substantially by model; it is unrelated to resolve rate on SWE-bench Verified and negatively correlated with it on DeepSWE (Spearman -0.59, p = 0.01). On SWE-bench Verified, pruning with DRA using only the tests the agent can see (its own tests and the repository's) removes the majority of unneeded code but also some needed code (67% recall, 46% precision), and 89% of pruned patches still resolve the task; asking the agent to audit its own diff is more precise but less effective (36% recall, 66% precision). We recommend that benchmarks report code necessity next to resolve rate and that over-editing be addressed through model training and harness-level pruning.",
+          "extra": {
+            "authors": [
+              "Aakash Goel",
+              "Benjamin Steenhoek",
+              "Yu Hu"
+            ],
+            "categories": [
+              "cs.SE",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.34875v1"
+          },
+          "score": 9.0,
+          "summary": "发现代码智能体常做无用修改，提出归因方法追踪原因，对提升Agent可靠性至关重要。"
+        },
+        {
+          "section": "paper",
+          "title": "Diverse Alternative Reasoning Traces for Hard Math Problems",
+          "url": "https://arxiv.org/abs/2611.34928v1",
+          "source": "arXiv",
+          "published_at": "2026-11-25T18:59:11Z",
+          "raw_text": "Post-training large language models (LLMs) for mathematical reasoning often relies on accepted traces whose final answers pass a verifier. For hard math problems, however, such traces can be rare under independent Monte Carlo (MC) sampling. To address this, we propose Diverse Alternative Reasoning Traces (DART), a trace-mining method that starts from a rejected trace, decomposes it into reasoning steps, and ranks them by position-weighted uncertainty. It then generates deliberately distinct alternative candidates for highly ranked steps using reference-answer guidance and a meta-thought before completing the resulting traces. On greedy-unsolved DeepMath-103K problems, DART recovers 37% more problems than MC sampling at a matched number of generated traces. Its estimated generation cost per recovered problem is nearly identical, while its cost per accepted trace is 30% lower. Post-training Llama-3.1-8B-Instruct on traces mined by DART achieves the highest point estimate in five of six evaluations across MATH-500 and AIME benchmarks. These results demonstrate that revisiting rejected traces with DART can expand problem coverage and provide effective post-training data.",
+          "extra": {
+            "authors": [
+              "Lukas Aichberger",
+              "Adam Golinski",
+              "Arno Blaas",
+              "Arwen Bradley",
+              "Jacob Springer",
+              "Mehrdad Farajtabar",
+              "Michael Kirchhof",
+              "Sinead Williamson"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.AI",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.34928v1"
+          },
+          "score": 8.0,
+          "summary": "针对难题提出多样化替代推理路径，提升LLM数学推理的采样效率与正确率。"
+        },
+        {
+          "section": "paper",
+          "title": "Can image generation help visual reasoning? An empirical study",
+          "url": "https://arxiv.org/abs/2611.34935v1",
+          "source": "arXiv",
+          "published_at": "2026-11-25T18:59:31Z",
+          "raw_text": "Language models think in words; then multimodal models might think in images. We test whether a generated helper improves the answer to a visual question. A model describes the helper it needs and then answers using the original and generated images together. Across 13 vision-language model and generator pairs, generation lowers mean accuracy by 3.7 percentage points, with declines on nine of ten tasks. Two unified models, BAGEL and Janus-Pro-7B, each lose accuracy on eight tasks. On VSTAR, adding a generated image to the same planning hint lowers accuracy by 10.47 points. Repeated image edits yield different outcomes across tasks. ChartQAPro and MathVista stay below their no-generation baselines, while ERQA gains three points after ten edits.",
+          "extra": {
+            "authors": [
+              "Xueyang Yu",
+              "Yifan Jing",
+              "Taiming Lu",
+              "Linrong Cai",
+              "Zhipeng Cai",
+              "Yunyang Xiong",
+              "Gabriel Sarch",
+              "Zhuang Liu"
+            ],
+            "categories": [
+              "cs.LG",
+              "cs.CL",
+              "cs.CV"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.34935v1"
+          },
+          "score": 8.0,
+          "summary": "验证生成辅助图像能否提升视觉问答，探索多模态模型自我增强的新路径。"
+        },
+        {
+          "section": "paper",
+          "title": "$μ$-Bench: Benchmarking Multi-User Task Completion in Shared Interaction Voice Agents",
+          "url": "https://arxiv.org/abs/2611.34920v1",
+          "source": "arXiv",
+          "published_at": "2026-11-25T18:58:42Z",
+          "raw_text": "Voice agents in shared spaces must satisfy interdependent multi-user requests while upholding per-user authority, privacy, and task constraints. Existing evaluations offer limited coverage when participants react throughout a session. We introduce $μ$-Bench, a benchmark for joint task completion in closed-loop, full-duplex multi-user voice interaction. Simulated participants act from isolated profiles of goals, knowledge, and permissions, adapting to the agent's speech and tool outcomes. Across 20 domains, 100 scenarios vary group size, acoustics, and follow-up demands to form 800 cases (408 tool-augmented, 392 tool-free). Joint Task Success (JTS) requires all user goals, privacy boundaries, and terminal states to hold jointly, while Pure JTS further disallows unauthorized tool calls; Attribution, Threading, and Coordination (ATC) diagnostics localize failures. Across 13 voice agents, proprietary systems peak at 62.24\\% tool-free and 65.44\\% tool-augmented success, while open-weight models remain below 20\\%. ATC diagnostics show that open-weight models lag primarily in multi-turn attribution and threading, and controlled contrasts reveal that larger groups consistently degrade joint task success across capable systems. By coupling reactive multi-user simulation with verifiable session-level outcomes, $μ$-Bench provides a rigorous testbed for shared voice agents.",
+          "extra": {
+            "authors": [
+              "Qihao Lin",
+              "Guanxu Chen",
+              "Shuhang Zheng",
+              "Xiaoya Lu",
+              "Jingyi Yang",
+              "Terumi Chiba",
+              "Wenyi Yu",
+              "Chao Zhang",
+              "Zhuan Shi",
+              "Jing Shao"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.34920v1"
+          },
+          "score": 7.0,
+          "summary": "首个多用户共享语音助手任务基准，填补了多智能体交互评估的空白。"
+        },
+        {
+          "section": "paper",
+          "title": "Attack Policy Selection can Mislead Monitor Evaluators",
+          "url": "https://arxiv.org/abs/2611.34934v1",
+          "source": "arXiv",
+          "published_at": "2026-11-25T18:59:28Z",
+          "raw_text": "AI monitors, classifiers that flag dangerous behaviour by AI agents, are often evaluated against transcripts generated by attack policies acting as proxies for dangerous behaviour in deployment. We evaluate an ex-production OpenAI monitor as a case study and find that measured false negative rate is highly sensitive to both the method used to generate attack policies and the level of optimisation applied within that method. This rate ranged from 0.5\\% to 20.8\\% across optimisation levels of a single method (reinforcement learning), and from 6.4\\% to 23.0\\% across methods at their best observed optimisation level (optimised prompting vs.\\ transcript editing). Every attack policy was developed against proxy monitors only: all reported results show attacks transferring to the held-out GPT-5.4 target monitor. Our results suggest that monitor evasion evaluations can easily mislead: an evaluation using only basic attack methods may give false confidence that a monitor is strong. The sensitivity to attack-policy choice raises a problem: interpreting any particular result as evidence about deployment performance requires justification. The transcripts produced by attack policies are proxies for the dangerous behaviour a monitor must flag in deployment. These proxies can introduce visible artefacts, such as reasoning about a ``side task'' absent from the instructions shown to the monitor, that affect monitor judgements. Given the sensitivity above, the choice of proxy can change an evaluation's conclusion. Reading these results as evidence about deployment therefore requires a separate legitimacy argument for why the proxies are informative, including any justification of conservativeness. Making convincing arguments remains an open problem.",
+          "extra": {
+            "authors": [
+              "Charlie Griffin",
+              "Oliver Makins",
+              "Asa Cooper Stickland",
+              "Alessandro Abate",
+              "Yarin Gal",
+              "Abby D'Cruz",
+              "Xander Davies"
+            ],
+            "categories": [
+              "cs.LG",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.34934v1"
+          },
+          "score": 7.0,
+          "summary": "揭示攻击策略选择会误导AI监控评估，对Agent安全部署有直接警示意义。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "Knowledge infrastructure to make your agents smarter. Search, scrape and access 550+ data providers through one API.",
+          "extra": {
+            "stars": 210392,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "一站式API获取550+数据源，让AI agent实时检索与抓取，显著提升知识密度。"
+        },
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi, GLM, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 188176,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "muse",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 9.0,
+          "summary": "本地运行Kimi、DeepSeek等国产大模型，降低推理成本与隐私风险。"
+        },
+        {
+          "section": "repo",
+          "title": "yetone/magpie",
+          "url": "https://github.com/yetone/magpie",
+          "source": "GitHub 新星",
+          "published_at": "2026-09-23T16:22:35Z",
+          "raw_text": "Every agent's model. One place. Codex on DeepSeek, Claude Code on Kimi, from the menu bar.",
+          "extra": {
+            "stars": 41768,
+            "language": "Go",
+            "topics": [
+              "claude-code",
+              "codex",
+              "deepseek",
+              "gemini-cli",
+              "llm",
+              "macos"
+            ]
+          },
+          "score": 8.0,
+          "summary": "菜单栏一键切换Codex、Claude Code等agent后端模型，提升开发效率。"
+        },
+        {
+          "section": "repo",
+          "title": "browser-use/jev-ultrafast",
+          "url": "https://github.com/browser-use/jev-ultrafast",
+          "source": "GitHub 新星",
+          "published_at": "2026-09-16T21:30:12Z",
+          "raw_text": "Fastest and cheapest web agent",
+          "extra": {
+            "stars": 24751,
+            "language": "Python",
+            "topics": []
+          },
+          "score": 8.0,
+          "summary": "极速且廉价的Web agent方案，适合高频自动化任务场景。"
+        },
+        {
+          "section": "repo",
+          "title": "DietrichGebert/ponytail",
+          "url": "https://github.com/DietrichGebert/ponytail",
+          "source": "GitHub 经典",
+          "published_at": "2026-06-12T00:52:37Z",
+          "raw_text": "Makes your AI agent think like the laziest senior dev in the room. The best code is the code you never wrote.",
+          "extra": {
+            "stars": 198959,
+            "language": "JavaScript",
+            "topics": [
+              "agent-skills",
+              "ai-agents",
+              "claude",
+              "claude-code",
+              "claude-code-plugin",
+              "cursor-rules",
+              "developer-tools",
+              "llm",
+              "prompt-engineering",
+              "yagni"
+            ]
+          },
+          "score": 7.0,
+          "summary": "让agent模仿资深开发者“少写代码”的思维，减少冗余输出。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "S&P considers Nvidia credit downgrade over governance and ‘key man’ risks",
+          "url": "https://techcrunch.com/2026/11/25/sp-considers-nvidia-credit-downgrade-over-governance-and-key-man-risks/",
+          "source": "TechCrunch",
+          "published_at": "2026-11-25T22:44:32Z",
+          "raw_text": "The credit rating agency may lower Nvidia's credit rating to AA-, the fourth-highest rating.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "标普考虑下调英伟达信用评级，因治理与关键人物风险，影响其融资成本。"
+        },
+        {
+          "section": "news",
+          "title": "FCC signs off on SpaceX’s plan to put up to 1 million data center satellites into space",
+          "url": "https://www.theverge.com/science/1042278/spacex-fcc-starmind-ai-space-data-centers",
+          "source": "The Verge",
+          "published_at": "2026-11-25T17:44:51Z",
+          "raw_text": "In an announcement on Wednesday, the FCC says it authorized SpaceX to deploy up to 1 million AI chip-equipped satellites as part of the Elon Musk-owned company's \"Starmind\" initiative. With several others also pursuing the idea of putting AI data centers in space, including Google and Blue Origin, this is the first approval the agency […]",
+          "extra": {},
+          "score": 9.0,
+          "summary": "FCC批准SpaceX部署百万颗AI卫星建太空数据中心，颠覆算力基础设施格局。"
+        },
+        {
+          "section": "news",
+          "title": "OpenAI says heavy ChatGPT users may hit limits sooner as it merges Chat and Work",
+          "url": "https://techcrunch.com/2026/11/25/openai-says-heavy-chatgpt-users-may-hit-limits-sooner-as-it-merges-chat-and-work/",
+          "source": "TechCrunch",
+          "published_at": "2026-11-25T20:03:27Z",
+          "raw_text": "OpenAI will introduce a single usage meter across ChatGPT as it combines the Chat and Work experiences.",
+          "extra": {},
+          "score": 8.0,
+          "summary": "OpenAI合并Chat与Work体验，重度用户将更快触达用量上限，影响服务策略。"
+        },
+        {
+          "section": "news",
+          "title": "Google’s patent for custom AI video feeds paints a bleak picture of entertainment’s future",
+          "url": "https://www.theverge.com/entertainment/1042221/google-my-channel-ai-video-patent",
+          "source": "The Verge",
+          "published_at": "2026-11-25T21:51:26Z",
+          "raw_text": "Last year, Google filed a patent for a system called My Channel that's designed to create feeds filled with personalized, AI-generated videos and advertisements based on information the company knows about its users. The patent has been rejected, but unfortunately, Google might appeal or resubmit an amended version, and we could see this monstrosity come […]",
+          "extra": {},
+          "score": 7.0,
+          "summary": "谷歌申请AI个性化视频专利被拒，但可能上诉，预示AI生成内容与广告的未来。"
+        },
+        {
+          "section": "news",
+          "title": "Ars Live recap: Don’t expect military attacks on data centers to stop",
+          "url": "https://arstechnica.com/gadgets/2026/11/ars-live-recap-dont-expect-military-attacks-on-data-centers-to-stop/",
+          "source": "Ars Technica",
+          "published_at": "2026-11-25T16:47:14Z",
+          "raw_text": "Militaries have many reasons to target data centers and the cloud in wartime.",
+          "extra": {},
+          "score": 7.0,
+          "summary": "军事冲突中数据中心成攻击目标，云基础设施安全风险被重新评估。"
+        },
+        {
+          "section": "news",
+          "title": "AI may soon change what it means to be a theoretical physicist",
+          "url": "https://arstechnica.com/ai/2026/11/ai-can-do-the-calculations-physicists-are-figuring-out-what-comes-next/",
+          "source": "Ars Technica",
+          "published_at": "2026-11-25T12:00:28Z",
+          "raw_text": "Frontier AI is already solving problems that once took top physicists a full day.",
+          "extra": {},
+          "score": 6.0,
+          "summary": "前沿AI已能解决理论物理学家全天难题，或重塑科研工作流与人才定义。"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "GPT-6 models demonstrate intrinsic protein-design capabilities",
+          "url": "https://openai.com/index/gpt-6-models-demonstrate-intrinsic-protein-design-capabilities",
+          "source": "OpenAI",
+          "published_at": "2026-11-24T13:00:00Z",
+          "raw_text": "GPT-6 models design protein structures and sequences using reasoning and code. Lab tests found evidence of binding across five targets.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "GPT-6 模型展示了直接设计蛋白质结构与序列的能力，并经过实验验证，标志着 AI 在生物分子设计领域的重大突破。"
+        },
+        {
+          "section": "product",
+          "title": "Introducing Gemini 4 Neon",
+          "url": "https://deepmind.google/blog/introducing-gemini-4-neon/",
+          "source": "Google DeepMind",
+          "published_at": "2026-11-18T21:35:43Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 8.0,
+          "summary": "谷歌发布 Gemini 4 Neon 新模型，延续 Gemini 系列迭代，值得关注其能力提升与潜在应用方向。"
+        },
+        {
+          "section": "product",
+          "title": "TokenEconomizer: Learning from Experience to Make AI Coding Agents More Efficient",
+          "url": "https://www.microsoft.com/en-us/research/blog/tokeneconomizer-learning-from-experience-to-make-ai-coding-agents-more-efficient/",
+          "source": "Microsoft Research",
+          "published_at": "2026-11-16T17:01:35Z",
+          "raw_text": "AI coding agents can waste time and tokens relearning the same lessons. TokenEconomizer is an open-source plugin that builds on past sessions to cut costs while maintaining task success. It’s a path toward coding agents that learn not only how to solve tasks, but also how to spend computation more effectively. The post TokenEconomizer: Learning from Experience to Make AI Coding Agents More Efficient appeared first on Microsoft Research .",
+          "extra": {},
+          "score": 7.0,
+          "summary": "开源插件 TokenEconomizer 让 AI 编码代理从历史经验中学习，减少重复计算，提升效率并降低成本。"
+        }
+      ]
+    }
+  ]
+}
