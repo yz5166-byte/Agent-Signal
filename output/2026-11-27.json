@@ -1,0 +1,408 @@
+{
+  "date": "2026-11-27",
+  "tip": {},
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError",
+    "前沿论文 摘要失败：OpenAIInvalidRequestError",
+    "开源项目 摘要失败：OpenAIInvalidRequestError",
+    "行业新闻 摘要失败：OpenAIInvalidRequestError",
+    "产品发布 摘要失败：OpenAIInvalidRequestError",
+    "技巧生成失败：OpenAIInvalidRequestError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "Spectrum Adaptation of AI-Native Autoencoder Communications with Transfer Learning",
+          "url": "https://arxiv.org/abs/2611.34942v1",
+          "source": "arXiv",
+          "published_at": "2026-11-25T18:59:57Z",
+          "raw_text": "End-to-end physical-layer learning replaces separate modulation, coding, and detection operations with an autoencoder (AE) that consists of a jointly trained encoder-decoder pair at the transmitter and the receiver. This paper studies AI-native communications with AEs and quantifies the sensitivity to training-test mismatch in channel models. Models trained only on an AWGN channel achieve low bit error rates (BERs) under matched conditions but degrade severely on Rayleigh fading with practical front-end impairments. To reduce the time and energy required to adapt to new channel conditions, we propose a low-latency transfer-learning procedure that starts from an AWGN-pretrained system and fine-tunes only a small subset of transmitter and receiver layers while freezing the remainder. We further formulate layer selection as a budget-constrained optimization problem that identifies the most informative parameters to update during adaptation. This preserves the learned signal geometry and the deep decision structure while adapting lightweight front ends to fading- and impairment-induced mixing. For AE communications, we show that partial updates remove the mismatch-induced error floor and approach the BER of fully retrained models. We provide a layer-wise study and quantify resource-performance trade-offs, showing that modest adaptation substantially reduces BER while cutting training time, multiply-accumulate (MAC) operations, energy consumption, and the fraction of updated parameters for resource-efficient implementation.",
+          "extra": {
+            "authors": [
+              "Yalin E. Sagduyu",
+              "Tugba Erpek"
+            ],
+            "categories": [
+              "cs.NI",
+              "cs.AI",
+              "eess.SP"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.34942v1"
+          },
+          "score": 0.0,
+          "summary": ""
+        },
+        {
+          "section": "paper",
+          "title": "Tokenisation is not in APX",
+          "url": "https://arxiv.org/abs/2611.34938v1",
+          "source": "arXiv",
+          "published_at": "2026-11-25T18:59:38Z",
+          "raw_text": "In this paper, we prove that, unless P=NP, no polynomial-time algorithm can find a tokeniser whose objective is within any constant factor of the optimum, meaning that tokenisation is not in the APX complexity class. We prove this for direct and bottom-up tokenisation, under both a compression or unigram log-likelihood objectives, and for binary or larger alphabets. We further show that, even over unary alphabets, direct tokenisation is APX-hard, and thus admits no polynomial-time approximation scheme.",
+          "extra": {
+            "authors": [
+              "Violeta Kastreva",
+              "Philip Whittington",
+              "Dennis Komm",
+              "Tiago Pimentel"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.34938v1"
+          },
+          "score": 0.0,
+          "summary": ""
+        },
+        {
+          "section": "paper",
+          "title": "Can image generation help visual reasoning? An empirical study",
+          "url": "https://arxiv.org/abs/2611.34935v1",
+          "source": "arXiv",
+          "published_at": "2026-11-25T18:59:31Z",
+          "raw_text": "Language models think in words; then multimodal models might think in images. We test whether a generated helper improves the answer to a visual question. A model describes the helper it needs and then answers using the original and generated images together. Across 13 vision-language model and generator pairs, generation lowers mean accuracy by 3.7 percentage points, with declines on nine of ten tasks. Two unified models, BAGEL and Janus-Pro-7B, each lose accuracy on eight tasks. On VSTAR, adding a generated image to the same planning hint lowers accuracy by 10.47 points. Repeated image edits yield different outcomes across tasks. ChartQAPro and MathVista stay below their no-generation baselines, while ERQA gains three points after ten edits.",
+          "extra": {
+            "authors": [
+              "Xueyang Yu",
+              "Yifan Jing",
+              "Taiming Lu",
+              "Linrong Cai",
+              "Zhipeng Cai",
+              "Yunyang Xiong",
+              "Gabriel Sarch",
+              "Zhuang Liu"
+            ],
+            "categories": [
+              "cs.LG",
+              "cs.CL",
+              "cs.CV"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.34935v1"
+          },
+          "score": 0.0,
+          "summary": ""
+        },
+        {
+          "section": "paper",
+          "title": "Attack Policy Selection can Mislead Monitor Evaluators",
+          "url": "https://arxiv.org/abs/2611.34934v1",
+          "source": "arXiv",
+          "published_at": "2026-11-25T18:59:28Z",
+          "raw_text": "AI monitors, classifiers that flag dangerous behaviour by AI agents, are often evaluated against transcripts generated by attack policies acting as proxies for dangerous behaviour in deployment. We evaluate an ex-production OpenAI monitor as a case study and find that measured false negative rate is highly sensitive to both the method used to generate attack policies and the level of optimisation applied within that method. This rate ranged from 0.5\\% to 20.8\\% across optimisation levels of a single method (reinforcement learning), and from 6.4\\% to 23.0\\% across methods at their best observed optimisation level (optimised prompting vs.\\ transcript editing). Every attack policy was developed against proxy monitors only: all reported results show attacks transferring to the held-out GPT-5.4 target monitor. Our results suggest that monitor evasion evaluations can easily mislead: an evaluation using only basic attack methods may give false confidence that a monitor is strong. The sensitivity to attack-policy choice raises a problem: interpreting any particular result as evidence about deployment performance requires justification. The transcripts produced by attack policies are proxies for the dangerous behaviour a monitor must flag in deployment. These proxies can introduce visible artefacts, such as reasoning about a ``side task'' absent from the instructions shown to the monitor, that affect monitor judgements. Given the sensitivity above, the choice of proxy can change an evaluation's conclusion. Reading these results as evidence about deployment therefore requires a separate legitimacy argument for why the proxies are informative, including any justification of conservativeness. Making convincing arguments remains an open problem.",
+          "extra": {
+            "authors": [
+              "Charlie Griffin",
+              "Oliver Makins",
+              "Asa Cooper Stickland",
+              "Alessandro Abate",
+              "Yarin Gal",
+              "Abby D'Cruz",
+              "Xander Davies"
+            ],
+            "categories": [
+              "cs.LG",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.34934v1"
+          },
+          "score": 0.0,
+          "summary": ""
+        },
+        {
+          "section": "paper",
+          "title": "Diverse Alternative Reasoning Traces for Hard Math Problems",
+          "url": "https://arxiv.org/abs/2611.34928v1",
+          "source": "arXiv",
+          "published_at": "2026-11-25T18:59:11Z",
+          "raw_text": "Post-training large language models (LLMs) for mathematical reasoning often relies on accepted traces whose final answers pass a verifier. For hard math problems, however, such traces can be rare under independent Monte Carlo (MC) sampling. To address this, we propose Diverse Alternative Reasoning Traces (DART), a trace-mining method that starts from a rejected trace, decomposes it into reasoning steps, and ranks them by position-weighted uncertainty. It then generates deliberately distinct alternative candidates for highly ranked steps using reference-answer guidance and a meta-thought before completing the resulting traces. On greedy-unsolved DeepMath-103K problems, DART recovers 37% more problems than MC sampling at a matched number of generated traces. Its estimated generation cost per recovered problem is nearly identical, while its cost per accepted trace is 30% lower. Post-training Llama-3.1-8B-Instruct on traces mined by DART achieves the highest point estimate in five of six evaluations across MATH-500 and AIME benchmarks. These results demonstrate that revisiting rejected traces with DART can expand problem coverage and provide effective post-training data.",
+          "extra": {
+            "authors": [
+              "Lukas Aichberger",
+              "Adam Golinski",
+              "Arno Blaas",
+              "Arwen Bradley",
+              "Jacob Springer",
+              "Mehrdad Farajtabar",
+              "Michael Kirchhof",
+              "Sinead Williamson"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.AI",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.34928v1"
+          },
+          "score": 0.0,
+          "summary": ""
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "affaan-m/ECC",
+          "url": "https://github.com/affaan-m/ECC",
+          "source": "GitHub 经典",
+          "published_at": "2026-01-18T00:51:51Z",
+          "raw_text": "The agent harness performance optimization system. Skills, instincts, memory, security, and research-first development for Claude Code, Codex, Opencode, Cursor and beyond.",
+          "extra": {
+            "stars": 311467,
+            "language": "JavaScript",
+            "topics": [
+              "ai-agents",
+              "anthropic",
+              "claude",
+              "claude-code",
+              "developer-tools",
+              "llm",
+              "mcp",
+              "productivity"
+            ]
+          },
+          "score": 0.0,
+          "summary": ""
+        },
+        {
+          "section": "repo",
+          "title": "NousResearch/hermes-agent",
+          "url": "https://github.com/NousResearch/hermes-agent",
+          "source": "GitHub 经典",
+          "published_at": "2025-07-22T22:22:28Z",
+          "raw_text": "The agent that grows with you",
+          "extra": {
+            "stars": 266493,
+            "language": "Python",
+            "topics": [
+              "ai",
+              "ai-agent",
+              "ai-agents",
+              "anthropic",
+              "chatgpt",
+              "claude",
+              "claude-code",
+              "codex",
+              "hermes",
+              "hermes-agent",
+              "llm",
+              "nous-research",
+              "openai"
+            ]
+          },
+          "score": 0.0,
+          "summary": ""
+        },
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "Knowledge infrastructure to make your agents smarter. Search, scrape and access 550+ data providers through one API.",
+          "extra": {
+            "stars": 211213,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 0.0,
+          "summary": ""
+        },
+        {
+          "section": "repo",
+          "title": "DietrichGebert/ponytail",
+          "url": "https://github.com/DietrichGebert/ponytail",
+          "source": "GitHub 经典",
+          "published_at": "2026-06-12T00:52:37Z",
+          "raw_text": "Makes your AI agent think like the laziest senior dev in the room. The best code is the code you never wrote.",
+          "extra": {
+            "stars": 199578,
+            "language": "JavaScript",
+            "topics": [
+              "agent-skills",
+              "ai-agents",
+              "claude",
+              "claude-code",
+              "claude-code-plugin",
+              "cursor-rules",
+              "developer-tools",
+              "llm",
+              "prompt-engineering",
+              "yagni"
+            ]
+          },
+          "score": 0.0,
+          "summary": ""
+        },
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi, GLM, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 188279,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "muse",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 0.0,
+          "summary": ""
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "The group chat where your AI talks behind your back",
+          "url": "https://construct22.com/",
+          "source": "Hacker News",
+          "published_at": "2026-11-27T06:44:34Z",
+          "raw_text": "Article URL: https://construct22.com/ Comments URL: https://news.ycombinator.com/item?id=50663595 Points: 168 # Comments: 61",
+          "extra": {},
+          "score": 0.0,
+          "summary": ""
+        },
+        {
+          "section": "news",
+          "title": "The need for a formally verifiable mainstream programming language",
+          "url": "https://blainehansen.me/post/mainstream-verifiable-language/",
+          "source": "Hacker News",
+          "published_at": "2026-11-27T05:22:06Z",
+          "raw_text": "Article URL: https://blainehansen.me/post/mainstream-verifiable-language/ Comments URL: https://news.ycombinator.com/item?id=50663089 Points: 136 # Comments: 108",
+          "extra": {},
+          "score": 0.0,
+          "summary": ""
+        },
+        {
+          "section": "news",
+          "title": "Hard Drive pricing has gotten bad",
+          "url": "https://blog.ktz.me/black-friday-hard-drive-prices-are-messed-up/",
+          "source": "Hacker News",
+          "published_at": "2026-11-27T01:13:49Z",
+          "raw_text": "Article URL: https://blog.ktz.me/black-friday-hard-drive-prices-are-messed-up/ Comments URL: https://news.ycombinator.com/item?id=50661646 Points: 330 # Comments: 233",
+          "extra": {},
+          "score": 0.0,
+          "summary": ""
+        },
+        {
+          "section": "news",
+          "title": "Nvidia hits pause on chip shipments to Southeast Asia",
+          "url": "https://techcrunch.com/2026/11/26/nvidia-hits-pause-on-chip-shipments-to-southeast-asia/",
+          "source": "TechCrunch",
+          "published_at": "2026-11-26T20:03:54Z",
+          "raw_text": "Nvidia has told manufacturing partners to pause server shipments to Malaysia, Singapore, Thailand and Indonesia as the U.S. tightens its push to keep AI chips out of China.",
+          "extra": {},
+          "score": 0.0,
+          "summary": ""
+        },
+        {
+          "section": "news",
+          "title": "Grand Theft Auto VI proves why efficiency isn’t a virtue",
+          "url": "https://techcrunch.com/2026/11/26/as-anthropic-ipos-grand-theft-auto-vi-proves-why-efficiency-isnt-a-virtue/",
+          "source": "TechCrunch",
+          "published_at": "2026-11-26T16:00:00Z",
+          "raw_text": "On the same day that Anthropic entered the public market, a painstakingly human video game became one of most successful entertainment launches of all time.",
+          "extra": {},
+          "score": 0.0,
+          "summary": ""
+        },
+        {
+          "section": "news",
+          "title": "42 state AGs are trying to stop Character.AI from selling users’ chats",
+          "url": "https://www.theverge.com/policy/1042620/character-ai-sale-state-ags-block-selling-users-chats",
+          "source": "The Verge",
+          "published_at": "2026-11-26T09:54:40Z",
+          "raw_text": "A coalition of 42 state attorneys general is trying to prevent Character.AI from selling off user data as it navigates Chapter 11 bankruptcy proceedings. In a deluge of nearly identical press releases, the various AGs accuse the company of planning to auction off \"the private chat histories of more than 21 million U.S. accounts - […]",
+          "extra": {},
+          "score": 0.0,
+          "summary": ""
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "Introducing the llama.cpp benchmark dashboard for AMD Ryzen and Radeon",
+          "url": "https://huggingface.co/blog/ggml-org/llamacpp-amd-bench",
+          "source": "Hugging Face",
+          "published_at": "2026-11-26T11:37:17Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 0.0,
+          "summary": ""
+        },
+        {
+          "section": "product",
+          "title": "Building on Nemotron 3.5 Parse: Open Data, Fine-Tuning, and Faster Inference",
+          "url": "https://huggingface.co/blog/nvidia/building-on-nemotron-35-parse-open-data-fine-tunin",
+          "source": "Hugging Face",
+          "published_at": "2026-11-26T05:05:36Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 0.0,
+          "summary": ""
+        },
+        {
+          "section": "product",
+          "title": "Swarms, Flocks, Gangs: How to build, train, and evaluate multi-agent systems",
+          "url": "https://huggingface.co/blog/training-swarms",
+          "source": "Hugging Face",
+          "published_at": "2026-11-26T00:00:00Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 0.0,
+          "summary": ""
+        }
+      ]
+    }
+  ]
+}
