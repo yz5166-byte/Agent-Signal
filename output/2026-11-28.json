@@ -1,0 +1,416 @@
+{
+  "date": "2026-11-28",
+  "tip": {
+    "title": "How Much Do Coding Agents Over-Edit, and Why? An Empirical Study of Unneeded Edits in Repository-Level Agent Patches",
+    "body": "**场景：** 用代码智能体（如 Cursor/Devin）批量修改仓库代码时，经常发现它改了一堆无关行，比如加空格、改注释，导致 PR 难以审查。\n\n**做法：** 在 Agent 生成补丁后，用 `diff` 命令过滤出仅含空白/注释的改动，并自动回滚。\n\n```bash\n# 检查当前工作区与 HEAD 的差异，仅显示空白/注释变更\ngit diff --ignore-all-space --ignore-blank-lines -- . | head -20\n# 若确认无实质改动，直接丢弃\ngit checkout -- .\n```\n\n**安全提示：** 回滚前务必用 `git stash` 或 `git diff` 确认无重要代码变更，避免丢失工作。",
+    "ref_title": "How Much Do Coding Agents Over-Edit, and Why? An Empirical Study of Unneeded Edits in Repository-Level Agent Patches",
+    "ref_url": "https://arxiv.org/abs/2611.34875v1"
+  },
+  "errors": [
+    "VentureBeat 抓取失败：HTTPStatusError"
+  ],
+  "sections": [
+    {
+      "key": "paper",
+      "name": "前沿论文",
+      "items": [
+        {
+          "section": "paper",
+          "title": "How Much Do Coding Agents Over-Edit, and Why? An Empirical Study of Unneeded Edits in Repository-Level Agent Patches",
+          "url": "https://arxiv.org/abs/2611.34875v1",
+          "source": "arXiv",
+          "published_at": "2026-11-25T18:37:06Z",
+          "raw_text": "Agent patches are larger than developers', which is widely read as over-editing. But patch size does not say whether the extra edits are needed, what they are, or where they come from. We introduce Delta Residue Attribution (DRA), which replays agent trajectories, traces every block (unit) of the final patch to the step that wrote it, reverts each unit, and reruns the task tests to decide whether the unit is needed. We apply DRA to 7,660 resolved GitHub Copilot CLI trajectories from 18 frontier models on SWE-bench Verified (6,728) and DeepSWE (932), and grade developer patches using the same method. Agent patches do change more lines than developers'; on SWE-bench Verified the majority of extra edits add tests (61%) and documentation (13%) while on DeepSWE, most extra edits are code (58%). On both benchmarks, agents' code is on average at least as necessary as developers' (mean $NP_{code}$ 0.887 vs. 0.864 on SWE-bench Verified, where 11 of 18 models leave less unneeded code than developers, and 0.797 vs. 0.785 on DeepSWE). On average, 11% of an agent patch's code units on SWE-bench Verified are still unneeded, and 89% of those change behavior. Debug steps write almost none of the unneeded code. Code necessity differs substantially by model; it is unrelated to resolve rate on SWE-bench Verified and negatively correlated with it on DeepSWE (Spearman -0.59, p = 0.01). On SWE-bench Verified, pruning with DRA using only the tests the agent can see (its own tests and the repository's) removes the majority of unneeded code but also some needed code (67% recall, 46% precision), and 89% of pruned patches still resolve the task; asking the agent to audit its own diff is more precise but less effective (36% recall, 66% precision). We recommend that benchmarks report code necessity next to resolve rate and that over-editing be addressed through model training and harness-level pruning.",
+          "extra": {
+            "authors": [
+              "Aakash Goel",
+              "Benjamin Steenhoek",
+              "Yu Hu"
+            ],
+            "categories": [
+              "cs.SE",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.34875v1"
+          },
+          "score": 9.0,
+          "summary": "分析代码智能体补丁中不必要的编辑，揭示过度编辑的根源，提升Agent代码修改质量。"
+        },
+        {
+          "section": "paper",
+          "title": "Diverse Alternative Reasoning Traces for Hard Math Problems",
+          "url": "https://arxiv.org/abs/2611.34928v1",
+          "source": "arXiv",
+          "published_at": "2026-11-25T18:59:11Z",
+          "raw_text": "Post-training large language models (LLMs) for mathematical reasoning often relies on accepted traces whose final answers pass a verifier. For hard math problems, however, such traces can be rare under independent Monte Carlo (MC) sampling. To address this, we propose Diverse Alternative Reasoning Traces (DART), a trace-mining method that starts from a rejected trace, decomposes it into reasoning steps, and ranks them by position-weighted uncertainty. It then generates deliberately distinct alternative candidates for highly ranked steps using reference-answer guidance and a meta-thought before completing the resulting traces. On greedy-unsolved DeepMath-103K problems, DART recovers 37% more problems than MC sampling at a matched number of generated traces. Its estimated generation cost per recovered problem is nearly identical, while its cost per accepted trace is 30% lower. Post-training Llama-3.1-8B-Instruct on traces mined by DART achieves the highest point estimate in five of six evaluations across MATH-500 and AIME benchmarks. These results demonstrate that revisiting rejected traces with DART can expand problem coverage and provide effective post-training data.",
+          "extra": {
+            "authors": [
+              "Lukas Aichberger",
+              "Adam Golinski",
+              "Arno Blaas",
+              "Arwen Bradley",
+              "Jacob Springer",
+              "Mehrdad Farajtabar",
+              "Michael Kirchhof",
+              "Sinead Williamson"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.AI",
+              "cs.LG"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.34928v1"
+          },
+          "score": 8.0,
+          "summary": "为难题生成多样替代推理轨迹，提升LLM数学推理能力，突破蒙特卡洛采样局限。"
+        },
+        {
+          "section": "paper",
+          "title": "$μ$-Bench: Benchmarking Multi-User Task Completion in Shared Interaction Voice Agents",
+          "url": "https://arxiv.org/abs/2611.34920v1",
+          "source": "arXiv",
+          "published_at": "2026-11-25T18:58:42Z",
+          "raw_text": "Voice agents in shared spaces must satisfy interdependent multi-user requests while upholding per-user authority, privacy, and task constraints. Existing evaluations offer limited coverage when participants react throughout a session. We introduce $μ$-Bench, a benchmark for joint task completion in closed-loop, full-duplex multi-user voice interaction. Simulated participants act from isolated profiles of goals, knowledge, and permissions, adapting to the agent's speech and tool outcomes. Across 20 domains, 100 scenarios vary group size, acoustics, and follow-up demands to form 800 cases (408 tool-augmented, 392 tool-free). Joint Task Success (JTS) requires all user goals, privacy boundaries, and terminal states to hold jointly, while Pure JTS further disallows unauthorized tool calls; Attribution, Threading, and Coordination (ATC) diagnostics localize failures. Across 13 voice agents, proprietary systems peak at 62.24\\% tool-free and 65.44\\% tool-augmented success, while open-weight models remain below 20\\%. ATC diagnostics show that open-weight models lag primarily in multi-turn attribution and threading, and controlled contrasts reveal that larger groups consistently degrade joint task success across capable systems. By coupling reactive multi-user simulation with verifiable session-level outcomes, $μ$-Bench provides a rigorous testbed for shared voice agents.",
+          "extra": {
+            "authors": [
+              "Qihao Lin",
+              "Guanxu Chen",
+              "Shuhang Zheng",
+              "Xiaoya Lu",
+              "Jingyi Yang",
+              "Terumi Chiba",
+              "Wenyi Yu",
+              "Chao Zhang",
+              "Zhuan Shi",
+              "Jing Shao"
+            ],
+            "categories": [
+              "cs.CL",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.34920v1"
+          },
+          "score": 8.0,
+          "summary": "首个多用户共享语音Agent基准，评估并发请求下的权限与任务完成能力。"
+        },
+        {
+          "section": "paper",
+          "title": "Can image generation help visual reasoning? An empirical study",
+          "url": "https://arxiv.org/abs/2611.34935v1",
+          "source": "arXiv",
+          "published_at": "2026-11-25T18:59:31Z",
+          "raw_text": "Language models think in words; then multimodal models might think in images. We test whether a generated helper improves the answer to a visual question. A model describes the helper it needs and then answers using the original and generated images together. Across 13 vision-language model and generator pairs, generation lowers mean accuracy by 3.7 percentage points, with declines on nine of ten tasks. Two unified models, BAGEL and Janus-Pro-7B, each lose accuracy on eight tasks. On VSTAR, adding a generated image to the same planning hint lowers accuracy by 10.47 points. Repeated image edits yield different outcomes across tasks. ChartQAPro and MathVista stay below their no-generation baselines, while ERQA gains three points after ten edits.",
+          "extra": {
+            "authors": [
+              "Xueyang Yu",
+              "Yifan Jing",
+              "Taiming Lu",
+              "Linrong Cai",
+              "Zhipeng Cai",
+              "Yunyang Xiong",
+              "Gabriel Sarch",
+              "Zhuang Liu"
+            ],
+            "categories": [
+              "cs.LG",
+              "cs.CL",
+              "cs.CV"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.34935v1"
+          },
+          "score": 7.0,
+          "summary": "探索图像生成辅助视觉推理，多模态模型通过自生成图像提升问答准确率。"
+        },
+        {
+          "section": "paper",
+          "title": "Attack Policy Selection can Mislead Monitor Evaluators",
+          "url": "https://arxiv.org/abs/2611.34934v1",
+          "source": "arXiv",
+          "published_at": "2026-11-25T18:59:28Z",
+          "raw_text": "AI monitors, classifiers that flag dangerous behaviour by AI agents, are often evaluated against transcripts generated by attack policies acting as proxies for dangerous behaviour in deployment. We evaluate an ex-production OpenAI monitor as a case study and find that measured false negative rate is highly sensitive to both the method used to generate attack policies and the level of optimisation applied within that method. This rate ranged from 0.5\\% to 20.8\\% across optimisation levels of a single method (reinforcement learning), and from 6.4\\% to 23.0\\% across methods at their best observed optimisation level (optimised prompting vs.\\ transcript editing). Every attack policy was developed against proxy monitors only: all reported results show attacks transferring to the held-out GPT-5.4 target monitor. Our results suggest that monitor evasion evaluations can easily mislead: an evaluation using only basic attack methods may give false confidence that a monitor is strong. The sensitivity to attack-policy choice raises a problem: interpreting any particular result as evidence about deployment performance requires justification. The transcripts produced by attack policies are proxies for the dangerous behaviour a monitor must flag in deployment. These proxies can introduce visible artefacts, such as reasoning about a ``side task'' absent from the instructions shown to the monitor, that affect monitor judgements. Given the sensitivity above, the choice of proxy can change an evaluation's conclusion. Reading these results as evidence about deployment therefore requires a separate legitimacy argument for why the proxies are informative, including any justification of conservativeness. Making convincing arguments remains an open problem.",
+          "extra": {
+            "authors": [
+              "Charlie Griffin",
+              "Oliver Makins",
+              "Asa Cooper Stickland",
+              "Alessandro Abate",
+              "Yarin Gal",
+              "Abby D'Cruz",
+              "Xander Davies"
+            ],
+            "categories": [
+              "cs.LG",
+              "cs.AI"
+            ],
+            "pdf_url": "https://arxiv.org/pdf/2611.34934v1"
+          },
+          "score": 7.0,
+          "summary": "揭示攻击策略选择误导AI监控评估，提醒Agent安全评测需警惕虚假低误报率。"
+        }
+      ]
+    },
+    {
+      "key": "repo",
+      "name": "开源项目",
+      "items": [
+        {
+          "section": "repo",
+          "title": "firecrawl/firecrawl",
+          "url": "https://github.com/firecrawl/firecrawl",
+          "source": "GitHub 经典",
+          "published_at": "2024-04-15T21:02:29Z",
+          "raw_text": "Knowledge infrastructure to make your agents smarter. Search, scrape and access 550+ data providers through one API.",
+          "extra": {
+            "stars": 211875,
+            "language": "TypeScript",
+            "topics": [
+              "ai",
+              "ai-agents",
+              "ai-crawler",
+              "ai-scraping",
+              "ai-search",
+              "crawler",
+              "data-extraction",
+              "html-to-markdown",
+              "llm",
+              "markdown",
+              "scraper",
+              "scraping",
+              "web-crawler",
+              "web-data",
+              "web-data-extraction",
+              "web-scraper",
+              "web-scraping",
+              "web-search",
+              "webscraping"
+            ]
+          },
+          "score": 9.0,
+          "summary": "一站式API整合搜索、抓取与550+数据源，让智能体知识获取更高效。"
+        },
+        {
+          "section": "repo",
+          "title": "ollama/ollama",
+          "url": "https://github.com/ollama/ollama",
+          "source": "GitHub 经典",
+          "published_at": "2023-06-26T19:39:32Z",
+          "raw_text": "Get up and running with Kimi, GLM, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+          "extra": {
+            "stars": 188352,
+            "language": "Go",
+            "topics": [
+              "deepseek",
+              "gemma",
+              "glm",
+              "go",
+              "golang",
+              "gpt-oss",
+              "llama",
+              "llm",
+              "llms",
+              "minimax",
+              "mistral",
+              "muse",
+              "ollama",
+              "qwen"
+            ]
+          },
+          "score": 9.0,
+          "summary": "本地运行主流大模型（Kimi、DeepSeek等），降低AI应用部署门槛。"
+        },
+        {
+          "section": "repo",
+          "title": "yetone/magpie",
+          "url": "https://github.com/yetone/magpie",
+          "source": "GitHub 新星",
+          "published_at": "2026-09-23T16:22:35Z",
+          "raw_text": "Pool every plan you pay for — Claude, ChatGPT, Copilot, GLM Coding Plan, Kimi Code and more — and use them in any agent: Claude Code, Codex, Claude Desktop… When one runs out, the next takes over.",
+          "extra": {
+            "stars": 42664,
+            "language": "Go",
+            "topics": [
+              "ai-agents",
+              "chatgpt",
+              "claude",
+              "claude-code",
+              "codex",
+              "deepseek",
+              "gemini-cli",
+              "github-copilot",
+              "glm",
+              "kimi",
+              "linux",
+              "llm",
+              "llm-gateway",
+              "macos",
+              "windows"
+            ]
+          },
+          "score": 8.0,
+          "summary": "跨平台API额度池化，自动切换，解决多Agent工具调用成本问题。"
+        },
+        {
+          "section": "repo",
+          "title": "browser-use/jev-ultrafast",
+          "url": "https://github.com/browser-use/jev-ultrafast",
+          "source": "GitHub 新星",
+          "published_at": "2026-09-16T21:30:12Z",
+          "raw_text": "Fastest and cheapest web agent",
+          "extra": {
+            "stars": 24784,
+            "language": "Python",
+            "topics": []
+          },
+          "score": 8.0,
+          "summary": "主打低成本与高速度的网页Agent，适合批量自动化任务。"
+        },
+        {
+          "section": "repo",
+          "title": "huggingface/transformers",
+          "url": "https://github.com/huggingface/transformers",
+          "source": "GitHub 经典",
+          "published_at": "2018-10-29T13:56:00Z",
+          "raw_text": "🤗 Transformers: the model-definition framework for state-of-the-art machine learning models in text, vision, audio, and multimodal models, for both inference and training.",
+          "extra": {
+            "stars": 169320,
+            "language": "Python",
+            "topics": [
+              "audio",
+              "deep-learning",
+              "deepseek",
+              "gemma",
+              "glm",
+              "hacktoberfest",
+              "llm",
+              "machine-learning",
+              "model-hub",
+              "natural-language-processing",
+              "nlp",
+              "pretrained-models",
+              "python",
+              "pytorch",
+              "pytorch-transformers",
+              "qwen",
+              "speech-recognition",
+              "transformer",
+              "vlm"
+            ]
+          },
+          "score": 7.0,
+          "summary": "业界标准模型框架，支持文本/视觉/多模态，训练推理皆可用。"
+        }
+      ]
+    },
+    {
+      "key": "news",
+      "name": "行业新闻",
+      "items": [
+        {
+          "section": "news",
+          "title": "Nvidia hits pause on chip shipments to Southeast Asia",
+          "url": "https://techcrunch.com/2026/11/26/nvidia-hits-pause-on-chip-shipments-to-southeast-asia/",
+          "source": "TechCrunch",
+          "published_at": "2026-11-26T20:03:54Z",
+          "raw_text": "Nvidia has told manufacturing partners to pause server shipments to Malaysia, Singapore, Thailand and Indonesia as the U.S. tightens its push to keep AI chips out of China.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "英伟达暂停向东南亚四国出货，美国收紧AI芯片对华管控链条"
+        },
+        {
+          "section": "news",
+          "title": "42 state AGs are trying to stop Character.AI from selling users’ chats",
+          "url": "https://www.theverge.com/policy/1042620/character-ai-sale-state-ags-block-selling-users-chats",
+          "source": "The Verge",
+          "published_at": "2026-11-26T09:54:40Z",
+          "raw_text": "A coalition of 42 state attorneys general is trying to prevent Character.AI from selling off user data as it navigates Chapter 11 bankruptcy proceedings. In a deluge of nearly identical press releases, the various AGs accuse the company of planning to auction off \"the private chat histories of more than 21 million U.S. accounts - […]",
+          "extra": {},
+          "score": 8.0,
+          "summary": "42州总检察长阻止Character.AI破产中出售用户聊天数据，监管重压"
+        },
+        {
+          "section": "news",
+          "title": "Unkernel: Real Linux kernel, compiled to WebAssembly",
+          "url": "https://unkernel.dev",
+          "source": "Hacker News",
+          "published_at": "2026-11-28T03:19:20Z",
+          "raw_text": "Article URL: https://unkernel.dev Comments URL: https://news.ycombinator.com/item?id=50674218 Points: 221 # Comments: 43",
+          "extra": {},
+          "score": 7.0,
+          "summary": "将真实Linux内核编译为WebAssembly运行，突破浏览器内核技术边界"
+        },
+        {
+          "section": "news",
+          "title": "Tabernetes: A Kubernetes cluster whose nodes are browser tabs",
+          "url": "https://tabernet.es/",
+          "source": "Hacker News",
+          "published_at": "2026-11-27T23:00:30Z",
+          "raw_text": "Article URL: https://tabernet.es/ Comments URL: https://news.ycombinator.com/item?id=50672521 Points: 106 # Comments: 36",
+          "extra": {},
+          "score": 6.0,
+          "summary": "用浏览器标签页模拟Kubernetes节点，展示边缘计算新思路"
+        },
+        {
+          "section": "news",
+          "title": "Android’s DIY widgets are a bit of vibe-coding fun",
+          "url": "https://www.theverge.com/tech/1041801/android-intelligence-create-my-widget-gemini",
+          "source": "The Verge",
+          "published_at": "2026-11-27T14:00:00Z",
+          "raw_text": "Aside from dealing with my calendar, there's one thing I want AI to do: tell me if I'm about to miss the bus. What I need is a widget. It needs to tell me real-time arrivals for the bus stop near my house. Tapping around on my phone screen to open the right app and […]",
+          "extra": {},
+          "score": 6.0,
+          "summary": "Android DIY小部件结合AI实时公交提醒，探索轻量AI交互场景"
+        },
+        {
+          "section": "news",
+          "title": "Grand Theft Auto VI proves why efficiency isn’t a virtue",
+          "url": "https://techcrunch.com/2026/11/26/as-anthropic-ipos-grand-theft-auto-vi-proves-why-efficiency-isnt-a-virtue/",
+          "source": "TechCrunch",
+          "published_at": "2026-11-26T16:00:00Z",
+          "raw_text": "On the same day that Anthropic entered the public market, a painstakingly human video game became one of most successful entertainment launches of all time.",
+          "extra": {},
+          "score": 5.0,
+          "summary": "GTA6成功挑战效率至上论，但观点偏评论而非硬新闻"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "name": "产品发布",
+      "items": [
+        {
+          "section": "product",
+          "title": "GPT-6 models demonstrate intrinsic protein-design capabilities",
+          "url": "https://openai.com/index/gpt-6-models-demonstrate-intrinsic-protein-design-capabilities",
+          "source": "OpenAI",
+          "published_at": "2026-11-24T13:00:00Z",
+          "raw_text": "GPT-6 models design protein structures and sequences using reasoning and code. Lab tests found evidence of binding across five targets.",
+          "extra": {},
+          "score": 9.0,
+          "summary": "GPT-6 模型展示了通过推理和代码设计蛋白质结构的能力，实验室验证了五个靶点的结合。这是大模型在生命科学领域的重大能力跃迁。"
+        },
+        {
+          "section": "product",
+          "title": "Introducing Gemini 4 Neon",
+          "url": "https://deepmind.google/blog/introducing-gemini-4-neon/",
+          "source": "Google DeepMind",
+          "published_at": "2026-11-18T21:35:43Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 8.0,
+          "summary": "Google 发布 Gemini 4 Neon 新模型，延续 Gemini 系列能力迭代，值得关注其架构与性能变化。"
+        },
+        {
+          "section": "product",
+          "title": "Taking Trainium3 to the Track: Generating Videos with LTX-2.5",
+          "url": "https://huggingface.co/blog/video-trainium3",
+          "source": "Hugging Face",
+          "published_at": "2026-11-27T00:00:00Z",
+          "raw_text": "",
+          "extra": {},
+          "score": 7.0,
+          "summary": "AWS 推出基于 Trainium3 芯片的视频生成模型 LTX-2.5，将专用硬件与生成式视频能力结合。"
+        }
+      ]
+    }
+  ]
+}
